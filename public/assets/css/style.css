@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
 /*
 ! tailwindcss v3.3.0 | MIT License | https://tailwindcss.com
 */
@@ -13,6 +15,7 @@
   border-width: 0; /* 2 */
   border-style: solid; /* 2 */
   border-color: #E5E7EB; /* 2 */
+  font-family: 'Raleway', sans-serif;
 }
 ::before,
 ::after {
@@ -1815,12 +1818,13 @@ select{
 }
 .table th{
   --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  background-color: rgb(255 20 0 / var(--tw-bg-opacity));
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   text-align: center;
+  color: white;
   font-weight: 500;
 }
 .table th:first-child{
@@ -6708,7 +6712,7 @@ h6, .h6 {
   display: flex;
   height: 72px;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   border-inline-end-width: 1px;
   border-bottom-width: 1px;
   --tw-border-opacity: 1;
@@ -6828,7 +6832,7 @@ h6, .h6 {
 
 .sidebar-menu li.dropdown.open > a, .sidebar-menu li.dropdown.dropdown-open > a{
   --tw-bg-opacity: 1;
-  background-color: rgb(72 127 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 0 0 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
@@ -6850,14 +6854,14 @@ h6, .h6 {
 
 .sidebar-menu li > a.active-page{
   --tw-bg-opacity: 1;
-  background-color: rgb(72 127 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 0 0 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .sidebar-menu li > a.active-page:hover{
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(255 0 0 / var(--tw-text-opacity));
 }
 
 .sidebar-menu li a{
@@ -6887,7 +6891,7 @@ h6, .h6 {
 
 .sidebar-menu li a:hover{
   --tw-text-opacity: 1;
-  color: rgb(72 127 255 / var(--tw-text-opacity));
+  color: rgb(255 0 0 / var(--tw-text-opacity));
 }
 
 .sidebar-menu li a .menu-icon{
@@ -6932,9 +6936,9 @@ h6, .h6 {
 
 .sidebar-menu .sidebar-submenu li.active-page a{
   --tw-bg-opacity: 1;
-  background-color: rgb(228 241 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 0 0 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity));
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 :is(.dark .sidebar-menu .sidebar-submenu li.active-page a){
