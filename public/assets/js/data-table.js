@@ -1,17 +1,13 @@
-if (document.getElementById("selection-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+document.addEventListener('DOMContentLoaded', function () {
 
-    let multiSelect = true;
-    let rowNavigation = false;
-    let table = null;
+    function initTable(tableId) {
+        const tableEl = document.getElementById(tableId);
+        if (!tableEl) return null;
 
-    const resetTable = function () {
-        if (table) {
-            table.destroy();
-        }
-
-        const options = {
+        const table = new simpleDatatables.DataTable(`#${tableId}`, {
+            perPageSelect: false,
             columns: [
-                { select: [0, 6], sortable: false } // Disable sorting on the first column (index 0 and 6)
+                { select: [0, 6], sortable: false }
             ],
             rowRender: (row, tr, _index) => {
                 if (!tr.attributes) {
@@ -27,41 +23,12 @@ if (document.getElementById("selection-table") && typeof simpleDatatables.DataTa
                 }
                 return tr;
             }
-        };
-        if (rowNavigation) {
-            options.rowNavigation = true;
-            options.tabIndex = 1;
-        }
-
-        table = new simpleDatatables.DataTable("#selection-table", options);
-
-        // Mark all rows as unselected
-        table.data.data.forEach(data => {
-            data.selected = false;
         });
 
-        table.on("datatable.selectrow", (rowIndex, event) => {
-            event.preventDefault();
-            const row = table.data.data[rowIndex];
-            if (row.selected) {
-                row.selected = false;
-            } else {
-                if (!multiSelect) {
-                    table.data.data.forEach(data => {
-                        data.selected = false;
-                    });
-                }
-                row.selected = true;
-            }
-            table.update();
-        });
-    };
-
-    // Row navigation makes no sense on mobile, so we deactivate it and hide the checkbox.
-    const isMobile = window.matchMedia("(any-pointer:coarse)").matches;
-    if (isMobile) {
-        rowNavigation = false;
+        return table;
     }
 
-    resetTable();
-}
+    const selectionTable1 = initTable("selection-table-1");
+    const selectionTable2 = initTable("selection-table-2");
+    const popupTable = initTable("popup-table");
+});

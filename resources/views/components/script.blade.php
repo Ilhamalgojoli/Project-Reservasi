@@ -25,5 +25,8 @@
     <script src="{{ asset('assets/js/flowbite.min.js') }}"></script>
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
+    <!-- sidebar -->
+    <script src="{{ asset('assets/js/sidebar.js')}}"></script>
+    <!-- data table -->
 
     <?php echo (isset($script) ? $script   : '')?>
