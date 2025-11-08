@@ -16,16 +16,16 @@
 
             </div>
         </div>
-        <div class="col-auto">
+        <div class="col-auto ">
             <div class="flex flex-wrap items-center gap-3">
-                <button type="button" id="theme-toggle" class="w-10 h-10 bg-neutral-200 dark:bg-neutral-700 dark:text-white rounded-full flex justify-center items-center">
-                    <span id="theme-toggle-dark-icon" class="hidden">
-                        <i class="ri-sun-line"></i>
-                    </span>
-                    <span id="theme-toggle-light-icon" class="hidden">
-                        <i class="ri-moon-line"></i>
-                    </span>
-                </button>
+                {{--                <button type="button" id="theme-toggle" class="w-10 h-10 bg-neutral-200 dark:bg-neutral-700 dark:text-white rounded-full flex justify-center items-center">--}}
+                {{--                    <span id="theme-toggle-dark-icon" class="hidden">--}}
+                {{--                        <i class="ri-sun-line"></i>--}}
+                {{--                    </span>--}}
+                {{--                    <span id="theme-toggle-light-icon" class="hidden">--}}
+                {{--                        <i class="ri-moon-line"></i>--}}
+                {{--                    </span>--}}
+                {{--                </button>--}}
 
                 <!-- Language Dropdown Start  -->
                 <div class="hidden sm:inline-block">
@@ -42,7 +42,7 @@
                         <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
                             <div class="mt-4 flex flex-col gap-4">
 
-                                <div class="form-check style-check flex items-center justify-between">
+                            <div class="form-check tyle-check flex items-center justify-between">
                                     <label class="form-check-label line-height-1 font-medium text-secondary-light" for="english">
                                         <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
                                             <img src="{{ asset('assets/images/flags/flag1.png') }}" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">

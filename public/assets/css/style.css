@@ -494,7 +494,8 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 select:not([size]){
   background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3e %3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3e %3c/svg%3e");
-  background-position: right 0.75rem center;
+  background-p
+  osition: right 0.75rem center;
   background-repeat: no-repeat;
   background-size: 0.75em 0.75em;
   padding-right: 2.5rem;
@@ -2729,16 +2730,16 @@ td.fc-header-center{
   background-color: rgb(39 49 66 / var(--tw-bg-opacity));
 }
 
-:is(.dark .flatpickr-am-pm),:is(.dark 
-.flatpickr-time input),:is(.dark 
-.numInputWrapper span),:is(.dark 
-.flatpickr-time .flatpickr-time-separator),:is(.dark 
+:is(.dark .flatpickr-am-pm),:is(.dark
+.flatpickr-time input),:is(.dark
+.numInputWrapper span),:is(.dark
+.flatpickr-time .flatpickr-time-separator),:is(.dark
 .flatpickr-current-month){
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-:is(.dark .flatpickr-prev-month svg),:is(.dark 
+:is(.dark .flatpickr-prev-month svg),:is(.dark
 .flatpickr-next-month svg){
   fill: #ffffff;
 }
@@ -6346,13 +6347,6 @@ svg.radial-progress text.percentage {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 
-.\[a-zA-Z0-9\:_\\-\.\]{
-  a-z-a--z0-9: \-.;
-}
-
-.\[a-zA-Z\:_\]{
-  a-z-a--z: ;
-}
 span, a{
   display: inline-block;
 }
@@ -6419,7 +6413,7 @@ h6, .h6 {
   height: 4.5rem;
   border-width: 0px;
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 0 0 / var(--tw-bg-opacity));
   padding-top: 1rem;
   padding-bottom: 1rem;
   padding-left: 1.5rem;
@@ -6434,7 +6428,7 @@ h6, .h6 {
 .sidebar-mobile-toggle{
   line-height: 1;
   --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity));
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .sidebar-toggle .icon{
@@ -6718,7 +6712,7 @@ h6, .h6 {
   border-inline-end-width: 1px;
   border-bottom-width: 1px;
   --tw-border-opacity: 1;
-  border-color: rgb(235 236 239 / var(--tw-border-opacity));
+  border-color: rgb(235 0 0 / var(--tw-border-opacity));
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 14px;
