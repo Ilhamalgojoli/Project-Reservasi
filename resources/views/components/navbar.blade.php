@@ -3,17 +3,12 @@
         <div class="col-auto">
             <div class="flex flex-wrap items-center gap-[16px]">
                 <button type="button" class="sidebar-toggle">
-                    <iconify-icon icon="heroicons:bars-3-solid" class="icon non-active"></iconify-icon>
-                    <iconify-icon icon="iconoir:arrow-right" class="icon active"></iconify-icon>
+                    <iconify-icon icon="heroicons:bars-3-16-solid" class="icon non-active" style="font-size: 35px;"></iconify-icon>
+                    <iconify-icon icon="mingcute:arrow-right-fill" class="icon active" style="font-size: 35px;"></iconify-icon>
                 </button>
                 <button type="button" class="sidebar-mobile-toggle d-flex !leading-[0]">
                     <iconify-icon icon="heroicons:bars-3-solid" class="icon !text-[30px]"></iconify-icon>
                 </button>
-                <form class="navbar-search">
-                    <input type="text" name="search" placeholder="Search">
-                    <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
-                </form>
-
             </div>
         </div>
         <div class="col-auto ">
@@ -26,8 +21,6 @@
                 {{--                        <i class="ri-moon-line"></i>--}}
                 {{--                    </span>--}}
                 {{--                </button>--}}
-
-                <!-- Language Dropdown Start  -->
                 <div class="hidden sm:inline-block">
                     <button data-dropdown-toggle="dropdownInformation" class="has-indicator w-10 h-10 bg-neutral-200 dark:bg-neutral-700 dark:text-white rounded-full flex justify-center items-center" type="button">
                         <img src="{{ asset('assets/images/lang-flag.png') }}" alt="image" class="w-6 h-6 object-cover rounded-full">
