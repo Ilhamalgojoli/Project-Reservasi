@@ -1,33 +1,61 @@
 <aside class="sidebar">
-    <div class="flex items-center justify-center bg-red-600">
-        <a href="#" class="sidebar-logo">
+    <button type="button" class="sidebar-close-btn !mt-4">
+        <iconify-icon icon="radix-icons:cross-2" class="text-neutral-200"></iconify-icon>
+    </button>
+    <div class="bg-red-600">
+        <a href="{{ route('index') }}" class="sidebar-logo background-primary flex items-center justify-center">
             <img src="{{ asset('assets/basila_images/basila_white.png') }}" alt="site logo" class="light-logo"
                  width="120">
+            <img src="{{ asset('assets/basila_images/logo_basila.png') }}" alt="site logo" class="logo-icon" width="30">
         </a>
     </div>
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
-            <li class="dropdown">
-                <a href="javascript:void(0)">
+            <div class="identitas flex flex-col items-center gap-3 my-16">
+                <img src="{{ asset('assets/basila_images/favicon.png') }}"
+                     class="w-20 object-cover mx-auto object-top"
+                     alt="logo basila" id="logo">
+                <div class="flex flex-col items-center w-full gap-2">
+                    <h1 class="uppercase text-xl truncate overflow-hidden whitespace-nowrap max-w-[80%]"
+                        id="sidebar-name">Admin - Ilham</h1>
+                    <h5 class="text-sm font-normal" id="sidebar-nim">607062300081</h5>
+                </div>
+            </div>
+            <li class="mb-4">
+                <a href="#">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
+            </li>
+            <li class="dropdown mb-4">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="mdi:office-building" class="menu-icon"></iconify-icon>
+                    <span>Building Management</span>
+                </a>
                 <ul class="sidebar-submenu">
                     <li>
-                        <a href="{{ route('index') }}"><i
-                                class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> AI</a>
+                        <a href="{{ route('index') }}">
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            Home
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ route('index2') }}"><i
-                                class="ri-circle-fill circle-icon text-warning-600 w-auto"></i> CRM</a>
+                        <a href="{{ route('index2') }}">
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            Reservasi Ruangan
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ route('index3') }}"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i>
-                            eCommerce</a>
+                        <a href="{{ route('index4') }}">
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            Persetujuan Peminjaman
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ route('index4') }}"><i
-                                class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> Cryptocurrency</a>
+                        <a href="{{ route('index6') }}" class="">
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            Pengelolaan Ruangan
+                        </a>
                     </li>
                 </ul>
             </li>
