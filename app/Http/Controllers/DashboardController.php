@@ -9,17 +9,17 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashboard/index');
+        return view('dashboard/home');
     }
 
     public function index2()
     {
-        return view('dashboard/index2');
+        return view('dashboard/reservasi-ruangan');
     }
 
     public function index3()
     {
-        return view('dashboard/index3');
+        return view('dashboard/reservasi');
     }
 
     public function index4()
@@ -51,5 +51,4 @@ class DashboardController extends Controller
     {
         return view('dashboard/index9');
     }
-
 }
