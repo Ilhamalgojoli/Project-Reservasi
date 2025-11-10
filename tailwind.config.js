@@ -6,7 +6,11 @@ export default {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xs': '500px', 
+      },
+    },
   },
   plugins: [
       require("@designbycode/tailwindcss-text-shadow"),
