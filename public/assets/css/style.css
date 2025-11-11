@@ -577,7 +577,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 select:not([size]) {
     background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3e %3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3e %3c/svg%3e");
-    background-p
     osition: right 0.75rem center;
     background-repeat: no-repeat;
     background-size: 0.75em 0.75em;
@@ -7186,6 +7185,7 @@ h6, .h6 {
     background-color: rgb(255 0 0 / var(--tw-bg-opacity));
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
+    font-weight: bold;
 }
 
 .sidebar-menu li.dropdown.open > a:hover, .sidebar-menu li.dropdown.dropdown-open > a:hover {
@@ -7289,6 +7289,7 @@ h6, .h6 {
     --tw-bg-opacity: 1;
     background-color: rgb(255 0 0 / var(--tw-bg-opacity));
     --tw-text-opacity: 1;
+    font-weight: bold;
     color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 

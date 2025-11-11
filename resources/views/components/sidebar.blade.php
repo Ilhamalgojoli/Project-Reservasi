@@ -22,7 +22,7 @@
                 </div>
             </div>
             <li class="mb-4">
-                <a href="#">
+                <a href="https://basila.telkomuniversity.ac.id/basilav2/">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
@@ -42,7 +42,7 @@
                     <li>
                         <a href="{{ route('index2') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
-                            Reservasi Ruangan
+                            Peminjaman Ruangan
                         </a>
                     </li>
                     <li>
