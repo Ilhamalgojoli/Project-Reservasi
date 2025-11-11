@@ -17,10 +17,19 @@
                     <p class="text-[#8B8B8B] text-md">Pastikan data yang dipilih telah sesuai
                         untuk menampilkan data ruangan 😄</p>
                 </div>
-                <div class="grid">
-                    <div class="flex flex-col gap-20">
-                        <div class="flex flex-col flex-1">
-                            <h1 class="text-xl font-normal">Jenis Peminjaman</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                    <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                        <div class="flex flex-col flex-1 gap-5">
+                            <h1 class="text-lg font-normal">Jenis Peminjaman</h1>
+                            <select class="rounded-xl"></select>
+                        </div>
+                        <div class="flex flex-col flex-1 gap-5">
+                            <h1 class="text-lg font-normal">Lantai</h1>
+                            <select class="rounded-xl"></select>
+                        </div>
+                        <div class="flex flex-col flex-1 gap-5">
+                            <h1 class="text-lg font-normal">Ruangan</h1>
+                            <select class="rounded-xl"></select>
                         </div>
                     </div>
                 </div>
