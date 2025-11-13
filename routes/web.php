@@ -28,7 +28,7 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/approve', 'index4')->name('index4');
         Route::get('/index-5','index5')->name('index5');
         Route::get('/pengelolaan-gedung','index6')->name('index6');
-        Route::get('/index-7','index7')->name('index7');
+        Route::get('/pengelolaan-ruang','index7')->name('index7');
         Route::get('/index-8','index8')->name('index8');
         Route::get('/index-9','index9')->name('index9');
     });

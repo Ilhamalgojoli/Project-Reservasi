@@ -29,7 +29,7 @@
     <!-- ..::  scripts  start ::.. -->
     <x-script  script='{!! isset($script) ? $script : "" !!}' />
     <!-- ..::  scripts  end ::.. -->
-
+    
 </body>
 
 </html>
