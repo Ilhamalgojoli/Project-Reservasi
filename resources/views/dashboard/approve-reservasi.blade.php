@@ -1,7 +1,10 @@
 @extends('layout.layout')
 @php
     $title = 'Kelola Persetujuan Peminjaman';
-    $script = ' ';
+    $script = '
+        <script src="' . asset('assets/js/data-table.js') . '" defer></script>
+        <script src="' . asset('assets/js/popup.js') . '" defer></script>   
+    ';
 @endphp
 
 @section('content')
@@ -31,11 +34,16 @@
                     </select>
                 </div>
             </div>
-            <button class="bg-[#FF0000] px-12 rounded-lg sm:py-2 py-2 font-bold text-xl">Filter</button>
+            <button
+                class=
+                "bg-[#FF0000] px-12 rounded-lg 
+                transition-all duration-300 hover:scale-105 sm:py-2 py-2 font-bold text-xl">
+                Filter
+            </button>
         </section>
         <section class="col-span-12 rounded-2xl bg-white shadow-lg p-8">
             <div class="overflow-x-auto">
-                <table id="selection-table-1" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
+                <table id="selection-table-2" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
                     <thead>
                         <tr>
                             <th scope="col">Gedung</th>
@@ -47,7 +55,7 @@
                             <th scope="col" class="text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="text-[#6d6d6d]">
+                    <tbody>
                         <tr>
                             <td>GKU</td>
                             <td>GKU.07.13</td>
@@ -57,13 +65,16 @@
                             <td class="text-center">Koordinasi Proyek</td>
                             <td class="text-center">
                                 <div class="flex flex-row gap-2 items-center justify-center">
-                                    <button class="bg-[#5ADF53] px-2 py-2 rounded-full">
+                                    <button onclick="confirmButton()"
+                                        class="bg-[#5ADF53] px-2 py-2 rounded-full transition-all duration-300 hover:scale-105">
                                         <img src="{{ asset('assets/icon/approve.png') }}" class="w-5 h-5" />
                                     </button>
-                                    <button class="bg-[#FF0000] px-2 py-2 rounded-full ">
+                                    <button id="btn-reject"
+                                        class="bg-[#FF0000] px-2 py-2 rounded-full transition-all duration-300 hover:scale-105">
                                         <img src="{{ asset('assets/icon/reject.png') }}" class="w-5 h-5" />
                                     </button>
-                                    <button class="bg-[#19ACF5] px-2 py-2 rounded-full ">
+                                    <button
+                                        class="bg-[#19ACF5] px-2 py-2 rounded-full transition-all duration-300 hover:scale-105">
                                         <img src="{{ asset('assets/icon/eyes.png') }}" class="w-5 h-5" />
                                     </button>
                                 </div>
@@ -78,13 +89,16 @@
                             <td class="text-center">Organisasi</td>
                             <td class="text-center">
                                 <div class="flex flex-row gap-2 items-center justify-center">
-                                    <button class="bg-[#5ADF53] px-2 py-2 rounded-full">
+                                    <button onclick="confirmButton()"
+                                        class="bg-[#5ADF53] px-2 py-2 rounded-full transition-all duration-300 hover:scale-105">
                                         <img src="{{ asset('assets/icon/approve.png') }}" class="w-5 h-5" />
                                     </button>
-                                    <button class="bg-[#FF0000] px-2 py-2 rounded-full ">
+                                    <button id="btn-reject"
+                                        class="bg-[#FF0000] px-2 py-2 rounded-full transition-all duration-300 hover:scale-105">
                                         <img src="{{ asset('assets/icon/reject.png') }}" class="w-5 h-5" />
                                     </button>
-                                    <button class="bg-[#19ACF5] px-2 py-2 rounded-full ">
+                                    <button
+                                        class="bg-[#19ACF5] px-2 py-2 rounded-full transition-all duration-300 hover:scale-105">
                                         <img src="{{ asset('assets/icon/eyes.png') }}" class="w-5 h-5" />
                                     </button>
                                 </div>
@@ -94,5 +108,50 @@
                 </table>
             </div>
         </section>
+
+        <!-- Pop Up -->
+        <section id="pop-up-reject"
+            class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative space-y-8">
+                <h1 class="text-2xl font-bold text-center">Tolak Peminjaman</h1>
+                <div class="flex flex-col gap-5">
+                    <label class="text-xl text-black">Alasan</label>
+                    <textarea class="rounded-lg p-8 border border-gray-300 w-full text-black"></textarea>
+                </div>
+                <div class="flex flex-row gap-5 justify-end">
+                    <button id="cls-btn-reject" class="w-auto text-white bg-[gray] px-5 py-2 rounded-xl">
+                        Batal
+                    </button>
+                    <button class="w-auto text-white bg-[red] px-5 py-2 rounded-xl">
+                        Tolak
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
+    <script>
+        function confirmButton() {
+            Swal.fire({
+                title: "Yakin akan menyetujui?",
+                text: "Anda tidak akan dapat mengembalikan ini!",
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Batal",
+                confirmButtonText: "Menyetujui",
+                buttonsStyling: false, 
+                customClass: {
+                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-5 rounded-lg',
+                    cancelButton: 'bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-5 rounded-lg ml-2',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+    </script>
 @endsection
