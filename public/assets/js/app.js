@@ -77,54 +77,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-  document.documentElement.classList.add('light');
-} else {
-  document.documentElement.classList.remove('light')
-}
+// // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+// if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+//   document.documentElement.classList.add('light');
+// } else {
+//   document.documentElement.classList.remove('light')
+// }
 
-// light dark version js
-var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+// // light dark version js
+// var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+// var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-// Change the icons inside the button based on previous settings
-if(themeToggleDarkIcon || themeToggleLightIcon){
-    if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-      themeToggleLightIcon.classList.remove('hidden');
-  } else {
-      themeToggleDarkIcon.classList.remove('hidden');
-  }
-}
+// // Change the icons inside the button based on previous settings
+// if(themeToggleDarkIcon || themeToggleLightIcon){
+//     if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+//       themeToggleLightIcon.classList.remove('hidden');
+//   } else {
+//       themeToggleDarkIcon.classList.remove('hidden');
+//   }
+// }
 
-var themeToggleBtn = document.getElementById('theme-toggle');
+// var themeToggleBtn = document.getElementById('theme-toggle');
 
-if(themeToggleDarkIcon || themeToggleLightIcon || themeToggleBtn){
-  themeToggleBtn.addEventListener('click', function() {
+// if(themeToggleDarkIcon || themeToggleLightIcon || themeToggleBtn){
+//   themeToggleBtn.addEventListener('click', function() {
 
-    // toggle icons inside button
-    themeToggleDarkIcon.classList.toggle('hidden');
-    themeToggleLightIcon.classList.toggle('hidden');
+//     // toggle icons inside button
+//     themeToggleDarkIcon.classList.toggle('hidden');
+//     themeToggleLightIcon.classList.toggle('hidden');
 
-    // if set via local storage previously
-    if (localStorage.getItem('color-theme')) {
-        if (localStorage.getItem('color-theme') === 'light') {
-            document.documentElement.classList.add('light');
-            localStorage.setItem('color-theme', 'light');
-        } else {
-            document.documentElement.classList.remove('light');
-            localStorage.setItem('color-theme', 'light');
-        }
+//     // if set via local storage previously
+//     if (localStorage.getItem('color-theme')) {
+//         if (localStorage.getItem('color-theme') === 'light') {
+//             document.documentElement.classList.add('light');
+//             localStorage.setItem('color-theme', 'light');
+//         } else {
+//             document.documentElement.classList.remove('light');
+//             localStorage.setItem('color-theme', 'light');
+//         }
 
-    // if NOT set via local storage previously
-    } else {
-        if (document.documentElement.classList.contains('light')) {
-            document.documentElement.classList.remove('light');
-            localStorage.setItem('color-theme', 'light');
-        } else {
-            document.documentElement.classList.add('light');
-            localStorage.setItem('color-theme', 'light');
-        }
-    }
-});
-}
+//     // if NOT set via local storage previously
+//     } else {
+//         if (document.documentElement.classList.contains('light')) {
+//             document.documentElement.classList.remove('light');
+//             localStorage.setItem('color-theme', 'light');
+//         } else {
+//             document.documentElement.classList.add('light');
+//             localStorage.setItem('color-theme', 'light');
+//         }
+//     }
+// });
+// }
