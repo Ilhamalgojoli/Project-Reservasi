@@ -10,7 +10,7 @@ export default {
       screens: {
         'sm': {
           'max' : '766px',
-          'min' : '460px'
+          'min' : '360px'
         }, 
       },
     },

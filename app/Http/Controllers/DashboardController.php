@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
     public function index3()
     {
-        return view('dashboard/reservasi');
+        return view('dashboard/peminjaman-ruangan');
     }
 
     public function index4()
@@ -34,12 +34,12 @@ class DashboardController extends Controller
 
     public function index6()
     {
-        return view('dashboard/kelola-ruang');
+        return view('dashboard/pilih-gedung');
     }
 
     public function index7()
     {
-        return view('dashboard/index7');
+        return view('dashboard/kelola-ruang');
     }
 
     public function index8()

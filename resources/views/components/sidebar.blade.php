@@ -40,6 +40,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('index6') }}" class="">
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            Pengelolaan Ruangan
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('index2') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
                             Peminjaman Ruangan
@@ -52,9 +58,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('index6') }}" class="">
+                        <a href="{{ route('index8') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
-                            Pengelolaan Ruangan
+                            List Gedung
                         </a>
                     </li>
                 </ul>

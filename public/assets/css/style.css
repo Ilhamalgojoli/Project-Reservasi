@@ -267,6 +267,7 @@ figure,
 p,
 pre {
     margin: 0;
+    color: black;
 }
 
 fieldset {

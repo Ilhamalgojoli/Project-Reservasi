@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function initTable(tableId) {
         const tableEl = document.getElementById(tableId);
         if (!tableEl) return null;
-
+        
         const table = new simpleDatatables.DataTable(`#${tableId}`, {
             perPageSelect: false,
+            searchable : true,
             columns: [
                 { select: [0, 6], sortable: false }
             ],
@@ -25,10 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // const search = wrapper?.querySelector('.dataTable-search');
+
         return table;
     }
 
     const selectionTable1 = initTable("selection-table-1");
     const selectionTable2 = initTable("selection-table-2");
+    const selectionTable3 = initTable("selection-table-3");
     const popupTable = initTable("popup-table");
 });
