@@ -28,6 +28,7 @@
                         <option value="Non-Akademik">Non Akademik</option>
                     </select>
                 </div>
+    
                 <!-- Akademik -->
                 <div class="space-y-5" id="Akademik">
                     <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
