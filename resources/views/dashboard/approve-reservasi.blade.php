@@ -17,21 +17,27 @@
                 <div class="w-50 border"></div>
                 <p class="text-[#BDBDBD]">Filter data peminjaman ruangan</p>
             </div>
-            <div class="flex flex-row gap-6 sm:flex-col md:flex-col lg:flex-row mb-4 text-black">
-                <div class="flex flex-col gap-2">
-                    <h1 class="text-lg font-light">Jenis Peminjaman</h1>
-                    <select class="rounded-xl w-[550px] sm:w-auto">
-                        <option value="" disabled selected>Pilih Jenis Peminjaman</option>
-                        <option value="akademik">Akademik</option>
-                        <option value="non-akademik">Non Akademik</option>
-                    </select>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <h1 class="text-lg font-light">Gedung</h1>
-                    <select class="rounded-xl w-[550px] sm:w-auto">
-                        <option value="" disabled selected>Pilih Gedung</option>
-                        <option value="akademik">GKU</option>
-                    </select>
+            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10 mb-5">
+                <div class="">
+                    <div class="flex flex-row gap-10 sm:gap-4 sm:flex-col md:flex-col lg:flex-row">
+                        <select
+                            class="rounded-xl flex-1 text-[#808080] py-2 px-3 appearance-none 
+                            bg-transparent border border-[#808080] border-opacity-50">
+                            <option value="" disabled selected>Jenis Peminjaman</option>
+                            <option value="akademik">Akademik</option>
+                            <option value="non-akademik">Non Akademik</option>
+                        </select>
+                        <select
+                            class="rounded-xl flex-1 text-[#808080] py-2 px-3 appearance-none 
+                            bg-transparent border border-[#808080] border-opacity-50">
+                            <option value="" disabled selected>Gedung</option>
+                            <option value="akademik">GKU</option>
+                            <option value="non-akademik">FIT</option>
+                        </select>
+                    </div>
+                    <div>
+
+                    </div>
                 </div>
             </div>
             <button
@@ -138,7 +144,7 @@
                 showCancelButton: true,
                 cancelButtonText: "Batal",
                 confirmButtonText: "Menyetujui",
-                buttonsStyling: false, 
+                buttonsStyling: false,
                 customClass: {
                     confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-5 rounded-lg',
                     cancelButton: 'bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-5 rounded-lg ml-2',

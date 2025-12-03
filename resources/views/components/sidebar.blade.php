@@ -2,7 +2,7 @@
     <button type="button" class="sidebar-close-btn !mt-6">
         <iconify-icon icon="radix-icons:cross-2" class="text-neutral-200"></iconify-icon>
     </button>
-    <div class="bg-red-600">
+    <div class="bg-[#FF0101]">
         <a href="{{ route('index') }}" class="sidebar-logo background-primary flex items-center justify-center">
             <img src="{{ asset('assets/basila_images/basila_white.png') }}" alt="site logo" class="light-logo"
                  width="120">
