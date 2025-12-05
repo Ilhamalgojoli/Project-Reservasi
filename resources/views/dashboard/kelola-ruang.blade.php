@@ -3,7 +3,7 @@
     $title = 'Kelola Ruang';
     $script = '
         <script src="' . asset('assets/js/data-table.js') . '" defer></script>
-        <script src="' . asset('assets/js/popup.js') . '" defer></script>    
+        <script src="' . asset('assets/js/popup.js') . '" defer></script>
     ';
 @endphp
 
@@ -21,33 +21,39 @@
                         untuk menampilkan data ruangan 😄</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10 mb-5">
+                <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10 mb-8">
                     <div class="flex flex-row gap-10 sm:gap-4 sm:flex-col md:flex-col lg:flex-row">
-                        <div class="flex flex-col flex-1 gap-5">
-                            <h1 class="text-lg font-normal">Lantai</h1>
-                            <select class="rounded-xl"></select>
-                        </div>
-                        <div class="flex flex-col flex-1 gap-5">
-                            <h1 class="text-lg font-normal">Ruangan</h1>
-                            <select class="rounded-xl"></select>
-                        </div>
+                        <select
+                            class="rounded-md flex-1 text-[#000000] py-2 px-3 appearance-none
+                            bg-transparent border border-[#808080] border-opacity-50">
+                            <option value="" disabled selected>Lantai</option>
+                            <option value="akademik">GKU.04</option>
+                            <option value="non-akademik">FIT.02</option>
+                        </select>
+                        <select
+                            class="rounded-md flex-1 text-[#000000] py-2 px-3 appearance-none
+                            bg-transparent border border-[#808080] border-opacity-50">
+                            <option value="" disabled selected>Ruangan</option>
+                            <option value="akademik">GKU.04.14</option>
+                            <option value="non-akademik">FIT.02.15</option>
+                        </select>
                     </div>
                 </div>
 
                 <div>
-                    <button class="bg-[#ff0000ce] rounded-lg px-5 py-2">
+                    <button class="bg-[#ff0000ce] rounded-lg w-[150px] py-2 text-xl font-extrabold">
                         Filter
                     </button>
                 </div>
             </div>
             <div class="col-span-1 md:col-span-2 bg-white shadow-lg p-5 rounded-xl">
                 <div class="flex flex-col gap-2 pb-8 mb-8">
-                    <h1 class="font-bold text-2xl">Tambah Ruangan</h1>
+                    <p class="text-2xl font-extrabold">Tambah Ruangan</h1>
                     <div class="w-50 border"></div>
                     <p class="text-[#8B8B8B] text-md">Tambah ruang sesuai Gedung yang dipilih 😋</p>
                 </div>
                 <div class="flex items-center justify-center">
-                    <button id="btn-tambah-ruang" class="bg-[#ff0000ce] rounded-lg px-5 py-2">
+                    <button id="btn-tambah-ruang" class="bg-[#ff0000ce] rounded-lg px-5 py-2 font-extrabold">
                         Tambah Ruangan +
                     </button>
                 </div>
@@ -88,55 +94,51 @@
             </div>
         </section>
 
-        <!-- Pop Up 1 -->
+        <!-- Pop Up Edit -->
         <section id="pop-up" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative">
+            <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative w-[900px]">
                 <div class="flex flex-row justify-between mb-10">
                     <p></p>
-                    <h1 class="text-2xl font-bold">Edit Ruangan</h1>
+                    <h1 class="text-2xl font-bold">Edit Fasilitas Ruangan</h1>
                     <button id="cls-btn">
                         <img src="{{ asset('assets/icon/cross.svg') }}" class="" />
                     </button>
                 </div>
-                <div class="flex flex-row gap-10 mb-5 sm:flex-col">
-                    <div class="flex flex-col  gap-5">
-                        <div class="flex flex-col">
-                            <label class="text-black">Ac</label>
-                            <input type="text" class="rounded-lg" />
+                <div class="flex flex-col sm:flex-col gap-5">
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-2xl">Ruangan</h1>
+                            <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <div class="flex flex-col">
-                            <label class="text-black">Meja</label>
-                            <input type="text" class="rounded-lg" />
-                        </div>
+                        <select
+                            class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
+                            <option value="" disabled selected>Status</option>
+                            <option value="akademik">Aktif</option>
+                            <option value="non-akademik">Tidak Aktif</option>
+                        </select>
                     </div>
                     <div class="flex flex-col gap-5">
-                        <div class="flex flex-col">
-                            <label class="text-black">Kursi</label>
-                            <input type="text" class="rounded-lg" />
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-2xl">Fasilitas</h1>
+                            <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <div class="flex flex-col">
-                            <label class="text-black">Proyektor</label>
-                            <input type="text" class="rounded-lg" />
-                        </div>
+                        <textarea
+                            class="rounded-lg py-2 px-3 h-24 border border-[#808080]
+                            border-opacity-50 text-black"
+                            placeholder="Fasilitas"></textarea>
                     </div>
-                </div>
-                <div class="flex flex-col gap-10">
-                    <select class="rounded-xl w-[508px] sm:w-auto text-black">
-                        <option value="" disabled selected>Status</option>
-                        <option value="akademik">Aktif</option>
-                        <option value="non-akademik">Tidak Aktif</option>
-                    </select>
-                    <button class="w-[508px] text-white bg-[red] py-2 rounded-xl">
-                        submit
+                    <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
+                        Submit
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Pop Up 2 -->
+        <!-- Pop Up Tambah -->
         <section id="pop-up-ruangan"
             class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative">
+            <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative w-[900px]">
                 <div class="flex flex-row justify-between mb-10">
                     <p></p>
                     <h1 class="text-2xl font-bold">Tambah Ruangan</h1>
@@ -144,43 +146,43 @@
                         <img src="{{ asset('assets/icon/cross.svg') }}" class="" />
                     </button>
                 </div>
-                <div class="flex flex-col gap-10 mb-5 sm:flex-col">
-                    <div class="flex flex-col">
-                        <label class="text-black">Kode Ruangan</label>
-                        <input type="text" class="rounded-lg" />
-                    </div>
-                    <div class="flex flex-row gap-10 mb-5 sm:flex-col">
-                        <div class="flex flex-col  gap-5">
-                            <div class="flex flex-col">
-                                <label class="text-black">Ac</label>
-                                <input type="text" class="rounded-lg" />
-                            </div>
-                            <div class="flex flex-col">
-                                <label class="text-black">Meja</label>
-                                <input type="text" class="rounded-lg" />
-                            </div>
+                <div class="flex flex-col sm:flex-col gap-5">
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-2xl">Ruangan</h1>
+                            <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <div class="flex flex-col gap-5">
-                            <div class="flex flex-col">
-                                <label class="text-black">Kursi</label>
-                                <input type="text" class="rounded-lg" />
-                            </div>
-                            <div class="flex flex-col">
-                                <label class="text-black">Proyektor</label>
-                                <input type="text" class="rounded-lg" />
-                            </div>
+                        <div class="flex flex-row gap-5">
+                            <input type="text"
+                                class="rounded-lg flex-1 py-2 px-3 border
+                              border-[#808080] border-opacity-50"
+                                placeholder="Lantai" />
+                            <input type="text"
+                                class="rounded-lg flex-1 py-2 px-3 border
+                              border-[#808080] border-opacity-50"
+                                placeholder="Kode Ruangan" />
                         </div>
-                    </div>
-                    <div class="flex flex-col gap-10">
-                        <select class="rounded-xl w-[508px] sm:w-auto text-black">
+                        <select
+                            class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
                             <option value="" disabled selected>Status</option>
                             <option value="akademik">Aktif</option>
                             <option value="non-akademik">Tidak Aktif</option>
                         </select>
-                        <button class="w-auto text-white bg-[red] py-2 rounded-xl">
-                            submit
-                        </button>
                     </div>
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-2xl">Fasilitas</h1>
+                            <div class="w-50 border border-dashed border-black border-opacity-25"></div>
+                        </div>
+                        <textarea
+                            class="rounded-lg py-2 px-3 h-24 border border-[#808080]
+                            border-opacity-50 text-black"
+                            placeholder="Fasilitas"></textarea>
+                    </div>
+                    <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
+                        Submit
+                    </button>
                 </div>
         </section>
     </main>
