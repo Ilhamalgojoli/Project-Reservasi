@@ -1,7 +1,9 @@
 @extends('layout.layout')
 @php
     $title = 'Reservasi Ruangan';
-    $script = '';
+    $script = '
+        <script src="' . asset('assets/js/hover-card.js') . '" defer></script>
+    ';
 @endphp
 
 @section('content')
@@ -48,6 +50,6 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 @endsection
