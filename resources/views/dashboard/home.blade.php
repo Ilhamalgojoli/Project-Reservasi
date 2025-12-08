@@ -4,8 +4,7 @@
     $title = 'Dashboard';
     $script = '
          <script src="' . asset('assets/js/data-table.js') . '" defer></script>
-         <script src="' . asset('assets/js/columnChartPageChart.js') . '"></script>
-         <script src="' . asset('assets/js/pieChartPageChart.js') . '"></script>
+         <script src="' . asset('assets/js/basilaChart.js') . '"></script>
          <script src="' . asset('assets/js/switch-buttton.js') . '"></script>
     ';
 @endphp
@@ -51,13 +50,10 @@
                     </div>
                 </div>
                 <h1 class="text-2xl text-center">Penggunaan Ruang Gedung Telkom University</h1>
-                <div class="grid grid-cols-12 md:grid-cols-2 gap-6 text-black">
-                    <div class="card col-span-12 h-full p-0 border-0 overflow-hidden">
-                        <div class="card-body p-6">
-                            <div id="columnChart" class=""></div>
-                        </div>
-                    </div>
+                <div class="overflow-x-auto">
+                    <div id="columnChart" class="overflow-x-auto min-w-[800px]"></div>
                 </div>
+
             </div>
             <div class="lg:col-span-4 md:col-span-12 sm:col-span-12 space-y-5 ">
                 <div class="bg-white p-5 rounded-[25px] space-y-5 shadow-xl">
@@ -124,12 +120,10 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bg-white p-5 rounded-[25px] shadow-xl">
+                <div class="bg-white p-5 rounded-[25px] shadow-xl justify-center flex flex-col gap-5 sm:items-center">
                     <h1 class="text-2xl font-bold flex justify-end">Ruangan yang sedang diperbaiki</h1>
 
-                    <div class="card-body p-6 text-center">
-                        <div class="pieChart flex justify-center apexcharts-tooltip-z-none"></div>
-                    </div>
+                    <div id="userOverviewDonutChart" class="apexcharts-tooltip-z-none w-fit"></div>
                 </div>
             </div>
         </section>
@@ -139,19 +133,11 @@
                     <div class="bg-[#E35258] p-2 rounded-lg w-fit">
                         <p class="text-white font-bold">Okkupansi</p>
                     </div>
-                    <div class="flex flex-row gap-5 min-w-[250px] overflow-x-auto">
-                        <div class="p-6 text-center">
-                            <div class="pieChart flex justify-center apexcharts-tooltip-z-none"></div>
-                        </div>
-                        <div class="p-6 text-center">
-                            <div class="pieChart flex justify-center apexcharts-tooltip-z-none"></div>
-                        </div>
-                        <div class="p-6 text-center">
-                            <div class="pieChart flex justify-center apexcharts-tooltip-z-none"></div>
-                        </div>
-                        <div class="p-6 text-center">
-                            <div class="pieChart flex justify-center apexcharts-tooltip-z-none"></div>
-                        </div>
+                    <div class="flex flex-row gap-5 overflow-x-auto">
+                        <div class="pieChart min-w-[250px] flex justify-center"></div>
+                        <div class="pieChart min-w-[250px] flex justify-center"></div>
+                        <div class="pieChart min-w-[250px] flex justify-center"></div>
+                        <div class="pieChart min-w-[250px] flex justify-center"></div>
                     </div>
                 </div>
             </div>
