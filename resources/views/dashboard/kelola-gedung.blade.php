@@ -8,14 +8,15 @@
 @endphp
 
 @section('content')
-    <div class="flex flex-row mb-5 justify-between">
+    <div class="flex flex-row mb-5 justify-between sm:gap-5">
         <h1 class="font-bold text-2xl">{{ $title }}</h1>
         <button id="btn-gedung"
             class="
-            bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all
-            duration-300 hover:scale-105 flex justify-center items-center gap-2">
-            <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
-            <span class="font-extrabold mt-1">Tambah Gedung</span>
+            bg-[#FF0101] rounded-lg px-5 py-2 sm:px-1 sm:py-1 font-extrabold transition-all
+            duration-300 hover:scale-105 flex justify-center items-center gap-2
+            ">
+            <iconify-icon icon="mingcute:plus-fill" class="text-2xl sm:text-sm"></iconify-icon>
+            <span class="font-extrabold mt-1 sm:text-sm">Tambah Gedung</span>
         </button>
     </div>
 
@@ -30,15 +31,17 @@
 
                         <img src="{{ asset('assets/basila_images/gambar-gedung.png') }}"
                             class="w-full h-full object-cover rounded-lg" />
-                        <div class="overlay absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg z-20 hidden"
-                            ></div>
+                        <div
+                            class="overlay absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg z-20 lg:hidden">
+                        </div>
 
-                        <div class="button-kelola absolute top-[110px] left-[150px] z-30 hidden">
-                            <a id="btn-gedung" href="{{ route("index7") }}"
+                        <div
+                            class="button-kelola absolute top-[110px] lg:left-[150px] sm:left-[80px] md:left-[100px] z-20 sm:z-0 md:z-0 lg:hidden">
+                            <a id="btn-gedung" href="{{ route('index3') }}"
                                 class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all cursor-pointer
-                                duration-300 hover:scale-105 flex justify-center items-center gap-2 mx-auto text-white">
+                                duration-300 sm:scale-85 hover:scale-105 flex justify-center items-center gap-2 mx-auto text-white">
                                 <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
-                                <span class="font-extrabold mt-1">Tambah Gedung</span>
+                                <span class="font-extrabold mt-1">Pinjam Ruangan</span>
                             </a>
                         </div>
                     </div>
@@ -59,13 +62,15 @@
                     </div>
                 </div>
                 <div class="flex flex-row gap-4">
-                    <div class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
+                    <div
+                        class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
                         flex flex-col justify-center items-center">
                         <h1 class="text-white text-2xl">30</h1>
                         <p class="text-white font-bold text-sm">Jumlah</p>
                         <p class="text-white font-bold text-sm">Ruangan</p>
                     </div>
-                    <div class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
+                    <div
+                        class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
                         flex flex-col justify-center items-center">
                         <h1 class="text-white text-2xl">30</h1>
                         <p class="text-white font-bold text-sm">Jumlah</p>
@@ -79,7 +84,8 @@
 
     <!-- Pop Up -->
     <section id="pop-up-gedung" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl shadow-lg
+        <div
+            class="bg-white p-6 rounded-xl shadow-lg
                 overflow-y-auto relative flex-col w-[900px] sm:w-[80%] md:w-[600px] lg:w-[700px]">
             <div class="flex flex-row justify-between mb-10">
                 <h1 class="text-2xl font-bold">Tambah Gedung</h1>
@@ -90,7 +96,8 @@
 
             <div class="flex sm:flex-col md:flex-col lg:flex-col gap-5 w-full">
                 <div class="flex flex-col gap-3">
-                    <label for="gambar" class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer">
+                    <label for="gambar"
+                        class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer">
                         Klik untuk menambahkan gambar
                     </label>
 
