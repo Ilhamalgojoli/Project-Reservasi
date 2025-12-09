@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const btnKelola = card.querySelector(".button-kelola");
 
         card.addEventListener("mouseover", () => {
-            overlay.classList.remove("hidden");
-            btnKelola.classList.remove("hidden");
+            overlay.classList.remove("lg:hidden");
+            btnKelola.classList.remove("lg:hidden");
         });
 
         card.addEventListener("mouseout", () => {
-            overlay.classList.add("hidden");
-            btnKelola.classList.add("hidden");
+            overlay.classList.add("lg:hidden");
+            btnKelola.classList.add("lg:hidden");
         });
     });
 });
