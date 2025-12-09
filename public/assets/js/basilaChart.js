@@ -1,13 +1,21 @@
 // ================================ Users Overview Donut chart Start ================================
 var options = {
     series: [500, 500, 500],
-    colors: ['#FF9F29', '#487FFF', '#E4F1FF'],
-    labels: ['Active', 'New', 'Total'],
+    colors: ['#D31E26', '#6175C1', '#FF9F29'],
+    labels: ['Perbaikan', 'Sedang Perbaikan', 'Selesai'],
     legend: {
-        show: false
+        show: true,
+        position: 'right',
+        horizontalAlign: 'center',
+        markers: {
+            width: 14,
+            height: 14,
+            radius: 2
+        }
     },
     chart: {
         type: 'donut',
+        width: 450,
         height: 270,
         sparkline: {
             enabled: true // Remove whitespace
@@ -32,10 +40,10 @@ var options = {
         enabled: false
     },
     responsive: [{
-        breakpoint: 250,
+        breakpoint: 480,
         options: {
             chart: {
-                width: 200
+                width: 500
             },
             legend: {
                 position: 'bottom'
@@ -49,16 +57,18 @@ chart.render();
 
 // ============================ Pie Chart Start ==========================
 var options = {
-    series: [70, 80, 90, 30],
+    series: [180, 58],
     chart: {
         height: 264,
         type: 'pie',
     },
     stroke: {
-        show: false // This will remove the white border
+        show: true, // This will remove the white border
+        width: 1,
+        colors: '#EDEDED'
     },
-    labels: ['Team A', 'Team B', 'Team C'],
-    colors: ['#487FFF', "#FF9F29", '#45B369', '#EF4A00'],
+    labels: ['Terpakai', 'Tidak Terpakai'],
+    colors: ['#E97132', "#00529F"],
     plotOptions: {
         pie: {
             dataLabels: {
@@ -70,13 +80,18 @@ var options = {
     },
     legend: {
         position: 'bottom',
-        horizontalAlign: 'center' // Align the legend horizontally
+        horizontalAlign: 'center', // Align the legend horizontally
+        markers: {
+            width: 14,
+            height: 14,
+            radius: 2
+        }
     },
     responsive: [{
         breakpoint: 250,
         options: {
             chart: {
-                width: 200
+                width: 480
             },
             legend: {
                 show: false,
@@ -98,24 +113,26 @@ document.querySelectorAll(".pieChart").forEach((element) => {
 var options = {
     series: [
         {
-            name: 'Net Profit',
-            data: [20000, 16000, 14000, 25000, 45000, 18000, 28000, 11000, 26000, 48000, 18000, 22000]
-        }, {
-            name: 'Revenue',
-            data: [15000, 18000, 19000, 20000, 35000, 20000, 18000, 13000, 18000, 38000, 14000, 16000]
-        }, {
-            name: 'Total',
-            data: [15000, 18000, 19000, 20000, 35000, 20000, 18000, 13000, 18000, 38000, 14000, 16000]
+            name: 'Total Waiting',
+            data: [2, 4, 3, 5]
+        },
+        {
+            name: 'Total Terpakai',
+            data: [3.5, 2.5, 4, 1]
+        },
+        {
+            name: 'Total Tersedia',
+            data: [4, 5, 3, 2]
         }
     ],
-    colors: ['#487FFF', '#FF9F29',],
+    colors: ['#E09E3C', '#E35258', '#1BBA9A'],
     labels: ['Active', 'New', 'Total'],
     legend: {
         show: false
     },
     chart: {
         type: 'bar',
-        height: 454,
+        height: 520,
         toolbar: {
             show: false
         },
@@ -135,28 +152,41 @@ var options = {
     dataLabels: {
         enabled: false
     },
+    legend: {
+        position: 'bottom',
+        horizontalAlign: 'center', // Align the legend horizontally
+        markers: {
+            width: 14,
+            height: 14,
+            radius: 2
+        },
+        itemMargin: {
+            horizontal: 15,
+            vertical: 25
+        }
+    },
     stroke: {
         show: true,
         width: 2,
         colors: ['transparent']
     },
     xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        categories: ['Gedung 1', 'Gedung 2', 'Gedung 3', 'Gedung 4',],
     },
     yaxis: {
-        categories: ['0', '5000', '10,000', '20,000', '30,000', '50,000', '60,000', '60,000', '70,000', '80,000', '90,000', '100,000'],
+        categories: ['0', '1', '2', '3', '4', '5',]
     },
     yaxis: {
         labels: {
             formatter: function (value) {
-                return (value / 1000).toFixed(0) + 'k';
+                return value.toFixed(0);
             }
         }
     },
     tooltip: {
         y: {
             formatter: function (value) {
-                return value / 1000 + 'k';
+                return value.toFixed(1);
             }
         }
     },
