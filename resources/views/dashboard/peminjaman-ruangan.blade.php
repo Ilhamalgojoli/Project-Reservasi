@@ -20,23 +20,47 @@
                         untuk menampilkan data ruangan 😄</p>
                 </div>
 
+                <div class="flex flex-row gap-5 md:flex-row sm:flex-col">
+                    <select
+                        class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                        bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                        <option value="" disabled selected>Fakultas / Direktorat</option>
+                        <option value="akademik">Akademik</option>
+                        <option value="non-akademik">Non Akademik</option>
+                    </select>
+                    <select
+                        class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                        bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                        <option value="" disabled selected>Prodi</option>
+                        <option value="akademik">Akademik</option>
+                        <option value="non-akademik">Non Akademik</option>
+                    </select>
+                </div>
+
                 <div class="flex flex-col flex-1 gap-5">
-                    <h1 class="text-lg font-normal">Jenis Peminjaman</h1>
-                    <select id="opsi-peminjaman" class="rounded-xl lg:w-[730px] sm:w-auto md:w-auto text-black">
+                    <select id="opsi-peminjaman"
+                        class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                        bg-transparent border border-[#808080] border-opacity-50 font-bold">
                         <option value="" disabled selected>Pilih Jenis Peminjaman</option>
                         <option value="Akademik">Akademik</option>
                         <option value="Non-Akademik">Non Akademik</option>
                     </select>
                 </div>
-    
+
+                <div>
+                    <p class="text-xl font-bold" id="value">Akademik</p>
+                    <div class="border border-black border-opacity-50"></div>
+                </div>
+
                 <!-- Akademik -->
                 <div class="space-y-5" id="Akademik">
                     <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
                         <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Lantai</h1>
-                                <select class="rounded-xl text-black">
-                                    <option disabled selected>Pilih Ruangan</option>
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Lantai</option>
                                     <option value="GKU.07.01">GKU.01</option>
                                     <option value="GKU.07.02">GKU.02</option>
                                     <option value="GKU.07.03">GKU.03</option>
@@ -44,9 +68,10 @@
                                 </select>
                             </div>
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Ruangan</h1>
-                                <select class="rounded-xl text-black">
-                                    <option disabled selected>Pilih Ruangan</option>
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Ruangan</option>
                                     <option value="GKU.07.01">GKU.07.01</option>
                                     <option value="GKU.07.02">GKU.07.02</option>
                                     <option value="GKU.07.03">GKU.07.03</option>
@@ -59,18 +84,39 @@
                     <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
                         <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Peminjaman</h1>
-                                <select class="rounded-xl text-black">
-                                    <option disabled selected>Target peminjaman</option>
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Kode Mata Kuliah</option>
                                     <option value="">Fakultas</option>
                                     <option value="">Prodi</option>
                                     <option value="">Pribadi</option>
                                 </select>
                             </div>
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="date"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
+                                    border-opacity-50 font-bold appearance-none"
+                                    style="
+                                        appearance:none;
+                                        -webkit-appearance:none;
+                                        -moz-appearance:none;
+                                    "
+                                    placeholder="Tanggal" />
+                                <iconify-icon icon="solar:calendar-linear"
+                                    onclick="this.previousElementSibling.showPicker()"
+                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Penjadwalan</h1>
-                                <select class="rounded-xl text-black">
-                                    <option disabled selected>Pilih Jadwal</option>
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Jadwal</option>
                                     <option value="08.00 - 08.50">08.00 - 08.50</option>
                                     <option value="08.50 - 09.40">08.50 - 09.40</option>
                                     <option value="09.40 - 10.30">09.40 - 10.30</option>
@@ -78,18 +124,23 @@
                                     <option value="11.20 - 12.10">11.20 - 12.10</option>
                                 </select>
                             </div>
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="text"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                    border-opacity-50 font-bold"
+                                    placeholder="Kapasitas" />
+                                <iconify-icon icon="mdi:people-outline"
+                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                            </div>
                         </div>
                     </div>
 
                     <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
                         <div class="flex flex-col flex-1 gap-5">
-                            <h1 class="text-lg font-normal">Kapasitas</h1>
-                            <input class="py-2 rounded-xl border-[#ebebeb] lg:w-auto sm:w-auto md:auto"
-                                placeholder="Max Room 35, Example" type="text" />
-                        </div>
-                        <div class="flex flex-col flex-1 gap-5">
-                            <h1 class="text-lg font-normal">Catatan / Alasan</h1>
-                            <textarea class="rounded-xl w-auto"></textarea>
+                            <textarea
+                                class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
+                                border-opacity-50"
+                                placeholder="Deskripsi"></textarea>
                         </div>
                     </div>
                 </div>
@@ -98,9 +149,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
                         <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Lantai</h1>
-                                <select class="rounded-xl text-black">
-                                    <option disabled selected>Pilih Ruangan</option>
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Lantai</option>
                                     <option value="GKU.07.01">GKU.01</option>
                                     <option value="GKU.07.02">GKU.02</option>
                                     <option value="GKU.07.03">GKU.03</option>
@@ -108,22 +160,40 @@
                                 </select>
                             </div>
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Ruangan</h1>
-                                <select class="rounded-xl"></select>
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Ruangan</option>
+                                    <option value="GKU.07.01">GKU.07.01</option>
+                                    <option value="GKU.07.02">GKU.07.02</option>
+                                    <option value="GKU.07.03">GKU.07.03</option>
+                                    <option value="GKU.07.04">GKU.07.04</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
                         <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Kapasitas</h1>
-                                <input class="py-2 rounded-xl border-[#ebebeb] lg:w-auto sm:w-auto md:auto"
-                                    placeholder="Max Room 35, Example" type="text" />
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="date"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
+                                    border-opacity-50 font-bold appearance-none"
+                                    style="
+                                        appearance:none;
+                                        -webkit-appearance:none;
+                                        -moz-appearance:none;
+                                    "
+                                    placeholder="Tanggal" />
+                                <iconify-icon icon="solar:calendar-linear"
+                                    onclick="this.previousElementSibling.showPicker()"
+                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
                             </div>
                             <div class="flex flex-col flex-1 gap-5">
-                                <h1 class="text-lg font-normal">Penjadwalan</h1>
-                                <select class="rounded-xl border border-gray-300 p-2 text-black">
+                                <select
+                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                    <option disabled selected>Jadwal</option>
                                     <option value="08.00 - 08.50">08.00 - 08.50</option>
                                     <option value="08.50 - 09.40">08.50 - 09.40</option>
                                     <option value="09.40 - 10.30">09.40 - 10.30</option>
@@ -133,13 +203,31 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div>
-                    <button
-                        class="
-                            bg-[#FF0101] px-5 py-2 rounded-lg text-xl font-bold
-                        ">
+                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="text"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                    border-opacity-50 font-bold"
+                                    placeholder="Kapasitas" />
+                                <iconify-icon icon="mdi:people-outline"
+                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
+                        <div class="flex flex-col flex-1 gap-5">
+                            <textarea
+                                class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
+                                border-opacity-50"
+                                placeholder="Deskripsi"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-auto flex justify-center">
+                    <button class="bg-[#FF0101] w-[150px] font-bold py-2 rounded-md">
                         Submit
                     </button>
                 </div>
