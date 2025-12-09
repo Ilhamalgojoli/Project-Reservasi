@@ -45,15 +45,14 @@
                         </div>
                         <div class="text-center flex flex-col gap-2">
                             <h1 class="text-4xl text-white">40</h1>
-                            <p class="text-white font-bold">Total Terpakai</p>
+                            <p class="text-white font-bold">Total Tersedia</p>
                         </div>
                     </div>
                 </div>
                 <h1 class="text-2xl text-center">Penggunaan Ruang Gedung Telkom University</h1>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto text-black">
                     <div id="columnChart" class="overflow-x-auto min-w-[800px]"></div>
                 </div>
-
             </div>
             <div class="lg:col-span-4 md:col-span-12 sm:col-span-12 space-y-5 ">
                 <div class="bg-white p-5 rounded-[25px] space-y-5 shadow-xl">
@@ -94,29 +93,20 @@
                                 style="font-size: 20px;"></iconify-icon>
                             <span>Ilham baru saja meminjam ruangan</span>
                         </li>
-
-                        <li class="flex flex-row items-center gap-5">
-                            <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
-                                style="font-size: 20px;"></iconify-icon>
-                            <span>Siti melakukan pengajuan peminjaman</span>
-                        </li>
-
-                        <li class="flex flex-row items-center gap-5">
-                            <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
-                                style="font-size: 20px;"></iconify-icon>
-                            <span>Budi telah mengembalikan ruangan</span>
-                        </li>
-
-                        <li class="flex flex-row items-center gap-5">
-                            <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
-                                style="font-size: 20px;"></iconify-icon>
-                            <span>Dewi menunggu konfirmasi peminjaman</span>
-                        </li>
-
                         <li class="flex flex-row items-center gap-5">
                             <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
                                 style="font-size: 20px;"></iconify-icon>
                             <span>Reno melakukan perubahan jadwal</span>
+                        </li>
+                        <li class="flex flex-row items-center gap-5">
+                            <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
+                                style="font-size: 20px;"></iconify-icon>
+                            <span>Reno melakukan perubahan jadwal</span>
+                        </li>
+                        <li class="flex flex-row items-center gap-5">
+                            <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
+                                style="font-size: 20px;"></iconify-icon>
+                            <span>Ilham baru saja meminjam ruangan</span>
                         </li>
                     </ul>
                 </div>
@@ -129,11 +119,11 @@
         </section>
         <section class="grid grid-cols-12">
             <div class="col-span-12">
-                <div class="bg-white p-3 rounded-[25px] flex flex-col shadow-xl">
+                <div class="bg-white p-5 rounded-[25px] flex flex-col shadow-xl gap-5">
                     <div class="bg-[#E35258] p-2 rounded-lg w-fit">
                         <p class="text-white font-bold">Okkupansi</p>
                     </div>
-                    <div class="flex flex-row gap-5 overflow-x-auto">
+                    <div class="flex flex-row gap-5 overflow-x-auto lg:justify-center">
                         <div class="pieChart min-w-[250px] flex justify-center"></div>
                         <div class="pieChart min-w-[250px] flex justify-center"></div>
                         <div class="pieChart min-w-[250px] flex justify-center"></div>
@@ -144,7 +134,7 @@
         </section>
         <section class="grid grid-cols-12">
             <div class="col-span-12">
-                <div class="bg-white p-3 rounded-[25px] flex flex-col shadow-xl">
+                <div class="bg-white p-5 rounded-[25px] flex flex-col shadow-xl gap-5">
                     <div class="bg-[#EAEAEA] rounded-md  w-fit flex text-black">
                         <button class="akademik bg-[#E35258] text-white rounded-md font-bold px-4 py-2 cursor-pointer">
                             Jadwal Akademik
@@ -153,7 +143,7 @@
                             Jadwal Non-Akademik
                         </button>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="tableAkademik overflow-x-auto">
                         <table id="selection-table-1"
                             class="table bordered-table sm-table mb-0 table-auto border-black p-1">
                             <thead>
@@ -242,6 +232,80 @@
                                     <td>38</td>
                                     <td>0896-7890-1234</td>
                                     <td class="text-blue-600 font-semibold">Terjadwal</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tableNonAkademik kaoverflow-x-auto hidden">
+                        <table id="selection-table-2" class="table bordered-table sm-table mb-0 table-auto">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Gedung</th>
+                                    <th>Ruangan</th>
+                                    <th>Shift</th>
+                                    <th>Kegiatan</th>
+                                    <th>Penanggung Jawab</th>
+                                    <th>Kapasitas</th>
+                                    <th>Kontak</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Gedung Serbaguna</td>
+                                    <td>Aula Utama</td>
+                                    <td>08:00 - 10:00</td>
+                                    <td>Seminar Kepemimpinan Mahasiswa</td>
+                                    <td>Rafi Pratama</td>
+                                    <td>100</td>
+                                    <td>0812-3456-7890</td>
+                                    <td class="text-green-600 font-semibold">Sedang Berlangsung</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Gedung B</td>
+                                    <td>Ruang 205</td>
+                                    <td>10:30 - 12:00</td>
+                                    <td>Pelatihan Desain Grafis</td>
+                                    <td>Sinta Ayu</td>
+                                    <td>45</td>
+                                    <td>0821-9876-5432</td>
+                                    <td class="text-blue-600 font-semibold">Segera Dimulai</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Gedung C</td>
+                                    <td>Lapangan Tengah</td>
+                                    <td>13:00 - 15:30</td>
+                                    <td>Turnamen Futsal Antar Jurusan</td>
+                                    <td>Dimas Aditya</td>
+                                    <td>80</td>
+                                    <td>0852-6543-2109</td>
+                                    <td class="text-yellow-600 font-semibold">Menunggu Jadwal</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Gedung D</td>
+                                    <td>Ruang 108</td>
+                                    <td>15:30 - 17:30</td>
+                                    <td>Rapat Persiapan Festival Kampus</td>
+                                    <td>Nurul Hidayah</td>
+                                    <td>60</td>
+                                    <td>0813-4321-7654</td>
+                                    <td class="text-gray-600 font-semibold">Telah Selesai</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Gedung E</td>
+                                    <td>Ruang 305</td>
+                                    <td>09:00 - 11:00</td>
+                                    <td>Pameran Karya Seni Mahasiswa</td>
+                                    <td>Arga Saputra</td>
+                                    <td>70</td>
+                                    <td>0896-7890-1234</td>
+                                    <td class="text-red-600 font-semibold">Dibatalkan</td>
                                 </tr>
                             </tbody>
                         </table>
