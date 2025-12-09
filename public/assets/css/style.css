@@ -578,6 +578,15 @@ select:not([size]) {
     print-color-adjust: exact;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0 !important;
+    display: none !important;
+}
+
+input[type="date"]::-moz-calendar-picker-indicator {
+    display: none !important;
+}
+
 [type='search'] {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -1582,6 +1591,8 @@ input:checked+.toggle-bg {
     border-radius: 0.5rem;
     margin-right: 0.25rem;
     min-width: 4rem;
+    appearance: none;
+    padding: 5px;
 }
 
 .dark .datatable-wrapper .datatable-top .datatable-dropdown .datatable-selector {

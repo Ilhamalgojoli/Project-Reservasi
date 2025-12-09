@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<aside class="sidebar z-50">
     <button type="button" class="sidebar-close-btn !mt-6">
         <iconify-icon icon="radix-icons:cross-2" class="text-neutral-200"></iconify-icon>
     </button>
