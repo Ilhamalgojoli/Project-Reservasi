@@ -3,30 +3,31 @@ document.addEventListener('DOMContentLoaded', function () {
     function initTable(tableId) {
         const tableEl = document.getElementById(tableId);
         if (!tableEl) return null;
-        
+
         const table = new simpleDatatables.DataTable(`#${tableId}`, {
-            perPageSelect: false,
-            searchable : true,
+            searchable: true,
+            // perPageSelect: false,
+            // columns: [
+            //     { select: [0, 6], sortable: true }
+            // ],
+            perPage: 10,
+            perPageSelect: [5, 10, 25], 
             columns: [
-                { select: [0, 6], sortable: false }
+                { select: [0, 6], sortable: true }
             ],
-            rowRender: (row, tr, _index) => {
-                if (!tr.attributes) {
-                    tr.attributes = {};
-                }
-                if (!tr.attributes.class) {
-                    tr.attributes.class = "";
-                }
+            rowRender: (row, tr) => {
+                if (!tr.attributes) tr.attributes = {};
+                if (!tr.attributes.class) tr.attributes.class = "";
+
                 if (row.selected) {
                     tr.attributes.class += " selected";
                 } else {
                     tr.attributes.class = tr.attributes.class.replace(" selected", "");
                 }
+
                 return tr;
             }
         });
-
-        // const search = wrapper?.querySelector('.dataTable-search');
 
         return table;
     }
