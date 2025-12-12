@@ -36,7 +36,7 @@
                         </div>
 
                         <div
-                            class="button-kelola absolute top-[110px] lg:left-[150px] sm:left-[80px] md:left-[100px] z-20 sm:z-0 md:z-0 lg:hidden">
+                            class="button-kelola absolute top-[110px] lg:left-[150px] sm:left-[65px] md:left-[100px] z-20 sm:z-0 md:z-0 lg:hidden">
                             <a id="btn-gedung" href="{{ route('index3') }}"
                                 class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all cursor-pointer
                                 duration-300 sm:scale-85 hover:scale-105 flex justify-center items-center gap-2 mx-auto text-white">
@@ -107,17 +107,17 @@
                 <div class="flex sm:flex-col md:flex-col lg:flex-row gap-5 mb-5">
                     <div class="flex flex-col gap-5 flex-1">
                         <input type="text"
-                            class="rounded-lg py-2 px-3 border
+                            class="rounded-lg py-2 px-3 border text-black
                           border-[#808080] border-opacity-50"
                             placeholder="Nama Gedung" />
-                        <input type="text"
-                            class="rounded-lg py-2 px-3 border
+                        <input type="text"/
+                            class="rounded-lg py-2 px-3 border text-black
                           border-[#808080] border-opacity-50"
                             placeholder="Kode Gedung" />
                     </div>
                     <div class="flex flex-col gap-5 flex-1">
                         <input type="text"
-                            class="rounded-lg py-2 px-3 border border-[#808080]
+                            class="rounded-lg py-2 px-3 border border-[#808080] text-black
                             border-opacity-50"
                             placeholder="Jumlah Lantai " />
                         <select
@@ -132,7 +132,7 @@
             </div>
             <div class="flex flex-col gap-5">
                 <textarea class="rounded-lg py-2 px-3 h-24 border border-[#808080]
-                border-opacity-50"
+                border-opacity-50 text-black"
                     placeholder="Deskripsi"></textarea>
                 <button class="w-auto text-white bg-[red] py-2 rounded-xl font-extrabold">
                     Submit

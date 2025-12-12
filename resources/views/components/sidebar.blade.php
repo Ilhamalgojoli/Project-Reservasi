@@ -1,4 +1,4 @@
-<aside class="sidebar z-50">
+<aside class="sidebar">
     <button type="button" class="sidebar-close-btn !mt-6">
         <iconify-icon icon="radix-icons:cross-2" class="text-neutral-200"></iconify-icon>
     </button>
@@ -35,25 +35,25 @@
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('index') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             Home
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('index6') }}" class="">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             Pengelolaan Ruangan
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('index2') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             Peminjaman Ruangan
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('index4') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 35px;"></iconify-icon>
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             Persetujuan Peminjaman
                         </a>
                     </li>

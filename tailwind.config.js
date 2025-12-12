@@ -10,8 +10,8 @@ export default {
       screens: {
         'sm': {
           'max' : '766px',
-          'min' : '360px'
-        }, 
+          'min' : '320px'
+        },
       },
     },
   },
