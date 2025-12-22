@@ -37,11 +37,11 @@
 
                         <div
                             class="button-kelola absolute top-[110px] lg:left-[150px] sm:left-[65px] md:left-[100px] z-20 sm:z-0 md:z-0 lg:hidden">
-                            <a id="btn-gedung" href="{{ route('index3') }}"
+                            <a id="btn-gedung" href="{{ route('index7') }}"
                                 class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all cursor-pointer
                                 duration-300 sm:scale-85 hover:scale-105 flex justify-center items-center gap-2 mx-auto text-white">
                                 <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
-                                <span class="font-extrabold mt-1">Pinjam Ruangan</span>
+                                <span class="font-extrabold mt-1">Kelola Ruangan</span>
                             </a>
                         </div>
                     </div>
