@@ -7391,8 +7391,8 @@ h6,
     border-radius: 0.5rem;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-    padding-top: 0.625rem;
-    padding-bottom: 0.625rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
     font-size: 0.875rem;
     font-weight: 500;
     --tw-text-opacity: 1;
@@ -7471,8 +7471,8 @@ h6,
 .sidebar-menu .sidebar-submenu li a {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-    padding-top: 0.4375rem;
-    padding-bottom: 0.4375rem;
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
 }
 
 :is(.dark .sidebar-menu .sidebar-submenu li a) {
