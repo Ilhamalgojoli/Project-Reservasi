@@ -173,7 +173,11 @@
                     </div>
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-1">
-                            <h1 class="text-2xl">Fasilitas</h1>
+                            <div class="flex flex-row justify-between">
+                                <h1 class="text-2xl">Fasilitas</h1>
+                                <iconify-icon icon="mingcute:warning-line" id="button-info"
+                                    class="text-black text-2xl"></iconify-icon>
+                            </div>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
                         <div id="container-input" class="flex flex-col gap-5">
@@ -181,21 +185,25 @@
                         </div>
                         <div class="flex justify-center flex-row gap-5">
                             <button id="button-add" class="border rounded-lg flex items-center p-2">
-                                <iconify-icon icon="mingcute:plus-fill" class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
+                                <iconify-icon icon="mingcute:plus-fill"
+                                    class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
                             </button>
                             <button id="button-less" class="border rounded-lg flex items-center p-2 hidden">
-                                <iconify-icon icon="typcn:minus" class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
+                                <iconify-icon icon="typcn:minus"
+                                    class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
                             </button>
-                        </div>
-
-                        <div class="hoverInfo ">
-
                         </div>
                     </div>
                     <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
                     </button>
                 </div>
+        </section>
+
+        <section id="hover-info" class="hidden flex items-center justify-center z-50 absolute bottom-full mb-2 left-1/2 -translate-x-1/2">
+            <div class="bg-white shadow-md py-2 rounded-lg px-2 w-[280px] text-center">
+                <p>Tekan Tombol Tambah Jika Ingin MenambahKan Asset Ruangan</p>
+            </div>
         </section>
     </main>
 @endsection
