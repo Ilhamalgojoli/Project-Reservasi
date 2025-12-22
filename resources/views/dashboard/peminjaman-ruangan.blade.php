@@ -60,22 +60,21 @@
                                 <select
                                     class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                                     bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Lantai</option>
-                                    <option value="GKU.07.01">GKU.01</option>
-                                    <option value="GKU.07.02">GKU.02</option>
-                                    <option value="GKU.07.03">GKU.03</option>
-                                    <option value="GKU.07.04">GKU.07</option>
+                                    <option disabled selected>Kode Mata Kuliah</option>
+                                    <option value="">Fakultas</option>
+                                    <option value="">Prodi</option>
+                                    <option value="">Pribadi</option>
                                 </select>
                             </div>
                             <div class="flex flex-col flex-1 gap-5">
                                 <select
                                     class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                                     bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Ruangan</option>
-                                    <option value="GKU.07.01">GKU.07.01</option>
-                                    <option value="GKU.07.02">GKU.07.02</option>
-                                    <option value="GKU.07.03">GKU.07.03</option>
-                                    <option value="GKU.07.04">GKU.07.04</option>
+                                    <option disabled selected>Lantai</option>
+                                    <option value="GKU.07.01">GKU.01</option>
+                                    <option value="GKU.07.02">GKU.02</option>
+                                    <option value="GKU.07.03">GKU.03</option>
+                                    <option value="GKU.07.04">GKU.07</option>
                                 </select>
                             </div>
                         </div>
@@ -87,10 +86,11 @@
                                 <select
                                     class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                                     bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Kode Mata Kuliah</option>
-                                    <option value="">Fakultas</option>
-                                    <option value="">Prodi</option>
-                                    <option value="">Pribadi</option>
+                                    <option disabled selected>Ruangan</option>
+                                    <option value="GKU.07.01">GKU.07.01</option>
+                                    <option value="GKU.07.02">GKU.07.02</option>
+                                    <option value="GKU.07.03">GKU.07.03</option>
+                                    <option value="GKU.07.04">GKU.07.04</option>
                                 </select>
                             </div>
                             <div class="flex flex-col flex-1 relative">
@@ -131,6 +131,23 @@
                                     placeholder="Kapasitas" />
                                 <iconify-icon icon="mdi:people-outline"
                                     class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="text"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                    border-opacity-50 font-bold"
+                                    placeholder="Penanggung Jawab" />
+                            </div>
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="text"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                    border-opacity-50 font-bold"
+                                    placeholder="Kontak Penanggung Jawab" />
                             </div>
                         </div>
                     </div>
@@ -213,6 +230,23 @@
                                     placeholder="Kapasitas" />
                                 <iconify-icon icon="mdi:people-outline"
                                     class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="text"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                    border-opacity-50 font-bold"
+                                    placeholder="Penanggung Jawab" />
+                            </div>
+                            <div class="flex flex-col flex-1 relative">
+                                <input type="text"
+                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                    border-opacity-50 font-bold"
+                                    placeholder="Kontak Penanggung Jawab" />
                             </div>
                         </div>
                     </div>
