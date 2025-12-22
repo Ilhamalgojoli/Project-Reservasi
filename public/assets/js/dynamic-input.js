@@ -2,15 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAdd = document.getElementById('button-add');
     const btnLess = document.getElementById('button-less');
     const containerInput = document.getElementById('container-input');
+
+    const hoverInfo = document.getElementById('hover-info');
+    const btnInfo = document.getElementById('button-info');
+
     var count = 1;
     const limit = 10;
 
+    // Pembungkus untuk container input
     const wrappers = [];
 
     if (!btnAdd) {
         console.log(btnAdd, "not found");
     }
 
+    // Button tambah untuk menambahkan input asset
     btnAdd.addEventListener('click', (e) => {
         e.preventDefault();
 
@@ -40,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(count);
             console.log(limit);
 
-            if(wrappers.length != 0){
+            if (wrappers.length != 0) {
                 btnLess.classList.remove('hidden');
             }
         } else {
@@ -48,10 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Button kurang untuk mengurangi jumlah input asset
+
     btnLess.addEventListener('click', (e) => {
         e.preventDefault();
 
-        if(wrappers.length === 0) {
+        if (wrappers.length === 0) {
             return 0;
         }
 
@@ -60,9 +68,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         count--;
 
-        if(wrappers.length === 0){
+        if (wrappers.length === 0) {
             btnLess.classList.add('hidden');
         }
     });
 
+    // Hover info untuk guide user admin dalam menambahkan ruangan
+    btnInfo.addEventListener('mouseover', () => {
+        const rect = btnInfo.getBoundingClientRect();
+
+        hoverInfo.style.left = rect.left + window.scrollX + btnInfo.offsetWidth - 10 + 'px';
+        hoverInfo.style.top = rect.top + window.scrollY + btnInfo.offsetHeight - 60 + 'px';
+
+        hoverInfo.classList.remove('hidden');
+    });
+
+    btnInfo.addEventListener('mouseout', () => {
+        hoverInfo.classList.add('hidden');
+    });
 });
