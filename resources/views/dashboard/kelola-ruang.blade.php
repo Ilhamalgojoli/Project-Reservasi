@@ -4,6 +4,7 @@
     $script = '
         <script src="' . asset('assets/js/data-table.js') . '" defer></script>
         <script src="' . asset('assets/js/popup.js') . '" defer></script>
+        <script src="' . asset('assets/js/dynamic-input.js') . '" defer></script>
     ';
 @endphp
 
@@ -175,10 +176,21 @@
                             <h1 class="text-2xl">Fasilitas</h1>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <textarea
-                            class="rounded-lg py-2 px-3 h-24 border border-[#808080]
-                            border-opacity-50 text-black"
-                            placeholder="Fasilitas"></textarea>
+                        <div id="container-input" class="flex flex-col gap-5">
+
+                        </div>
+                        <div class="flex justify-center flex-row gap-5">
+                            <button id="button-add" class="border rounded-lg flex items-center p-2">
+                                <iconify-icon icon="mingcute:plus-fill" class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
+                            </button>
+                            <button id="button-less" class="border rounded-lg flex items-center p-2 hidden">
+                                <iconify-icon icon="typcn:minus" class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
+                            </button>
+                        </div>
+
+                        <div class="hoverInfo ">
+
+                        </div>
                     </div>
                     <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
