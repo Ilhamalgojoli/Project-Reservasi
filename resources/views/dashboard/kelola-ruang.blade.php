@@ -175,8 +175,8 @@
                         <div class="flex flex-col gap-1">
                             <div class="flex flex-row justify-between">
                                 <h1 class="text-2xl">Fasilitas</h1>
-                                <iconify-icon icon="mingcute:warning-line" id="button-info"
-                                    class="text-black text-2xl"></iconify-icon>
+                                {{-- <iconify-icon icon="mingcute:warning-line" id="button-info"
+                                    class="text-black text-2xl"></iconify-icon> --}}
                             </div>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
@@ -200,10 +200,10 @@
                 </div>
         </section>
 
-        <section id="hover-info" class="hidden flex items-center justify-center z-50 absolute bottom-full mb-2 left-1/2 -translate-x-1/2">
+        {{-- <section id="hover-info" class="hidden flex items-center justify-center z-50 absolute bottom-full mb-2 left-1/2 -translate-x-1/2">
             <div class="bg-white shadow-md py-2 rounded-lg px-2 w-[280px] text-center">
                 <p>Tekan Tombol Tambah Jika Ingin MenambahKan Asset Ruangan</p>
             </div>
-        </section>
+        </section> --}}
     </main>
 @endsection

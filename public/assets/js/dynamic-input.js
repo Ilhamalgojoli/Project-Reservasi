@@ -74,16 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Hover info untuk guide user admin dalam menambahkan ruangan
-    btnInfo.addEventListener('mouseover', () => {
-        const rect = btnInfo.getBoundingClientRect();
+    // Ga jadi pakai
 
-        hoverInfo.style.left = rect.left + window.scrollX + btnInfo.offsetWidth - 10 + 'px';
-        hoverInfo.style.top = rect.top + window.scrollY + btnInfo.offsetHeight - 60 + 'px';
+    // btnInfo.addEventListener('mouseover', () => {
+    //     const rect = btnInfo.getBoundingClientRect();
 
-        hoverInfo.classList.remove('hidden');
-    });
+    //     hoverInfo.style.left = rect.left + window.scrollX + btnInfo.offsetWidth - 10 + 'px';
+    //     hoverInfo.style.top = rect.top + window.scrollY + btnInfo.offsetHeight - 60 + 'px';
 
-    btnInfo.addEventListener('mouseout', () => {
-        hoverInfo.classList.add('hidden');
-    });
+    //     hoverInfo.classList.remove('hidden');
+    // });
+
+    // btnInfo.addEventListener('mouseout', () => {
+    //     hoverInfo.classList.add('hidden');
+    // });
 });
