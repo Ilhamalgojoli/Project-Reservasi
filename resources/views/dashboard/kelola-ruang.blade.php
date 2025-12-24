@@ -155,11 +155,11 @@
                         </div>
                         <div class="flex flex-row gap-5">
                             <input type="text"
-                                class="rounded-lg flex-1 py-2 px-3 border
+                                class="rounded-lg flex-1 py-2 px-3 border text-black
                               border-[#808080] border-opacity-50"
                                 placeholder="Lantai" />
                             <input type="text"
-                                class="rounded-lg flex-1 py-2 px-3 border
+                                class="rounded-lg flex-1 py-2 px-3 border text-black
                               border-[#808080] border-opacity-50"
                                 placeholder="Kode Ruangan" />
                         </div>
@@ -173,24 +173,39 @@
                     </div>
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-1">
-                            <div class="flex flex-row justify-between">
-                                <h1 class="text-2xl">Fasilitas</h1>
-                                {{-- <iconify-icon icon="mingcute:warning-line" id="button-info"
+                            <h1 class="text-2xl">Fasilitas</h1>
+                            {{-- <iconify-icon icon="mingcute:warning-line" id="button-info"
                                     class="text-black text-2xl"></iconify-icon> --}}
-                            </div>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
-                        </div>
-                        <div id="container-input" class="flex flex-col gap-5">
 
                         </div>
+                        <div
+                            class="w-[450px] text-center bg-green-200 py-2 rounded-md flex flex-row items-center justify-center gap-1">
+                            <iconify-icon icon="mingcute:warning-line"
+                                class="text-xl sm:text-sm text-green-600 italic"></iconify-icon>
+                            <p class="text-green-600"> Note : klik, tombol tambah
+                                jika ingin
+                                menambah asset</p>
+                        </div>
+                        <div id="container-input" class="flex flex-col gap-5">
+                            <div class="flex flex-row gap-5">
+                                <input type="text"
+                                    class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                    placeholder="Masukkan Nama Asset" />
+                                <input type="text"
+                                    class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                    placeholder="Masukkan Total" />
+                            </div>
+                        </div>
                         <div class="flex justify-center flex-row gap-5">
-                            <button id="button-add" class="border rounded-lg flex items-center p-2">
+                            <button id="button-add" class="border rounded-lg flex items-center p-2 bg-[red]">
                                 <iconify-icon icon="mingcute:plus-fill"
-                                    class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
+                                    class="text-3xl sm:text-sm text-white"></iconify-icon>
                             </button>
-                            <button id="button-less" class="border rounded-lg flex items-center p-2 hidden">
-                                <iconify-icon icon="typcn:minus"
-                                    class="text-4xl sm:text-sm text-[#ff0000ce]"></iconify-icon>
+                            <button id="button-less" class="border rounded-lg flex items-center p-2 hidden bg-[red]">
+                                <iconify-icon icon="typcn:minus" class="text-3xl sm:text-sm text-white"></iconify-icon>
                             </button>
                         </div>
                     </div>

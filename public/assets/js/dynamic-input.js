@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Untuk input nama
             inputNama.type = 'text';
-            inputNama.placeholder = 'Masukkan nama asset';
+            inputNama.placeholder = 'Masukkan Nama Asset';
             inputNama.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
 
             // Untuk total type
