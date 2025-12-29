@@ -16,9 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener('click', () => {
             btn.closest(".popup").classList.add("hidden");
             console.log("click");
-        });
 
-        console.log("id button : " )
+            while(window.wrappers.length > 0){
+                window.wrappers.pop().remove(); 
+            }
+            
+            if(window.wrappers.length === 0){
+                const lessBtn = btn.closest('.popup').querySelector('.button-less');
+                lessBtn.classList.add('hidden');
+            }
+
+            console.log(window.wrappers);
+        });
     });
 
     document.querySelectorAll(".popup").forEach(popup => {
