@@ -1,7 +1,7 @@
 // ================================ Users Overview Donut chart Start ================================
 var options = {
     series: [500, 500, 500],
-    colors: ['#D31E26', '#6175C1', '#FF9F29'],
+    colors: ['#e51411', '#6175C1', '#ffb800'],
     labels: ['Perbaikan', 'Sedang Perbaikan', 'Selesai'],
     legend: {
         show: true,
@@ -68,7 +68,7 @@ var options = {
         colors: '#EDEDED'
     },
     labels: ['Terpakai', 'Tidak Terpakai'],
-    colors: ['#E97132', "#00529F"],
+    colors: ['#F07C3A', "#00529F"],
     plotOptions: {
         pie: {
             dataLabels: {
@@ -125,8 +125,8 @@ var options = {
             data: [4, 5, 3, 2]
         }
     ],
-    colors: ['#E09E3C', '#E35258', '#1BBA9A'],
-    labels: ['Active', 'New', 'Total'],
+    colors: ['#ffb800', '#e51411', '#3ea83f'],
+    labels: ['Total Waiting', 'Total Terpakai', 'Total Tersedia'],
     legend: {
         show: false
     },
