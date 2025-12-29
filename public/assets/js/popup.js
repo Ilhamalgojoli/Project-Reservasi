@@ -1,57 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-    function popUp(popUpBody, btnPopUp, cross) {
+    document.querySelectorAll("[data-popup-target]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const popupId = btn.dataset.popupTarget;
+            const popup = document.getElementById(popupId);
 
-        // Atau cek di dalam fungsi nya lansung biar break kalau ketemu null
-        if(!popUpBody && !btnPopUp && !cross)
-            return null ;
+            if(popup){
+                popup.classList.remove("hidden");
+            }
 
-        console.log("pop-up :", popUpBody);
-        console.log("btn: ", btnPopUp);
-        console.log("btn-close: ", cross)
+            console.log("click");
+        });
+    });
 
-        popUpBody.addEventListener("click", (e) => {
-            if (e.target === popUpBody) {
-                popUpBody.classList.add("hidden");
+    document.querySelectorAll(".popup-close").forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.closest(".popup").classList.add("hidden");
+            console.log("click");
+        });
+
+        console.log("id button : " )
+    });
+
+    document.querySelectorAll(".popup").forEach(popup => {
+        popup.addEventListener("click", (e) => {
+            if(e.target === popup){
+                popup.classList.add("hidden");
             }
         });
-
-        btnPopUp.addEventListener("click", () => {
-            popUpBody.classList.remove("hidden");
-        });
-
-        cross.addEventListener("click", () => {
-            popUpBody.classList.add("hidden");
-        });
-    }
-
-    const popupRuangan = document.getElementById("pop-up");
-    const btnPopUpRuangan = document.getElementById("open-pop-up");
-    const closeRuangan = document.getElementById("cls-btn");
-
-    // if (popupRuangan && btnPopUpRuangan && closeRuangan) {
-    popUp(popupRuangan, btnPopUpRuangan, closeRuangan);
-    // }
-
-    const popUpTambahRuang = document.getElementById("pop-up-ruangan");
-    const btnPopUpTambahRuang = document.getElementById("btn-tambah-ruang");
-    const closeTambahRuangan = document.getElementById("cls-btn-ruangan");
-
-    popUp(popUpTambahRuang, btnPopUpTambahRuang, closeTambahRuangan);
-
-    const popUpGedung = document.getElementById("pop-up-gedung");
-    const btnPopUpGedung = document.getElementById("btn-gedung");
-    const closePopUpGedung = document.getElementById("cls-btn-gedung");
-    
-    // Cek dlu si element nya ada nga baru render function nya,
-    // Kalo lansung panggil dia bakal panggil 2 2 nya.
-
-    // if (popUpGedung && btnPopUpGedung && closePopUpGedung) {
-    popUp(popUpGedung, btnPopUpGedung, closePopUpGedung);
-    // }
-
-    const popUpReject = document.getElementById("pop-up-reject");
-    const btnReject = document.getElementById("btn-reject");
-    const clsBtnReject = document.getElementById("cls-btn-reject");
-    
-    popUp(popUpReject, btnReject, clsBtnReject);
+    });
 });
