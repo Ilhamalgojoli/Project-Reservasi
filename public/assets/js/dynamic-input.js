@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hoverInfo = document.getElementById('hover-info');
     const btnInfo = document.getElementById('button-info');
 
-    var count = 1;
+    var count = 0;
     const limit = 10;
 
     // Pembungkus untuk container input
@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             console.log('Sudah mencapai limit');
         }
+
+        console.log("click");
     });
 
     // Button kurang untuk mengurangi jumlah input asset
