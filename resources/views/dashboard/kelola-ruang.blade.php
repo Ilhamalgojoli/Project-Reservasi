@@ -54,7 +54,7 @@
                     <p class="text-[#8B8B8B] text-md">Tambah ruang sesuai Gedung yang dipilih 😋</p>
                 </div>
                 <div class="flex items-center justify-center">
-                    <button id="btn-tambah-ruang" class="bg-[#ff0000ce] rounded-lg px-5 py-2 font-extrabold">
+                    <button data-popup-target="popup-tambah" class="bg-[#ff0000ce] rounded-lg px-5 py-2 font-extrabold">
                         Tambah Ruangan +
                     </button>
                 </div>
@@ -86,7 +86,7 @@
                             Aktif
                         </td>
                         <td>
-                            <button id="open-pop-up" class="rounded-full bg-[#ff9d007e] px-4 py-3">
+                            <button data-popup-target="popup-edit" class="rounded-full bg-[#ff9d007e] px-4 py-3">
                                 <iconify-icon icon="mingcute:edit-2-line" class="text-white"></iconify-icon>
                             </button>
                         </td>
@@ -96,12 +96,13 @@
         </section>
 
         <!-- Pop Up Edit -->
-        <section id="pop-up" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <section id="popup-edit"
+            class="popup hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
             <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative w-[900px]">
                 <div class="flex flex-row justify-between mb-10">
                     <p></p>
                     <h1 class="text-2xl font-bold">Edit Fasilitas Ruangan</h1>
-                    <button id="cls-btn">
+                    <button class="popup-close">
                         <img src="{{ asset('assets/icon/cross.svg') }}" class="" />
                     </button>
                 </div>
@@ -111,23 +112,47 @@
                             <h1 class="text-2xl">Ruangan</h1>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <select
-                            class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                        <div class="flex flex-row gap-5">
+                            <select
+                                class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
                                 bg-transparent border border-[#808080] border-opacity-50">
-                            <option value="" disabled selected>Status</option>
-                            <option value="akademik">Aktif</option>
-                            <option value="non-akademik">Tidak Aktif</option>
-                        </select>
+                                <option value="" disabled selected>Status</option>
+                                <option value="akademik">Aktif</option>
+                                <option value="non-akademik">Tidak Aktif</option>
+                            </select>
+                            <input type="text"
+                                class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                placeholder="Muatan Kapasitas" />
+                        </div>
                     </div>
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-1">
                             <h1 class="text-2xl">Fasilitas</h1>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <textarea
-                            class="rounded-lg py-2 px-3 h-24 border border-[#808080]
-                            border-opacity-50 text-black"
-                            placeholder="Fasilitas"></textarea>
+                        <div id="wrapper-input-edit" class="flex flex-col gap-5">
+                            <div class="flex flex-row gap-5">
+                                <input type="text"
+                                    class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                    placeholder="Masukkan Nama Asset" />
+                                <input type="text"
+                                    class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                    placeholder="Masukkan Total" />
+                            </div>
+                        </div>
+                        <div class="flex justify-center flex-row gap-5">
+                            <button data-button-target="wrapper-input-edit"
+                                class="button-add border rounded-lg flex items-center p-2 bg-[red]">
+                                <iconify-icon icon="mingcute:plus-fill"
+                                    class="text-3xl sm:text-sm text-white"></iconify-icon>
+                            </button>
+                            <button class="button-less border rounded-lg flex items-center p-2 hidden bg-[red]">
+                                <iconify-icon icon="typcn:minus" class="text-3xl sm:text-sm text-white"></iconify-icon>
+                            </button>
+                        </div>
                     </div>
                     <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
@@ -137,13 +162,13 @@
         </section>
 
         <!-- Pop Up Tambah -->
-        <section id="pop-up-ruangan"
-            class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <section id="popup-tambah"
+            class="popup hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
             <div class="bg-white p-6 rounded-xl shadow-lg overflow-y-auto relative w-[900px]">
                 <div class="flex flex-row justify-between mb-10">
                     <p></p>
                     <h1 class="text-2xl font-bold">Tambah Ruangan</h1>
-                    <button id="cls-btn-ruangan">
+                    <button class="popup-close">
                         <img src="{{ asset('assets/icon/cross.svg') }}" class="" />
                     </button>
                 </div>
@@ -163,13 +188,19 @@
                               border-[#808080] border-opacity-50"
                                 placeholder="Kode Ruangan" />
                         </div>
-                        <select
-                            class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                        <div class="flex flex-row gap-5">
+                            <select
+                                class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
                                 bg-transparent border border-[#808080] border-opacity-50">
-                            <option value="" disabled selected>Status</option>
-                            <option value="akademik">Aktif</option>
-                            <option value="non-akademik">Tidak Aktif</option>
-                        </select>
+                                <option value="" disabled selected>Status</option>
+                                <option value="akademik">Aktif</option>
+                                <option value="non-akademik">Tidak Aktif</option>
+                            </select>
+                            <input type="text"
+                                class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                placeholder="Muatan Kapasitas" />
+                        </div>
                     </div>
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-1">
@@ -187,7 +218,7 @@
                                 jika ingin
                                 menambah asset</p>
                         </div>
-                        <div id="container-input" class="flex flex-col gap-5">
+                        <div id="wrapper-input-tambah" class="flex flex-col gap-5">
                             <div class="flex flex-row gap-5">
                                 <input type="text"
                                     class="rounded-lg flex-1 py-2 px-3 border text-black
@@ -200,11 +231,12 @@
                             </div>
                         </div>
                         <div class="flex justify-center flex-row gap-5">
-                            <button id="button-add" class="border rounded-lg flex items-center p-2 bg-[red]">
+                            <button data-button-target="wrapper-input-tambah"
+                                class="border rounded-lg flex items-center p-2 bg-[red]">
                                 <iconify-icon icon="mingcute:plus-fill"
                                     class="text-3xl sm:text-sm text-white"></iconify-icon>
                             </button>
-                            <button id="button-less" class="border rounded-lg flex items-center p-2 hidden bg-[red]">
+                            <button class="button-less border rounded-lg hidden flex items-center p-2 bg-[red]">
                                 <iconify-icon icon="typcn:minus" class="text-3xl sm:text-sm text-white"></iconify-icon>
                             </button>
                         </div>
@@ -214,11 +246,5 @@
                     </button>
                 </div>
         </section>
-
-        {{-- <section id="hover-info" class="hidden flex items-center justify-center z-50 absolute bottom-full mb-2 left-1/2 -translate-x-1/2">
-            <div class="bg-white shadow-md py-2 rounded-lg px-2 w-[280px] text-center">
-                <p>Tekan Tombol Tambah Jika Ingin MenambahKan Asset Ruangan</p>
-            </div>
-        </section> --}}
     </main>
 @endsection

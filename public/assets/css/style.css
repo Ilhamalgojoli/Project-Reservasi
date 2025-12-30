@@ -2209,7 +2209,7 @@ select {
 
 .table th {
     --tw-bg-opacity: 1;
-    background-color: rgb(255 20 0 / var(--tw-bg-opacity));
+    background-color: rgb(229 20 17 / var(--tw-bg-opacity, 1));
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 0.75rem;

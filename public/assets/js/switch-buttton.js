@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableNonAkademik = document.querySelector('.tableNonAkademik');
 
     akademik.addEventListener('click', () => {
-        akademik.classList.add('bg-[#E35258]', 'text-white');
-        nonAkademik.classList.remove('bg-[#E35258]', 'text-white');
+        akademik.classList.add('bg-[#e51411]', 'text-white');
+        nonAkademik.classList.remove('bg-[#e51411]', 'text-white');
 
         nonAkademik.classList.add('text-black');
         akademik.classList.remove('text-black');
@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     nonAkademik.addEventListener('click', () => {
-        nonAkademik.classList.add('bg-[#E35258]', 'text-white');
-        akademik.classList.remove('bg-[#E35258]', 'text-white');
+        nonAkademik.classList.add('bg-[#e51411]', 'text-white');
+        akademik.classList.remove('bg-[#e51411]', 'text-white');
 
         akademik.classList.add('text-black');
         nonAkademik.classList.remove('text-black');

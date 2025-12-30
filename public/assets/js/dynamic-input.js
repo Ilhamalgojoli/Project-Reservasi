@@ -1,77 +1,83 @@
+// Pembungkus untuk container input supaya bisa pakai fungsi array
+window.wrappers = [];
+window.count = 0;
+
 document.addEventListener('DOMContentLoaded', () => {
-    const btnAdd = document.getElementById('button-add');
-    const btnLess = document.getElementById('button-less');
-    const containerInput = document.getElementById('container-input');
-
-    const hoverInfo = document.getElementById('hover-info');
-    const btnInfo = document.getElementById('button-info');
-
-    var count = 1;
+    
     const limit = 10;
 
-    // Pembungkus untuk container input
-    const wrappers = [];
-
-    if (!btnAdd) {
-        console.log(btnAdd, "not found");
-    }
-
     // Button tambah untuk menambahkan input asset
-    btnAdd.addEventListener('click', (e) => {
-        e.preventDefault();
+    document.querySelectorAll('[data-button-target]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-        if (count < limit) {
-            const wrapper = document.createElement('div');
-            const inputNama = document.createElement('input');
-            const inputTotal = document.createElement('input');
+            const wrapperId = btn.dataset.buttonTarget
+            const wrapperInput = document.getElementById(wrapperId);
 
-            wrapper.className = 'flex flex-row gap-5';
+            if (count < limit) {
+                const wrapper = document.createElement('div');
+                const inputNama = document.createElement('input');
+                const inputTotal = document.createElement('input');
 
-            // Untuk input nama
-            inputNama.type = 'text';
-            inputNama.placeholder = 'Masukkan Nama Asset';
-            inputNama.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
+                wrapper.className = 'flex flex-row gap-5';
 
-            // Untuk total type
-            inputTotal.type = 'text';
-            inputTotal.placeholder = 'Masukkan Total';
-            inputTotal.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
+                // Untuk input nama
+                inputNama.type = 'text';
+                inputNama.placeholder = 'Masukkan nama asset';
+                inputNama.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
 
-            wrapper.append(inputNama, inputTotal)
-            containerInput.append(wrapper);
+                // Untuk total type
+                inputTotal.type = 'text';
+                inputTotal.placeholder = 'Masukkan Total';
+                inputTotal.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
 
-            wrappers.push(wrapper);
+                wrapper.append(inputNama, inputTotal)
+                wrapperInput.append(wrapper);
 
-            count++;
-            console.log(count);
-            console.log(limit);
+                wrappers.push(wrapper);
 
-            if (wrappers.length != 0) {
-                btnLess.classList.remove('hidden');
+                count++;
+                console.log(count);
+                console.log(limit);
+
+                if (wrappers.length != 0) {
+                    const lessBtn = btn.parentElement.querySelector('.button-less');
+                    lessBtn.classList.remove('hidden');
+                }
+            } else {
+                console.log('Sudah mencapai limit');
             }
-        } else {
-            console.log('Sudah mencapai limit');
+
+            console.log('click');
+        });
+
+        if (!btn) {
+            console.log(btn, 'not found');
         }
     });
 
     // Button kurang untuk mengurangi jumlah input asset
+    document.querySelectorAll('.button-less').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-    btnLess.addEventListener('click', (e) => {
-        e.preventDefault();
+            if (wrappers.length === 0) {
+                return 0;
+            }
 
-        if (wrappers.length === 0) {
-            return 0;
-        }
+            const last = wrappers.pop();
+            last.remove();
 
-        const last = wrappers.pop();
-        last.remove();
+            count--;
 
-        count--;
+            if (wrappers.length < 1 && wrappers.length === 0) {
+                btn.classList.add('hidden');
+            }
 
-        if (wrappers.length === 0) {
-            btnLess.classList.add('hidden');
-        }
+            console.log(wrappers);
+        });
     });
+
 
     // Hover info untuk guide user admin dalam menambahkan ruangan
     // Ga jadi pakai

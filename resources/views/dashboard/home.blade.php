@@ -18,8 +18,8 @@
         <section class="grid lg:grid-cols-12 sm:grid-cols-1 md:grid-cols-2 gap-5">
             <div class="lg:col-span-8 md:col-span-12 sm:col-span-12 bg-white p-2 rounded-[25px] space-y-10 shadow-xl">
                 <div class="grid lg:grid-cols-3 gap-5 md:grid-cols-2 sm:grid-cols-1">
-                    <div class="flex-1 bg-[#E09E3C] p-4 rounded-[25px] flex flex-row items-center justify-center gap-3">
-                        <div class="bg-[#B07A2B] rounded-full p-5 flex">
+                    <div class="flex-1 bg-[#ffb800] p-4 rounded-[25px] flex flex-row items-center justify-center gap-3">
+                        <div class="bg-[#d19c00] rounded-full p-5 flex">
                             <iconify-icon icon="clarity:building-solid" class=""
                                 style="font-size: 35px;"></iconify-icon>
                         </div>
@@ -28,8 +28,8 @@
                             <p class="text-white font-bold">Total Waiting</p>
                         </div>
                     </div>
-                    <div class="flex-1 bg-[#E35258] p-4 rounded-[25px] flex flex-row items-center justify-center gap-3">
-                        <div class="bg-[#A73B40] rounded-full p-5 flex justify-center">
+                    <div class="flex-1 bg-[#e51411] p-4 rounded-[25px] flex flex-row items-center justify-center gap-3">
+                        <div class="bg-[#c7110f] rounded-full p-5 flex justify-center">
                             <iconify-icon icon="clarity:building-solid" class=""
                                 style="font-size: 35px;"></iconify-icon>
                         </div>
@@ -38,8 +38,8 @@
                             <p class="text-white font-bold">Total Terpakai</p>
                         </div>
                     </div>
-                    <div class="flex-1 bg-[#1BBA9A] p-5 rounded-[25px] flex flex-row items-center justify-center gap-3">
-                        <div class="bg-[#177B67] rounded-full p-5 flex justify-center">
+                    <div class="flex-1 bg-[#3ea83f] p-5 rounded-[25px] flex flex-row items-center justify-center gap-3">
+                        <div class="bg-[#2f812f] rounded-full p-5 flex justify-center">
                             <iconify-icon icon="clarity:building-solid" class=""
                                 style="font-size: 35px;"></iconify-icon>
                         </div>
@@ -120,7 +120,7 @@
         <section class="grid grid-cols-12">
             <div class="col-span-12">
                 <div class="bg-white p-5 rounded-[25px] flex flex-col shadow-xl gap-5">
-                    <div class="bg-[#E35258] p-2 rounded-lg w-fit">
+                    <div class="bg-[#e51411] p-2 rounded-lg w-fit">
                         <p class="text-white font-bold">Okkupansi</p>
                     </div>
                     <div class="flex flex-row gap-5 overflow-x-auto lg:justify-center">
@@ -136,7 +136,7 @@
             <div class="col-span-12">
                 <div class="bg-white p-5 rounded-[25px] flex flex-col shadow-xl gap-5">
                     <div class="bg-[#EAEAEA] rounded-md  w-fit flex text-black">
-                        <button class="akademik bg-[#E35258] text-white rounded-md font-bold px-4 py-2 cursor-pointer">
+                        <button class="akademik bg-[#e51411] text-white rounded-md font-bold px-4 py-2 cursor-pointer">
                             Jadwal Akademik
                         </button>
                         <button class="non-akademik font-bold px-4 py-2 cursor-pointer rounded-md">
