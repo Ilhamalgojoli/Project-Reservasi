@@ -1,8 +1,9 @@
 // Pembungkus untuk container input supaya bisa pakai fungsi array
 window.wrappers = [];
+window.count = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    var count = 0;
+    
     const limit = 10;
 
     // Button tambah untuk menambahkan input asset

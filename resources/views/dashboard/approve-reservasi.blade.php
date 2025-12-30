@@ -36,7 +36,7 @@
                 </div>
                 <div class="flex flex-row gap-10 sm:gap-4 sm:flex-col md:flex-col lg:flex-row">
                     <select
-                        class="rounded-xl sm:w-auto md:w-auto lg:w-[730px] text-[#808080] py-2 px-3 appearance-none
+                        class="rounded-xl sm:w-auto md:w-auto lg:w-[715px] text-[#808080] py-2 px-3 appearance-none
                             bg-transparent border border-[#808080] border-opacity-50">
                         <option value="" disabled selected>Lantai</option>
                         <option value="akademik">GKU.04</option>

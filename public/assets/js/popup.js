@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             while(window.wrappers.length > 0){
                 window.wrappers.pop().remove(); 
+
+                window.count = 0 ;
             }
             
             if(window.wrappers.length === 0){
