@@ -1,18 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AiapplicationController;
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\ChartController;
-use App\Http\Controllers\ComponentspageController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FormsController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\TableController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\CryptocurrencyController;
+use App\Http\Controllers\GedungController;
 
 Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('index');
@@ -32,4 +22,8 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/index-8','index8')->name('index8');
         Route::get('/index-9','index9')->name('index9');
     });
+});
+
+Route::controller(GedungController::class)->group(function () {
+    Route::post('/tambah-gedung', 'store')->name('tambah.gedung');
 });

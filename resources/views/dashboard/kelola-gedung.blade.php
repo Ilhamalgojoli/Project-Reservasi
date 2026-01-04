@@ -4,6 +4,7 @@
     $script = '
         <script src="' . asset('assets/js/popup.js') . '" defer></script>
         <script src="' . asset('assets/js/hover-card.js') . '" defer></script>
+        <script src="' . asset('assets/js/gedung.js') . '" defer></script>
     ';
 @endphp
 
@@ -220,57 +221,59 @@
         <div
             class="bg-white p-6 rounded-xl shadow-lg
                 overflow-y-auto relative flex-col w-[900px] sm:w-[80%] md:w-[600px] lg:w-[700px]">
-            <div class="flex flex-row justify-between mb-10">
-                <h1 class="text-2xl font-bold">Tambah Gedung</h1>
-                <button class="popup-close">
-                    <img src="{{ asset('assets/icon/cross.svg') }}" class="" />
-                </button>
-            </div>
-
-            <div class="flex sm:flex-col md:flex-col lg:flex-col gap-5 w-full">
-                <div class="flex flex-col gap-3">
-                    <label for="gambar"
-                        class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer">
-                        Klik untuk menambahkan gambar
-                    </label>
-
-                    <input id="gambar" type="file" class="hidden" />
+            <form id="">
+                <div class="flex flex-row justify-between mb-10">
+                    <h1 class="text-2xl font-bold">Tambah Gedung</h1>
+                    <button class="popup-close">
+                        <img src="{{ asset('assets/icon/cross.svg') }}" class="" />
+                    </button>
                 </div>
 
-                <div class="flex sm:flex-col md:flex-col lg:flex-row gap-5 mb-5">
-                    <div class="flex flex-col gap-5 flex-1">
-                        <input type="text"
-                            class="rounded-lg py-2 px-3 border text-black
-                          border-[#808080] border-opacity-50"
-                            placeholder="Nama Gedung" />
-                        <input type="text"
-                            class="rounded-lg py-2 px-3 border text-black
-                          border-[#808080] border-opacity-50"
-                            placeholder="Kode Gedung" />
+                <div class="flex sm:flex-col md:flex-col lg:flex-col gap-5 w-full">
+                    <div class="flex flex-col gap-3">
+                        <label for="gambar"
+                            class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer">
+                            Klik untuk menambahkan gambar
+                        </label>
+
+                        <input id="gambar" type="file" class="hidden" />
                     </div>
-                    <div class="flex flex-col gap-5 flex-1">
-                        <input type="text"
-                            class="rounded-lg py-2 px-3 border border-[#808080] text-black
+
+                    <div class="flex sm:flex-col md:flex-col lg:flex-row gap-5 mb-5">
+                        <div class="flex flex-col gap-5 flex-1">
+                            <input type="text"
+                                class="rounded-lg py-2 px-3 border text-black
+                          border-[#808080] border-opacity-50"
+                                id="nama" placeholder="Nama Gedung" />
+                            <input type="text"
+                                class="rounded-lg py-2 px-3 border text-black
+                          border-[#808080] border-opacity-50"
+                                id="kode" placeholder="Kode Gedung" />
+                        </div>
+                        <div class="flex flex-col gap-5 flex-1">
+                            <input type="text"
+                                class="rounded-lg py-2 px-3 border border-[#808080] text-black
                             border-opacity-50"
-                            placeholder="Jumlah Lantai " />
-                        <select
-                            class="rounded-xl sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                        bg-transparent border border-[#808080] border-opacity-50">
-                            <option value="" disabled selected>Status</option>
-                            <option value="akademik">Aktif</option>
-                            <option value="non-akademik">Tidak Aktif</option>
-                        </select>
+                                id="jumlah" placeholder="Jumlah Lantai " />
+                            <select id="status"
+                                class="rounded-xl sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
+                                <option value="" disabled selected>Status</option>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Tidak Aktif">Tidak Aktif</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex flex-col gap-5">
-                <textarea class="rounded-lg py-2 px-3 h-24 border border-[#808080]
+                <div class="flex flex-col gap-5">
+                    <textarea class="rounded-lg py-2 px-3 h-24 border border-[#808080]
                 border-opacity-50 text-black"
-                    placeholder="Deskripsi"></textarea>
-                <button class="w-auto text-white bg-[red] py-2 rounded-xl font-extrabold">
-                    Submit
-                </button>
-            </div>
+                        id="keterangan" placeholder="Deskripsi"></textarea>
+                    <button id="btn-submit" class="w-auto text-white bg-[red] py-2 rounded-xl font-extrabold">
+                        Submit
+                    </button>
+                </div>
+            </form>
         </div>
     </section>
 
@@ -315,7 +318,7 @@
                             placeholder="Jumlah Lantai " />
                         <select
                             class="rounded-xl sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                        bg-transparent border border-[#808080] border-opacity-50">
+                            bg-transparent border border-[#808080] border-opacity-50">
                             <option value="" disabled selected>Status</option>
                             <option value="akademik">Aktif</option>
                             <option value="non-akademik">Tidak Aktif</option>
@@ -328,9 +331,10 @@
                 border-opacity-50 text-black"
                     placeholder="Deskripsi"></textarea>
                 <div class="flex flex-row justify-center gap-5">
-                    <button class="w-auto px-2 text-white bg-[red] py-2 rounded-xl font-extrabold flex flex-row items-center">
+                    <button
+                        class="w-auto px-2 text-white bg-[red] py-2 rounded-xl font-extrabold flex flex-row items-center">
                         <iconify-icon icon="mdi:garbage-can-outline" class="text-xl"></iconify-icon>
-                            Hapus
+                        Hapus
                     </button>
                     <button class="w-auto px-2 text-white bg-[red] py-2 rounded-xl font-extrabold">
                         Submit
@@ -339,4 +343,10 @@
             </div>
         </div>
     </section>
+
+    <script>
+        const routes = {
+            storeData: "{{ route('tambah.gedung') }}"
+        };
+    </script>
 @endsection
