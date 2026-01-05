@@ -13,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelectorAll(".popup-close").forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
             btn.closest(".popup").classList.add("hidden");
             console.log("click");
 
