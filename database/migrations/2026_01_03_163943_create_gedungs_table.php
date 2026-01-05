@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('kode_gedung');
             $table->enum('status', ["Aktif", "Tidak Aktif"])->default('Aktif');
             $table->string('keterangan');
-            $table->string('gambar');
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }
