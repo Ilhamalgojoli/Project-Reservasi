@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gedung;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class GedungController extends Controller
 {
@@ -13,7 +14,8 @@ class GedungController extends Controller
      */
     public function index()
     {
-        //
+        $gedung = Gedung::all();
+        return view('dashboard.kelola-gedung', compact($gedung));
     }
 
     /**
@@ -27,16 +29,34 @@ class GedungController extends Controller
             'jumlah' => 'required|integer',
             'status' => 'required|string',
             'keterangan' => 'required|string',
+            'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240'
         ]);
 
-        if (empty($validate['id_gedung']) || empty($validate['nama']) || empty($validate['keterangan'])) {
+        if (empty($validate['id_gedung']) || empty($validate['nama']) || empty($validate['keterangan'])
+            || empty($validate['status']) || empty($validate['jumlah'])) {
             return response()->json([
                 'success' => false,
                 'message' => 'Silahkan isi form dengan benar',
             ], 403);
         }
 
-        Log::info('payload : ' . $validate['status']);
+        // Implement storage transfer untuk ke database dan localdisk
+
+        $path = null ;
+
+        // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk 
+
+        if ($request->hasFile('gambar')){
+            if(!Storage::disk('public')->exists('gambar_gedung')){
+                Storage::disk('public')->makeDirectory('gambar_gedung');
+            }
+
+            // Path sekaligus store file ke folder gambar gedung di public storage
+
+            $path = $request->file('gambar')->store('gambar_gedung', 'public');
+        }
+
+        \Log::info('payload : ' . $validate['status']);
         // Log::info($validate['jumlah']);
         $gedung = Gedung::create([
             'nama_gedung' => $validate['nama'],
@@ -44,20 +64,13 @@ class GedungController extends Controller
             'jumlah_lantai' => $validate['jumlah'],
             'status' => $validate['status'],
             'keterangan' => $validate['keterangan'],
+            'gambar' => $path
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Gedung berhasil ditambahkan',
         ], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Gedung $gedung)
-    {
-        //
     }
 
     /**
