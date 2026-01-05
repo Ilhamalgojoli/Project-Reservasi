@@ -14,8 +14,11 @@ class GedungController extends Controller
      */
     public function index()
     {
-        $gedung = Gedung::all();
-        return view('dashboard.kelola-gedung', compact($gedung));
+        $datas = Gedung::all();
+        return view(
+            'dashboard.kelola-gedung',[
+            'datas' => $datas
+        ]);
     }
 
     /**

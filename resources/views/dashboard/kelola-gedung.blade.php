@@ -22,8 +22,8 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-5">
-        <!-- Card One -->
-        <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
+        @foreach ($datas as $data)
+            <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
                 shadow-lg space-x-4 flex flex-col">
             <div class="flex flex-col justify-center items-center gap-5 mb-2">
                 <div class="flex flex-col gap-2">
@@ -85,6 +85,7 @@
                 </div>
             </div>
         </div>
+        @endforeach
     </div>
 
     <!-- Pop Up Tambah-->
