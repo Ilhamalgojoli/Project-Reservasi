@@ -16,6 +16,7 @@ class Gedung extends Model
         'kode_gedung',
         'jumlah_lantai',
         'status',
-        'keterangan'
+        'keterangan',
+        'gambar'
     ];
 }

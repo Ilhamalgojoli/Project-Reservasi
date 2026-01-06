@@ -32,11 +32,6 @@ class DashboardController extends Controller
         return view('dashboard/index5');
     }
 
-    public function index6()
-    {
-        return view('dashboard/kelola-gedung');
-    }
-
     public function index7()
     {
         return view('dashboard/kelola-ruang');

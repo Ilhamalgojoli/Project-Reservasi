@@ -22,8 +22,70 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-5">
+        @foreach ($datas as $data)
+            <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
+                shadow-lg space-x-4 flex flex-col">
+                <div class="flex flex-col justify-center items-center gap-5 mb-2">
+                    <div class="flex flex-col gap-2">
+                        <div class="relative w-auto h-64 card-container">
+                            <img src="{{ asset('assets/basila_images/gambar-gedung.png') }}"
+                                class="w-full h-full object-cover rounded-lg" />
 
-        <!-- Card One -->
+                            <div
+                                class="overlay absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg z-20 lg:hidden">
+                            </div>
+
+                            <!-- icon menu -->
+                            <div class="absolute top-3 right-3 z-30">
+
+                            </div>
+
+                            <!-- button -->
+                            <div class="button-kelola absolute top-[110px] left-1/2 -translate-x-1/2 z-30 lg:hidden">
+                                <a id="btn-gedung" href="{{ route('index7') }}"
+                                    class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all
+                                duration-300 hover:scale-105 flex justify-center items-center gap-2 text-white">
+                                    <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
+                                    <span class="font-extrabold mt-1">Kelola Ruangan</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex flex-col px-5 gap-3">
+                            <div class="flex flex-row justify-between items-center">
+                                <h2 class="text-black font-bold leading-tight md:text-xl sm:text-md lg:text-2xl">Nama
+                                    Gedung
+                                </h2>
+                                <button data-popup-target="pop-up-edit">
+                                    <iconify-icon icon="basil:edit-outline" class="text-4xl opacity-50"></iconify-icon>
+                                </button>
+                            </div>
+                            <p class=
+                               "text-[#8B8B8B] text-md">
+                                надвигается туман, надвигается туман, помоги мне, позволь ему помочь тебе, кожа
+                                на моем теле ослабевает, я хочу ее снять, я чувствую, как растут новые конечности, это
+                                больно,
+                                ...</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-4">
+                        <div
+                            class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
+                        flex flex-col justify-center items-center">
+                            <h1 class="text-white text-2xl">30</h1>
+                            <p class="text-white font-bold text-sm">Jumlah</p>
+                            <p class="text-white font-bold text-sm">Ruangan</p>
+                        </div>
+                        <div
+                            class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
+                        flex flex-col justify-center items-center">
+                            <h1 class="text-white text-2xl">30</h1>
+                            <p class="text-white font-bold text-sm">Jumlah</p>
+                            <p class="text-white font-bold text-sm">Lantai</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
         <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
                 shadow-lg space-x-4 flex flex-col">
             <div class="flex flex-col justify-center items-center gap-5 mb-2">
@@ -86,133 +148,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
-                shadow-lg space-x-4 flex flex-col">
-            <div class="flex flex-col justify-center items-center gap-5 mb-2">
-                <div class="flex flex-col gap-2">
-                    <div class="relative w-auto h-64 card-container">
-                        <img src="{{ asset('assets/basila_images/gambar-gedung.png') }}"
-                            class="w-full h-full object-cover rounded-lg" />
-
-                        <div
-                            class="overlay absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg z-20 lg:hidden">
-                        </div>
-
-                        <!-- icon menu -->
-                        <div class="absolute top-3 right-3 z-30">
-
-                        </div>
-
-                        <!-- button -->
-                        <div class="button-kelola absolute top-[110px] left-1/2 -translate-x-1/2 z-30 lg:hidden">
-                            <a id="btn-gedung" href="{{ route('index7') }}"
-                                class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all
-                                duration-300 hover:scale-105 flex justify-center items-center gap-2 text-white">
-                                <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
-                                <span class="font-extrabold mt-1">Kelola Ruangan</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col px-5 gap-3">
-                        <div class="flex flex-row justify-between items-center">
-                            <h2 class="text-black font-bold leading-tight md:text-xl sm:text-md lg:text-2xl">Nama
-                                Gedung
-                            </h2>
-                            <button data-popup-target="pop-up-edit">
-                                <iconify-icon icon="basil:edit-outline" class="text-4xl opacity-50"></iconify-icon>
-                            </button>
-                        </div>
-                        <p class=
-                               "text-[#8B8B8B] text-md">
-                            надвигается туман, надвигается туман, помоги мне, позволь ему помочь тебе, кожа
-                            на моем теле ослабевает, я хочу ее снять, я чувствую, как растут новые конечности, это
-                            больно,
-                            ...</p>
-                    </div>
-                </div>
-                <div class="flex flex-row gap-4">
-                    <div
-                        class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
-                        flex flex-col justify-center items-center">
-                        <h1 class="text-white text-2xl">30</h1>
-                        <p class="text-white font-bold text-sm">Jumlah</p>
-                        <p class="text-white font-bold text-sm">Ruangan</p>
-                    </div>
-                    <div
-                        class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
-                        flex flex-col justify-center items-center">
-                        <h1 class="text-white text-2xl">30</h1>
-                        <p class="text-white font-bold text-sm">Jumlah</p>
-                        <p class="text-white font-bold text-sm">Lantai</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
-                shadow-lg space-x-4 flex flex-col">
-            <div class="flex flex-col justify-center items-center gap-5 mb-2">
-                <div class="flex flex-col gap-2">
-                    <div class="relative w-auto h-64 card-container">
-                        <img src="{{ asset('assets/basila_images/gambar-gedung.png') }}"
-                            class="w-full h-full object-cover rounded-lg" />
-
-                        <div
-                            class="overlay absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg z-20 lg:hidden">
-                        </div>
-
-                        <!-- icon menu -->
-                        <div class="absolute top-3 right-3 z-30">
-
-                        </div>
-
-                        <!-- button -->
-                        <div class="button-kelola absolute top-[110px] left-1/2 -translate-x-1/2 z-30 lg:hidden">
-                            <a id="btn-gedung" href="{{ route('index7') }}"
-                                class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all
-                                duration-300 hover:scale-105 flex justify-center items-center gap-2 text-white">
-                                <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
-                                <span class="font-extrabold mt-1">Kelola Ruangan</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col px-5 gap-3">
-                        <div class="flex flex-row justify-between items-center">
-                            <h2 class="text-black font-bold leading-tight md:text-xl sm:text-md lg:text-2xl">Nama
-                                Gedung
-                            </h2>
-                            <button data-popup-target="pop-up-edit">
-                                <iconify-icon icon="basil:edit-outline" class="text-4xl opacity-50"></iconify-icon>
-                            </button>
-                        </div>
-                        <p class=
-                               "text-[#8B8B8B] text-md">
-                            надвигается туман, надвигается туман, помоги мне, позволь ему помочь тебе, кожа
-                            на моем теле ослабевает, я хочу ее снять, я чувствую, как растут новые конечности, это
-                            больно,
-                            ...</p>
-                    </div>
-                </div>
-                <div class="flex flex-row gap-4">
-                    <div
-                        class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
-                        flex flex-col justify-center items-center">
-                        <h1 class="text-white text-2xl">30</h1>
-                        <p class="text-white font-bold text-sm">Jumlah</p>
-                        <p class="text-white font-bold text-sm">Ruangan</p>
-                    </div>
-                    <div
-                        class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
-                        flex flex-col justify-center items-center">
-                        <h1 class="text-white text-2xl">30</h1>
-                        <p class="text-white font-bold text-sm">Jumlah</p>
-                        <p class="text-white font-bold text-sm">Lantai</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <!-- Pop Up Tambah-->
@@ -230,30 +165,25 @@
                 </div>
 
                 <div class="flex sm:flex-col md:flex-col lg:flex-col gap-5 w-full">
-                    <div class="flex flex-col gap-3">
-                        <label for="gambar"
-                            class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer">
-                            Klik untuk menambahkan gambar
-                        </label>
-
-                        <input id="gambar" type="file" class="hidden" />
-                    </div>
+                    <input id="gambar" type="file"
+                        class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer"
+                        accept="image/*" />
 
                     <div class="flex sm:flex-col md:flex-col lg:flex-row gap-5 mb-5">
                         <div class="flex flex-col gap-5 flex-1">
                             <input type="text"
                                 class="rounded-lg py-2 px-3 border text-black
-                          border-[#808080] border-opacity-50"
+                                border-[#808080] border-opacity-50"
                                 id="nama" placeholder="Nama Gedung" />
                             <input type="text"
                                 class="rounded-lg py-2 px-3 border text-black
-                          border-[#808080] border-opacity-50"
+                                border-[#808080] border-opacity-50"
                                 id="kode" placeholder="Kode Gedung" />
                         </div>
                         <div class="flex flex-col gap-5 flex-1">
                             <input type="text"
                                 class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                            border-opacity-50"
+                                border-opacity-50"
                                 id="jumlah" placeholder="Jumlah Lantai " />
                             <select id="status"
                                 class="rounded-xl sm:w-auto text-[#808080] py-2 px-3 appearance-none
@@ -267,9 +197,9 @@
                 </div>
                 <div class="flex flex-col gap-5">
                     <textarea class="rounded-lg py-2 px-3 h-24 border border-[#808080]
-                border-opacity-50 text-black"
+                        border-opacity-50 text-black"
                         id="keterangan" placeholder="Deskripsi"></textarea>
-                    <button id="btn-submit" class="w-auto text-white bg-[red] py-2 rounded-xl font-extrabold">
+                    <button id="btn-submit" type="submit" class="w-auto text-white bg-[red] py-2 rounded-xl font-extrabold">
                         Submit
                     </button>
                 </div>
@@ -291,14 +221,9 @@
             </div>
 
             <div class="flex sm:flex-col md:flex-col lg:flex-col gap-5 w-full">
-                <div class="flex flex-col gap-3">
-                    <label for="gambar"
-                        class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer">
-                        Klik untuk menambahkan gambar
-                    </label>
-
-                    <input id="gambar" type="file" class="hidden" />
-                </div>
+                <input id="gambar" type="file"
+                    class="rounded-lg py-2 px-3 border border-[#808080] border-opacity-50 text-[#808080] cursor-pointer"
+                    accept="image/*" />
 
                 <div class="flex sm:flex-col md:flex-col lg:flex-row gap-5 mb-5">
                     <div class="flex flex-col gap-5 flex-1">
