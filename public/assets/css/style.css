@@ -208,7 +208,6 @@ select {
 2. Remove default button styles.
 */
 button,
-[type='button'],
 [type='reset']{
     -webkit-appearance: button;
     /* 1 */
@@ -1863,6 +1862,51 @@ input:checked+.toggle-bg {
 }
 
 /*============================================= Button Css Start =============================================*/
+.btn-ok {
+    background-color: #4CAF50; /* hijau */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-ok:hover {
+    background-color: #45a049; /* hijau lebih gelap saat hover */
+}
+
+.btn-confirm {
+    background-color: #4CAF50; /* hijau */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-confirm:hover {
+    background-color: #45a049; /* hijau lebih gelap saat hover */
+}
+
+.btn-cancel {
+    background-color: #af4c4c; /* merah */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #9f3f3f; /* merah gelap */
+}
+
 .btn {
     display: inline-flex;
     border-radius: 0.5rem;
