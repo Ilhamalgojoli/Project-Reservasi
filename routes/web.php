@@ -23,6 +23,7 @@ Route::prefix('dashboard')->group(function () {
 
     Route::controller(GedungController::class)->group(function () {
         Route::get('kelola-gedung', 'index')->name('index6');
+        Route::get('/edit/{id}', [GedungController::class, 'edit']);
         Route::post('/tambah-gedung', 'store')->name('tambah.gedung');
     });
 });
