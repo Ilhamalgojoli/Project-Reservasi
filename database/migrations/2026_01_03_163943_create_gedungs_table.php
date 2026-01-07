@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('gedungs', function (Blueprint $table) {
             $table->id();
             $table->string('nama_gedung');
-            $table->integer('jumlah_lantai');
-            $table->string('kode_gedung');
+            $table->string('kode_gedung')->unique();
             $table->enum('status', ["Aktif", "Tidak Aktif"])->default('Aktif');
             $table->string('keterangan');
             $table->string('gambar')->nullable();
