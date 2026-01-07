@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Lantai;
+use App\Models\Ruangan;
 
 class Gedung extends Model
 {
@@ -14,9 +16,23 @@ class Gedung extends Model
     protected $fillable = [
         'nama_gedung',
         'kode_gedung',
-        'jumlah_lantai',
         'status',
         'keterangan',
         'gambar'
     ];
+
+    public function lantai(){
+        return $this->hasMany(Lantai::class);
+    }
+
+    public function ruangan(){
+        return $this->hasOneThrough(
+            Ruangan::class,
+            Lantai::class,
+            'gedung_id',
+            'lantai_id',
+            'id',
+            'id'
+        );
+    }
 }
