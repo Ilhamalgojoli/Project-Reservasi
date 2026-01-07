@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gedung;
+use App\Models\Lantai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,11 +16,12 @@ class GedungController extends Controller
      */
     public function index()
     {
-        $datas = Gedung::all();
+        $datas = Gedung::withCount('lantai')->withCount('ruangan')->get();
+
         return view(
-            'dashboard.kelola-gedung',[
-            'datas' => $datas
-        ]);
+            'dashboard.kelola-gedung', [
+                'datas' => $datas,
+            ]);
     }
 
     /**
@@ -26,58 +29,93 @@ class GedungController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'id_gedung' => 'required|string',
-            'nama' => 'required|string',
-            'jumlah' => 'required|integer',
-            'status' => 'required|string',
-            'keterangan' => 'required|string',
-            'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240'
-        ]);
-
-        if(!filter_var($request->jumlah, FILTER_VALIDATE_INT)){
-            return response->json([
-                'success' => false,
-                'message' => 'Isi form jumlah dengan sebuah angka!'
-            ], 422);
-        }
-
         // Implement storage transfer untuk ke database dan localdisk
         $path = null;
-        
-        // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
-        if ($request->hasFile('gambar')){
-            if(!Storage::disk('public')->exists('gambar_gedung')){
-                Storage::disk('public')->makeDirectory('gambar_gedung');
+
+        try {
+            // pakai DB:transaction untuk loop setiap lantai gedung
+            DB::transaction(function () use ($request) {
+                $validate = $request->validate([
+                    'id_gedung' => 'required|string',
+                    'nama' => 'required|string',
+                    'jumlah' => 'required|integer',
+                    'status' => 'required|string',
+                    'keterangan' => 'required|string',
+                    'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
+                ]);
+
+                if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
+                    return response->json([
+                        'success' => false,
+                        'message' => 'Isi form jumlah dengan sebuah angka!',
+                    ], 422);
+                }
+
+                // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
+                if ($request->hasFile('gambar')) {
+                    if (! Storage::disk('public')->exists('gambar_gedung')) {
+                        Storage::disk('public')->makeDirectory('gambar_gedung');
+                    }
+
+                    // Path sekaligus store file ke folder gambar gedung di public storage
+                    $path = $request->file('gambar')->store('gambar_gedung', 'public');
+                }
+
+                // \Log::info('payload : '.$validate['status']);
+                // Log::info($validate['jumlah']);
+                $gedung = Gedung::create([
+                    'nama_gedung' => $validate['nama'],
+                    'kode_gedung' => $validate['id_gedung'],
+                    'status' => $validate['status'],
+                    'keterangan' => $validate['keterangan'],
+                    'gambar' => $path ?? null,
+                ]);
+
+                for ($i = 1; $i <= $request->jumlah; $i++) {
+                    $lantai = Lantai::create([
+                        'lantai' => $i,
+                        'gedung_id' => $gedung->id,
+                    ]);
+                }
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Gedung berhasil ditambahkan',
+            ], 200);
+        } catch (\Exception $e) {
+            // Cek gambar pada storage laravel jika ada maka hapus
+            if ($path) {
+                Storage::disk('public')->delete($path);
             }
 
-            // Path sekaligus store file ke folder gambar gedung di public storage
-            $path = $request->file('gambar')->store('gambar_gedung', 'public');
+            \Log::error($e);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan gedung!',
+            ], 500);
         }
-
-        \Log::info('payload : ' . $validate['status']);
-        // Log::info($validate['jumlah']);
-        $gedung = Gedung::create([
-            'nama_gedung' => $validate['nama'],
-            'kode_gedung' => $validate['id_gedung'],
-            'jumlah_lantai' => $validate['jumlah'],
-            'status' => $validate['status'],
-            'keterangan' => $validate['keterangan'],
-            'gambar' => $path
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Gedung berhasil ditambahkan',
-        ], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Gedung $gedung)
+    public function edit($id)
     {
-        
+        $gedung = Gedung::withCount('lantai')->find($id);
+
+        if (! $gedung) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gedung tidak ditemukan',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $gedung,
+        ]);
     }
 
     /**
@@ -91,30 +129,30 @@ class GedungController extends Controller
             'jumlah' => 'required|integer',
             'status' => 'required|string',
             'keterangan' => 'required|string',
-            'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240'
+            'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
-        if(!filter_var($request->jumlah, FILTER_VALIDATE_INT)){
+        if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
             return response->json([
                 'success' => false,
-                'message' => 'Isi form jumlah dengan sebuah angka!'
+                'message' => 'Isi form jumlah dengan sebuah angka!',
             ], 422);
         }
 
         $gedung = Gedung::find($request->id);
-        
+
         $gedung = Gedung::update([
             'nama_gedung' => $validate['nama'],
             'kode_gedung' => $validate['id_gedung'],
             'jumlah_lantai' => $validate['jumlah'],
             'status' => $validate['status'],
             'keterangan' => $validate['keterangan'],
-            'gambar' => $path
+            'gambar' => $path,
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Data berhasil di update.'
+            'message' => 'Data berhasil di update.',
         ], 200);
     }
 
