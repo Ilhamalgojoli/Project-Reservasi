@@ -1,10 +1,10 @@
 // Pembungkus untuk container input supaya bisa pakai fungsi array
-window.wrappers = [];
-window.count = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const limit = 10;
+    let wrappers = [];
+    let count = 0;
 
     // Button tambah untuk menambahkan input asset
     document.querySelectorAll('[data-button-target]').forEach(btn => {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             if (wrappers.length === 0) {
-                return 0;
+                return;
             }
 
             const last = wrappers.pop();
@@ -78,6 +78,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Close popUp
+    document.querySelectorAll(".popup-close").forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            btn.closest(".popup").classList.add("hidden");
+            console.log("click");
+
+            while (wrappers.length > 0) {
+                wrappers.pop().remove();
+
+                count = 0;
+            }
+
+            if (wrappers.length === 0) {
+                const lessBtn = btn.closest('.popup').querySelector('.button-less');
+                lessBtn.classList.add('hidden');
+            }
+
+            console.log(window.wrappers);
+        });
+    });
 
     // Hover info untuk guide user admin dalam menambahkan ruangan
     // Ga jadi pakai

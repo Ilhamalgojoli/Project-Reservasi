@@ -156,7 +156,7 @@
         <div
             class="bg-white p-6 rounded-xl shadow-lg
                 overflow-y-auto relative flex-col w-[900px] sm:w-[80%] md:w-[600px] lg:w-[700px]">
-            <form id="">
+            <form id="tambah-gedung">
                 <div class="flex flex-row justify-between mb-10">
                     <h1 class="text-2xl font-bold">Tambah Gedung</h1>
                     <button class="popup-close">
