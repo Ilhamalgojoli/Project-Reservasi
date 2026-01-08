@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             Swal.fire({
                 title: 'Gagal!',
-                text: errData.message || 'Form tidak bolehkosong!.',
+                text: 'Form tidak boleh kosong!.',
                 icon: 'error',
                 confirmButtonText: 'OK',
                 buttonsStyling: false,
