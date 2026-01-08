@@ -186,8 +186,35 @@ class GedungController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Gedung $gedung)
+    public function destroy($id)
     {
-        //
+        $gedung = Gedung::find($id);
+
+        \Log::info('id'.$id);
+
+        if (! $gedung) {
+            return response->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ]);
+        }
+
+        try {
+            $gedung->delete();
+
+            if ($gedung->gambar) {
+                Storage::disk('public')->delete($gedung->gambar);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan gedung!',
+            ], 500);
+        }
     }
 }
