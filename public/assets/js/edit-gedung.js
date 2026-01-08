@@ -5,14 +5,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const status = document.getElementById('edit-status');
     const deskripsi = document.getElementById('edit-keterangan');
     const gambar = document.getElementById('edit-gambar');
-    const btnTambahGedung = document.getElementById('submit-edit');
+    const btnEditGedung = document.getElementById('submit-edit');
     const popUp = document.getElementById('pop-up-edit');
 
+    let id = 0;
+
+    // Untuk mendapatkan data dari database 
     document.querySelectorAll(".edit-btn").forEach(btn => {
         btn.addEventListener('click', async () => {
             try {
-                const id = btn.dataset.id;
+                id = btn.dataset.id;
 
+                // Panggil route endpoint dari laravel
                 const res = await fetch(`/dashboard/edit/${id}`);
 
                 const data = await res.json();
@@ -46,7 +50,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    btnTambahGedung.addEventListener('click', async () => {
+    // Proses update dari data yang sebelum ny diambil 
+    btnEditGedung.addEventListener('click', async () => {
 
         if (nama.value === "" || kode.value === "" ||
             jumlah.value === "" || status.value === "" ||
@@ -83,10 +88,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (result.isConfirmed) {
                 try {
                     const jumlahParsing = parseInt(jumlah.value);
-                    console.log(status.value);
 
                     const formData = new FormData();
 
+                    formData.append('id', id);
                     formData.append('id_gedung', kode.value);
                     formData.append('nama', nama.value);
                     formData.append('jumlah', jumlahParsing);
@@ -97,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         formData.append('gambar', gambar.files[0]);
                     }
 
-                    const req = await fetch(routes.storeData, {
+                    const req = await fetch(routes.updateData, {
                         method: "POST",
                         headers: {
                             "Accept": "application/json",
@@ -126,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (data.success) {
                         Swal.fire({
                             title: 'Berhasil!',
-                            text: data.message || 'Gedung berhasil ditambahkan!.',
+                            text: data.message || 'Gedung berhasil diUpdate!.',
                             icon: 'success',
                             confirmButtonText: 'OK',
                             buttonsStyling: false,

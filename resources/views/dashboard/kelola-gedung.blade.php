@@ -210,7 +210,8 @@
 
     <script>
         const routes = {
-            storeData: "{{ route('tambah.gedung') }}"
+            storeData: "{{ route('tambah.gedung') }}",
+            updateData: "{{ route('update.gedung') }}"
         };
     </script>
 @endsection

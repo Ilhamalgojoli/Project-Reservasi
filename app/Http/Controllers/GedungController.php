@@ -113,37 +113,74 @@ class GedungController extends Controller
      */
     public function update(Request $request)
     {
-        $validate = $request->validate([
-            'id' => 'required|integer',
-            'nama' => 'required|string',
-            'jumlah' => 'required|integer',
-            'status' => 'required|string',
-            'keterangan' => 'required|string',
-            'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
-        ]);
+        // Implement storage transfer untuk ke database dan localdisk
+        $path = null;
 
-        if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
-            return response->json([
+        try {
+            $validate = $request->validate([
+                'id' => 'required|integer',
+                'nama' => 'required|string',
+                'id_gedung' => 'required|string',
+                'jumlah' => 'required|integer',
+                'status' => 'required|string',
+                'keterangan' => 'required|string',
+                'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
+            ]);
+
+            if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
+                return response->json([
+                    'success' => false,
+                    'message' => 'Isi form jumlah dengan sebuah angka!',
+                ], 422);
+            }
+
+            // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
+            if ($request->hasFile('gambar')) {
+                if (! Storage::disk('public')->exists('gambar_gedung')) {
+                    Storage::disk('public')->makeDirectory('gambar_gedung');
+                }
+
+                // Path sekaligus store file ke folder gambar gedung di public storage
+                $path = $request->file('gambar')->store('gambar_gedung', 'public');
+            }
+
+            $gedung = Gedung::find($request->id);
+
+            \Log::info($validate['id']);
+
+            if (! $gedung) {
+                return response->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                ]);
+            }
+
+            $gedung->update([
+                'nama_gedung' => $validate['nama'],
+                'kode_gedung' => $validate['id_gedung'],
+                'jumlah_lantai' => $validate['jumlah'],
+                'status' => $validate['status'],
+                'keterangan' => $validate['keterangan'],
+                'gambar' => $path ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil di update.',
+            ], 200);
+        } catch (\Exception $e) {
+            // Cek gambar pada storage laravel jika ada maka hapus
+            if ($path) {
+                Storage::disk('public')->delete($path);
+            }
+
+            \Log::error($e);
+
+            return response()->json([
                 'success' => false,
-                'message' => 'Isi form jumlah dengan sebuah angka!',
-            ], 422);
+                'message' => 'Gagal menambahkan gedung!',
+            ], 500);
         }
-
-        $gedung = Gedung::find($request->id);
-
-        $gedung = Gedung::update([
-            'nama_gedung' => $validate['nama'],
-            'kode_gedung' => $validate['id_gedung'],
-            'jumlah_lantai' => $validate['jumlah'],
-            'status' => $validate['status'],
-            'keterangan' => $validate['keterangan'],
-            'gambar' => $path,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil di update.',
-        ], 200);
     }
 
     /**
