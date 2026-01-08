@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 nama.value = data.data.nama_gedung;
                 kode.value = data.data.kode_gedung;
-                jumlah.value = data.data.lantai_count;
+                jumlah.value = data.data.jumlah_lantai;
                 status.value = data.data.status || '';
                 deskripsi.value = data.data.keterangan;
 
