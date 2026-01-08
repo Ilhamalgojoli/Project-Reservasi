@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const nama = document.getElementById('edit-nama');
     const kode = document.getElementById('edit-kode');
     const jumlah = document.getElementById('edit-jumlah-lantai');
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             deskripsi.value === "") {
 
             Swal.fire({
-                title: 'Gagal!',
-                text: errData.message || 'Form tidak bolehkosong!.',
+                title: 'Error!',
+                text: 'Form tidak bolehkosong!.',
                 icon: 'error',
                 confirmButtonText: 'OK',
                 buttonsStyling: false,
@@ -169,6 +169,95 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 })
             }
+        });
+    });
+
+    // Button delete item gedung
+
+    document.querySelectorAll(".btn-delete").forEach(btn => {
+        btn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Apakah Anda yakin ingin menyimpan data ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Konfirmasi',
+                cancelButtonText: 'Batal',
+                buttonsStyling: false,
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn-confirm',
+                    cancelButton: 'btn-cancel',
+                    actions: 'flex justify-center gap-4'
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const req = await fetch(`/dashboard/delete/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            }
+                        });
+
+                        if (req.status === 403) {
+                            const err = req.json();
+                            Swal.fire({
+                                title: 'Error!',
+                                text: err.message || 'Terjadi kesalahan saat mengirim data.',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn-ok'
+                                }
+                            })
+                        }
+
+                        const data = await req.json();
+
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn-ok'
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    } catch (err) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: err.message || 'Terjadi kesalahan saat mengirim data.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn-ok'
+                            }
+                        })
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: 'Dibatalkan',
+                        text: 'Tambah gedung dibatalkan.',
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'btn-ok'
+                        }
+                    })
+                }
+            });
         });
     });
 });
