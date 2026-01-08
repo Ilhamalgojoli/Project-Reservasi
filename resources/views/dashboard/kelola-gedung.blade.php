@@ -43,9 +43,9 @@
 
                             <!-- button -->
                             <div class="button-kelola absolute top-[110px] left-1/2 -translate-x-1/2 z-30 lg:hidden">
-                                <a id="btn-gedung" href="{{ route('index7') }}"
+                                <a id="btn-gedung" href="{{ route('kelola-ruang', ['id' => $data['id']]) }}"
                                     class="bg-[#FF0101] rounded-lg px-5 py-2 font-extrabold transition-all
-                                duration-300 hover:scale-105 flex justify-center items-center gap-2 text-white">
+                                    duration-300 hover:scale-105 flex justify-center items-center gap-2 text-white">
                                     <iconify-icon icon="mingcute:plus-fill" class="text-2xl"></iconify-icon>
                                     <span class="font-extrabold mt-1">Kelola Ruangan</span>
                                 </a>
@@ -194,8 +194,8 @@
                 border-opacity-50 text-black"
                     id="edit-keterangan" placeholder="Deskripsi"></textarea>
                 <div class="flex flex-row justify-center gap-5">
-                    <button
-                        class="w-auto px-2 text-white bg-[red] py-2 rounded-xl font-extrabold flex flex-row items-center">
+                    <button type="button"
+                        class="btn-delete w-auto px-2 text-white bg-[red] py-2 rounded-xl font-extrabold flex flex-row items-center">
                         <iconify-icon icon="mdi:garbage-can-outline" class="text-xl"></iconify-icon>
                         Hapus
                     </button>

@@ -179,13 +179,14 @@
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
                         <div class="flex flex-row gap-5">
+                            <select
+                                class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
+                                <option value="" disabled selected>Lantai</option>
+                            </select>
                             <input type="text"
                                 class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                placeholder="Lantai" />
-                            <input type="text"
-                                class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
+                                border-[#808080] border-opacity-50"
                                 placeholder="Kode Ruangan" />
                         </div>
                         <div class="flex flex-row gap-5">
@@ -198,7 +199,7 @@
                             </select>
                             <input type="text"
                                 class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
+                                border-[#808080] border-opacity-50"
                                 placeholder="Muatan Kapasitas" />
                         </div>
                     </div>
