@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('kode_ruangan')->unique();
             $table->enum('status', ["Aktif", "Tidak Aktif"])->default('Aktif');
             $table->integer('muatan_kapasitas');
-            $table->foreignId('lantai_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('gedung_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

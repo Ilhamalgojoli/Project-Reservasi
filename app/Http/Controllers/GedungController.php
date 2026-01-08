@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gedung;
-use App\Models\Lantai;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +14,7 @@ class GedungController extends Controller
      */
     public function index()
     {
-        $datas = Gedung::withCount('lantai')->withCount('ruangan')->get();
+        $datas = Gedung::withCount('ruangan')->get();
 
         return view(
             'dashboard.kelola-gedung', [
@@ -33,51 +31,43 @@ class GedungController extends Controller
         $path = null;
 
         try {
-            // pakai DB:transaction untuk loop setiap lantai gedung
-            DB::transaction(function () use ($request) {
-                $validate = $request->validate([
-                    'id_gedung' => 'required|string',
-                    'nama' => 'required|string',
-                    'jumlah' => 'required|integer',
-                    'status' => 'required|string',
-                    'keterangan' => 'required|string',
-                    'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
-                ]);
+            $validate = $request->validate([
+                'id_gedung' => 'required|string',
+                'nama' => 'required|string',
+                'jumlah' => 'required|integer',
+                'status' => 'required|string',
+                'keterangan' => 'required|string',
+                'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
+            ]);
 
-                if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
-                    return response->json([
-                        'success' => false,
-                        'message' => 'Isi form jumlah dengan sebuah angka!',
-                    ], 422);
+            // Filter form jumlah harus menggunakan validasi number
+            if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
+                return response->json([
+                    'success' => false,
+                    'message' => 'Isi form jumlah dengan sebuah angka!',
+                ], 422);
+            }
+
+            // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
+            if ($request->hasFile('gambar')) {
+                if (! Storage::disk('public')->exists('gambar_gedung')) {
+                    Storage::disk('public')->makeDirectory('gambar_gedung');
                 }
 
-                // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
-                if ($request->hasFile('gambar')) {
-                    if (! Storage::disk('public')->exists('gambar_gedung')) {
-                        Storage::disk('public')->makeDirectory('gambar_gedung');
-                    }
+                // Path sekaligus store file ke folder gambar gedung di public storage
+                $path = $request->file('gambar')->store('gambar_gedung', 'public');
+            }
 
-                    // Path sekaligus store file ke folder gambar gedung di public storage
-                    $path = $request->file('gambar')->store('gambar_gedung', 'public');
-                }
-
-                // \Log::info('payload : '.$validate['status']);
-                // Log::info($validate['jumlah']);
-                $gedung = Gedung::create([
-                    'nama_gedung' => $validate['nama'],
-                    'kode_gedung' => $validate['id_gedung'],
-                    'status' => $validate['status'],
-                    'keterangan' => $validate['keterangan'],
-                    'gambar' => $path ?? null,
-                ]);
-
-                for ($i = 1; $i <= $request->jumlah; $i++) {
-                    $lantai = Lantai::create([
-                        'lantai' => $i,
-                        'gedung_id' => $gedung->id,
-                    ]);
-                }
-            });
+            // \Log::info('payload : '.$validate['status']);
+            // Log::info($validate['jumlah']);
+            $gedung = Gedung::create([
+                'nama_gedung' => $validate['nama'],
+                'kode_gedung' => $validate['id_gedung'],
+                'status' => $validate['status'],
+                'keterangan' => $validate['keterangan'],
+                'jumlah_lantai' => $validate['jumlah'],
+                'gambar' => $path ?? null,
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -103,7 +93,7 @@ class GedungController extends Controller
      */
     public function edit($id)
     {
-        $gedung = Gedung::withCount('lantai')->find($id);
+        $gedung = Gedung::find($id);
 
         if (! $gedung) {
             return response()->json([

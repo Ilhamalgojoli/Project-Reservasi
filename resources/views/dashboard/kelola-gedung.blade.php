@@ -70,14 +70,14 @@
                         <div
                             class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
                         flex flex-col justify-center items-center">
-                            <h1 class="text-white text-2xl">{{ $data['ruangan'] ?? '0' }}</h1>
+                            <h1 class="text-white text-2xl">{{ $data['ruangan_count'] ?? '0' }}</h1>
                             <p class="text-white font-bold text-sm">Jumlah</p>
                             <p class="text-white font-bold text-sm">Ruangan</p>
                         </div>
                         <div
                             class="bg-[#FF0101] w-[120px] h-[100px] rounded-2xl
                         flex flex-col justify-center items-center">
-                            <h1 class="text-white text-2xl">{{ $data['lantai_count'] }}</h1>
+                            <h1 class="text-white text-2xl">{{ $data['jumlah_lantai'] }}</h1>
                             <p class="text-white font-bold text-sm">Jumlah</p>
                             <p class="text-white font-bold text-sm">Lantai</p>
                         </div>

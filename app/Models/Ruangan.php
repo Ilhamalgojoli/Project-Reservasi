@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Lantai;
 use App\Models\Gedung;
 
 class Ruangan extends Model
@@ -17,10 +16,10 @@ class Ruangan extends Model
         'kode_ruangan',
         'status',
         'muatan_kapasitas',
-        'lantai_id'
+        'gedung_id'
     ];
 
-    public function lantai(){
-        return $this->belongTo(Lantai::class);
+    public function gedung(){
+        return $this->belongTo(Gedung::class);
     }
 }
