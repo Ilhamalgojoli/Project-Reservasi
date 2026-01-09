@@ -64,6 +64,7 @@
         <!-- Section Two -->
         <section class="col-span-12 rounded-2xl bg-white shadow-lg p-8">
             <div class="overflow-x-auto">
+                @foreach ($datas as $data)
                 <table id="selection-table-3" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
                     <thead>
                         <tr>
@@ -71,12 +72,13 @@
                             <th scope="col">Ruangan</th>
                             <th scope="col">Fasilitas</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Kapasitas</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <td>1</td>
-                        <td>GKU.07.13</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $data['kode_ruangan'] }}</td>
                         <td>
                             AC: 20</br>
                             Kursi: 20</br>
@@ -84,15 +86,21 @@
                             Proyektor: 1
                         </td>
                         <td>
-                            Aktif
+                            {{ $data['status'] }}
                         </td>
                         <td>
-                            <button data-popup-target="popup-edit" class="rounded-full bg-[#ff9d007e] px-4 py-3">
+                            {{ $data['muatan_kapasitas'] }}
+                        </td>
+                        <td>
+                            <button data-id = {{ $data['id'] }}
+                            data-popup-target="popup-edit" 
+                            class="rounded-full bg-[#ff9d007e] px-4 py-3">
                                 <iconify-icon icon="mingcute:edit-2-line" class="text-white"></iconify-icon>
                             </button>
                         </td>
                     </tbody>
                 </table>
+                @endforeach
             </div>
         </section>
 

@@ -68,19 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: formData
                     });
 
-                    if (req.status === 403) {
-                        const errData = await res.json();
-                        Swal.fire({
-                            title: 'Gagal!',
-                            text: errData.message || 'Silahkan isi data gedung dengan benar.',
-                            icon: 'error',
-                            confirmButtonText: 'OK',
-                            buttonsStyling: false,
-                            customClass: {
-                                confirmButton: 'btn-ok'
-                            }
-                        });
-                        return;
+                    // Cek hasil status
+                    if(!req.ok){
+                        // jika error,maka error akan lansung dilempar di tangkap(catch), 
+                        const err = await req.json().catch(() => ({}));
+                        throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
                     }
 
                     const data = await req.json();
