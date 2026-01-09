@@ -41,7 +41,7 @@ class GedungController extends Controller
             ]);
 
             // Filter form jumlah harus menggunakan validasi number
-            if (! filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
+            if (!filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
                 return response->json([
                     'success' => false,
                     'message' => 'Isi form jumlah dengan sebuah angka!',
