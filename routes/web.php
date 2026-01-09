@@ -31,5 +31,6 @@ Route::prefix('dashboard')->group(function () {
 
     Route::controller(RuanganController::class)->group(function () {
         Route::get('/dashboard/kelola-ruang/{id}', [RuanganController::class, 'index'])->name('kelola-ruang');
+        Route::post('tambah-ruang', [RuanganController::class, 'store'])->name('tambah.ruang');
     });
 });

@@ -5,6 +5,7 @@
         <script src="' . asset('assets/js/data-table.js') . '" defer></script>
         <script src="' . asset('assets/js/popup.js') . '" defer></script>
         <script src="' . asset('assets/js/dynamic-input.js') . '" defer></script>
+        <script src="' . asset('assets/js/tambah-ruang.js') . '" defer></script>
     ';
 @endphp
 
@@ -184,20 +185,20 @@
                                 bg-transparent border border-[#808080] border-opacity-50">
                                 <option value="" disabled selected>Lantai</option>
                             </select>
-                            <input type="text"
+                            <input type="text" id="idRuangan"
                                 class="rounded-lg flex-1 py-2 px-3 border text-black
                                 border-[#808080] border-opacity-50"
                                 placeholder="Kode Ruangan" />
                         </div>
                         <div class="flex flex-row gap-5">
-                            <select
+                            <select id="status"
                                 class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
                                 bg-transparent border border-[#808080] border-opacity-50">
                                 <option value="" disabled selected>Status</option>
-                                <option value="akademik">Aktif</option>
-                                <option value="non-akademik">Tidak Aktif</option>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Tidak Aktif">Tidak Aktif</option>
                             </select>
-                            <input type="text"
+                            <input type="text" id="kapasitas"
                                 class="rounded-lg flex-1 py-2 px-3 border text-black
                                 border-[#808080] border-opacity-50"
                                 placeholder="Muatan Kapasitas" />
@@ -242,10 +243,17 @@
                             </button>
                         </div>
                     </div>
-                    <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
+                    <button type="button" id="btn-submit" 
+                    class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
                     </button>
                 </div>
         </section>
     </main>
+
+    <script>
+        const routes = {
+            storeData: "{{ route('tambah.ruang') }}"
+        };
+    </script>
 @endsection
