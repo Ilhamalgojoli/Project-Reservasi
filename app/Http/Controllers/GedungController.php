@@ -6,6 +6,7 @@ use App\Models\Gedung;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class GedungController extends Controller
 {
@@ -32,21 +33,13 @@ class GedungController extends Controller
 
         try {
             $validate = $request->validate([
-                'id_gedung' => 'required|string',
+                'id_gedung' => 'required|string|unique:gedungs,kode_gedung',
                 'nama' => 'required|string',
                 'jumlah' => 'required|integer',
                 'status' => 'required|string',
                 'keterangan' => 'required|string',
                 'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
             ]);
-
-            // Filter form jumlah harus menggunakan validasi number
-            if (!filter_var($request->jumlah, FILTER_VALIDATE_INT)) {
-                return response->json([
-                    'success' => false,
-                    'message' => 'Isi form jumlah dengan sebuah angka!',
-                ], 422);
-            }
 
             // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
             if ($request->hasFile('gambar')) {
@@ -77,6 +70,22 @@ class GedungController extends Controller
             // Cek gambar pada storage laravel jika ada maka hapus
             if ($path) {
                 Storage::disk('public')->delete($path);
+            }
+
+            if ($e instanceof ValidationException) {
+                $errors = $e->errors();
+                if(isset($errors['id_gedung'])){
+                    $msg = "Id sudah dipakai,silahkan pakai id lain!";
+                } elseif(isset($errors['jumlah'])){
+                    $msg = "Isi jumlah lantai dengan sebuah angka!";
+                } else {
+                    $msg = "Lengkapi form!";
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                ], 422);
             }
 
             \Log::error($e);
