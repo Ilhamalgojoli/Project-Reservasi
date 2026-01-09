@@ -9,7 +9,7 @@ class RuanganController extends Controller
 {
     public function index($id)
     {
-        $datas = Ruangan::find($id);
+        $datas = Ruangan::where('gedung_id', $id)->get();
 
         return view(
             'dashboard.kelola-ruang', [
