@@ -64,7 +64,7 @@
         <!-- Section Two -->
         <section class="col-span-12 rounded-2xl bg-white shadow-lg p-8">
             <div class="overflow-x-auto">
-                @foreach ($datas as $data)
+
                 <table id="selection-table-3" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
                     <thead>
                         <tr>
@@ -76,31 +76,33 @@
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $data['kode_ruangan'] }}</td>
-                        <td>
-                            AC: 20</br>
-                            Kursi: 20</br>
-                            Meja: 20 </br>
-                            Proyektor: 1
-                        </td>
-                        <td>
-                            {{ $data['status'] }}
-                        </td>
-                        <td>
-                            {{ $data['muatan_kapasitas'] }}
-                        </td>
-                        <td>
-                            <button data-id = {{ $data['id'] }}
-                            data-popup-target="popup-edit" 
-                            class="rounded-full bg-[#ff9d007e] px-4 py-3">
-                                <iconify-icon icon="mingcute:edit-2-line" class="text-white"></iconify-icon>
-                            </button>
-                        </td>
+                    <tbody class="text-black">
+                        @foreach ($datas as $data)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data['kode_ruangan'] }}</td>
+                                <td>
+                                    AC: 20</br>
+                                    Kursi: 20</br>
+                                    Meja: 20 </br>
+                                    Proyektor: 1
+                                </td>
+                                <td>
+                                    {{ $data['status'] }}
+                                </td>
+                                <td>
+                                    {{ $data['muatan_kapasitas'] }}
+                                </td>
+                                <td>
+                                    <button data-id={{ $data['id'] }} data-popup-target="popup-edit"
+                                        class="rounded-full bg-[#ff9d007e] px-4 py-3">
+                                        <iconify-icon icon="mingcute:edit-2-line" class="text-white"></iconify-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
-                @endforeach
             </div>
         </section>
 
@@ -251,8 +253,8 @@
                             </button>
                         </div>
                     </div>
-                    <button type="button" id="btn-submit" 
-                    class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
+                    <button type="button" id="btn-submit"
+                        class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
                     </button>
                 </div>

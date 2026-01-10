@@ -54,5 +54,30 @@ class RuanganController extends Controller
         }
     }
 
-    public function lantai($id) {}
+    public function show($id){
+        $ruangan = Ruangan::find($id);
+
+        if(!$ruangan){
+            return response()->json([
+                'success' => false,
+                'message' => 'Ruangan tidak ditemukan!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Behasil'
+        ]);
+    }
+
+    public function update(Request $request){
+        $validate = $request->validate([
+            'id' => 'required|integer',
+            'kode_ruangan' => 'required|string|max:8'
+        ]);
+    }
+
+    public function lantai($id) {
+
+    }
 }
