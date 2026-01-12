@@ -11,13 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let id = 0;
 
     // Untuk mendapatkan data dari database 
-    document.querySelectorAll(".edit-btn").forEach(btn => {
-        btn.addEventListener('click', async () => {
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', async() => {
             try {
                 id = btn.dataset.id;
-
                 // Panggil route endpoint dari laravel
-                const res = await fetch(`/dashboard/edit/${id}`);
+                const res = await fetch(`/dashboard/edit-gedung/${id}`);
 
                 const data = await res.json();
 
@@ -28,12 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 nama.value = data.data.nama_gedung;
                 kode.value = data.data.kode_gedung;
-                jumlah.value = data.data.jumlah_lantai;
+                jumlah.value = data.data.lantai_count;
                 status.value = data.data.status || '';
                 deskripsi.value = data.data.keterangan;
 
                 popUp.classList.remove('hidden');
-
             } catch (err) {
                 console.error("Error:", err);
                 Swal.fire({
@@ -97,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     formData.append('jumlah', jumlahParsing);
                     formData.append('status', status.value);
                     formData.append('keterangan', deskripsi.value);
+
+                    console.log(formData);
 
                     if (gambar.files.length > 0) {
                         formData.append('gambar', gambar.files[0]);
