@@ -1,7 +1,4 @@
-// Pembungkus untuk container input supaya bisa pakai fungsi array
-
 document.addEventListener('DOMContentLoaded', () => {
-
     const limit = 10;
     let wrappers = [];
     let count = 0;
@@ -23,15 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Untuk input nama
                 inputNama.type = 'text';
+                inputNama.name = 'nama_asset[]';
                 inputNama.placeholder = 'Masukkan nama asset';
                 inputNama.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
 
                 // Untuk total type
                 inputTotal.type = 'text';
+                inputTotal.name = 'total_asset[]';
                 inputTotal.placeholder = 'Masukkan Total';
                 inputTotal.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
 
-                wrapper.append(inputNama, inputTotal)
+                wrapper.append(inputNama, inputTotal);
                 wrapperInput.append(wrapper);
 
                 wrappers.push(wrapper);
