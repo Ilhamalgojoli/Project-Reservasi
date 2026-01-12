@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ruangans', function (Blueprint $table) {
+        Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_ruangan')->unique();
-            $table->enum('status', ["Aktif", "Tidak Aktif"])->default('Aktif');
-            $table->integer('muatan_kapasitas');
-            $table->foreignId('gedung_id')->constrained()->cascadeOnDelete();
+            $table->string('nama_asset');
+            $table->integer('jumlah_asset');
+            $table->foreignId('ruangan_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ruangans');
+        Schema::dropIfExists('assets');
     }
 };
