@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const lantai = document.getElementById('lantai');
     const idRuangan = document.getElementById('idRuangan');
     const status = document.getElementById('status');
     const kapasitas = document.getElementById('kapasitas');
-    const btnSubmit = document.getElementById('btn-submit');
+    const btnSubmit = document.getElementById('btn-submit-tambah');
+    const formAsset = document.getElementById('form-asset');
 
-    btnSubmit.addEventListener('click', async () => {
-
+    btnSubmit.addEventListener('click', async() => {
         // Validasi input kosong
         if (idRuangan.value === "" || status.value === "" || kapasitas.value === "") {
             Swal.fire({
@@ -37,16 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const formData = new FormData();
+                    const formData = new FormData(formAsset);
 
-                    // Mendapatkan id dari url web
-                    const pathSplit = window.location.pathname.split("/");
-                    const idGedung = pathSplit[pathSplit.length - 1]; 
-
+                    formData.append('lantai', lantai.value);
                     formData.append('kode_ruangan', idRuangan.value);
                     formData.append('status', status.value);
                     formData.append('muatan_kapasitas', kapasitas.value);
-                    formData.append('gedung_id', idGedung);
+
+                    console.log([...formData.entries()]);
 
                     const req = await fetch(routes.storeData, {
                         method: "POST",
