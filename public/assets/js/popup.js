@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (popup) {
                 popup.classList.remove("hidden");
             }
-
-            console.log("click");
         });
     });
 

@@ -23,14 +23,16 @@ Route::prefix('dashboard')->group(function () {
 
     Route::controller(GedungController::class)->group(function () {
         Route::get('kelola-gedung', 'index')->name('index6');
-        Route::get('/edit/{id}', [GedungController::class, 'edit']);
-        Route::post('/update', 'update')->name('update.gedung');
+        Route::get('/edit-gedung/{id}', [GedungController::class, 'edit']);
+        Route::post('/update/gedung', [GedungController::class, 'update'])->name('update.gedung');
         Route::post('/tambah-gedung', 'store')->name('tambah.gedung');
         Route::delete('/delete/{id}', [GedungController::class, 'destroy']);
     });
 
     Route::controller(RuanganController::class)->group(function () {
         Route::get('/dashboard/kelola-ruang/{id}', [RuanganController::class, 'index'])->name('kelola-ruang');
+        Route::get('edit-ruangan/{id}', [RuanganController::class, 'edit']);
+        Route::post('/update/ruang', 'update')->name('update.ruang');
         Route::post('tambah-ruang', [RuanganController::class, 'store'])->name('tambah.ruang');
     });
 });

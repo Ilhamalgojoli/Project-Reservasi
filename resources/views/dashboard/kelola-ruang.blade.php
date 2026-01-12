@@ -6,11 +6,12 @@
         <script src="' . asset('assets/js/popup.js') . '" defer></script>
         <script src="' . asset('assets/js/dynamic-input.js') . '" defer></script>
         <script src="' . asset('assets/js/tambah-ruang.js') . '" defer></script>
+        <script src="' . asset('assets/js/edit-ruangan.js') . '" defer></script>
     ';
 @endphp
 
 @section('content')
-    <h1 class="text-2xl mb-5">{{ $title }}</h1>
+    <h1 class="text-2xl mb-5 font-bold">{{ $title }}</h1>
 
     <main class="grid sm:grid-cols-1 md:grid-cols-1">
         <!-- Section One -->
@@ -82,10 +83,9 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data['kode_ruangan'] }}</td>
                                 <td>
-                                    AC: 20</br>
-                                    Kursi: 20</br>
-                                    Meja: 20 </br>
-                                    Proyektor: 1
+                                    @foreach ($data['asset'] as $asset)
+                                        {{ $asset['nama_asset'] }} : {{ $asset['jumlah_asset'] }} <br>
+                                    @endforeach
                                 </td>
                                 <td>
                                     {{ $data['status'] }}
@@ -94,8 +94,8 @@
                                     {{ $data['muatan_kapasitas'] }}
                                 </td>
                                 <td>
-                                    <button data-id={{ $data['id'] }} data-popup-target="popup-edit"
-                                        class="rounded-full bg-[#ff9d007e] px-4 py-3">
+                                    <button data-id="{{ $data['id'] }}" type="button"
+                                        class="edit-btn rounded-full bg-[#ff9d007e] px-4 py-3">
                                         <iconify-icon icon="mingcute:edit-2-line" class="text-white"></iconify-icon>
                                     </button>
                                 </td>
@@ -124,36 +124,35 @@
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
                         <div class="flex flex-row gap-5">
-                            <select
-                                class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
-                                bg-transparent border border-[#808080] border-opacity-50">
-                                <option value="" disabled selected>Status</option>
-                                <option value="akademik">Aktif</option>
-                                <option value="non-akademik">Tidak Aktif</option>
-                            </select>
-                            <input type="text"
+                            <input type="text" id="idRuangan-edit"
+                                class="rounded-lg flex-1 py-2 px-3 border text-black
+                              border-[#808080] border-opacity-50"
+                                placeholder="Kode Ruangan" />
+                            <input type="text" id="kapasitas-edit"
                                 class="rounded-lg flex-1 py-2 px-3 border text-black
                               border-[#808080] border-opacity-50"
                                 placeholder="Muatan Kapasitas" />
                         </div>
+                        <select id="status-edit"
+                            class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
+                            <option value="" disabled selected>Status</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Tidak Aktif">Tidak Aktif</option>
+                        </select>
                     </div>
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-1">
                             <h1 class="text-2xl">Fasilitas</h1>
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
-                        <div id="wrapper-input-edit" class="flex flex-col gap-5">
-                            <div class="flex flex-row gap-5">
-                                <input type="text"
-                                    class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                    placeholder="Masukkan Nama Asset" />
-                                <input type="text"
-                                    class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                    placeholder="Masukkan Total" />
+                        <form id="form-edit">
+                            <div id="wrapper-input-edit" class="flex flex-col gap-5">
+                                <div class="wrapper flex flex-row gap-5">
+
+                                </div>
                             </div>
-                        </div>
+                        </form>
                         <div class="flex justify-center flex-row gap-5">
                             <button data-button-target="wrapper-input-edit"
                                 class="button-add border rounded-lg flex items-center p-2 bg-[red]">
@@ -165,7 +164,8 @@
                             </button>
                         </div>
                     </div>
-                    <button class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
+                    <button type="button" id="btn-submit"
+                        class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
                     </button>
                 </div>
@@ -190,10 +190,13 @@
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
                         <div class="flex flex-row gap-5">
-                            <select
+                            <select id="lantai"
                                 class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
                                 bg-transparent border border-[#808080] border-opacity-50">
                                 <option value="" disabled selected>Lantai</option>
+                                @foreach ($lantais as $lantai)
+                                    <option value="{{ $lantai['lantai'] }}">{{ $lantai['lantai'] }}</option>
+                                @endforeach
                             </select>
                             <input type="text" id="idRuangan"
                                 class="rounded-lg flex-1 py-2 px-3 border text-black
@@ -230,18 +233,20 @@
                                 jika ingin
                                 menambah asset</p>
                         </div>
-                        <div id="wrapper-input-tambah" class="flex flex-col gap-5">
-                            <div class="flex flex-row gap-5">
-                                <input type="text"
-                                    class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                    placeholder="Masukkan Nama Asset" />
-                                <input type="text"
-                                    class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                    placeholder="Masukkan Total" />
+                        <form id="form-asset">
+                            <div id="wrapper-input-tambah" class="flex flex-col gap-5">
+                                <div class="flex flex-row gap-5">
+                                    <input type="text" name="nama_asset[]"
+                                        class="rounded-lg flex-1 py-2 px-3 border text-black
+                                    border-[#808080] border-opacity-50"
+                                        placeholder="Masukkan Nama Asset" />
+                                    <input type="text" name="total_asset[]"
+                                        class="rounded-lg flex-1 py-2 px-3 border text-black
+                                    border-[#808080] border-opacity-50"
+                                        placeholder="Masukkan Total" />
+                                </div>
                             </div>
-                        </div>
+                        </form>
                         <div class="flex justify-center flex-row gap-5">
                             <button data-button-target="wrapper-input-tambah"
                                 class="border rounded-lg flex items-center p-2 bg-[red]">
@@ -253,7 +258,7 @@
                             </button>
                         </div>
                     </div>
-                    <button type="button" id="btn-submit"
+                    <button type="button" id="btn-submit-tambah"
                         class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
                         Submit
                     </button>
@@ -263,7 +268,8 @@
 
     <script>
         const routes = {
-            storeData: "{{ route('tambah.ruang') }}"
+            storeData: "{{ route('tambah.ruang') }}",
+            updateData: "{{ route('update.ruang') }}"
         };
     </script>
 @endsection
