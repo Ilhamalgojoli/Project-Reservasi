@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
+use App\Models\Lantai;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RuanganController extends Controller
 {
     public function index($id)
     {
-        $datas = Ruangan::where('gedung_id', $id)->get();
+        $datas = Ruangan::with('asset')
+            ->whereHas('lantai', function ($q) use($id) {
+                $q->where('gedung_id', $id);
+            })
+            ->get();
 
-        return view(
-            'dashboard.kelola-ruang', [
-                'datas' => $datas,
-            ]);
+        \Log::info($datas->toArray());
+        $lantais = Lantai::where('gedung_id', $id)->get();
+
+        return view('dashboard.kelola-ruang', [
+            'datas' => $datas,
+            'lantais' => $lantais,
+        ]);
     }
 
     public function store(Request $request)
@@ -24,60 +34,135 @@ class RuanganController extends Controller
                 'kode_ruangan' => 'required|string|max:8',
                 'status' => 'required|string',
                 'muatan_kapasitas' => 'required|integer',
-                'gedung_id' => 'required|integer'
+                'lantai' => 'required|integer',
+                'nama_asset' => 'required|array',
+                'total_asset' => 'required|array',
             ]);
 
-            if (! filter_var($request->muatan_kapasitas, FILTER_VALIDATE_INT)) {
-                return response->json([
-                    'success' => false,
-                    'message' => 'Isi muatan kapasitas dengan angka',
-                ], 422);
-            }
-
-            // Log::info('id gedung', $request->gedung_id);
-            $validate = Ruangan::create([
+            $ruangan = Ruangan::create([
                 'kode_ruangan' => $validate['kode_ruangan'],
                 'status' => $validate['status'],
                 'muatan_kapasitas' => $validate['muatan_kapasitas'],
-                'gedung_id' => $validate['gedung_id']
+                'lantai_id' => $validate['lantai'],
             ]);
+            DB::transaction(function () use ($ruangan, $request) {
+                $asset_map = array_map(null, $request->nama_asset, $request->total_asset);
+                foreach ($asset_map as [$nama, $total]) {
+                    if (! $nama || ! $total) {
+                        continue;
+                    }
+
+                    $asset = Asset::create([
+                        'nama_asset' => $nama,
+                        'jumlah_asset' => $total,
+                        'ruangan_id' => $ruangan->id,
+                    ]);
+                }
+            });
 
             return response()->json([
                 'success' => true,
-                'message' => 'Ruangan berhasil ditambahkan!'
+                'message' => 'Ruangan berhasil ditambahkan!',
             ], 200);
         } catch (\Exception $e) {
+            if ($e instanceof ValidationException) {
+                $errors = $e->errors();
+                if (isset($errors['muatan_kapasitas'])) {
+                    $msg = 'Isi jumlah kapasitas dengan sebuah angka!';
+                } else {
+                    $msg = 'Lengkapi form!';
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                ], 422);
+            }
+
             return response()->json([
                 'success' => false,
-                'message' => 'Internal server error.'
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
 
-    public function show($id){
-        $ruangan = Ruangan::find($id);
+    public function edit($id)
+    {
+        $data = Ruangan::with(['asset:id,jumlah_asset,nama_asset,ruangan_id'])
+            ->select('id', 'kode_ruangan', 'status', 'muatan_kapasitas', 'lantai_id')
+            ->find($id);
 
-        if(!$ruangan){
+        // $data = Ruangan::with('asset')->find($id);
+        // \Log::info($data->toArray());
+
+        if (! $data) {
             return response()->json([
                 'success' => false,
-                'message' => 'Ruangan tidak ditemukan!'
+                'message' => 'Ruangan tidak ditemukan!',
             ]);
         }
 
+        \Log::info($id);
+
         return response()->json([
             'success' => false,
-            'message' => 'Behasil'
+            'data' => $data,
         ]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $validate = $request->validate([
             'id' => 'required|integer',
-            'kode_ruangan' => 'required|string|max:8'
+            'kode_ruangan' => 'required|string|max:8',
+            'status' => 'required|string',
+            'kapasitas' => 'required|integer',
+            'asset_id' => 'required|array',
+            'nama_asset' => 'required|array',
+            'total_asset' => 'required|array',
         ]);
+
+        $ruangan = Ruangan::find($request->id);
+
+        if (! $ruangan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ruangan tidak ditemukan.',
+            ]);
+        }
+        try {
+            $ruangan->update([
+                'kode_ruangan' => $validate['kode_ruangan'],
+                'status' => $validate['status'],
+                'muatan_kapasitas' => $validate['kapasitas'],
+            ]);
+
+            DB::transaction(function () use ($request) {
+                $asset_map = array_map(null, $request->asset_id, $request->nama_asset, $request->total_asset);
+                foreach ($asset_map as [$id ,$nama, $jumlah]) {
+                    if (! $nama || ! $jumlah) {
+                        continue;
+                    }
+                    $asset = Asset::find($id);
+
+                    $asset->update([
+                        'nama_asset' => $nama,
+                        'jumlah_asset' => $jumlah,
+                    ]);
+                }
+            });
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ruangan berhasil diupdate!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    public function lantai($id) {
-
-    }
+    public function lantai($id) {}
 }
