@@ -133,22 +133,42 @@
                                         <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
                                             <input type="checkbox" value="08:00 - 09:00" class="mr-2"
                                                 onchange="updateSelectedJam()">
-                                            08:00 - 09:00
+                                            06:30
                                         </label>
                                         <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
                                             <input type="checkbox" value="09:00 - 10:00" class="mr-2"
                                                 onchange="updateSelectedJam()">
-                                            09:00 - 10:00
+                                            07:30
                                         </label>
                                         <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
                                             <input type="checkbox" value="10:00 - 11:00" class="mr-2"
                                                 onchange="updateSelectedJam()">
-                                            10:00 - 11:00
+                                            08:30
                                         </label>
                                         <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
                                             <input type="checkbox" value="11:00 - 12:00" class="mr-2"
                                                 onchange="updateSelectedJam()">
-                                            11:00 - 12:00
+                                            09:30
+                                        </label>
+                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                                            <input type="checkbox" value="08:00 - 09:00" class="mr-2"
+                                                onchange="updateSelectedJam()">
+                                            10:30
+                                        </label>
+                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                                            <input type="checkbox" value="09:00 - 10:00" class="mr-2"
+                                                onchange="updateSelectedJam()">
+                                            11:30
+                                        </label>
+                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                                            <input type="checkbox" value="10:00 - 11:00" class="mr-2"
+                                                onchange="updateSelectedJam()">
+                                            12:30
+                                        </label>
+                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                                            <input type="checkbox" value="11:00 - 12:00" class="mr-2"
+                                                onchange="updateSelectedJam()">
+                                            13:30
                                         </label>
                                         <!-- Tambahkan jam sesuai kebutuhan -->
                                     </div>
