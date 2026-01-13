@@ -57,6 +57,12 @@
                             Persetujuan Peminjaman
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('index5') }}">
+                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                            History Peminjaman
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>

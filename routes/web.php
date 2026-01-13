@@ -13,7 +13,7 @@ Route::controller(DashboardController::class)->group(function () {
 Route::prefix('dashboard')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/home', 'index')->name('index');
-        Route::get('/pilih-gedung', 'index2')->name('index2');
+        
         Route::get('/peminjaman-ruangan', 'index3')->name('index3');
         Route::get('/approve', 'index4')->name('index4');
         Route::get('/index-5', 'index5')->name('index5');
@@ -27,6 +27,7 @@ Route::prefix('dashboard')->group(function () {
         Route::post('/update/gedung', [GedungController::class, 'update'])->name('update.gedung');
         Route::post('/tambah-gedung', 'store')->name('tambah.gedung');
         Route::delete('/delete/{id}', [GedungController::class, 'destroy']);
+        Route::get('/pilih-gedung', 'show')->name('index2');
     });
 
     Route::controller(RuanganController::class)->group(function () {

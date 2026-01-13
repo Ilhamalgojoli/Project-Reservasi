@@ -142,6 +142,9 @@ class GedungController extends Controller
             'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
+        // Implement storage transfer untuk ke database dan localdisk
+        $path = null;
+
         // Cek ada atau tidak nya gambar/file yang akan di upload ke localdisk pada request js
         if ($request->hasFile('gambar')) {
             if (! Storage::disk('public')->exists('gambar_gedung')) {
@@ -159,20 +162,23 @@ class GedungController extends Controller
                 'message' => 'Data tidak ditemukan',
             ]);
         }
-        // Implement storage transfer untuk ke database dan localdisk
-        $path = null;
 
         try {
             DB::transaction(function () use ($validate, $path, $gedung) {
-                $gedung->update([
+                $gedungUpdate = [
                     'nama_gedung' => $validate['nama'],
                     'kode_gedung' => $validate['id_gedung'],
                     'jumlah_lantai' => $validate['jumlah'],
                     'status' => $validate['status'],
                     'keterangan' => $validate['keterangan'],
-                    'gambar' => $path ?? null,
-                ]);
+                    
+                ];
 
+                if($path){
+                    $gedungUpdate['gambar'] = $path;
+                }
+                $gedung->update($gedungUpdate);
+                
                 // Proses Update jumlah lantai
                 $jumlah_baru = $validate['jumlah'];
                 $jumlah_lama = $gedung->lantai()->count();
@@ -258,5 +264,17 @@ class GedungController extends Controller
                 'message' => 'Gagal menambahkan gedung!',
             ], 500);
         }
+    }
+
+    // Untuk ditampilkan ke client side
+    public function show(){
+        $datas = Gedung::select('id', 'nama_gedung', 'keterangan', 'gambar')
+            ->where('status', '=' , 'Aktif')->get();
+
+        \Log::info($datas->toArray());
+        return view(
+            'dashboard.pemilihan-gedung', [
+            'datas' => $datas
+        ]);
     }
 }

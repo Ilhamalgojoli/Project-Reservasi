@@ -12,11 +12,6 @@ class DashboardController extends Controller
         return view('dashboard/home');
     }
 
-    public function index2()
-    {
-        return view('dashboard/pemilihan-gedung');
-    }
-
     public function index3()
     {
         return view('dashboard/peminjaman-ruangan');
@@ -29,12 +24,7 @@ class DashboardController extends Controller
 
     public function index5()
     {
-        return view('dashboard/index5');
-    }
-
-    public function index7()
-    {
-        return view('dashboard/kelola-ruang');
+        return view('dashboard/history-peminjaman');
     }
 
     public function index8()
