@@ -31,7 +31,7 @@ class GedungController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'id_gedung' => 'required|string|unique:gedungs,kode_gedung',
+            'id_gedung' => 'required|string|unique:gedungs,kode_gedung|max:16',
             'nama' => 'required|string',
             'jumlah' => 'required|integer',
             'status' => 'required|string',
@@ -135,7 +135,7 @@ class GedungController extends Controller
         $validate = $request->validate([
             'id' => 'required|integer',
             'nama' => 'required|string',
-            'id_gedung' => 'required|string',
+            'id_gedung' => 'required|string|max:16',
             'jumlah' => 'required|integer',
             'status' => 'required|string',
             'keterangan' => 'required|string',
@@ -156,11 +156,11 @@ class GedungController extends Controller
         }
 
         $gedung = Gedung::with('lantai')->find($request->id);
-        if (! $gedung) {
+        if (!$gedung) {
             return response->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan',
-            ]);
+            ], 422);
         }
 
         try {
@@ -173,7 +173,7 @@ class GedungController extends Controller
                     'keterangan' => $validate['keterangan'],
                     
                 ];
-
+                
                 if($path){
                     $gedungUpdate['gambar'] = $path;
                 }
@@ -208,21 +208,19 @@ class GedungController extends Controller
                 Storage::disk('public')->delete($path);
             }
 
-            // if ($e instanceof ValidationException) {
-            //     $errors = $e->errors();
-            //     if (isset($errors['id_gedung'])) {
-            //         $msg = 'Id sudah dipakai,silahkan pakai id lain!';
-            //     } elseif (isset($errors['jumlah'])) {
-            //         $msg = 'Isi jumlah lantai dengan sebuah angka!';
-            //     } else {
-            //         $msg = 'Lengkapi form!';
-            //     }
+            if ($e instanceof ValidationException) {
+                $errors = $e->errors();
+                if (isset($errors['jumlah'])) {
+                    $msg = 'Isi jumlah lantai dengan sebuah angka!';
+                } else {
+                    $msg = 'Lengkapi form!';
+                }
 
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => $msg,
-            //     ], 422);
-            // }
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                ], 422);
+            }
 
             return response()->json([
                 'success' => false,
@@ -240,11 +238,11 @@ class GedungController extends Controller
 
         \Log::info('id'.$id);
 
-        if (! $gedung) {
+        if (!$gedung) {
             return response->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan!',
-            ]);
+            ],422);
         }
 
         try {
