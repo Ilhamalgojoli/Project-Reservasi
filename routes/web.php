@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GedungController;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\DataPeminjamanController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(DashboardController::class)->group(function () {
@@ -35,5 +36,10 @@ Route::prefix('dashboard')->group(function () {
         Route::get('edit-ruangan/{id}', [RuanganController::class, 'edit']);
         Route::post('/update/ruang', 'update')->name('update.ruang');
         Route::post('tambah-ruang', [RuanganController::class, 'store'])->name('tambah.ruang');
+    });
+
+    Route::controller(DataPeminjamanController::class)->group(function () {
+        Route::get('/dashboard/pilih-ruang/{id}', [DataPeminjamanController::class, 'index'])->name('pilih-ruang');
+        Route::post('/pinjam-ruang', [DataPeminjamanController::class, 'store'])->name('store.pinjamRuang');
     });
 });

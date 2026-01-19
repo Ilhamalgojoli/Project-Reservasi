@@ -3,9 +3,10 @@
     $title = 'Peminjaman Ruangan';
 
     $script = '
-        <script src="' . asset('assets/js/option-reservasi.js') . '" defer></script>
-        <script src="' . asset('assets/js/pemilihan-jam.js') . '" defer></script>
-    ';
+                    <script src="' . asset('assets/js/option-reservasi.js') . '" defer></script>
+                    <script src="' . asset('assets/js/pemilihan-jam.js') . '" defer></script>
+                    <script src="' . asset('assets/js/peminjaman.js') . '" defer></script>
+                ';
 @endphp
 
 @section('content')
@@ -23,9 +24,8 @@
 
                 <div class="flex flex-row gap-5 md:flex-row sm:flex-col">
                     <!-- Fakultas -->
-                    <select
-                        class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-               bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                    <select id="fakultas" class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                           bg-transparent border border-[#808080] border-opacity-50 font-bold">
                         <option value="" disabled selected>Pilih Fakultas / Direktorat</option>
                         <option value="fakultas_teknik">Fakultas Teknik</option>
                         <option value="fakultas_ekonomi">Fakultas Ekonomi</option>
@@ -34,9 +34,8 @@
                     </select>
 
                     <!-- Prodi -->
-                    <select
-                        class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-               bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                    <select id="prodi" class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                           bg-transparent border border-[#808080] border-opacity-50 font-bold">
                         <option value="" disabled selected>Pilih Prodi</option>
                         <option value="prodi_informatika">Informatika</option>
                         <option value="prodi_akuntansi">Akuntansi</option>
@@ -46,9 +45,8 @@
                 </div>
 
                 <div class="flex flex-col flex-1 gap-5">
-                    <select id="opsi-peminjaman"
-                        class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                        bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                    <select id="opsi-peminjaman" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
                         <option value="" disabled selected>Pilih Jenis Peminjaman</option>
                         <option value="Akademik">Akademik</option>
                         <option value="Non-Akademik">Non Akademik</option>
@@ -61,261 +59,212 @@
                 </div>
 
                 <!-- Akademik -->
-                <div class="space-y-5" id="Akademik">
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 gap-5">
-                                <select
-                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Kode Mata Kuliah</option>
-                                    <option value="">Fakultas</option>
-                                    <option value="">Prodi</option>
-                                    <option value="">Pribadi</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col flex-1 gap-5">
-                                <select
-                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Lantai</option>
-                                    <option value="GKU.07.01">GKU.01</option>
-                                    <option value="GKU.07.02">GKU.02</option>
-                                    <option value="GKU.07.03">GKU.03</option>
-                                    <option value="GKU.07.04">GKU.07</option>
-                                </select>
+                <form id="akademik">
+                    <div class="space-y-5" id="Akademik">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                            <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                <div class="flex flex-col flex-1 gap-5">
+                                    <select name="kode_matkul" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                                bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                        <option value="" disabled selected>Kode Mata Kuliah</option>
+                                        <option value="FTE123">FTE123 - Teknik Elektro</option>
+                                        <option value="FIA456">FIA456 - Akuntansi</option>
+                                        <option value="FBA789">FBA789 - Bahasa Inggris</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-col flex-1 gap-5">
+                                    <select name="lantai" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                                bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                        @foreach ($lantais as $data)
+                                            <option value={{ $data['lantai'] }}>{{ $data['lantai'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 gap-5">
-                                <select
-                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Ruangan</option>
-                                    <option value="GKU.07.01">GKU.07.01</option>
-                                    <option value="GKU.07.02">GKU.07.02</option>
-                                    <option value="GKU.07.03">GKU.07.03</option>
-                                    <option value="GKU.07.04">GKU.07.04</option>
-                                </select>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                            <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                <div class="flex flex-col flex-1 gap-5">
+                                    <select name="ruangan" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                                bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                        <option disabled selected>Ruangan</option>
+                                        @foreach ($datas as $data)
+                                            <option value={{ $data['id'] }}>{{ $data['kode_ruangan'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="flex flex-col flex-1 relative">
+                                    <input type="date" name="tanggal_peminjaman" class="rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
+                                                border-opacity-50 font-bold appearance-none" style="
+                                                    appearance:none;
+                                                    -webkit-appearance:none;
+                                                    -moz-appearance:none;
+                                                " placeholder="Tanggal" />
+                                    <iconify-icon icon="solar:calendar-linear"
+                                        onclick="this.previousElementSibling.showPicker()"
+                                        class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                                </div>
                             </div>
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="date"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                            <div class="flex flex-row gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                <div class="flex flex-col flex-1">
+                                    <!-- Input yang menampilkan pilihan -->
+                                    <input type="text" id="selectedJamAkademik" readonly placeholder="Pilih Jam Peminjaman"
+                                        class="w-full border border-gray-400 rounded-md py-2 px-3 cursor-pointer text-black"
+                                        onclick="toggleDropdown('dropdownJamAkademik')" />
+                                    <div class="relative w-64 text-black">
+                                        <!-- Dropdown checkbox -->
+                                        <div id="dropdownJamAkademik"
+                                            class="absolute w-full border border-gray-400 rounded-md mt-1 bg-white hidden max-h-48 overflow-y-auto z-10">
+                                            <!-- Tambahkan jam sesuai kebutuhan -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-1 relative">
+                                    <input type="text" name="muatan" class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                                border-opacity-50 font-bold" placeholder="Kapasitas" />
+                                    <iconify-icon icon="mdi:people-outline"
+                                        class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                            <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                <div class="flex flex-col flex-1 relative">
+                                    <input type="text" name="penanggung_jawab" class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                                border-opacity-50 font-bold" placeholder="Penanggung Jawab" />
+                                </div>
+                                <div class="flex flex-col flex-1 relative">
+                                    <input type="number" name="kontak_penanggung_jawab" class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                        border-opacity-50 font-bold" placeholder="Kontak Penanggung Jawab" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
+                            <div class="flex flex-col flex-1 gap-5">
+                                <textarea name="keterangan_peminjaman" class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
+                                            border-opacity-50" placeholder="Deskripsi"></textarea>
+                            </div>
+                        </div>
+                        <div class="w-auto flex justify-center">
+                            <button id="btn-akademik" type="button"
+                                class="bg-[#FF0101] w-[150px] font-bold py-2 rounded-md">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- Non-Akademik -->
+                <form id="non-akademik">
+                    <div class="space-y-5 hidden" id="Non-Akademik">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                            <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                <div class="flex flex-col flex-1 gap-5">
+                                    <!-- Lantai -->
+                                    <select name="lantai" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                        <option disabled selected>Lantai</option>
+                                        @foreach ($lantais as $data)
+                                            <option value={{ $data['lantai'] }}>{{ $data['lantai'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="flex flex-col flex-1 gap-5">
+                                    <!-- Ruangan -->
+                                    <select name="ruangan" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                                        <option disabled selected>Ruangan</option>
+                                        @foreach ($datas as $data)
+                                            <option value={{ $data['id'] }}>{{ $data['kode_ruangan'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-5">
+                            <div class="flex flex-row gap-5 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                <div class="flex flex-col flex-1 relative">
+                                    <!-- Tanggal -->
+                                    <input type="date" name="tanggal_peminjaman" class="rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
                                     border-opacity-50 font-bold appearance-none"
-                                    style="
-                                        appearance:none;
-                                        -webkit-appearance:none;
-                                        -moz-appearance:none;
-                                    "
-                                    placeholder="Tanggal" />
-                                <iconify-icon icon="solar:calendar-linear"
-                                    onclick="this.previousElementSibling.showPicker()"
-                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
-                            </div>
-                        </div>
-                    </div>
+                                        style="appearance:none;-webkit-appearance:none;-moz-appearance:none"
+                                        placeholder="Tanggal" />
+                                    <iconify-icon icon="solar:calendar-linear"
+                                        onclick="this.previousElementSibling.showPicker()"
+                                        class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                                </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 gap-5">
-                                <!-- Input yang menampilkan pilihan -->
-                                <input type="text" id="selectedJam" readonly placeholder="Pilih Jam Peminjaman"
-                                    class="w-full border border-gray-400 rounded-md py-2 px-3 cursor-pointer text-black"
-                                    onclick="toggleDropdownJam()" />
-
-                                <div class="relative w-64 text-black">
-                                    <!-- Dropdown checkbox -->
-                                    <div id="dropdownJam"
-                                        class="absolute w-full border border-gray-400 rounded-md mt-1 bg-white hidden max-h-48 overflow-y-auto z-10">
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="08:00 - 09:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            06:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="09:00 - 10:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            07:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="10:00 - 11:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            08:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="11:00 - 12:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            09:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="08:00 - 09:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            10:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="09:00 - 10:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            11:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="10:00 - 11:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            12:30
-                                        </label>
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                            <input type="checkbox" value="11:00 - 12:00" class="mr-2"
-                                                onchange="updateSelectedJam()">
-                                            13:30
-                                        </label>
-                                        <!-- Tambahkan jam sesuai kebutuhan -->
+                                <div class="flex flex-col flex-1">
+                                    <!-- Jadwal -->
+                                    <input type="text" id="selectedJamNonAkademik" readonly
+                                        placeholder="Pilih Jam Peminjaman"
+                                        class="w-full border border-gray-400 rounded-md py-2 px-3 cursor-pointer text-black"
+                                        onclick="toggleDropdown('dropdownJamNonAkademik')" />
+                                    <div class="relative w-64 text-black">
+                                        <div id="dropdownJamNonAkademik"
+                                            class="absolute w-full border border-gray-400 rounded-md mt-1 bg-white hidden max-h-48 overflow-y-auto z-10">
+                                            <!-- Tambahkan jam sesuai kebutuhan -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="text"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                                    border-opacity-50 font-bold"
-                                    placeholder="Kapasitas" />
-                                <iconify-icon icon="mdi:people-outline"
-                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="text"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                                    border-opacity-50 font-bold"
-                                    placeholder="Penanggung Jawab" />
+                            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1">
+                                <div class="flex flex-row gap-10 sm:flex-col md:flex-col lg:flex-row">
+                                    <div class="flex flex-col flex-1 relative">
+                                        <!-- Muatan/Kapasitas -->
+                                        <input type="number" inputmode="numeric" name="muatan" class="rounded-lg py-2 px-3 border border-[#808080] text-black appearance-none
+                                                        border-opacity-50 font-bold" placeholder="Kapasitas" />
+                                        @foreach ($datas as $data)
+                                            <p class="text-black text-md absolute right-8 font-bold top-2.5 cursor-pointer">
+                                                Max {{ $data['muatan_kapasitas'] }}
+                                            </p>
+                                        @endforeach
+                                        <iconify-icon icon="mdi:people-outline"
+                                            class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="text"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                                    border-opacity-50 font-bold"
-                                    placeholder="Kontak Penanggung Jawab" />
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
-                        <div class="flex flex-col flex-1 gap-5">
-                            <textarea
-                                class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
-                                border-opacity-50"
-                                placeholder="Deskripsi"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <!-- Non-Akademik -->
-                <div class="space-y-5 hidden" id="Non-Akademik">
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 gap-5">
-                                <select
-                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Lantai</option>
-                                    <option value="GKU.07.01">GKU.01</option>
-                                    <option value="GKU.07.02">GKU.02</option>
-                                    <option value="GKU.07.03">GKU.03</option>
-                                    <option value="GKU.07.04">GKU.07</option>
-                                </select>
+                            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
+                                <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
+                                    <div class="flex flex-col flex-1 relative">
+                                        <input type="text" name="penanggung_jawab" class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                        border-opacity-50 font-bold" placeholder="Penanggung Jawab" />
+                                    </div>
+                                    <div class="flex flex-col flex-1 relative">
+                                        <input type="number" name="kontak_penanggung_jawab" class="rounded-lg py-2 px-3 border border-[#808080] text-black
+                                        border-opacity-50 font-bold" placeholder="Kontak Penanggung Jawab" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex flex-col flex-1 gap-5">
-                                <select
-                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Ruangan</option>
-                                    <option value="GKU.07.01">GKU.07.01</option>
-                                    <option value="GKU.07.02">GKU.07.02</option>
-                                    <option value="GKU.07.03">GKU.07.03</option>
-                                    <option value="GKU.07.04">GKU.07.04</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="date"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
-                                    border-opacity-50 font-bold appearance-none"
-                                    style="
-                                        appearance:none;
-                                        -webkit-appearance:none;
-                                        -moz-appearance:none;
-                                    "
-                                    placeholder="Tanggal" />
-                                <iconify-icon icon="solar:calendar-linear"
-                                    onclick="this.previousElementSibling.showPicker()"
-                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
-                            </div>
-                            <div class="flex flex-col flex-1 gap-5">
-                                <select
-                                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                                    <option disabled selected>Jadwal</option>
-                                    <option value="08.00 - 08.50">08.00 - 08.50</option>
-                                    <option value="08.50 - 09.40">08.50 - 09.40</option>
-                                    <option value="09.40 - 10.30">09.40 - 10.30</option>
-                                    <option value="10.30 - 11.20">10.30 - 11.20</option>
-                                    <option value="11.20 - 12.10">11.20 - 12.10</option>
-                                </select>
+                            <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
+                                <div class="flex flex-col flex-1 gap-5">
+                                    <textarea name="keterangan_peminjaman" class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
+                                    border-opacity-50" placeholder="Deskripsi"></textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="text"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                                    border-opacity-50 font-bold"
-                                    placeholder="Kapasitas" />
-                                <iconify-icon icon="mdi:people-outline"
-                                    class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
-                            </div>
+                        <div class="w-auto flex justify-center">
+                            <button id="btn-non-akademik" type="button"
+                                class="bg-[#FF0101] w-[150px] font-bold py-2 rounded-md">
+                                Submit
+                            </button>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                        <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="text"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                                    border-opacity-50 font-bold"
-                                    placeholder="Penanggung Jawab" />
-                            </div>
-                            <div class="flex flex-col flex-1 relative">
-                                <input type="text"
-                                    class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                                    border-opacity-50 font-bold"
-                                    placeholder="Kontak Penanggung Jawab" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
-                        <div class="flex flex-col flex-1 gap-5">
-                            <textarea
-                                class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
-                                border-opacity-50"
-                                placeholder="Deskripsi"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-auto flex justify-center">
-                    <button class="bg-[#FF0101] w-[150px] font-bold py-2 rounded-md">
-                        Submit
-                    </button>
-                </div>
+                </form>
             </div>
         </section>
     </main>
+    <script>
+        routes = {
+            storeData: "{{ route('store.pinjamRuang') }}"
+        };
+    </script>
 @endsection
