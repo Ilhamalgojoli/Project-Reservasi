@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Lantai;
+use App\Models\Gedung;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -163,6 +164,4 @@ class RuanganController extends Controller
             ], 500);
         }
     }
-
-    public function lantai($id) {}
 }
