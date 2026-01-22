@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('tanggal_peminjaman');
             $table->integer('muatan');
             $table->string('penanggung_jawab');
-            $table->integer('kontak_penanggung_jawab');
+            $table->string('kontak_penanggung_jawab');
             $table->string('keterangan_peminjaman');
             $table->enum('status', ['Waiting', 'Approve'])->default('Waiting');
             $table->timestamps();
