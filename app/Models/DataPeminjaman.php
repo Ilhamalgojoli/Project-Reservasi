@@ -17,6 +17,7 @@ class DataPeminjaman extends Model
         'jenis_peminjaman',
         'kode_matkul',
         'lantai',
+        'status',
         'ruangan',
         'tanggal_peminjaman',
         'jadwal_peminjaman',
@@ -27,6 +28,6 @@ class DataPeminjaman extends Model
     ];
 
     public function waktuPeminjaman(){
-        return $this->hasMany(WaktuPeminjaman::class);
+        return $this->hasMany(WaktuPeminjaman::class, 'peminjaman_id');
     }
 }
