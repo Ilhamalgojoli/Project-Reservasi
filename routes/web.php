@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GedungController;
 use App\Http\Controllers\RuanganController;
@@ -16,10 +17,7 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/home', 'index')->name('index');
         
         Route::get('/peminjaman-ruangan', 'index3')->name('index3');
-        Route::get('/approve', 'index4')->name('index4');
-        Route::get('/index-5', 'index5')->name('index5');
         Route::get('/index-8', 'index8')->name('index8');
-        Route::get('/index-9', 'index9')->name('index9');
     });
 
     Route::controller(GedungController::class)->group(function () {
@@ -41,5 +39,13 @@ Route::prefix('dashboard')->group(function () {
     Route::controller(DataPeminjamanController::class)->group(function () {
         Route::get('/dashboard/pilih-ruang/{id}', [DataPeminjamanController::class, 'index'])->name('pilih-ruang');
         Route::post('/pinjam-ruang', [DataPeminjamanController::class, 'store'])->name('store.pinjamRuang');
+        Route::get('/history-peminjaman', [DataPeminjamanController::class, 'show'])->name('history-peminjaman');
+        Route::get('/data-ruangan/{id}', [DataPeminjamanController::class, 'ruangan'])->name('data.ruangan');
     });
+
+    Route::controller(ApproveController::class)->group(function() {
+        Route::get('/approve', [ApproveController::class,'index'])->name('approve-reservasi');
+        Route::post('/approve/{id}', [ApproveController::class, 'approve']);
+        Route::post('/reject/{id}', [ApproveController::class, 'reject'])->name('reject');
+    }); 
 });
