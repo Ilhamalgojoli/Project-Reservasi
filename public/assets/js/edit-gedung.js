@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Untuk mendapatkan data dari database 
     document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', async() => {
+        btn.addEventListener('click', async () => {
             try {
                 id = btn.dataset.id;
                 // Panggil route endpoint dari laravel
@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Proses update dari data yang sebelum ny diambil 
     btnEditGedung.addEventListener('click', async () => {
-
         if (nama.value === "" || kode.value === "" ||
             jumlah.value === "" || status.value === "" ||
             deskripsi.value === "") {
@@ -88,15 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const jumlahParsing = parseInt(jumlah.value);
 
                     const formData = new FormData();
-
                     formData.append('id', id);
                     formData.append('id_gedung', kode.value);
                     formData.append('nama', nama.value);
                     formData.append('jumlah', jumlahParsing);
                     formData.append('status', status.value);
                     formData.append('keterangan', deskripsi.value);
-
-                    console.log(formData);
 
                     if (gambar.files.length > 0) {
                         formData.append('gambar', gambar.files[0]);
@@ -111,19 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: formData
                     });
 
-                    if (req.status === 403) {
-                        const errData = await res.json();
-                        Swal.fire({
-                            title: 'Gagal!',
-                            text: errData.message || 'Silahkan isi data gedung dengan benar.',
-                            icon: 'error',
-                            confirmButtonText: 'OK',
-                            buttonsStyling: false,
-                            customClass: {
-                                confirmButton: 'btn-ok'
-                            }
-                        });
-                        return;
+                    if (!req.ok) {
+                        const err = await req.json().catch(() => ({}));
+                        throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
                     }
 
                     const data = await req.json();
@@ -173,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Button delete item gedung
-
     document.querySelectorAll(".btn-delete").forEach(btn => {
         btn.addEventListener('click', () => {
             Swal.fire({
@@ -201,20 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         });
 
-                        if (req.status === 403) {
-                            const err = req.json();
-                            Swal.fire({
-                                title: 'Error!',
-                                text: err.message || 'Terjadi kesalahan saat mengirim data.',
-                                icon: 'error',
-                                confirmButtonText: 'OK',
-                                buttonsStyling: false,
-                                customClass: {
-                                    confirmButton: 'btn-ok'
-                                }
-                            })
+                        if (!req.ok) {
+                            const err = await req.json().catch(() => ({}));
+                            throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
                         }
-
+                        
                         const data = await req.json();
 
                         if (data.success) {

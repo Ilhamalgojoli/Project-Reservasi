@@ -84,7 +84,7 @@
                                 <td>{{ $data['kode_ruangan'] }}</td>
                                 <td>
                                     @foreach ($data['asset'] as $asset)
-                                        {{ $asset['nama_asset'] }} : {{ $asset['jumlah_asset'] }} <br>
+                                        {{ ucfirst($asset['nama_asset']) }} : {{ $asset['jumlah_asset'] }} <br>
                                     @endforeach
                                 </td>
                                 <td>

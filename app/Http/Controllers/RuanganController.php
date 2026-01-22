@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Lantai;
+use App\Models\Gedung;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,7 @@ class RuanganController extends Controller
     {
         try {
             $validate = $request->validate([
-                'kode_ruangan' => 'required|string|max:8',
+                'kode_ruangan' => 'required|string|max:12|unique:ruangans,kode_ruangan',
                 'status' => 'required|string',
                 'muatan_kapasitas' => 'required|integer',
                 'lantai' => 'required|integer',
@@ -114,7 +115,7 @@ class RuanganController extends Controller
     {
         $validate = $request->validate([
             'id' => 'required|integer',
-            'kode_ruangan' => 'required|string|max:8',
+            'kode_ruangan' => 'required|string|max:12',
             'status' => 'required|string',
             'kapasitas' => 'required|integer',
             'asset_id' => 'required|array',
@@ -163,6 +164,4 @@ class RuanganController extends Controller
             ], 500);
         }
     }
-
-    public function lantai($id) {}
 }

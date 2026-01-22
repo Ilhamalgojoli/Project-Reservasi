@@ -11,22 +11,6 @@ class DashboardController extends Controller
     {
         return view('dashboard/home');
     }
-
-    public function index3()
-    {
-        return view('dashboard/peminjaman-ruangan');
-    }
-
-    public function index4()
-    {
-        return view('dashboard/approve-reservasi');
-    }
-
-    public function index5()
-    {
-        return view('dashboard/history-peminjaman');
-    }
-
     public function index8()
     {
         return view('dashboard/index8');

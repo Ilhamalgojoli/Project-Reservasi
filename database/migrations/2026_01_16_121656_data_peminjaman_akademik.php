@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('histories', function (Blueprint $table) {
+        Schema::create('data_peminjaman', function (Blueprint $table) {
             $table->id();
             $table->string('fakultas');
             $table->string('prodi');
             $table->string('jenis_peminjaman');
+            $table->string('kode_matkul')->nullable();
             $table->integer('lantai');
-            $table->string('ruangan');
+            $table->integer('ruangan');
             $table->string('tanggal_peminjaman');
-            $table->string('jadwal_peminjaman');
             $table->integer('muatan');
             $table->string('penanggung_jawab');
-            $table->integer('kontak_penanggung_jawab');
+            $table->string('kontak_penanggung_jawab');
             $table->string('keterangan_peminjaman');
+            $table->enum('status', ['Waiting', 'Approve'])->default('Waiting');
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('histories');
+        Schema::dropIfExists('data_peminjaman');
     }
 };

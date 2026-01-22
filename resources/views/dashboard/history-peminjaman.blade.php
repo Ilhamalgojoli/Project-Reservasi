@@ -3,7 +3,7 @@
     $title = 'History peminjaman';
     $script = '
 
-    ';
+                            ';
 @endphp
 
 @section('content')
@@ -17,17 +17,56 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Gedung</th>
+                                <th>Gedung / Lantai</th>
                                 <th>Ruangan</th>
                                 <th>Kapasitas</th>
                                 <th>Penanggung Jawab</th>
                                 <th>Jenis Peminjaman</th>
-                                <th>Status Peminjaman</th>
+                                <th>Tanggal Peminjaman</th>
+                                <th>Jam Peminjaman</th>
                                 <th>Alasan</th>
+                                <th>Status Peminjaman</th>
                             </tr>
                         </thead>
-                        <tbody>
-
+                        <tbody class="text-black">
+                            @foreach($peminjaman as $index => $data)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $data->nama_gedung }} / {{ $data->lantai }}</td>
+                                    <td>{{ $data->kode_ruangan }}</td>
+                                    <td>{{ $data->muatan }}</td>
+                                    <td>{{ $data->penanggung_jawab }}</td>
+                                    <td>{{ $data->jenis_peminjaman }}</td>
+                                    <td>{{ $data->tanggal_peminjaman }}</td>
+                                    <td>
+                                        {{ $data->jam_mulai }} - {{ $data->jam_selesai }}
+                                    </td>
+                                    <td>{{ $data->keterangan_peminjaman }}</td>
+                                    <td>
+                                        @if ($data->status === "Approve")
+                                            <div class="flex items-center justify-center">
+                                                <span
+                                                    class="bg-success-100  text-success-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
+                                            </div>
+                                        @elseif ($data->status === "Rejected")
+                                            <div class="flex items-center justify-center">
+                                                <span
+                                                    class="bg-danger-100  text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
+                                            </div>
+                                        @else
+                                            <div class="flex items-center justify-center">
+                                                <span
+                                                    class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @if($peminjaman->isEmpty())
+                                <tr>
+                                    <td colspan="9" class="py-4 text-center">Belum ada data peminjaman</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
