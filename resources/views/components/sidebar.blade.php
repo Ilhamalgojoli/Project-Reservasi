@@ -52,13 +52,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('index4') }}">
+                        <a href="{{ route('approve-reservasi') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             Persetujuan Peminjaman
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('index5') }}">
+                        <a href="{{ route('history-peminjaman') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             History Peminjaman
                         </a>
