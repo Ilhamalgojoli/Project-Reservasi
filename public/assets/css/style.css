@@ -2282,7 +2282,7 @@ select {
 
 .table th:first-child {
     border-top-left-radius: 0.5rem;
-    text-align: start;
+    text-align: center;
 }
 
 .table th:last-child {
@@ -2306,7 +2306,7 @@ select {
 }
 
 .table td:first-child {
-    text-align: start;
+    text-align: center;
 }
 
 :is(.dark .table td) {
