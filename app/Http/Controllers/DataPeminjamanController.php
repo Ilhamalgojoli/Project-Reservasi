@@ -17,15 +17,9 @@ class DataPeminjamanController extends Controller
      */
     public function index($id)
     {
-        $datas = Ruangan::whereHas('lantai', function ($q) use ($id) {
-            $q->where('gedung_id', $id);
-        })->get();
-
-        \Log::info('data ruangan : ', $datas->toArray());
         $lantais = Lantai::where('gedung_id', $id)->get();
 
         return view('dashboard.peminjaman-ruangan', [
-            'datas' => $datas,
             'lantais' => $lantais,
         ]);
     }
@@ -33,9 +27,18 @@ class DataPeminjamanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function ruangan($id)
     {
-        //
+        $datas = Ruangan::select('id','kode_ruangan', 'muatan_kapasitas')->where('lantai_id', $id)->get();
+
+        \Log::info('id nya : '. $id .'');
+        // \Log::info('data ruangan : ', $datas->toArray());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil mendapatkan data ruangan',
+            'data' => $datas
+        ], 200);
     }
 
     /**
@@ -54,7 +57,7 @@ class DataPeminjamanController extends Controller
             'jam_peminjaman' => 'required|array',
             'muatan' => 'required|integer',
             'penanggung_jawab' => 'required|string',
-            'kontak_penanggung_jawab' => 'required|integer',
+            'kontak_penanggung_jawab' => 'required|string',
             'keterangan_peminjaman' => 'required|string',
         ]);
 
@@ -78,8 +81,21 @@ class DataPeminjamanController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => "Ruangan sudah dipakai dari jam {$start->format('H:i')} sampai {$end->format('H:i')}"
-            ], 420);
+                'message' => "Ruangan sudah dipakai dari jam {$start->format('H:i')} sampai {$end->format('H:i')}",
+            ], 409);
+        }
+
+        $over_cap = Ruangan::where('id', $validate['ruangan'])
+            ->value('muatan_kapasitas');
+
+        \Log::info('kapasitas: '.$over_cap);
+        \Log::info('muatan: '.$validate['muatan']);
+
+        if ($validate['muatan'] >= $over_cap) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ruangan melebihi kapasitas yang ditampung',
+            ], 409);
         }
 
         try {
@@ -122,9 +138,53 @@ class DataPeminjamanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DataPeminjman $dataPeminjman)
+    public function show()
     {
-        //
+        $peminjaman = DataPeminjaman::with('waktuPeminjaman')->get();
+        $ruanganMap = Ruangan::join('lantais', 'lantais.id', '=', 'ruangans.lantai_id')
+            ->join('gedungs', 'gedungs.id', '=', 'lantais.gedung_id')
+            ->select(
+                'ruangans.id',
+                'ruangans.kode_ruangan',
+                'gedungs.nama_gedung'
+            )
+            ->get()
+            ->keyBy('id');
+
+        \Log::info('hasil query :'.$ruanganMap);
+        foreach ($peminjaman as $r) {
+            $ruangan = $ruanganMap[$r->ruangan] ?? null;
+
+            $r->kode_ruangan = $ruangan?->kode_ruangan ?? '-';
+            $r->nama_gedung = $ruangan?->nama_gedung ?? '-';
+
+            \Log::info('kode ruangan : '.$r->kode_ruangan);
+
+            if ($r->waktuPeminjaman->isNotEmpty()) {
+                $waktu = $r->waktuPeminjaman
+                    ->sortBy('waktu_peminjaman')
+                    ->values();
+
+                $start = Carbon::parse($waktu->first()->waktu_peminjaman);
+                $end = Carbon::parse($waktu->last()->waktu_peminjaman);
+
+                $total_slot = $waktu->count();
+                $total_menit = $total_slot * 30;
+
+                $r->jam_mulai = $start->format('H:i');
+                $r->jam_selesai = $end->format('H:i');
+                $r->total_menit = $total_menit;
+
+            } else {
+                $r->jam_mulai = '-';
+                $r->jam_selesai = '-';
+                $r->total_menit = 0;
+            }
+        }
+
+        return view('dashboard.history-peminjaman', [
+            'peminjaman' => $peminjaman,
+        ]);
     }
 
     /**
