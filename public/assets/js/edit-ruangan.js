@@ -21,8 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
             kapasitas.value = data.data.muatan_kapasitas;
 
             const wrapperEdit = document.getElementById('wrapper-input-edit');
+            wrapperEdit.innerHTML = '';
 
             data.data.asset.forEach(asset => {
+
                 const row = document.createElement('div');
                 row.className = 'wrapper flex flex-row gap-5';
 
@@ -45,7 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputJumlah.placeholder = 'Masukkan Total';
                 inputJumlah.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] text-black';
 
-                row.append(inputId, inputNama, inputJumlah);
+                const buttonDelete = document.createElement('button');
+                buttonDelete.type = 'button';
+                buttonDelete.onclick = () => destroyAsset(asset.id);
+                buttonDelete.className = 'border rounded-lg flex items-center p-2 bg-[red]';
+
+                const icon = document.createElement('iconify-icon');
+                icon.icon = 'typcn:minus';
+                icon.className = 'text-3xl sm:text-sm text-white';
+
+                buttonDelete.append(icon);
+                row.append(inputId, inputNama, inputJumlah, buttonDelete);
                 wrapperEdit.append(row);
             });
 
@@ -73,7 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.isConfirmed) {
                 try {
                     const formData = new FormData(form);
-                    formData.append('id', id);
+
+                    const parseId = parseInt(id);
+
+                    formData.append('id', parseId);
                     formData.append('kode_ruangan', idRuangan.value)
                     formData.append('status', status.value);
                     formData.append('kapasitas', kapasitas.value);
@@ -128,4 +143,69 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    async function destroyAsset(id) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Apakah Anda yakin ingin menyimpan data ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Konfirmasi',
+            cancelButtonText: 'Batal',
+            buttonsStyling: false,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn-confirm',
+                cancelButton: 'btn-cancel',
+                actions: 'flex justify-center gap-4'
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const req = await fetch(`/dashboard/delete-asset/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Accept": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                        },
+                    });
+
+                    if (!req.ok) {
+                        const err = await req.json().catch(() => ({}));
+                        throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
+                    }
+
+                    const res = await req.json();
+
+                    if (res.success) {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: res.message || 'Gedung berhasil ditambahkan!.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn-ok'
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: err.message || 'Terjadi kesalahan saat mengirim data.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'btn-ok'
+                        }
+                    });
+                }
+            }
+        })
+    }
 });
