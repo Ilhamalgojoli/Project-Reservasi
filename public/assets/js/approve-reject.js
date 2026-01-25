@@ -78,7 +78,7 @@ function rejectButton(id) {
         }
     }).then(async (result) => {
         try {
-            const req = await fetch(`/approve/${id}`, {
+            const req = await fetch(`/dashboard/reject/${id}`, {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",

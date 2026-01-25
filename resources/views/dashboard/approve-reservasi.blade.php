@@ -2,10 +2,10 @@
 @php
     $title = 'Kelola Persetujuan Peminjaman';
     $script = '
-                        <script src="' . asset('assets/js/data-table.js') . '" defer></script>
-                        <script src="' . asset('assets/js/popup.js') . '" defer></script>
-                        <script src="' . asset('assets/js/approve-reject.js') . '" defer></script>  
-                    ';
+        <script src="' . asset('assets/js/data-table.js') . '" defer></script>
+        <script src="' . asset('assets/js/popup.js') . '" defer></script>
+        <script src="' . asset('assets/js/approve-reject.js') . '" defer></script>  
+    ';
 @endphp
 
 @section('content')
@@ -20,28 +20,32 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10 mb-5">
                 <div class="flex flex-row gap-10 sm:gap-4 sm:flex-col md:flex-col lg:flex-row">
-                    <select class="rounded-xl flex-1 text-[#808080] py-2 px-3 appearance-none
-                                            bg-transparent border border-[#808080] border-opacity-50">
+                    <select
+                        class="rounded-xl flex-1 text-[#808080] py-2 px-3 appearance-none
+                        bg-transparent border border-[#808080] border-opacity-50">
                         <option value="" disabled selected>Jenis Peminjaman</option>
                         <option value="akademik">Akademik</option>
                         <option value="non-akademik">Non Akademik</option>
                     </select>
-                    <select class="rounded-xl flex-1 text-[#808080] py-2 px-3 appearance-none
-                                            bg-transparent border border-[#808080] border-opacity-50">
+                    <select
+                        class="rounded-xl flex-1 text-[#808080] py-2 px-3 appearance-none
+                        bg-transparent border border-[#808080] border-opacity-50">
                         <option value="" disabled selected>Gedung</option>
                         <option value="akademik">GKU</option>
                         <option value="non-akademik">FIT</option>
                     </select>
                 </div>
                 <div class="flex flex-row gap-10 sm:gap-4 sm:flex-col md:flex-col lg:flex-row">
-                    <select class="rounded-xl sm:w-auto md:w-auto lg:w-[728px] text-[#808080] py-2 px-3 appearance-none
-                                            bg-transparent border border-[#808080] border-opacity-50">
+                    <select
+                        class="rounded-xl sm:w-auto md:w-auto lg:w-[728px] text-[#808080] py-2 px-3 appearance-none
+                        bg-transparent border border-[#808080] border-opacity-50">
                         <option value="" disabled selected>Lantai</option>
                         <option value="akademik">GKU.04</option>
                         <option value="non-akademik">FIT.02</option>
                     </select>
-                    <button class="bg-[#FF0000] px-12 rounded-lg w-[250px]
-                                            transition-all duration-300 hover:scale-105 sm:py-2 py-2 font-bold text-xl">
+                    <button
+                        class="bg-[#FF0000] px-12 rounded-lg w-[250px]
+                        transition-all duration-300 hover:scale-105 sm:py-2 py-2 font-bold text-xl">
                         Filter
                     </button>
                 </div>
@@ -78,15 +82,13 @@
 
                                     <!-- APPROVE -->
                                     <button type="button" onclick="approveButton({{ $data->id }})"
-                                        class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center"
-                                        >
+                                        class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="mdi:check"></iconify-icon>
                                     </button>
 
                                     <!-- REJECT -->
                                     <button type="button" onclick="rejectButton({{ $data->id }})"
-                                        class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center"
-                                        >
+                                        class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="mdi:close"></iconify-icon>
                                     </button>
                                 </td>

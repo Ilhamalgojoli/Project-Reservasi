@@ -34,6 +34,7 @@ Route::prefix('dashboard')->group(function () {
         Route::get('edit-ruangan/{id}', [RuanganController::class, 'edit']);
         Route::post('/update/ruang', 'update')->name('update.ruang');
         Route::post('tambah-ruang', [RuanganController::class, 'store'])->name('tambah.ruang');
+        Route::delete('/delete-asset/{id}', [RuanganController::class, 'destroyAsset']);
     });
 
     Route::controller(DataPeminjamanController::class)->group(function () {
