@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Lantai;
-use App\Models\Gedung;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +13,7 @@ class RuanganController extends Controller
     public function index($id)
     {
         $datas = Ruangan::with('asset')
-            ->whereHas('lantai', function ($q) use($id) {
+            ->whereHas('lantai', function ($q) use ($id) {
                 $q->where('gedung_id', $id);
             })
             ->get();
@@ -103,7 +102,7 @@ class RuanganController extends Controller
             ]);
         }
 
-        \Log::info($id);
+        \Log::info('id : '.$id);
 
         return response()->json([
             'success' => false,
@@ -118,10 +117,12 @@ class RuanganController extends Controller
             'kode_ruangan' => 'required|string|max:12',
             'status' => 'required|string',
             'kapasitas' => 'required|integer',
-            'asset_id' => 'required|array',
+            'asset_id' => 'nullable|array',
             'nama_asset' => 'required|array',
             'total_asset' => 'required|array',
         ]);
+
+        \Log::info('id : '.$request->id);
 
         $ruangan = Ruangan::find($request->id);
 
@@ -131,6 +132,7 @@ class RuanganController extends Controller
                 'message' => 'Ruangan tidak ditemukan.',
             ]);
         }
+
         try {
             $ruangan->update([
                 'kode_ruangan' => $validate['kode_ruangan'],
@@ -139,17 +141,27 @@ class RuanganController extends Controller
             ]);
 
             DB::transaction(function () use ($request) {
-                $asset_map = array_map(null, $request->asset_id, $request->nama_asset, $request->total_asset);
+                $asset_id = $request->asset_id ?? [];
+                $asset_map = array_map(null, $asset_id, $request->nama_asset, $request->total_asset);
                 foreach ($asset_map as [$id ,$nama, $jumlah]) {
                     if (! $nama || ! $jumlah) {
                         continue;
                     }
-                    $asset = Asset::find($id);
 
-                    $asset->update([
-                        'nama_asset' => $nama,
-                        'jumlah_asset' => $jumlah,
-                    ]);
+                    if ($id) {
+                        $asset = Asset::find($id);
+
+                        $asset->update([
+                            'nama_asset' => $nama,
+                            'jumlah_asset' => $jumlah,
+                        ]);
+                    } else {
+                        Asset::create([
+                            'nama_asset' => $nama,
+                            'jumlah_asset' => $jumlah,
+                            'ruangan_id' => $request->id,
+                        ]);
+                    }
                 }
             });
 
@@ -162,6 +174,24 @@ class RuanganController extends Controller
                 'success' => false,
                 'message' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    public function destroyAsset($id){
+        try{
+            $asset = Asset::findOrFail($id);
+
+            $asset->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus'
+            ], 200);
+        } catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan internal'
+            ], 500); 
         }
     }
 }
