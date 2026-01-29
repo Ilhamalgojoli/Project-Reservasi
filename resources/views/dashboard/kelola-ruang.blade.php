@@ -2,12 +2,12 @@
 @php
     $title = 'Kelola Ruang';
     $script = '
-        <script src="' . asset('assets/js/data-table.js') . '" defer></script>
-        <script src="' . asset('assets/js/popup.js') . '" defer></script>
-        <script src="' . asset('assets/js/dynamic-input.js') . '" defer></script>
-        <script src="' . asset('assets/js/tambah-ruang.js') . '" defer></script>
-        <script src="' . asset('assets/js/edit-ruangan.js') . '" defer></script>
-    ';
+            <script src="' . asset('assets/js/data-table.js') . '" defer></script>
+            <script src="' . asset('assets/js/popup.js') . '" defer></script>
+            <script src="' . asset('assets/js/dynamic-input.js') . '" defer></script>
+            <script src="' . asset('assets/js/tambah-ruang.js') . '" defer></script>
+            <script src="' . asset('assets/js/edit-ruangan.js') . '" defer></script>
+        ';
 @endphp
 
 @section('content')
@@ -26,16 +26,14 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10 mb-8">
                     <div class="flex flex-row gap-10 sm:gap-4 sm:flex-col md:flex-col lg:flex-row">
-                        <select
-                            class="rounded-md flex-1 text-[#000000] py-2 px-3 appearance-none
-                            bg-transparent border border-[#808080] border-opacity-50">
+                        <select class="rounded-md flex-1 text-[#000000] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
                             <option value="" disabled selected>Lantai</option>
                             <option value="akademik">GKU.04</option>
                             <option value="non-akademik">FIT.02</option>
                         </select>
-                        <select
-                            class="rounded-md flex-1 text-[#000000] py-2 px-3 appearance-none
-                            bg-transparent border border-[#808080] border-opacity-50">
+                        <select class="rounded-md flex-1 text-[#000000] py-2 px-3 appearance-none
+                                bg-transparent border border-[#808080] border-opacity-50">
                             <option value="" disabled selected>Ruangan</option>
                             <option value="akademik">GKU.04.14</option>
                             <option value="non-akademik">FIT.02.15</option>
@@ -70,6 +68,7 @@
                     <thead>
                         <tr>
                             <th scope="col">No</th>
+                            <th scope="col">Lantai</th>
                             <th scope="col">Ruangan</th>
                             <th scope="col">Fasilitas</th>
                             <th scope="col">Status</th>
@@ -81,6 +80,7 @@
                         @foreach ($datas as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data['lantai_id'] }}</td>
                                 <td>{{ $data['kode_ruangan'] }}</td>
                                 <td>
                                     @foreach ($data['asset'] as $asset)
@@ -124,18 +124,13 @@
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
                         <div class="flex flex-row gap-5">
-                            <input type="text" id="idRuangan-edit"
-                                class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                placeholder="Kode Ruangan" />
-                            <input type="text" id="kapasitas-edit"
-                                class="rounded-lg flex-1 py-2 px-3 border text-black
-                              border-[#808080] border-opacity-50"
-                                placeholder="Muatan Kapasitas" />
+                            <input type="text" id="idRuangan-edit" class="rounded-lg flex-1 py-2 px-3 border text-black
+                                  border-[#808080] border-opacity-50" placeholder="Kode Ruangan" />
+                            <input type="text" id="kapasitas-edit" class="rounded-lg flex-1 py-2 px-3 border text-black
+                                  border-[#808080] border-opacity-50" placeholder="Muatan Kapasitas" />
                         </div>
-                        <select id="status-edit"
-                            class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
-                                bg-transparent border border-[#808080] border-opacity-50">
+                        <select id="status-edit" class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50">
                             <option value="" disabled selected>Status</option>
                             <option value="Aktif">Aktif</option>
                             <option value="Tidak Aktif">Tidak Aktif</option>
@@ -164,10 +159,17 @@
                             </button>
                         </div>
                     </div>
-                    <button type="button" id="btn-submit"
-                        class="w-auto text-white bg-[red] py-3 rounded-xl font-extrabold">
-                        Submit
-                    </button>
+                    <div class="flex flex-row gap-5 justify-center">
+                        <button type="button" id="btn-hapus"
+                            class="w-auto text-white bg-[red] py-3 px-3 rounded-xl font-extrabold">
+                            Hapus
+                        </button>
+                        <button type="button" id="btn-submit"
+                            class="w-auto text-white bg-[red] py-3 px-3 rounded-xl font-extrabold">
+                            Submit
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -190,38 +192,32 @@
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
                         </div>
                         <div class="flex flex-row gap-5">
-                            <select id="lantai"
-                                class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
-                                bg-transparent border border-[#808080] border-opacity-50">
+                            <select id="lantai" class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50">
                                 <option value="" disabled selected>Lantai</option>
                                 @foreach ($lantais as $lantai)
                                     <option value="{{ $lantai['lantai'] }}">{{ $lantai['lantai'] }}</option>
                                 @endforeach
                             </select>
-                            <input type="text" id="idRuangan"
-                                class="rounded-lg flex-1 py-2 px-3 border text-black
-                                border-[#808080] border-opacity-50"
-                                placeholder="Kode Ruangan" />
+                            <input type="text" id="idRuangan" class="rounded-lg flex-1 py-2 px-3 border text-black
+                                    border-[#808080] border-opacity-50" placeholder="Kode Ruangan" />
                         </div>
                         <div class="flex flex-row gap-5">
-                            <select id="status"
-                                class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
-                                bg-transparent border border-[#808080] border-opacity-50">
+                            <select id="status" class="rounded-md w-[416px] text-[#000000] py-2 px-3 appearance-none
+                                    bg-transparent border border-[#808080] border-opacity-50">
                                 <option value="" disabled selected>Status</option>
                                 <option value="Aktif">Aktif</option>
                                 <option value="Tidak Aktif">Tidak Aktif</option>
                             </select>
-                            <input type="text" id="kapasitas"
-                                class="rounded-lg flex-1 py-2 px-3 border text-black
-                                border-[#808080] border-opacity-50"
-                                placeholder="Muatan Kapasitas" />
+                            <input type="text" id="kapasitas" class="rounded-lg flex-1 py-2 px-3 border text-black
+                                    border-[#808080] border-opacity-50" placeholder="Muatan Kapasitas" />
                         </div>
                     </div>
                     <div class="flex flex-col gap-5">
                         <div class="flex flex-col gap-1">
                             <h1 class="text-2xl">Fasilitas</h1>
                             {{-- <iconify-icon icon="mingcute:warning-line" id="button-info"
-                                    class="text-black text-2xl"></iconify-icon> --}}
+                                class="text-black text-2xl"></iconify-icon> --}}
                             <div class="w-50 border border-dashed border-black border-opacity-25"></div>
 
                         </div>
@@ -236,14 +232,10 @@
                         <form id="form-asset">
                             <div id="wrapper-input-tambah" class="flex flex-col gap-5">
                                 <div class="flex flex-row gap-5">
-                                    <input type="text" name="nama_asset[]"
-                                        class="rounded-lg flex-1 py-2 px-3 border text-black
-                                    border-[#808080] border-opacity-50"
-                                        placeholder="Masukkan Nama Asset" />
-                                    <input type="text" name="total_asset[]"
-                                        class="rounded-lg flex-1 py-2 px-3 border text-black
-                                    border-[#808080] border-opacity-50"
-                                        placeholder="Masukkan Total" />
+                                    <input type="text" name="nama_asset[]" class="rounded-lg flex-1 py-2 px-3 border text-black
+                                        border-[#808080] border-opacity-50" placeholder="Masukkan Nama Asset" />
+                                    <input type="text" name="total_asset[]" class="rounded-lg flex-1 py-2 px-3 border text-black
+                                        border-[#808080] border-opacity-50" placeholder="Masukkan Total" />
                                 </div>
                             </div>
                         </form>

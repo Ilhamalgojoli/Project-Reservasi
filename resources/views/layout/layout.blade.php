@@ -26,6 +26,9 @@
 
     </main>
 
+    <!-- Livewire script -->
+    @livewireScripts
+
     <!-- ..::  scripts  start ::.. -->
     <x-script  script='{!! isset($script) ? $script : "" !!}' />
     <!-- ..::  scripts  end ::.. -->

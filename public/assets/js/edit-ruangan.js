@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmit = document.getElementById('btn-submit');
     const popUp = document.getElementById('popup-edit');
     const form = document.getElementById('form-edit');
+    const btnHapus = document.getElementById('btn-hapus');
 
     let id = 0;
 
@@ -131,7 +132,77 @@ document.addEventListener('DOMContentLoaded', () => {
                         customClass: { confirmButton: 'btn-ok' }
                     });
                 }
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else {
+                Swal.fire({
+                    title: 'Dibatalkan',
+                    text: 'Perubahan dibatalkan.',
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    buttonsStyling: false,
+                    customClass: { confirmButton: 'btn-ok' }
+                });
+            }
+        });
+    });
+
+    btnHapus.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Apakah Anda yakin ingin menyimpan data ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Konfirmasi',
+            cancelButtonText: 'Batal',
+            buttonsStyling: false,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn-confirm',
+                cancelButton: 'btn-cancel',
+                actions: 'flex justify-center gap-4'
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const parseId = parseInt(id);
+
+                    const req = await fetch(`/dashboard/delete-ruangan/${parseId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            "Accept": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                        },
+                    });
+
+                    if (!req.ok) {
+                        const err = await req.json().catch(() => ({}));
+                        throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
+                    }
+
+                    const data = await req.json();
+
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        buttonsStyling: false,
+                        customClass: { confirmButton: 'btn-ok' }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    })
+                } catch (err) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan saat mengirim data.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        buttonsStyling: false,
+                        customClass: { confirmButton: 'btn-ok' }
+                    });
+                }
+            } else {
                 Swal.fire({
                     title: 'Dibatalkan',
                     text: 'Perubahan dibatalkan.',
@@ -205,6 +276,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
+            } else {
+                Swal.fire({
+                    title: 'Dibatalkan',
+                    text: 'Perubahan dibatalkan.',
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    buttonsStyling: false,
+                    customClass: { confirmButton: 'btn-ok' }
+                });
             }
         })
     }

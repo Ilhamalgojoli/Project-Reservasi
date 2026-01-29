@@ -53,16 +53,17 @@ class GedungController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($validate, $path, $request) {
+            $gedung = Gedung::create([
+                'nama_gedung' => $validate['nama'],
+                'kode_gedung' => $validate['id_gedung'],
+                'status' => $validate['status'],
+                'keterangan' => $validate['keterangan'],
+                'gambar' => $path ?? null,
+            ]);
+
+            DB::transaction(function () use ($request, $gedung) {
                 // \Log::info('payload : '.$validate['status']);
                 // Log::info($validate['jumlah']);
-                $gedung = Gedung::create([
-                    'nama_gedung' => $validate['nama'],
-                    'kode_gedung' => $validate['id_gedung'],
-                    'status' => $validate['status'],
-                    'keterangan' => $validate['keterangan'],
-                    'gambar' => $path ?? null,
-                ]);
 
                 for ($i = 1; $i <= $request->jumlah; $i++) {
                     $lantai = Lantai::create([
@@ -156,7 +157,7 @@ class GedungController extends Controller
         }
 
         $gedung = Gedung::with('lantai')->find($request->id);
-        if (!$gedung) {
+        if (! $gedung) {
             return response->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan',
@@ -171,14 +172,14 @@ class GedungController extends Controller
                     'jumlah_lantai' => $validate['jumlah'],
                     'status' => $validate['status'],
                     'keterangan' => $validate['keterangan'],
-                    
+
                 ];
-                
-                if($path){
+
+                if ($path) {
                     $gedungUpdate['gambar'] = $path;
                 }
                 $gedung->update($gedungUpdate);
-                
+
                 // Proses Update jumlah lantai
                 $jumlah_baru = $validate['jumlah'];
                 $jumlah_lama = $gedung->lantai()->count();
@@ -238,11 +239,11 @@ class GedungController extends Controller
 
         \Log::info('id'.$id);
 
-        if (!$gedung) {
-            return response->json([
+        if (! $gedung) {
+            return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan!',
-            ],422);
+            ], 422);
         }
 
         try {
@@ -265,14 +266,16 @@ class GedungController extends Controller
     }
 
     // Untuk ditampilkan ke client side
-    public function show(){
+    public function show()
+    {
         $datas = Gedung::select('id', 'nama_gedung', 'keterangan', 'gambar')
-            ->where('status', '=' , 'Aktif')->get();
+            ->where('status', '=', 'Aktif')->get();
 
         \Log::info($datas->toArray());
+
         return view(
             'dashboard.pemilihan-gedung', [
-            'datas' => $datas
-        ]);
+                'datas' => $datas,
+            ]);
     }
 }

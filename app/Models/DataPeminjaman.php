@@ -24,10 +24,15 @@ class DataPeminjaman extends Model
         'muatan',
         'penanggung_jawab',
         'kontak_penanggung_jawab',
+        'alasan_penolakan',
         'keterangan_peminjaman'
     ];
 
     public function waktuPeminjaman(){
         return $this->hasMany(WaktuPeminjaman::class, 'peminjaman_id');
+    }
+
+    public function monitors(){
+        return $this->hasMany(Monitor::class);
     }
 }

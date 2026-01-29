@@ -11,11 +11,9 @@ Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('index');
 });
 
-// Dashboard
 Route::prefix('dashboard')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/home', 'index')->name('index');
-        
         Route::get('/peminjaman-ruangan', 'index3')->name('index3');
         Route::get('/index-8', 'index8')->name('index8');
     });
@@ -35,6 +33,8 @@ Route::prefix('dashboard')->group(function () {
         Route::post('/update/ruang', 'update')->name('update.ruang');
         Route::post('tambah-ruang', [RuanganController::class, 'store'])->name('tambah.ruang');
         Route::delete('/delete-asset/{id}', [RuanganController::class, 'destroyAsset']);
+        Route::delete('delete-ruangan/{id}', [RuanganController::class, 'destroyRuangan']);
+        Route::get('get-asset/{id}', [RuanganController::class, 'getAssetByRuangan']);
     });
 
     Route::controller(DataPeminjamanController::class)->group(function () {
@@ -42,6 +42,7 @@ Route::prefix('dashboard')->group(function () {
         Route::post('/pinjam-ruang', [DataPeminjamanController::class, 'store'])->name('store.pinjamRuang');
         Route::get('/history-peminjaman', [DataPeminjamanController::class, 'show'])->name('history-peminjaman');
         Route::get('/data-ruangan/{id}', [DataPeminjamanController::class, 'ruangan'])->name('data.ruangan');
+        Route::delete('cancel-booking/{id}', [DataPeminjamanController::class, 'cancelBooking']);
     });
 
     Route::controller(ApproveController::class)->group(function() {

@@ -26,10 +26,15 @@ class DataPeminjamanController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * Ambil data ruangan jika salah satu dari opsi lantai dipilih,berdasarkan lantai id nya
      */
     public function ruangan($id)
     {
-        $datas = Ruangan::select('id','kode_ruangan', 'muatan_kapasitas')->where('lantai_id', $id)->get();
+        $datas = Ruangan::select('id','kode_ruangan', 'muatan_kapasitas')
+            ->whereHas('lantai', function($q) use($id) {
+                $q->where('id', $id);
+                $q->where('status', '=', 'Aktif');
+            })->get();
 
         \Log::info('id nya : '. $id .'');
         // \Log::info('data ruangan : ', $datas->toArray());
@@ -117,7 +122,6 @@ class DataPeminjamanController extends Controller
                 foreach ($validate['jam_peminjaman'] as $waktu) {
                     WaktuPeminjaman::create([
                         'waktu_peminjaman' => $waktu,
-                        'jenis_peminjaman' => $validate['jenis_peminjaman'],
                         'peminjaman_id' => $data_peminjaman->id,
                     ]);
                 }
@@ -152,6 +156,8 @@ class DataPeminjamanController extends Controller
             ->keyBy('id');
 
         \Log::info('hasil query :'.$ruanganMap);
+        \Log::info('hasil query peminjaman :'.$peminjaman);
+
         foreach ($peminjaman as $r) {
             $ruangan = $ruanganMap[$r->ruangan] ?? null;
 
@@ -169,12 +175,12 @@ class DataPeminjamanController extends Controller
                 $end = Carbon::parse($waktu->last()->waktu_peminjaman);
 
                 $total_slot = $waktu->count();
-                $total_menit = $total_slot * 30;
+                \Log::info('Total waktu : '. $total_slot);
+                $total_menit = $total_slot * 30 - 30;
 
                 $r->jam_mulai = $start->format('H:i');
                 $r->jam_selesai = $end->format('H:i');
                 $r->total_menit = $total_menit;
-
             } else {
                 $r->jam_mulai = '-';
                 $r->jam_selesai = '-';
@@ -187,27 +193,12 @@ class DataPeminjamanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DataPeminjman $dataPeminjman)
+    public function cancelBooking($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DataPeminjman $dataPeminjman)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DataPeminjman $dataPeminjman)
-    {
-        //
+        $data_peminjaman = DataPeminjaman::findOrFail($id);
+        
+        if($data_peminjaman->status === 'Waiting'){
+            $data_peminjaman->delete();
+        }
     }
 }

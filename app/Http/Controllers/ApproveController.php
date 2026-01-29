@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataPeminjaman;
-use App\Models\WaktuPeminjaman;
+use App\Models\Monitor;
 use App\Models\Ruangan;
+use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
 
 class ApproveController extends Controller
@@ -37,7 +38,7 @@ class ApproveController extends Controller
                 $end = Carbon::parse($waktu->last()->waktu_peminjaman);
 
                 $total_slot = $waktu->count();
-                $total_menit = $total_slot * 30;
+                $total_menit = $total_slot * 30 - 30;
 
                 $r->jam_mulai = $start->format('H:i');
                 $r->jam_selesai = $end->format('H:i');
@@ -64,47 +65,53 @@ class ApproveController extends Controller
                 'status' => 'Approve',
             ]);
 
-            return response()->json([
-                'success' => true,
+            $waktu = WaktuPeminjaman::where('peminjaman_id', $peminjaman->id)
+                ->get()
+                ->sortBy('waktu_peminjaman')
+                ->values();
+
+            $start = Carbon::parse($waktu->first()->waktu_peminjaman);
+            $end = Carbon::parse($waktu->last()->waktu_peminjaman);
+
+            Monitor::create([
+                'waktu_mulai' => $start,
+                'waktu_selesai' => $end,
+                'peminjaman_id' => $peminjaman->id,
+            ]);
+
+            $this->dispatchBrowserEvent('success', [
                 'message' => 'Peminjaman berhasil diterima',
-            ], 200);
+            ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan internal',
-            ], 500);
+            $this->dispatchBrowserEvent('error', [
+                'message' => 'Terjadi kesalahan internal: '.$e->getMessage(),
+            ]);
         }
     }
 
-    public function reject($id)
+    public function reject($id, $alasan)
     {
         try {
             $peminjaman = DataPeminjaman::findOrFail($id);
 
-            $waktu = WaktuPeminjaman::where('peminjaman_id', $id)->get();
-
-            if ($waktu->isEmpty()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data peminjaman tidak ada!',
-                ], 409);
-            }
+            $waktu = WaktuPeminjaman::where('peminjaman_id', $id);
 
             $peminjaman->update([
                 'status' => 'Reject',
+                'alasan_penolakan' => $alasan,
             ]);
 
             $waktu->delete();
 
-            return response()->json([
-                'success' => true,
+            $this->dispatchBrowserEvent('success', [
                 'message' => 'Peminjaman berhasil ditolak',
             ]);
+
+            $this->loadPeminjaman(); // refresh data
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan internal',
-            ], 500);
+            $this->dispatchBrowserEvent('error', [
+                'message' => 'Terjadi kesalahan internal: '.$e->getMessage(),
+            ]);
         }
     }
 }

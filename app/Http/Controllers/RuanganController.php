@@ -177,21 +177,53 @@ class RuanganController extends Controller
         }
     }
 
-    public function destroyAsset($id){
-        try{
+    public function destroyAsset($id)
+    {
+        try {
             $asset = Asset::findOrFail($id);
 
             $asset->delete();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Data berhasil dihapus'
+                'message' => 'Data berhasil dihapus',
             ], 200);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan internal'
-            ], 500); 
+                'message' => 'Terjadi kesalahan internal',
+            ], 500);
         }
+    }
+
+    public function destroyRuangan($id)
+    {
+        try {
+            $ruangan = Ruangan::findOrFail($id);
+
+            $ruangan->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan internal',
+            ], 500);
+        }
+    }
+
+    public function getAssetByRuangan($id)
+    {
+        $asset = Asset::select('nama_asset', 'jumlah_asset')
+            ->where('ruangan_id', $id)->get();
+
+        return response()->json([
+            'success'=> true,
+            'message'=> 'Data berhasil',
+            'data' => $asset
+        ]);
     }
 }
