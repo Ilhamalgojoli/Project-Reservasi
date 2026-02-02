@@ -2,38 +2,105 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\DataPeminjaman;
-use App\Models\WaktuPeminjaman;
-use App\Models\Ruangan;
 use App\Models\Monitor;
+use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class ApproveRejectBooking extends Component
 {
-    public $peminjaman;
+    use WithPagination;
 
-    public function mount()
+    public $search = '';
+
+    protected $queryString = ['search'];
+
+    #[On('approve')]
+    public function approve($id)
     {
-        $this->loadPeminjaman();
+        try {
+            $peminjaman = DataPeminjaman::findOrFail($id);
+            $peminjaman->update(['status' => 'Approve']);
+
+            $waktu = WaktuPeminjaman::where('peminjaman_id', $peminjaman->id)
+                ->orderBy('waktu_peminjaman')->get();
+
+            Monitor::create([
+                'waktu_mulai' => $waktu->first()->waktu_peminjaman,
+                'waktu_selesai' => $waktu->last()->waktu_peminjaman,
+                'peminjaman_id' => $peminjaman->id,
+            ]);
+
+            $this->resetPage();
+
+            $this->dispatch('successApprove', [
+                'text' => 'Peminjaman berhasil diterima',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('Error', 'Terjadi kesalahan: '.$e->getMessage());
+        }
     }
 
-    public function loadPeminjaman()
+    #[On('reject')]
+    public function reject($id, $alasan)
     {
-        $data_peminjaman = DataPeminjaman::with('waktuPeminjaman')
-            ->where('status', 'Waiting')->get();
+        try {
+            \Log::info('alasan'.$alasan);
+            $peminjaman = DataPeminjaman::findOrFail($id);
+            $peminjaman->update([
+                'status' => 'Reject',
+                'alasan_penolakan' => $alasan,
+            ]);
 
-        $ruanganMap = Ruangan::join('lantais', 'lantais.id', '=', 'ruangans.lantai_id')
-            ->join('gedungs', 'gedungs.id', '=', 'lantais.gedung_id')
-            ->select('ruangans.id', 'ruangans.kode_ruangan', 'gedungs.nama_gedung')
-            ->get()
-            ->keyBy('id');
+            WaktuPeminjaman::where('peminjaman_id', $id)->delete();
+
+            $this->resetPage();
+
+            $this->dispatch('successReject', [
+                'text' => 'Peminjaman berhasil ditolak',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('Error', 'Terjadi kesalahan: '.$e->getMessage());
+        }
+    }
+
+    public function render()
+    {
+        $data_peminjaman = DataPeminjaman::with([
+            // Waktu peminjaman
+            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
+
+            // Ruangan lantai dan gedung
+            'ruangan:id,kode_ruangan,lantai_id',
+            'ruangan.lantai:id,gedung_id,lantai',
+            'ruangan.lantai.gedung:id,nama_gedung',
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan')
+            ->where('status', 'Waiting')
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    // Query search dari table peminjaman
+                    $q->where('jenis_peminjaman', 'like', "%{$this->search}%")
+                        ->orWhere('penanggung_jawab', 'like', "%{$this->search}%");
+
+                    // Query search dari table ruangan, lantai, gedung
+                    $q->orWhereHas('ruangan', function ($q2) {
+                        $q2->where('kode_ruangan', 'like', "%{$this->search}%")
+                            ->orWhereHas('lantai.gedung', function ($q3) {
+                                $q3->where('nama_gedung', 'like', "%{$this->search}%");
+                            });
+                    });
+                });
+            })
+            ->paginate(5);
+
+        info('query : ', $data_peminjaman->toArray());
 
         foreach ($data_peminjaman as $r) {
-            $ruangan = $ruanganMap[$r->ruangan] ?? null;
-
-            $r->kode_ruangan = $ruangan?->kode_ruangan ?? '-';
-            $r->nama_gedung = $ruangan?->nama_gedung ?? '-';
+            $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
+            $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
 
             if ($r->waktuPeminjaman->isNotEmpty()) {
                 $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
@@ -50,53 +117,8 @@ class ApproveRejectBooking extends Component
             }
         }
 
-        $this->peminjaman = $data_peminjaman;
-    }
-
-    public function approve($id)
-    {
-        try {
-            $peminjaman = DataPeminjaman::findOrFail($id);
-            $peminjaman->update(['status' => 'Approve']);
-
-            $waktu = WaktuPeminjaman::where('peminjaman_id', $peminjaman->id)
-                ->orderBy('waktu_peminjaman')->get();
-
-            Monitor::create([
-                'waktu_mulai' => $waktu->first()->waktu_peminjaman,
-                'waktu_selesai' => $waktu->last()->waktu_peminjaman,
-                'peminjaman_id' => $peminjaman->id,
-            ]);
-
-            $this->loadPeminjaman();
-
-            $this->dispatch('Success', 'Peminjaman berhasil diterima');
-        } catch (\Exception $e) {
-            $this->dispatch('Error', 'Terjadi kesalahan: '.$e->getMessage());
-        }
-    }
-
-    public function reject($id, $alasan)
-    {
-        try {
-            $peminjaman = DataPeminjaman::findOrFail($id);
-            $peminjaman->update([
-                'status' => 'Reject',
-                'alasan_penolakan' => $alasan
-            ]);
-
-            WaktuPeminjaman::where('peminjaman_id', $id)->delete();
-
-            $this->loadPeminjaman();
-
-            $this->dispatch('Success', 'Peminjaman berhasil ditolak');
-        } catch (\Exception $e) {
-            $this->dispatch('Error', 'Terjadi kesalahan: '.$e->getMessage());
-        }
-    }
-
-    public function render()
-    {
-        return view('livewire.approve-reject-booking');
+        return view('livewire.approve-reject-booking', [
+            'peminjaman' => $data_peminjaman,
+        ]);
     }
 }
