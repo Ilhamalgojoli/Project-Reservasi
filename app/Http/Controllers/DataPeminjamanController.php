@@ -30,19 +30,19 @@ class DataPeminjamanController extends Controller
      */
     public function ruangan($id)
     {
-        $datas = Ruangan::select('id','kode_ruangan', 'muatan_kapasitas')
-            ->whereHas('lantai', function($q) use($id) {
+        $datas = Ruangan::select('id', 'kode_ruangan', 'muatan_kapasitas')
+            ->whereHas('lantai', function ($q) use ($id) {
                 $q->where('id', $id);
                 $q->where('status', '=', 'Aktif');
             })->get();
 
-        \Log::info('id nya : '. $id .'');
+        \Log::info('id nya : '.$id.'');
         // \Log::info('data ruangan : ', $datas->toArray());
 
         return response()->json([
             'success' => true,
             'message' => 'Berhasil mendapatkan data ruangan',
-            'data' => $datas
+            'data' => $datas,
         ], 200);
     }
 
@@ -68,7 +68,7 @@ class DataPeminjamanController extends Controller
 
         // Cek apakah ada tabrakan jam di ruangan yang sama pada tanggal yang sama
         $tabrakan = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($validate) {
-            $q->where('ruangan', $validate['ruangan'])
+            $q->where('ruangan_id', $validate['ruangan'])
                 ->where('tanggal_peminjaman', $validate['tanggal_peminjaman']);
         })
             ->whereIn('waktu_peminjaman', $validate['jam_peminjaman'])
@@ -78,7 +78,7 @@ class DataPeminjamanController extends Controller
         if ($tabrakan->isNotEmpty()) {
             // Ambil range jadwal yang bertabrakan
             $rangeDb = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($validate) {
-                $q->where('ruangan', $validate['ruangan'])->where('tanggal_peminjaman', $validate['tanggal_peminjaman']);
+                $q->where('ruangan_id', $validate['ruangan'])->where('tanggal_peminjaman', $validate['tanggal_peminjaman']);
             })->orderBy('waktu_peminjaman')->get();
 
             $start = Carbon::parse($rangeDb->first()->waktu_peminjaman);
@@ -110,7 +110,7 @@ class DataPeminjamanController extends Controller
                 'jenis_peminjaman' => $validate['jenis_peminjaman'],
                 'kode_matkul' => ! empty($validate['kode_matkul']) ? $validate['kode_matkul'] : null,
                 'lantai' => (int) $validate['lantai'],
-                'ruangan' => (int) $validate['ruangan'],
+                'ruangan_id' => (int) $validate['ruangan'],
                 'tanggal_peminjaman' => $validate['tanggal_peminjaman'],
                 'muatan' => $validate['muatan'],
                 'penanggung_jawab' => $validate['penanggung_jawab'],
@@ -144,43 +144,32 @@ class DataPeminjamanController extends Controller
      */
     public function show()
     {
-        $peminjaman = DataPeminjaman::with('waktuPeminjaman')->get();
-        $ruanganMap = Ruangan::join('lantais', 'lantais.id', '=', 'ruangans.lantai_id')
-            ->join('gedungs', 'gedungs.id', '=', 'lantais.gedung_id')
-            ->select(
-                'ruangans.id',
-                'ruangans.kode_ruangan',
-                'gedungs.nama_gedung'
-            )
-            ->get()
-            ->keyBy('id');
+        $data_peminjaman = DataPeminjaman::with([
+            // Waktu peminjaman
+            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
 
-        \Log::info('hasil query :'.$ruanganMap);
-        \Log::info('hasil query peminjaman :'.$peminjaman);
+            // Ruangan lantai dan gedung
+            'ruangan:id,kode_ruangan,lantai_id',
+            'ruangan.lantai:id,gedung_id,lantai',
+            'ruangan.lantai.gedung:id,nama_gedung',
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'status', 'alasan_penolakan')
+            ->where('status', 'Waiting')
+            ->get();
 
-        foreach ($peminjaman as $r) {
-            $ruangan = $ruanganMap[$r->ruangan] ?? null;
+        info('query : ', $data_peminjaman->toArray());
 
-            $r->kode_ruangan = $ruangan?->kode_ruangan ?? '-';
-            $r->nama_gedung = $ruangan?->nama_gedung ?? '-';
-
-            \Log::info('kode ruangan : '.$r->kode_ruangan);
+        foreach ($data_peminjaman as $r) {
+            $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
+            $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
 
             if ($r->waktuPeminjaman->isNotEmpty()) {
-                $waktu = $r->waktuPeminjaman
-                    ->sortBy('waktu_peminjaman')
-                    ->values();
-
+                $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
                 $start = Carbon::parse($waktu->first()->waktu_peminjaman);
                 $end = Carbon::parse($waktu->last()->waktu_peminjaman);
 
-                $total_slot = $waktu->count();
-                \Log::info('Total waktu : '. $total_slot);
-                $total_menit = $total_slot * 30 - 30;
-
                 $r->jam_mulai = $start->format('H:i');
                 $r->jam_selesai = $end->format('H:i');
-                $r->total_menit = $total_menit;
+                $r->total_menit = $waktu->count() * 30 - 30;
             } else {
                 $r->jam_mulai = '-';
                 $r->jam_selesai = '-';
@@ -189,15 +178,15 @@ class DataPeminjamanController extends Controller
         }
 
         return view('dashboard.history-peminjaman', [
-            'peminjaman' => $peminjaman,
+            'peminjaman' => $data_peminjaman,
         ]);
     }
 
     public function cancelBooking($id)
     {
         $data_peminjaman = DataPeminjaman::findOrFail($id);
-        
-        if($data_peminjaman->status === 'Waiting'){
+
+        if ($data_peminjaman->status === 'Waiting') {
             $data_peminjaman->delete();
         }
     }

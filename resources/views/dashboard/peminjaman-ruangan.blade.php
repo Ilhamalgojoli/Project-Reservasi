@@ -50,8 +50,8 @@
                         class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                         bg-transparent border border-[#808080] border-opacity-50 font-bold">
                         <option value="" disabled selected>Pilih Jenis Peminjaman</option>
-                        <option value="Akademik">Akademik</option>
-                        <option value="Non-Akademik">Non Akademik</option>
+                        <option value="akademik">Akademik</option>
+                        <option value="non-akademik">Non Akademik</option>
                     </select>
                 </div>
 
