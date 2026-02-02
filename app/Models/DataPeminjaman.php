@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\WaktuPeminjaman;
+use App\Models\Ruangan;
+use App\Models\Monitor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,7 +20,7 @@ class DataPeminjaman extends Model
         'kode_matkul',
         'lantai',
         'status',
-        'ruangan',
+        'ruangan_id',
         'tanggal_peminjaman',
         'jadwal_peminjaman',
         'muatan',
@@ -27,6 +29,10 @@ class DataPeminjaman extends Model
         'alasan_penolakan',
         'keterangan_peminjaman'
     ];
+
+    public function ruangan(){
+        return $this->belongsTo(Ruangan::class);
+    }
 
     public function waktuPeminjaman(){
         return $this->hasMany(WaktuPeminjaman::class, 'peminjaman_id');

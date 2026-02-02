@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Gedung;
+use App\Models\Lantai;
+use App\Models\DataPeminjaman;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,5 +41,9 @@ class Ruangan extends Model
             'lantai_id',     
             'gedung_id'      
         );
+    }
+
+    public function dataPeminjaman(){
+        return $this->hasMany(DataPeminjaman::class);
     }
 }
