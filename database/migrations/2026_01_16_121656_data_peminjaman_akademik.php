@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('jenis_peminjaman');
             $table->string('kode_matkul')->nullable();
             $table->integer('lantai');
-            $table->integer('ruangan');
+            $table->foreignId('ruangan_id')->nullable()->constrained()->nullOnDelete();
             $table->string('tanggal_peminjaman');
             $table->integer('muatan');
             $table->string('penanggung_jawab');
