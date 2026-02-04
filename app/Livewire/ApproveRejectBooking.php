@@ -69,6 +69,15 @@ class ApproveRejectBooking extends Component
 
     public function render()
     {
+        return view('livewire.approve-reject-booking', [
+            'peminjaman' => $this->getData('approvePage'),
+        ]);
+    }
+
+    public function getData(string $page)
+    {
+        $pageName = $page === 'approvePage' ? 'pageApprove' : 'pageHistory';
+
         $data_peminjaman = DataPeminjaman::with([
             // Waktu peminjaman
             'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
@@ -77,24 +86,27 @@ class ApproveRejectBooking extends Component
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan')
-            ->where('status', 'Waiting')
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    // Query search dari table peminjaman
-                    $q->where('jenis_peminjaman', 'like', "%{$this->search}%")
-                        ->orWhere('penanggung_jawab', 'like', "%{$this->search}%");
+        ])->when($page === 'approvePage', function ($q) {
+            $q->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan');
+        })->when($page === 'historyPeminjaman', function ($q) {
+            $q->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'status', 'alasan_penolakan');
+        })->when($page === 'approvePage', function ($q) {
+            $q->where('status', 'Waiting');
+        })->when($this->search && $page === 'approvePage', function ($query) {
+            $query->where(function ($q) {
+                // Query search dari table peminjaman
+                $q->where('jenis_peminjaman', 'like', "%{$this->search}%")
+                    ->orWhere('penanggung_jawab', 'like', "%{$this->search}%");
 
-                    // Query search dari table ruangan, lantai, gedung
-                    $q->orWhereHas('ruangan', function ($q2) {
-                        $q2->where('kode_ruangan', 'like', "%{$this->search}%")
-                            ->orWhereHas('lantai.gedung', function ($q3) {
-                                $q3->where('nama_gedung', 'like', "%{$this->search}%");
-                            });
-                    });
+                // Query search dari table ruangan, lantai, gedung
+                $q->orWhereHas('ruangan', function ($q2) {
+                    $q2->where('kode_ruangan', 'like', "%{$this->search}%")
+                        ->orWhereHas('lantai.gedung', function ($q3) {
+                            $q3->where('nama_gedung', 'like', "%{$this->search}%");
+                        });
                 });
-            })
-            ->paginate(5);
+            });
+        })->paginate(5, '*', $pageName);
 
         info('query : ', $data_peminjaman->toArray());
 
@@ -117,8 +129,6 @@ class ApproveRejectBooking extends Component
             }
         }
 
-        return view('livewire.approve-reject-booking', [
-            'peminjaman' => $data_peminjaman,
-        ]);
+        return $data_peminjaman;
     }
 }
