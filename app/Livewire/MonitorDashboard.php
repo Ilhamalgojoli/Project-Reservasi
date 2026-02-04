@@ -21,6 +21,7 @@ class MonitorDashboard extends Component
         $this->tab = $tab;
         $this->resetPage();
     }
+    
     public function render()
     {
         return view('livewire.monitorDashboard', [

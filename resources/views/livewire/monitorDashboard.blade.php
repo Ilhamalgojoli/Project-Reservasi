@@ -1,22 +1,20 @@
 <div class="flex flex-col gap-5" wire:key="monitor-dashboard" @refresh-monitor.window="$refresh">
     <div class="flex gap-6 mb-4 border-b border-gray-300">
-        <button wire:click="setTab('akademik')"wire:navigate.scroll="false"
-            class="
+        <button wire:click="setTab('akademik')" wire:navigate.scroll="false" class="
                 pb-2 text-sm font-semibold
             {{ $tab === 'akademik'
-                ? 'text-red-600 border-b-2 border-red-600'
-                : 'text-gray-500 hover:text-gray-700'
+    ? 'text-red-600 border-b-2 border-red-600'
+    : 'text-gray-500 hover:text-gray-700'
             }}
         ">
             Akademik
         </button>
 
-        <button wire:click="setTab('non-akademik')" wire:navigate.scroll="false"
-            class="
+        <button wire:click="setTab('non-akademik')" wire:navigate.scroll="false" class="
                 pb-2 text-sm font-semibold
             {{ $tab === 'non-akademik'
-                ? 'text-red-600 border-b-2 border-red-600'
-                : 'text-gray-500 hover:text-gray-700'
+    ? 'text-red-600 border-b-2 border-red-600'
+    : 'text-gray-500 hover:text-gray-700'
             }}
         ">
             Non Akademik
@@ -24,9 +22,9 @@
     </div>
     @if ($tab === 'akademik')
     <div class="tableAkademik overflow-x-auto">
-        <table class="table bordered-table sm-table mb-0 table-auto border-black p-1">
+        <table class="table bordered-table text-sm sm-table mb-0 table-auto border-black p-1">
             <thead>
-                <tr>
+                <tr class="uppercase text-[12px]">
                     <th>No</th>
                     <th>Gedung</th>
                     <th>Ruangan</th>
@@ -76,7 +74,22 @@
                         {{ $data->peminjaman->kontak_penanggung_jawab ?? '-' }}
                     </td>
                     <td>
-                        {{ $data->peminjaman->status ?? '-' }}
+                        @if ($data->peminjaman->status === "Approve")
+                            <div class="flex items-center justify-center">
+                                <span
+                                    class="bg-success-100  text-success-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                            </div>
+                        @elseif ($data->peminjaman->status === "Reject")
+                            <div class="flex items-center justify-center">
+                                <span
+                                    class="bg-danger-100  text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                            </div>
+                        @else
+                            <div class="flex items-center justify-center">
+                                <span
+                                    class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                            </div>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -89,9 +102,9 @@
     @endif
     @if ($tab === 'non-akademik')
         <div class="tableNonAkademik kaoverflow-x-auto">
-            <table id="non-akademik" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
+            <table id="non-akademik" class="table bordered-table text-sm sm-table mb-0 table-auto border-black p-1">
                 <thead>
-                    <tr>
+                    <tr class="uppercase text-[12px]">
                         <th>No</th>
                         <th>Gedung</th>
                         <th>Ruangan</th>
@@ -129,7 +142,22 @@
                                 {{ $data->peminjaman->kontak_penanggung_jawab }}
                             </td>
                             <td>
-                                {{ $data->peminjaman->status }}
+                                @if ($data->peminjaman->status === "Approve")
+                                    <div class="flex items-center justify-center">
+                                        <span
+                                            class="bg-success-100  text-success-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                    </div>
+                                @elseif ($data->peminjaman->status === "Reject")
+                                    <div class="flex items-center justify-center">
+                                        <span
+                                            class="bg-danger-100  text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                    </div>
+                                @else
+                                    <div class="flex items-center justify-center">
+                                        <span
+                                            class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

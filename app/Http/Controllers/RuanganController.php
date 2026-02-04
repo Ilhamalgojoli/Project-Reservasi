@@ -13,12 +13,14 @@ class RuanganController extends Controller
     public function index($id)
     {
         $datas = Ruangan::with('asset')
+            ->select('id', 'kode_ruangan','status', 'muatan_kapasitas', 'lantai_id')
             ->whereHas('lantai', function ($q) use ($id) {
                 $q->where('gedung_id', $id);
             })
             ->get();
 
-        \Log::info($datas->toArray());
+        \Log::info('datas : ', $datas->toArray());
+
         $lantais = Lantai::where('gedung_id', $id)->get();
 
         return view('dashboard.kelola-ruang', [
@@ -45,6 +47,7 @@ class RuanganController extends Controller
                 'muatan_kapasitas' => $validate['muatan_kapasitas'],
                 'lantai_id' => $validate['lantai'],
             ]);
+
             DB::transaction(function () use ($ruangan, $request) {
                 $asset_map = array_map(null, $request->nama_asset, $request->total_asset);
                 foreach ($asset_map as [$nama, $total]) {
@@ -221,9 +224,9 @@ class RuanganController extends Controller
             ->where('ruangan_id', $id)->get();
 
         return response()->json([
-            'success'=> true,
-            'message'=> 'Data berhasil',
-            'data' => $asset
+            'success' => true,
+            'message' => 'Data berhasil',
+            'data' => $asset,
         ]);
     }
 }

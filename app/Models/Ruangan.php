@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Gedung;
 use App\Models\Lantai;
 use App\Models\DataPeminjaman;
+use App\Models\Asset;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

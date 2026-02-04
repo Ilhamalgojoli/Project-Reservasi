@@ -3,9 +3,9 @@
         <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari peminjaman..."
             class="w-full px-3 py-2 border rounded-md focus:outline-none text-black">
     </div>
-    <table id="table-peminjaman" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
+    <table id="table-peminjaman" class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1">
         <thead>
-            <tr>
+            <tr class="uppercase text-[12px]">
                 <th class="text-center">No</th>
                 <th class="text-center">Gedung</th>
                 <th class="text-center">Ruangan</th>

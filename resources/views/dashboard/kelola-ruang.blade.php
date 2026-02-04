@@ -63,7 +63,6 @@
         <!-- Section Two -->
         <section class="col-span-12 rounded-2xl bg-white shadow-lg p-8">
             <div class="overflow-x-auto">
-
                 <table id="selection-table-3" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
                     <thead>
                         <tr>
@@ -80,7 +79,7 @@
                         @foreach ($datas as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data['lantai_id'] }}</td>
+                                <td>{{ $data->lantai->lantai }}</td>
                                 <td>{{ $data['kode_ruangan'] }}</td>
                                 <td>
                                     @foreach ($data['asset'] as $asset)
@@ -196,7 +195,7 @@
                                     bg-transparent border border-[#808080] border-opacity-50">
                                 <option value="" disabled selected>Lantai</option>
                                 @foreach ($lantais as $lantai)
-                                    <option value="{{ $lantai['lantai'] }}">{{ $lantai['lantai'] }}</option>
+                                    <option value="{{ $lantai['id'] }}">{{ $lantai['lantai'] }}</option>
                                 @endforeach
                             </select>
                             <input type="text" id="idRuangan" class="rounded-lg flex-1 py-2 px-3 border text-black
