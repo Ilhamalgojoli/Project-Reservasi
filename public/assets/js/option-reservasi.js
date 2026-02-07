@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const getOption = document.querySelector("#opsi-peminjaman");
+    const getOption = document.getElementById("opsi-peminjaman");
     const idAkademik = document.getElementById("Akademik");
     const idNonAkademik = document.getElementById("Non-Akademik");
     const judulForm = document.getElementById("value");
