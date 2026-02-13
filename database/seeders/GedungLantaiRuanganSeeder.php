@@ -16,10 +16,12 @@ class GedungLantaiRuanganSeeder extends Seeder
     public function run(): void
     {
         $gedungNames = [
-            ['nama' => 'Gedung A', 'kode' => 'GA'],
-            ['nama' => 'Gedung B', 'kode' => 'GB'],
-            ['nama' => 'Gedung C', 'kode' => 'GC'],
+            ['nama' => 'Gedung D', 'kode' => 'GD'],
+            ['nama' => 'Gedung E', 'kode' => 'GE'],
+            ['nama' => 'Gedung f', 'kode' => 'GF'],
         ];
+
+        $status = ['Aktif', 'Tidak Aktif'];
 
         foreach ($gedungNames as $g) {
             $gedung = Gedung::create([
@@ -40,7 +42,7 @@ class GedungLantaiRuanganSeeder extends Seeder
                 for ($r = 1; $r <= 2; $r++) {
                     Ruangan::create([
                         'kode_ruangan' => $gedung->kode_gedung . '-L' . $l . '-R' . $r,
-                        'status' => 'Aktif',
+                        'status' => $status[array_rand($status)],
                         'muatan_kapasitas' => rand(20, 50),
                         'lantai_id' => $lantai->id,
                     ]);

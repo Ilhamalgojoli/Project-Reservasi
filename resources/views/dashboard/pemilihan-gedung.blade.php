@@ -15,8 +15,8 @@
 
         <!-- Card One -->
         @foreach ($datas as $data)
-            <div class="bg-[#ffffff] text-black rounded-xl py-1 px-1
-                shadow-lg space-x-4 flex flex-col">
+            <div class="bg-[#ffffff] text-black rounded-[8px] py-1 px-1
+                shadow-md space-x-4 flex flex-col">
                 <div class="flex flex-col justify-center items-center gap-5 mb-2">
                     <div class="flex flex-col gap-2 w-full">
                         <div class="relative w-auto h-64 card-container">

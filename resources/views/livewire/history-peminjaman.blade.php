@@ -1,4 +1,4 @@
-<div class="overflow-x-auto">
+<div class="overflow-x-auto pb-5">
     <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1">
         <thead>
             <tr class="uppercase text-[12px]">
@@ -68,7 +68,7 @@
                     @else
                         <td class="text-center">
                             <p
-                                class="bg-success-100  text-success-600 px-4 py-1.5 text-sm rounded-full inline-flex items-center justify-center">
+                                class="bg-gray-100 text-gray-500 px-4 py-1.5 text-sm rounded-full inline-flex items-center justify-center">
                                 No Action</p>
                         </td>
                     @endif

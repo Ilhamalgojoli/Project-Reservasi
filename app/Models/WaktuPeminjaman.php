@@ -13,7 +13,6 @@ class WaktuPeminjaman extends Model
     protected $table = 'waktu_peminjaman';
     protected $fillable = [
         'waktu_peminjaman',
-        'jenis_peminjaman',
         'peminjaman_id',
     ];
 

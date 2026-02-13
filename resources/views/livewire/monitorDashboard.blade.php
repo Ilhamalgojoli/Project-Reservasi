@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-5" wire:key="monitor-dashboard" @refresh-monitor.window="$refresh">
+<div class="flex flex-col gap-5">
     <div class="flex gap-6 mb-4 border-b border-gray-300">
         <button wire:click="setTab('akademik')" wire:navigate.scroll="false" class="
                 pb-2 text-sm font-semibold

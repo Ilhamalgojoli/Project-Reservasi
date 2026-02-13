@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const judulForm = document.getElementById("value");
 
     const selectOption = (value) => {
-        if (value === "Non-Akademik") {
+        if (value === "non-akademik") {
             idNonAkademik.classList.remove("hidden");
             idAkademik.classList.add("hidden");
             judulForm.innerHTML = "Non-Akademik";

@@ -12,8 +12,8 @@ class MonitorDashboard extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'tailwind';
     public string $tab = 'akademik';
-
     protected $queryString = ['tab'];
 
     public function setTab(string $tab)
@@ -22,6 +22,12 @@ class MonitorDashboard extends Component
         $this->resetPage();
     }
     
+    #[On('approveData')]
+    public function reRender($monitor = null)
+    {
+        
+    }
+
     public function render()
     {
         return view('livewire.monitorDashboard', [
@@ -35,7 +41,7 @@ class MonitorDashboard extends Component
         ]);
     }
 
-    private function ambilData(string $jenis)
+    protected function ambilData(string $jenis)
     {
         $pageName = $jenis === 'akademik'
             ? 'pageAkademik'

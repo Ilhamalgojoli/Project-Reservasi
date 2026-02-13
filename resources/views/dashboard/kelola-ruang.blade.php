@@ -16,7 +16,7 @@
     <main class="grid sm:grid-cols-1 md:grid-cols-1">
         <!-- Section One -->
         <section class="grid grid-col-2 lg:grid-cols-2 sm:grid-cols-1 md:grid-cols-1 gap-5 justify-between mb-5">
-            <div class="col-span-1 md:col-span-2 bg-white shadow-lg p-5 rounded-xl">
+            <div class="col-span-1 md:col-span-2 bg-white shadow-md p-5 rounded-[8px]">
                 <div class="flex flex-col gap-2 pb-8 mb-8">
                     <h1 class="font-bold text-2xl">Filter Ruangan</h1>
                     <div class="w-50 border"></div>
@@ -47,7 +47,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-span-1 md:col-span-2 bg-white shadow-lg p-5 rounded-xl">
+            <div class="col-span-1 md:col-span-2 bg-white shadow-md p-5 rounded-[8px]">
                 <div class="flex flex-col gap-2 pb-8 mb-8">
                     <p class="text-2xl font-extrabold">Tambah Ruangan</h1>
                     <div class="w-50 border"></div>
@@ -61,48 +61,8 @@
             </div>
         </section>
         <!-- Section Two -->
-        <section class="col-span-12 rounded-2xl bg-white shadow-lg p-8">
-            <div class="overflow-x-auto">
-                <table id="selection-table-3" class="table bordered-table sm-table mb-0 table-auto border-black p-1">
-                    <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Lantai</th>
-                            <th scope="col">Ruangan</th>
-                            <th scope="col">Fasilitas</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Kapasitas</th>
-                            <th scope="col">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-black">
-                        @foreach ($datas as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->lantai->lantai }}</td>
-                                <td>{{ $data['kode_ruangan'] }}</td>
-                                <td>
-                                    @foreach ($data['asset'] as $asset)
-                                        {{ ucfirst($asset['nama_asset']) }} : {{ $asset['jumlah_asset'] }} <br>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    {{ $data['status'] }}
-                                </td>
-                                <td>
-                                    {{ $data['muatan_kapasitas'] }}
-                                </td>
-                                <td>
-                                    <button data-id="{{ $data['id'] }}" type="button"
-                                        class="edit-btn rounded-full bg-[#ff9d007e] px-4 py-3">
-                                        <iconify-icon icon="mingcute:edit-2-line" class="text-white"></iconify-icon>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        <section class="col-span-12 rounded-[8px] bg-white shadow-md p-8">
+            @livewire('table-kelola-ruangan', ['id' => request()->route('id')])
         </section>
 
         <!-- Pop Up Edit -->
