@@ -3,26 +3,26 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Ruangan;
-use App\Models\Lantai;
+use Livewire\Attributes\On;
 
 class Peminjaman extends Component
 {
-    public $lantai = [];
-    public $lantaiID ;
+    public $routeId;
+    public $jenisPeminjaman;
+    public $fakultas;
+    public $prodi;
 
     public function mount($id)
-    {   
-        info('id : '. $id);
-        $this->lantai = Lantai::select('id', 'lantai')
-            ->where('gedung_id', $id)
-            ->get();
-        $this->lantaiID = null;
+    {
+        $this->routeId = request()->route('id');
+        $this->jenisPeminjaman = 'akademik';
     }
 
-    public function updatedLantaiID()
+    #[On('resetSelect')]
+    public function handleReset()
     {
-        info('lantai id : ' . $this->lantaiID);
+        $this->fakultas = null;
+        $this->prodi = null;
     }
 
     public function render()
