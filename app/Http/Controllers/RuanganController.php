@@ -12,19 +12,9 @@ class RuanganController extends Controller
 {
     public function index($id)
     {
-        $datas = Ruangan::with('asset')
-            ->select('id', 'kode_ruangan','status', 'muatan_kapasitas', 'lantai_id')
-            ->whereHas('lantai', function ($q) use ($id) {
-                $q->where('gedung_id', $id);
-            })
-            ->get();
-
-        \Log::info('datas : ', $datas->toArray());
-
         $lantais = Lantai::where('gedung_id', $id)->get();
 
         return view('dashboard.kelola-ruang', [
-            'datas' => $datas,
             'lantais' => $lantais,
         ]);
     }
@@ -223,6 +213,7 @@ class RuanganController extends Controller
         $asset = Asset::select('nama_asset', 'jumlah_asset')
             ->where('ruangan_id', $id)->get();
 
+        \Log::info('asset : ' . $asset);
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil',
