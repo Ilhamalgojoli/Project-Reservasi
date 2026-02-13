@@ -28,14 +28,13 @@ class ApproveRejectBooking extends Component
             $waktu = WaktuPeminjaman::where('peminjaman_id', $peminjaman->id)
                 ->orderBy('waktu_peminjaman')->get();
 
-            Monitor::create([
+            $monitor = Monitor::create([
                 'waktu_mulai' => $waktu->first()->waktu_peminjaman,
                 'waktu_selesai' => $waktu->last()->waktu_peminjaman,
                 'peminjaman_id' => $peminjaman->id,
             ]);
 
             $this->resetPage();
-
             $this->dispatch('successApprove', [
                 'text' => 'Peminjaman berhasil diterima',
             ]);
@@ -58,20 +57,12 @@ class ApproveRejectBooking extends Component
             WaktuPeminjaman::where('peminjaman_id', $id)->delete();
 
             $this->resetPage();
-
             $this->dispatch('successReject', [
                 'text' => 'Peminjaman berhasil ditolak',
             ]);
         } catch (\Exception $e) {
             $this->dispatch('Error', 'Terjadi kesalahan: '.$e->getMessage());
         }
-    }
-
-    public function render()
-    {
-        return view('livewire.approve-reject-booking', [
-            'peminjaman' => $this->getData('approvePage'),
-        ]);
     }
 
     public function getData(string $page)
@@ -108,8 +99,6 @@ class ApproveRejectBooking extends Component
             });
         })->paginate(5, '*', $pageName);
 
-        info('query : ', $data_peminjaman->toArray());
-
         foreach ($data_peminjaman as $r) {
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
             $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
@@ -130,5 +119,12 @@ class ApproveRejectBooking extends Component
         }
 
         return $data_peminjaman;
+    }
+
+    public function render()
+    {
+        return view('livewire.approve-reject-booking', [
+            'peminjaman' => $this->getData('approvePage'),
+        ]);
     }
 }

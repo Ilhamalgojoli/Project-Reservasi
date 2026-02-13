@@ -51,8 +51,6 @@
     </div>
 </div>
 
-
-@script
 <script>
     document.addEventListener('livewire:initialized', () => {
         Livewire.on('confirmApprove', (e) => {
@@ -120,4 +118,3 @@
         });
     });
 </script>
-@endscript
