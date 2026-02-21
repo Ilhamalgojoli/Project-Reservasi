@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\DataPeminjaman;
+use App\Models\Fakultas;
+use App\Models\Gedung;
 use App\Models\KegiatanTerkiniModel;
 use App\Models\Lantai;
+use App\Models\Prodi;
 use App\Models\Ruangan;
 use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
@@ -22,7 +25,21 @@ class PeminjamanService
     public function getRuangan($lantaiId)
     {
         return Ruangan::select('id', 'kode_ruangan')
+            ->where('status', 'Aktif')
             ->where('lantai_id', $lantaiId)
+            ->get();
+    }
+
+    public function getFakultas()
+    {
+        return Fakultas::select('id', 'fakultas')
+            ->get();
+    }
+
+    public function getProdi($fakultasID)
+    {
+        return Prodi::select('id', 'prodi')
+            ->where('fakultas_id', $fakultasID)
             ->get();
     }
 
@@ -30,6 +47,13 @@ class PeminjamanService
     {
         return Ruangan::where('id', $ruanganId)
             ->value('muatan_kapasitas');
+    }
+
+    public function getDataMap($gedungID)
+    {
+        return Gedung::select('latitude', 'longitude')
+            ->where('id', $gedungID)
+            ->first();
     }
 
     public function generateJam($start, $end, $interval = 30)
@@ -119,7 +143,7 @@ class PeminjamanService
 
     public function createKegiatan($penanggungJawab, $ruanganID)
     {
-        if(!$ruanganID){
+        if (! $ruanganID) {
             throw new \DomainException('Ruangan tidak ditemukan');
         }
 

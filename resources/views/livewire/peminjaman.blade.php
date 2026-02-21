@@ -9,22 +9,22 @@
 
         <div class="flex flex-row gap-5 md:flex-row sm:flex-col">
             <!-- Fakultas -->
-            <select wire:model.live="fakultas" class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+            <select wire:model.live="fakultas" class="rounded-md lg:w-[735px] w-[735px] md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                 bg-transparent border border-[#808080] border-opacity-50 font-bold">
                 <option value="">Pilih Fakultas / Direktorat</option>
-                <option value="fakultas_teknik">Fakultas Teknik</option>
-                <option value="fakultas_ekonomi">Fakultas Ekonomi</option>
-                <option value="fakultas_sastra">Fakultas Sastra</option>
+                @foreach ($faculties as $data)
+                    <option value="{{ $data->id }}">{{ $data->fakultas }}</option>
+                @endforeach
                 <!-- bisa ditambah sesuai data asli -->
             </select>
 
             <!-- Prodi -->
-            <select wire:model.live="prodi" class="rounded-md flex-1 md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+            <select wire:model.live="prodi" class="rounded-md lg:w-[735px] w-[735px] md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                 bg-transparent border border-[#808080] border-opacity-50 font-bold">
                 <option value="">Pilih Prodi</option>
-                <option value="prodi_informatika">Informatika</option>
-                <option value="prodi_akuntansi">Akuntansi</option>
-                <option value="prodi_bahasa">Bahasa Inggris</option>
+                @foreach ($prodies as $data)
+                    <option value="{{ $data->id }}">{{ $data->prodi }}</option>          
+                @endforeach
                 <!-- bisa ditambah sesuai data asli -->
             </select>
         </div>

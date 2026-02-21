@@ -2270,7 +2270,7 @@ select {
 
 .table th {
     --tw-bg-opacity: 1;
-    background-color: rgb(229 20 17 / var(--tw-bg-opacity, 1));
+    background-color: #e51411;
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 0.75rem;

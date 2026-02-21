@@ -12,14 +12,7 @@
         @livewire('peminjaman', ['id' => request()->route('id')])
         <section class="col-span-5 space-y-5">
             @livewire('view-asset')
-            <div class="bg-white shadow-md p-5 rounded-lg">
-                <h1 class="text-2xl font-bold">Place Holder</h1>
-            </div>
+            @livewire('map-peminjaman')
         </section>
     </main>
-    <script>
-        routes = {
-            storeData: "{{ route('store.pinjamRuang') }}"
-        };
-    </script>
 @endsection

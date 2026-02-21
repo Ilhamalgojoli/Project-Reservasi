@@ -1,10 +1,10 @@
 <div class="col-span-12">
-    <div class="bg-white p-5 rounded-[8px] flex flex-col shadow-md gap-5">
+    <div class="bg-white p-5 rounded-[8px] flex flex-col shadow-md gap-5 w-full">
         <div class="bg-[#e51411] p-2 rounded-lg w-fit">
             <p class="text-white font-bold">Okkupansi</p>
         </div>
-        <div id="chart-okkupansi" class="flex flex-row gap-5 overflow-x-auto lg:justify-center pb-5">
 
+        <div id="chart-okkupansi" class="w-full flex flex-nowrap gap-5 overflow-x-auto pb-5">
         </div>
     </div>
 </div>
@@ -12,7 +12,7 @@
 <script>
     document.addEventListener('livewire:init', () => {
         Livewire.on('okkupansi', (item) => {
-            data = item[0]
+            let data = item[0];
 
             let container = document.getElementById('chart-okkupansi');
             container.innerHTML = "";
@@ -71,7 +71,7 @@
                                 show: false,
                                 position: 'bottom',
                                 horizontalAlign: 'center',
-                                offsetX: -10,
+                                offsetX: 0,
                                 offsetY: 0
                             }
                         }

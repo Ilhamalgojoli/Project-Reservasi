@@ -17,6 +17,8 @@ class Gedung extends Model
         'kode_gedung',
         'status',
         'keterangan',
+        'latitude',
+        'longitude',
         'gambar'
     ];
 

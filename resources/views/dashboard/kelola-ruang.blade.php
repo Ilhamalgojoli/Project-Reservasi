@@ -2,7 +2,6 @@
 @php
     $title = 'Kelola Ruang';
     $script = '
-            <script src="' . asset('assets/js/data-table.js') . '" defer></script>
             <script src="' . asset('assets/js/popup.js') . '" defer></script>
             <script src="' . asset('assets/js/dynamic-input.js') . '" defer></script>
             <script src="' . asset('assets/js/tambah-ruang.js') . '" defer></script>

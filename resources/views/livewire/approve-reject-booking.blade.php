@@ -3,7 +3,7 @@
         <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari peminjaman..."
             class="w-full px-3 py-2 border rounded-md focus:outline-none text-black">
     </div>
-    <table id="table-peminjaman" class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1">
+    <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1">
         <thead>
             <tr class="uppercase text-[12px]">
                 <th class="text-center">No</th>
@@ -12,7 +12,6 @@
                 <th class="text-center">Jenis Peminjaman</th>
                 <th class="text-center">Kapasitas</th>
                 <th class="text-center">Penanggung Jawab</th>
-                <th class="text-center">Jenis Peminjaman</th>
                 <th class="text-center">Shift</th>
                 <th class="text-center">Total Peminjaman</th>
                 <th class="text-center">Alasan</th>
@@ -28,7 +27,6 @@
                     <td>{{ $data->jenis_peminjaman }}</td>
                     <td>{{ $data->muatan }}</td>
                     <td class="text-center">{{ $data->penanggung_jawab }}</td>
-                    <td class="text-center">{{ $data->jenis_peminjaman }}</td>
                     <td class="text-center">{{ $data->jam_mulai }} / {{ $data->jam_selesai }}</td>
                     <td class="text-center">{{ $data->total_menit }} Menit</td>
                     <td class="text-center">{{ $data->keterangan_peminjaman }}</td>

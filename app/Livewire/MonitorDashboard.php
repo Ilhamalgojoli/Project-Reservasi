@@ -48,15 +48,15 @@ class MonitorDashboard extends Component
             : 'pageNonAkademik';
 
         $monitor = Monitor::with([
-            'peminjaman:id,fakultas,prodi,kode_matkul,lantai,ruangan_id,tanggal_peminjaman,muatan,kontak_penanggung_jawab,penanggung_jawab,status',
+            'peminjaman:id,fakultas,prodi,kode_matkul,lantai,ruangan_id,tanggal_peminjaman,muatan,kontak_penanggung_jawab,penanggung_jawab',
             'peminjaman.ruangan:id,kode_ruangan,lantai_id',
             'peminjaman.ruangan.lantai:id,lantai,gedung_id',
             'peminjaman.ruangan.lantai.gedung:id,nama_gedung',
         ])->whereHas('peminjaman', function ($q) use ($jenis) {
-            $q->where('status', 'Approve')
-                ->where('jenis_peminjaman', $jenis);
+            $q->where('jenis_peminjaman', $jenis);
         })
-            ->select('waktu_mulai', 'waktu_selesai', 'peminjaman_id')
+            ->select('waktu_mulai', 'waktu_selesai', 'peminjaman_id', 'status')
+            ->where('status', 'Di jadwalkan')
             ->paginate(5, ['*'], $pageName)
             ->through(function ($item) {
                 $now = Carbon::now();

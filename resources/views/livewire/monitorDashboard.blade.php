@@ -21,13 +21,15 @@
         </button>
     </div>
     @if ($tab === 'akademik')
-    <div class="tableAkademik overflow-x-auto">
+    <div class="tableAkademik overflow-x-auto pb-5">
         <table class="table bordered-table text-sm sm-table mb-0 table-auto border-black p-1">
             <thead>
                 <tr class="uppercase text-[12px]">
                     <th>No</th>
                     <th>Gedung</th>
                     <th>Ruangan</th>
+                    <th>Fakultas</th>
+                    <th>Prodi</th>
                     <th>Tanggal</th>
                     <th>Shift</th>
                     <th>Kode Matkul</th>
@@ -48,6 +50,12 @@
                     </td>
                     <td>
                         {{ $data->peminjaman->ruangan->kode_ruangan ?? '-' }}
+                    </td>
+                    <td>
+                        {{ $data->peminjaman->fakultas ?? '-' }}
+                    </td>
+                    <td>
+                        {{ $data->peminjaman->prodi ?? '-' }}
                     </td>
                     <td>
                         {{ $data->peminjaman->tanggal_peminjaman ?? '-' }}
@@ -74,20 +82,20 @@
                         {{ $data->peminjaman->kontak_penanggung_jawab ?? '-' }}
                     </td>
                     <td>
-                        @if ($data->peminjaman->status === "Approve")
+                        @if ($data->status === "Di jadwalkan")
                             <div class="flex items-center justify-center">
                                 <span
-                                    class="bg-success-100  text-success-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                    class="text-blue-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
                             </div>
-                        @elseif ($data->peminjaman->status === "Reject")
+                        @elseif ($data->status === "Sedang Berlansung")
                             <div class="flex items-center justify-center">
                                 <span
-                                    class="bg-danger-100  text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                    class="text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
                             </div>
                         @else
                             <div class="flex items-center justify-center">
                                 <span
-                                    class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                    class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
                             </div>
                         @endif
                     </td>
@@ -101,13 +109,15 @@
     </div>
     @endif
     @if ($tab === 'non-akademik')
-        <div class="tableNonAkademik kaoverflow-x-auto">
+        <div class="tableNonAkademik kaoverflow-x-auto pb-5">
             <table id="non-akademik" class="table bordered-table text-sm sm-table mb-0 table-auto border-black p-1">
                 <thead>
                     <tr class="uppercase text-[12px]">
                         <th>No</th>
                         <th>Gedung</th>
                         <th>Ruangan</th>
+                        <th>Fakultas</th>
+                        <th>Prodi</th>
                         <th>Tanggal</th>
                         <th>Shift</th>
                         <th>Penanggung Jawab</th>
@@ -127,6 +137,12 @@
                                 {{ $data->peminjaman->ruangan->kode_ruangan ?? '-' }}
                             </td>
                             <td>
+                                {{ $data->peminjaman->fakultas ?? '-' }}
+                            </td>
+                            <td>
+                                {{ $data->peminjaman->prodi ?? '-' }}
+                            </td>
+                            <td>
                                 {{ $data->peminjaman->tanggal_peminjaman }}
                             </td>
                             <td>
@@ -142,20 +158,20 @@
                                 {{ $data->peminjaman->kontak_penanggung_jawab }}
                             </td>
                             <td>
-                                @if ($data->peminjaman->status === "Approve")
+                                @if ($data->status === "Di jadwalkan")
                                     <div class="flex items-center justify-center">
                                         <span
-                                            class="bg-success-100  text-success-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                            class="text-blue-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
                                     </div>
-                                @elseif ($data->peminjaman->status === "Reject")
+                                @elseif ($data->status === "Sedang Berlansung")
                                     <div class="flex items-center justify-center">
                                         <span
-                                            class="bg-danger-100  text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                            class="text-danger-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
                                     </div>
                                 @else
                                     <div class="flex items-center justify-center">
                                         <span
-                                            class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->peminjaman->status }}</span>
+                                            class="bg-warning-100  text-warning-600  px-6 py-1.5 rounded-full font-medium text-sm">{{ $data->status }}</span>
                                     </div>
                                 @endif
                             </td>

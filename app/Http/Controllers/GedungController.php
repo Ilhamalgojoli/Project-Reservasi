@@ -128,9 +128,6 @@ class GedungController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         $validate = $request->validate([
@@ -169,7 +166,6 @@ class GedungController extends Controller
                 $gedungUpdate = [
                     'nama_gedung' => $validate['nama'],
                     'kode_gedung' => $validate['id_gedung'],
-                    'jumlah_lantai' => $validate['jumlah'],
                     'status' => $validate['status'],
                     'keterangan' => $validate['keterangan'],
 
@@ -270,8 +266,6 @@ class GedungController extends Controller
     {
         $datas = Gedung::select('id', 'nama_gedung', 'keterangan', 'gambar')
             ->where('status', '=', 'Aktif')->get();
-
-        \Log::info($datas->toArray());
 
         return view(
             'dashboard.pemilihan-gedung', [

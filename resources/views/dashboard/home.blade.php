@@ -3,7 +3,6 @@
 @php
     $title = 'Dashboard';
     $script = '
-            <script src="' . asset('assets/js/data-table.js') . '" defer></script>
             <script src="' . asset('assets/js/basilaChart.js') . '"></script>
         ';
 @endphp

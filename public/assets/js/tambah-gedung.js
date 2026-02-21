@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnTambahGedung = document.getElementById('tambah-submit');
 
     btnTambahGedung.addEventListener('click', async () => {
-
         if (nama.value === "" || kode.value === "" ||
             jumlah.value === "" || status.value === "" ||
             deskripsi.value === "") {

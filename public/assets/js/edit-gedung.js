@@ -7,8 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const gambar = document.getElementById('edit-gambar');
     const btnEditGedung = document.getElementById('submit-edit');
     const popUp = document.getElementById('pop-up-edit');
+    var x = document.getElementById('lat-edit');
+    var y = document.getElementById('lng-edit');
 
     let id = 0;
+    let mapEdit;
 
     // Untuk mendapatkan data dari database 
     document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -30,6 +33,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 jumlah.value = data.data.lantai_count;
                 status.value = data.data.status || '';
                 deskripsi.value = data.data.keterangan;
+
+                if (!mapEdit) {
+                    mapEdit = L.map('map-edit').setView([-6.973007, 107.630403], 20);
+
+                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(mapEdit);
+
+                    var markersGroup = L.layerGroup().addTo(mapEdit);
+
+                    mapEdit.on('click', function (e) {
+                        markersGroup.clearLayers();
+                        L.marker(e.latlng).addTo(markersGroup);
+                        x.innerHTML = e.latlng.lat;
+                        y.innerHTML = e.latlng.lng;
+                    });
+
+                    setTimeout(() => mapEdit.invalidateSize(), 200);
+                } else {
+                    mapEdit.invalidateSize();
+                }
 
                 popUp.classList.remove('hidden');
             } catch (err) {
@@ -190,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const err = await req.json().catch(() => ({}));
                             throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
                         }
-                        
+
                         const data = await req.json();
 
                         if (data.success) {

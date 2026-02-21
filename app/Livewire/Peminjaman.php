@@ -10,12 +10,20 @@ class Peminjaman extends Component
     public $routeId;
     public $jenisPeminjaman;
     public $fakultas;
+    public $faculties = [];
+    public $prodies = [];
     public $prodi;
 
-    public function mount($id)
+    protected function service()
+    {
+        return new \App\Services\PeminjamanService;
+    }
+
+    public function mount()
     {
         $this->routeId = request()->route('id');
         $this->jenisPeminjaman = 'akademik';
+        $this->faculties = $this->service()->getFakultas();
     }
 
     #[On('resetSelect')]
@@ -23,6 +31,11 @@ class Peminjaman extends Component
     {
         $this->fakultas = null;
         $this->prodi = null;
+    }
+
+    public function updatedFakultas()
+    {
+        $this->prodies = $this->service()->getProdi($this->fakultas);
     }
 
     public function render()

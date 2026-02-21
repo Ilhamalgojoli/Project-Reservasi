@@ -17,6 +17,7 @@
     "dependencies": {
         "@designbycode/tailwindcss-text-shadow": "^2.2.1",
         "@tailwindcss/vite": "^4.1.11",
+        "leaflet": "^1.9.4",
         "vite": "^6.4.1"
     }
 }

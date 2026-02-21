@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama_gedung');
             $table->string('kode_gedung')->unique();
-            $table->enum('status', ["Aktif", "Tidak Aktif"])->default('Aktif');
+            $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->string('keterangan');
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 10, 7);
             $table->string('gambar')->nullable();
             $table->timestamps();
         });
