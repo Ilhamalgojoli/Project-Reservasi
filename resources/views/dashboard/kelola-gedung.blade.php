@@ -8,12 +8,5 @@
 @endphp
 
 @section('content')
-    @livewire('tambah-gedung')
-
-    <script>
-        const routes = {
-            storeData: "{{ route('tambah.gedung') }}",
-            updateData: "{{ route('update.gedung') }}"
-        };
-    </script>    
+    @livewire('tambah-gedung') 
 @endsection
