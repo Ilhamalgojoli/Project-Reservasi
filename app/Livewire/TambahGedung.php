@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Services\TambahEditGedungService;
 use Livewire\Component;
-use App\Models\Gedung;
 
 class TambahGedung extends Component
 {
@@ -14,13 +14,9 @@ class TambahGedung extends Component
     protected $listeners = [
         "closeButtonTambah" => "closePopUpTambah",
         "closeButtonEdit" => "closePopUpEdit",
-        "successCreated" => "closePopUpTambah"
+        "successClosePopUp" => "closePopUpTambah",
+        "closeAfterConfirm" => "closePopUpEdit"
     ];
-
-    protected function service()
-    {
-        return new \App\Services\TambahEditGedungService;
-    }
 
     public function openPopUpTambah()
     {   
@@ -45,9 +41,9 @@ class TambahGedung extends Component
         $this->popUpEdit = false;
     }
 
-    public function render()
+    public function render(TambahEditGedungService $service)
     {
-        $data = $this->service()->getDataGedung();
+        $data = $service->getDataGedung();
 
         return view('livewire.tambah-gedung', [
             'datas' => $data

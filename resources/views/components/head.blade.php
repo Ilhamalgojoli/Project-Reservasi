@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Project-Basila</title>
 
-    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js', 'resources/js/leaflet.js'])
 
     <link rel="icon" type="image/png') }}" href="{{ asset('assets/basila_images/favicon.png') }}" sizes="16x16">
     <!-- google fonts -->
@@ -18,7 +18,6 @@
 
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @vite('resources/js/leaflet.js')
 
     <!-- Livewire script -->
     @livewireStyles

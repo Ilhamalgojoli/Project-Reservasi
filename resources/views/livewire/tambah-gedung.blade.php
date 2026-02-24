@@ -107,6 +107,10 @@
                 customClass: {
                     confirmButton: 'btn-ok'
                 }
+            }).then((result) => {
+                if(result.isConfirmed){
+                    Livewire.dispatch('successClosePopUp')
+                }
             });
         });
 
@@ -141,7 +145,26 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('deleteGedung', { id: e.id });
+                    Livewire.dispatch('deleteGedung', {
+                        id: e.id
+                    });
+                }
+            });
+        });
+
+        Livewire.on('successDeleteGedung', () => {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Sukses',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn-ok'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('closeAfterConfirm');
                 }
             });
         });
@@ -155,6 +178,10 @@
                 buttonsStyling: false,
                 customClass: {
                     confirmButton: 'btn-ok'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('closeAfterConfirm');
                 }
             });
         });
