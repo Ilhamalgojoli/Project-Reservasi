@@ -20,11 +20,11 @@ Route::prefix('dashboard')->group(function () {
 
     Route::controller(GedungController::class)->group(function () {
         Route::get('kelola-gedung', 'index')->name('index6');
-        Route::get('/edit-gedung/{id}', [GedungController::class, 'edit']);
-        Route::post('/update/gedung', [GedungController::class, 'update'])->name('update.gedung');
-        Route::post('/tambah-gedung', 'store')->name('tambah.gedung');
-        Route::delete('/delete/{id}', [GedungController::class, 'destroy']);
-        Route::get('/pilih-gedung', 'show')->name('index2');
+            Route::get('/edit-gedung/{id}', [GedungController::class, 'edit']);
+            Route::post('/update/gedung', [GedungController::class, 'update'])->name('update.gedung');
+            Route::post('/tambah-gedung', 'store')->name('tambah.gedung');
+            Route::delete('/delete/{id}', [GedungController::class, 'destroy']);
+            Route::get('/pilih-gedung', 'show')->name('index2');
     });
 
     Route::controller(RuanganController::class)->group(function () {

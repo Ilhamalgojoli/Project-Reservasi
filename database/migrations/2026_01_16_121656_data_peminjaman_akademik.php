@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('kontak_penanggung_jawab');
             $table->string('keterangan_peminjaman');
             $table->string('alasan_penolakan')->nullable();
-            $table->enum('status', ['Waiting', 'Approve', 'Reject'])->default('Waiting');
+            $table->enum('status', ['Waiting', 'Approve', 'Reject', 'Canceled'])->default('Waiting');
             $table->timestamps();
         });
     }

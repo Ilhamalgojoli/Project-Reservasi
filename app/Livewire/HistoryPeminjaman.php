@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Services\ApprovalService;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,12 +12,10 @@ class HistoryPeminjaman extends Component
 {
     use WithPagination;
 
-    public function render()
+    public function render(ApprovalService $service)
     {
-        $get_data = new ApproveRejectBooking;
-
         return view('livewire.history-peminjaman', [
-            'peminjaman' => $get_data->getData('historyPeminjaman'),
+            'peminjaman' => $service->getData('historyPeminjaman', null),
         ]);
     }
 
@@ -26,7 +25,7 @@ class HistoryPeminjaman extends Component
         $data_peminjaman = DataPeminjaman::findOrFail($id);
 
         if ($data_peminjaman->status === 'Waiting') {
-            $data_peminjaman->delete();
+            $data_peminjaman->update(['status' => 'Canceled']);
 
             $this->dispatch('successCancel', [
                 'text' => 'berhasil cancel booking'
