@@ -40,7 +40,7 @@ class PopUpEdit extends Component
 
     protected function service()
     {
-        return new \App\Services\TambahEditGedungService;
+        return new \App\Services\GedungService;
     }
 
     public function mount($id)

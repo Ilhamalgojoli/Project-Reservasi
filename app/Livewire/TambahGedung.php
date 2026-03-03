@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Services\TambahEditGedungService;
+use App\Services\GedungService;
 use Livewire\Component;
 
 class TambahGedung extends Component
@@ -41,7 +41,7 @@ class TambahGedung extends Component
         $this->popUpEdit = false;
     }
 
-    public function render(TambahEditGedungService $service)
+    public function render(GedungService $service)
     {
         $data = $service->getDataGedung();
 

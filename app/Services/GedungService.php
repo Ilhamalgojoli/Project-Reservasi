@@ -7,7 +7,7 @@ use App\Models\Lantai;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class TambahEditGedungService
+class GedungService
 {
     public function getEdit($gedungID)
     {
