@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\DataPeminjaman;
-use App\MOdels\Monitor;
+use App\Models\Monitor;
 use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
 
