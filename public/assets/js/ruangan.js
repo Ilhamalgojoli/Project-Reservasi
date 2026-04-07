@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ruanganSelect.innerHTML = '<option disabled selected>Pilih Ruangan</option>'
             ruanganSelect.disabled = true
 
-            const res = await fetch(`/dashboard/data-ruangan/${this.value}`);
+            const res = await fetch(`/dashboard/ruangan/${this.value}`);
             const data = await res.json();
 
             if (data.success) {
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const listItem = document.getElementById('asset-ruangan');
 
-            const res  = await fetch(`/dashboard/get-asset/${this.value}`);
+            const res  = await fetch(`/dashboard/asset/${this.value}`);
             const data = await res.json();
 
             listItem.innerHTML = '';

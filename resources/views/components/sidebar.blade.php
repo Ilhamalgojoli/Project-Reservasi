@@ -5,20 +5,20 @@
     <div class="bg-[#e51411]">
         <a href="{{ route('index') }}" class="sidebar-logo background-primary flex items-center justify-center">
             <img src="{{ asset('assets/basila_images/basila_white.png') }}" alt="site logo" class="light-logo"
-                 width="120">
-            <img src="{{ asset('assets/basila_images/logo_basila.png') }}" alt="site logo" class="logo-icon" width="30">
+                width="120">
+            <img src="{{ asset('assets/basila_images/logo_basila.png') }}" alt="site logo" class="logo-icon"
+                width="30">
         </a>
     </div>
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <div class="identitas flex flex-col items-center gap-3 my-16">
-                <img src="{{ asset('assets/basila_images/favicon.png') }}"
-                     class="w-20 object-cover mx-auto object-top"
-                     alt="logo basila" id="logo">
+                <img src="{{ asset('assets/basila_images/favicon.png') }}" class="w-20 object-cover mx-auto object-top"
+                    alt="logo basila" id="logo">
                 <div class="flex flex-col items-center w-full gap-2">
                     <h1 class="uppercase text-xl truncate overflow-hidden whitespace-nowrap max-w-[80%]"
-                        id="sidebar-name">Admin - Ilham</h1>
-                    <h5 class="text-sm font-normal" id="sidebar-nim">607062300081</h5>
+                        id="sidebar-name">{{ session('username') }}</h1>
+                    <h5 class="text-sm font-normal" id="sidebar-nim">{{ session('nim') }}</h5>
                 </div>
             </div>
             <li class="mb-4">
@@ -39,24 +39,28 @@
                             Home
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('index6') }}" class="">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            Pengelolaan Ruangan
-                        </a>
-                    </li>
+                    @if (session('role_name') === 'SUPERADMIN' || session('role_name') === 'KEPALA URUSAN ADMINISTRASI AKADEMIK')
+                        <li>
+                            <a href="{{ route('pengelolaan-gedung') }}" class="">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Pengelolaan Ruangan
+                            </a>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('index2') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                             Peminjaman Ruangan
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('approve-reservasi') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            Persetujuan Peminjaman
-                        </a>
-                    </li>
+                    @if (session('role_name') === 'SUPERADMIN' || session('role_name') === 'KEPALA URUSAN ADMINISTRASI AKADEMIK')
+                        <li>
+                            <a href="{{ route('approve-reservasi') }}">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Persetujuan Peminjaman
+                            </a>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('history-peminjaman') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>

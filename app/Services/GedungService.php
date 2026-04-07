@@ -14,17 +14,27 @@ class GedungService
         return Gedung::withCount('lantai')->find($gedungID);
     }
 
-    public function getDataGedung()
+    public function getDataGedung($page = null)
     {
         return Gedung::withCount('ruangan')->withCount('lantai')->get();
     }
 
+    public function getDataLantaiPerGedung($id)
+    {
+        return Lantai::select('id', 'lantai')->where('gedung_id', $id)->get();
+    }
+
+    public function getDataLantai($id)
+    {
+        return Lantai::select('id', 'lantai')->where('gedung_id', $id);
+    }
+
     public function deleteGedung($id)
     {
-        try{
+        try {
             $gedung = Gedung::findOrFail($id);
             return $gedung->delete();
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -32,34 +42,39 @@ class GedungService
     public function createData(array $data)
     {
         $path = null;
-        if (! empty($data['gambar'])) {
+
+        if (!empty($data['gambar'])) {
             $gambar = $data['gambar'];
             $path = $gambar->store('gambar_gedung', 'public');
         }
 
-        $gedung = DB::transaction(function () use ($data, $path) {
-            $gedung = Gedung::create([
-                'nama_gedung' => $data['nama'],
-                'kode_gedung' => $data['kode'],
-                'status' => $data['status'],
-                'keterangan' => $data['keterangan'],
-                'latitude' => (float) $data['latitude'],
-                'longitude' => (float) $data['longitude'],
-                'gambar' => $path,
-            ]);
-
-            $jumlah = (int) $data['jumlahLantai'];
-            for ($i = 1; $i <= $jumlah; $i++) {
-                Lantai::create([
-                    'lantai' => $i,
-                    'gedung_id' => $gedung->id,
+        try {
+            $gedung = DB::transaction(function () use ($data, $path) {
+                $gedung = Gedung::create([
+                    'nama_gedung' => $data['nama'],
+                    'kode_gedung' => $data['kode'],
+                    'status' => $data['status'],
+                    'keterangan' => $data['keterangan'],
+                    'latitude' => (float) $data['latitude'],
+                    'longitude' => (float) $data['longitude'],
+                    'gambar' => $path,
                 ]);
-            }
+
+                $jumlah = (int) $data['jumlahLantai'];
+                for ($i = 1; $i <= $jumlah; $i++) {
+                    Lantai::create([
+                        'lantai' => $i,
+                        'gedung_id' => $gedung->id,
+                    ]);
+                }
+
+                return $gedung;
+            });
 
             return $gedung;
-        });
-
-        return $gedung;
+        } catch (\Exception $e) {
+            throw new \Exception('Proses menambahkan gedung gagal.');
+        }
     }
 
     public function update(array $data)
@@ -67,10 +82,10 @@ class GedungService
         info('data : ', $data);
         $path = null;
 
-        if (! empty($data['gambar'])) {
+        if (!empty($data['gambar'])) {
             $gambar = $data['gambar'];
 
-            if (! Storage::disk('public')->exists('gambar_gedung')) {
+            if (!Storage::disk('public')->exists('gambar_gedung')) {
                 Storage::disk('public')->makeDirectory('gambar_gedung');
             }
 
@@ -78,8 +93,9 @@ class GedungService
         }
 
         $gedung = Gedung::with('lantai')->find($data['id']);
-        if (! $gedung) {
-            throw new \DomainException('Data tidak ditemukan');
+
+        if (!$gedung) {
+            throw new \Exception('Data tidak ditemukan');
         }
 
         DB::transaction(function () use ($data, $path, $gedung) {

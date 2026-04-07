@@ -68,7 +68,9 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    @this.dispatch('approve', { id: e.id });
+                    @this.dispatch('approve', {
+                        id: e.id
+                    });
                 }
             });
         });
@@ -80,7 +82,9 @@
                 icon: 'success',
                 confirmButtonText: 'OK',
                 buttonsStyling: false,
-                customClass: { confirmButton: 'btn-ok' }
+                customClass: {
+                    confirmButton: 'btn-ok'
+                }
             });
         });
 
@@ -92,6 +96,13 @@
                 showCancelButton: true,
                 confirmButtonText: 'Kirim',
                 cancelButtonText: 'Batal',
+                buttonsStyling: false,
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn-confirm',
+                    cancelButton: 'btn-cancel',
+                    actions: 'flex justify-center gap-4'
+                },
                 preConfirm: (alasan) => {
                     if (!alasan) Swal.showValidationMessage('Alasan wajib diisi');
                     return alasan;
@@ -99,7 +110,10 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     console.log(result.value);
-                    @this.dispatch('reject', { id: e.id, alasan: result.value });
+                    @this.dispatch('reject', {
+                        id: e.id,
+                        alasan: result.value
+                    });
                 }
             });
         });
@@ -111,7 +125,9 @@
                 icon: 'success',
                 confirmButtonText: 'OK',
                 buttonsStyling: false,
-                customClass: { confirmButton: 'btn-ok' }
+                customClass: {
+                    confirmButton: 'btn-ok'
+                }
             });
         });
     });

@@ -74,8 +74,13 @@
                 {{ $message }}
             @enderror
 
-            <input type="hidden" id="lat" wire:model="latitude">
-            <input type="hidden" id="lng" wire:model="longitude">
+            <div class="text-black flex flex-row gap-3">
+                <p id="show-lat">{{ $latitude }}</p>
+                <p id="show-lng">{{ $longitude }}</p>
+            </div>
+
+            <input type="hidden" id="lat" value="{{ $latitude }}" wire:model="latitude">
+            <input type="hidden" id="lng" value="{{ $longitude }}" wire:model="longitude">
 
             <div class="flex flex-col gap-5">
                 <div class="flex flex-row justify-center gap-5">

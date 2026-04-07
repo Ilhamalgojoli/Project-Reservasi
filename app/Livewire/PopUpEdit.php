@@ -53,6 +53,8 @@ class PopUpEdit extends Component
         $this->jumlahLantai = $data->lantai_count;
         $this->status = $data->status;
         $this->keterangan = $data->keterangan;
+        $this->latitude = $data->latitude;
+        $this->longitude = $data->longitude;
     }
 
     public function submit() 
@@ -66,13 +68,15 @@ class PopUpEdit extends Component
                 $this->dispatch('successUpdated');
                 $this->dispatch('closePopUpEdit');
             }
-        } catch(\DomainException $e){
-
+        } catch(\Exception $e){
+            $this->dispatch('errorUpdate', $e->getMessage());
         }
     }
 
     public function closeButton()
     {
+        // $this->latitude = null;
+        // $this->longitude = null;
         $this->dispatch('closeButtonEdit');
     }
 

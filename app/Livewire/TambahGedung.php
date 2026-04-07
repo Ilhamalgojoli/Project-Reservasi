@@ -43,7 +43,7 @@ class TambahGedung extends Component
 
     public function render(GedungService $service)
     {
-        $data = $service->getDataGedung();
+        $data = $service->getDataGedung('kelolaGedung');
 
         return view('livewire.tambah-gedung', [
             'datas' => $data

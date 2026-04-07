@@ -15,6 +15,7 @@ class ApproveRejectBooking extends Component
     public $search = '';
 
     protected $queryString = ['search'];
+    private $data = [];
 
     protected function service()
     {
@@ -47,10 +48,17 @@ class ApproveRejectBooking extends Component
         }
     }
 
+    public function filters()
+    {
+        info('click');
+    }
+
     public function render()
     {
+        $this->data = $this->service()->getData($this->search);
+
         return view('livewire.approve-reject-booking', [
-            'peminjaman' => $this->service()->getData('approvePage', $this->search),
+            'peminjaman' => $this->data,
         ]);
     }
 }

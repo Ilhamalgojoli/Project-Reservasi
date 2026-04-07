@@ -21,11 +21,14 @@ class DataPeminjaman extends Model
         'lantai',
         'status',
         'ruangan_id',
+        'user_identifier',
         'tanggal_peminjaman',
         'jadwal_peminjaman',
         'muatan',
         'penanggung_jawab',
         'kontak_penanggung_jawab',
+        'alasan_pembatalan',
+        'cancel_by',
         'alasan_penolakan',
         'keterangan_peminjaman'
     ];

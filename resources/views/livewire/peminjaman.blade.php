@@ -9,28 +9,44 @@
 
         <div class="flex flex-row gap-5 md:flex-row sm:flex-col">
             <!-- Fakultas -->
-            <select wire:model.live="fakultas" class="rounded-md lg:w-[735px] w-[735px] md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+            <div class="flex flex-col gap-3 flex-1">
+                <select wire:model.live="fakultas"
+                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                 bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                <option value="">Pilih Fakultas / Direktorat</option>
-                @foreach ($faculties as $data)
-                    <option value="{{ $data->id }}">{{ $data->fakultas }}</option>
-                @endforeach
-                <!-- bisa ditambah sesuai data asli -->
-            </select>
+                    <option value="">Pilih Fakultas / Direktorat</option>
+                    @foreach ($faculties as $data)
+                        <option value="{{ $data->id }}">{{ $data->fakultas }}</option>
+                    @endforeach
+                    <!-- bisa ditambah sesuai data asli -->
+                </select>
+
+                @if ($errorFakultas != null)
+                    <p class="text-red-500 text-sm">{{ $errorFakultas }}</p>
+                @endif
+            </div>
 
             <!-- Prodi -->
-            <select wire:model.live="prodi" class="rounded-md lg:w-[735px] w-[735px] md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                <option value="">Pilih Prodi</option>
-                @foreach ($prodies as $data)
-                    <option value="{{ $data->id }}">{{ $data->prodi }}</option>          
-                @endforeach
-                <!-- bisa ditambah sesuai data asli -->
-            </select>
+            <div class="flex flex-col gap-3 flex-1">
+                <select wire:model.live="prodi"
+                    class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+                    bg-transparent border border-[#808080] border-opacity-50 font-bold">
+                    <option value="">Pilih Prodi</option>
+                    @foreach ($prodies as $data)
+                        <option value="{{ $data->id }}">{{ $data->prodi }}</option>
+                    @endforeach
+                    <!-- bisa ditambah sesuai data asli -->
+                </select>
+
+                @if ($errorProdi != null)
+                    <p class="text-red-500 text-sm">{{ $errorProdi }}</p>
+                @endif
+            </div>
+
         </div>
 
         <div class="flex flex-col flex-1 gap-5">
-            <select id="opsi-peminjaman" wire:model.live="jenisPeminjaman" class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
+            <select id="opsi-peminjaman" wire:model.live="jenisPeminjaman"
+                class="rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
                 bg-transparent border border-[#808080] border-opacity-50 font-bold">
                 <option value="">Pilih Jenis Peminjaman</option>
                 <option value="akademik">Akademik</option>
@@ -44,13 +60,13 @@
         </div>
 
         @if ($jenisPeminjaman === 'akademik')
-            <livewire:peminjaman-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
-                :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman . '-' . $fakultas . '-' . $prodi" />
+            <livewire:peminjaman-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas" :prodi="$prodi"
+                :key="'akademik-' . $jenisPeminjaman . '-' . $fakultas . '-' . $prodi" />
         @endif
 
         @if ($jenisPeminjaman === 'non-akademik')
-            <livewire:peminjaman-non-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
-                :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman . '-' . $fakultas . '-' . $prodi" />
+            <livewire:peminjaman-non-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas" :prodi="$prodi"
+                :key="'akademik-' . $jenisPeminjaman . '-' . $fakultas . '-' . $prodi" />
         @endif
     </div>
 </section>

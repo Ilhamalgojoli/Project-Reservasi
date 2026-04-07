@@ -71,6 +71,11 @@
                 <div id="map" class="h-[300px] w-full border-[2px] border-gray-200 rounded-md"></div>
             </div>
 
+            <div class="text-black flex flex-row gap-3">
+                <p id="show-lat">lat : </p>
+                <p id="show-lng">lng : </p>
+            </div>
+
             <input type="hidden" id="lat" wire:model="latitude">
             <input type="hidden" id="lng" wire:model="longitude">
 

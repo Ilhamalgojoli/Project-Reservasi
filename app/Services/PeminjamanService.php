@@ -56,6 +56,7 @@ class PeminjamanService
             ->first();
     }
 
+    // Generate jam otomatis
     public function generateJam($start, $end, $interval = 30)
     {
         $result = [];
@@ -83,12 +84,20 @@ class PeminjamanService
         $this->cekTabrakanJadwal($data);
         $this->cekMuatan($data['ruanganID'], $data['muatanKapasitas']);
 
-        return DB::transaction(function () use ($data) {
+        $jam = array_unique($data['pilihJam']);
+        // Urutkan waktu peminjaman dari user supaya ketika masuk db data tidak berantakan
+        sort($jam); 
+        // Panggil fungsi 
+        $this->cekIntervalJadwal($jam);
+
+        // Masuk transaction dikarenakan ada 2 proses query,menjaga data agar tetap konsisten
+        return DB::transaction(function () use ($data, $jam) {
             $peminjaman = DataPeminjaman::create([
                 'fakultas' => $data['fakultas'],
                 'prodi' => $data['prodi'],
                 'jenis_peminjaman' => $data['jenisPeminjaman'],
                 'kode_matkul' => $data['kodeMatkul'] ?? null,
+                'user_identifier' => $data['userIdentifier'],
                 'lantai' => (int) $data['lantaiID'],
                 'ruangan_id' => (int) $data['ruanganID'],
                 'tanggal_peminjaman' => $data['tanggal'],
@@ -98,7 +107,7 @@ class PeminjamanService
                 'keterangan_peminjaman' => $data['deskripsi'],
             ]);
 
-            foreach ($data['pilihJam'] as $waktu) {
+            foreach ($jam as $waktu) {
                 WaktuPeminjaman::create([
                     'waktu_peminjaman' => $waktu,
                     'peminjaman_id' => $peminjaman->id,
@@ -109,7 +118,25 @@ class PeminjamanService
         });
     }
 
-    protected function cekTabrakanJadwal(array $data)
+    // Cek interval waktu yang di pinjam,apakah format peminjaman sudah benar atau belum
+    private function cekIntervalJadwal(array $listJam, $interval = 30)
+    {
+        sort($listJam);
+
+        $expected = $interval * 60;
+
+        for ($i = 0; $i < count($listJam) - 1; $i++) {
+            $currentJam = strtotime($listJam[$i]);
+            $nextJam = strtotime($listJam[$i + 1]);
+
+            if (($nextJam - $currentJam) !== $expected) {
+                throw new \Exception("Jam harus berurutan tiap {$interval} menit");
+            }
+        }
+    }
+
+    // Cek apakah jadwal yang dipinjam apakah sudah pernah dipinjam atau belum
+    private function cekTabrakanJadwal(array $data)
     {
         $tabrakan = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($data) {
             $q->where('ruangan_id', $data['ruanganID'])
@@ -127,24 +154,26 @@ class PeminjamanService
             $start = Carbon::parse($rangeDb->first()->waktu_peminjaman);
             $end = Carbon::parse($rangeDb->last()->waktu_peminjaman);
 
-            throw new \DomainException("Ruangan pada jam $start sudah dipakai sampai jam $end");
+            throw new \Exception("Ruangan pada jam $start sudah dipakai sampai jam $end");
         }
     }
 
-    protected function cekMuatan(int $ruanganID, int $kapasitas)
+    // Cek muatan dari peminjaman apakah melebihi kapasitas ruangan atau tidak
+    private function cekMuatan(int $ruanganID, int $kapasitas)
     {
         $over_cap = Ruangan::where('id', $ruanganID)
             ->value('muatan_kapasitas');
 
         if ($kapasitas >= $over_cap) {
-            throw new \DomainException('Ruangan melebihi kapasitas');
+            throw new \Exception('Ruangan melebihi kapasitas');
         }
     }
 
+    // Membuat log request peminjaman dari user
     public function createKegiatan($penanggungJawab, $ruanganID)
     {
-        if (! $ruanganID) {
-            throw new \DomainException('Ruangan tidak ditemukan');
+        if (!$ruanganID) {
+            throw new \Exception('Ruangan tidak ditemukan');
         }
 
         $ruangan = Ruangan::select('kode_ruangan')

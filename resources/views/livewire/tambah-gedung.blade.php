@@ -87,13 +87,13 @@
     document.addEventListener('livewire:init', () => {
         Livewire.on('init-map-tambah', () => {
             setTimeout(() => {
-                window.initMapCreateUpdate();
+                window.initMapCreate();
             }, 100);
         });
 
         Livewire.on('init-map-edit', () => {
             setTimeout(() => {
-                window.initMapCreateUpdate();
+                window.initMapUpdate();
             }, 100);
         });
 
@@ -173,6 +173,23 @@
             Swal.fire({
                 title: 'Failed!',
                 text: 'Gagal menghapus data',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn-ok'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('closeAfterConfirm');
+                }
+            });
+        });
+
+        Livewire.on('errorCreated', (e) => {
+            Swal.fire({
+                title: 'Failed!',
+                text: e,
                 icon: 'error',
                 confirmButtonText: 'OK',
                 buttonsStyling: false,

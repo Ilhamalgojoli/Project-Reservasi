@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('click');
             id = btn.dataset.id;
 
-            const res = await fetch(`/dashboard/edit-ruangan/${id}`);
+            const res = await fetch(`/ruangan/detail/${id}`);
             const data = await res.json();
 
             idRuangan.value = data.data.kode_ruangan;
@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnSubmit.addEventListener('click', async () => {
-        // Konfirmasi sebelum aksi
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Apakah Anda yakin ingin menyimpan perubahan?",
@@ -165,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const parseId = parseInt(id);
 
-                    const req = await fetch(`/dashboard/delete-ruangan/${parseId}`, {
+                    const req = await fetch(`/dashboard/ruangan/${parseId}`, {
                         method: 'DELETE',
                         headers: {
                             "Accept": "application/json",
@@ -233,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const req = await fetch(`/dashboard/delete-asset/${id}`, {
+                    const req = await fetch(`/dashboard/asset/${id}`, {
                         method: "DELETE",
                         headers: {
                             "Accept": "application/json",

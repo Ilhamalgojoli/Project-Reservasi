@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('data_peminjaman', function (Blueprint $table) {
@@ -23,16 +20,16 @@ return new class extends Migration
             $table->integer('muatan');
             $table->string('penanggung_jawab');
             $table->string('kontak_penanggung_jawab');
+            $table->string('user_identifier');
             $table->string('keterangan_peminjaman');
             $table->string('alasan_penolakan')->nullable();
+            $table->string('alasan_pembatalan')->nullable();
+            $table->string('cancel_by')->nullable();
             $table->enum('status', ['Waiting', 'Approve', 'Reject', 'Canceled'])->default('Waiting');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('data_peminjaman');

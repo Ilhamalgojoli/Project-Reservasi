@@ -13,6 +13,13 @@ class Peminjaman extends Component
     public $faculties = [];
     public $prodies = [];
     public $prodi;
+    public $errorFakultas = null;
+    public $errorProdi = null;
+
+    protected $listeners = [
+        'fakultasError' => 'errorHandle',
+        'prodiError' => 'errorHandle',
+    ];
 
     protected function service()
     {
@@ -33,9 +40,30 @@ class Peminjaman extends Component
         $this->prodi = null;
     }
 
+    public function errorHandle($data)
+    {
+        if (!isset($data['source'], $data['error'])) 
+            return ;
+        
+
+        switch ($data['source']) {
+            case 'fakultas':
+                $this->errorFakultas = $data['error'];
+                break;
+            case 'prodi':
+                $this->errorProdi = $data['error'];
+                break;
+            default:
+                break;
+        }
+    }
+
     public function updatedFakultas()
     {
         $this->prodies = $this->service()->getProdi($this->fakultas);
+        $this->prodi = null;
+        $this->errorFakultas = null;
+        $this->errorProdi = null;
     }
 
     public function render()

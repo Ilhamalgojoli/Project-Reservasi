@@ -1,4 +1,8 @@
 <div class="tableKelola overflow-x-auto">
+    <div class="mb-4">
+        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari peminjaman..."
+            class="w-full px-3 py-2 border rounded-md focus:outline-none text-black">
+    </div>  
     <table class="table bordered-table text-sm sm-table mb-0 table-auto border-black p-1">
         <thead>
             <tr class="uppercase text-[12px]">
@@ -31,12 +35,14 @@
                     </td>
                     <td>
                         <div class="flex items-center justify-center">
-                            @if ($data->status === "Aktif")
-                                <span class="bg-success-100 text-success-600 px-6 py-1.5 rounded-full font-medium text-sm">
+                            @if ($data->status === 'Aktif')
+                                <span
+                                    class="bg-success-100 text-success-600 px-6 py-1.5 rounded-full font-medium text-sm">
                                     {{ $data->status }}
                                 </span>
                             @else
-                                <span class="bg-danger-100 text-danger-600 px-6 py-1.5 rounded-full font-medium text-sm">
+                                <span
+                                    class="bg-danger-100 text-danger-600 px-6 py-1.5 rounded-full font-medium text-sm">
                                     {{ $data->status }}
                                 </span>
                             @endif

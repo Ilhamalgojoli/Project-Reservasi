@@ -32,6 +32,19 @@ class PopUpTambah extends Component
         ];
     }
 
+    protected function messages()
+    {
+        return [
+            'nama.required' => 'Nama wajib diisi.',
+            'kode.required' => 'Kode Gedung wajib diisi.',
+            'jumlahLantai.required' => 'Kode Gedung wajib diisi.',
+            'status.required' => 'Kode Gedung wajib diisi.',
+            'keterangan.required' => 'Kode Gedung wajib diisi.',
+            'lattitude.required' => 'Silakan pilih lokasi pada map.',
+            'longitude.required' => 'Silakan pilih lokasi pada map.'
+        ];
+    }
+
     protected function service()
     {
         return new \App\Services\GedungService;
@@ -52,8 +65,10 @@ class PopUpTambah extends Component
             if ($tambahGedung) {
                 $this->dispatch('successCreated');
             }
-        } catch (\DomainException $e) {
-            $this->dispatch('errorCreated');
+        } catch (\Exception $e) {
+            $this->dispatch('errorCreated', [
+                'text' => $e->getMessage()
+            ]);
         }
     }
 

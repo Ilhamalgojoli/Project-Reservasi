@@ -7,10 +7,19 @@ use Livewire\Component;
 
 class KegiatanTerkini extends Component
 {
-    public function render(DashboardService $dashboard)
+    protected $listeners = [
+        'refresh' => 'render'
+    ];
+
+    public function refreshKegiatanTerkini()
+    {
+        $this->dispatch('refresh');
+    }
+
+    public function render(DashboardService $service)
     {
         return view('livewire.kegiatan-terkini', [
-            'datas' => $dashboard->getDataKegiatanTerkini(),
+            'datas' => $service->getDataKegiatanTerkini(),
         ]);
     }
 }

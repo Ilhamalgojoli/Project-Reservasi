@@ -2,35 +2,38 @@
 
 namespace App\Livewire;
 
-use App\Models\Ruangan;
+use App\Services\RuanganService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class TableKelolaRuangan extends Component
 {
     use WithPagination;
-    protected $paginationTheme = 'tailwind';
     public $gedungID;
+    public $search = '';
+    protected $queryString = ['search'];
+    private $filter = false;
+    private $id;
+
+    protected $listeners = [
+        'filterButton' => 'filterListener'
+    ];
 
     public function mount($id)
     {   
         $this->gedungID = $id;
     }
 
-    public function render()
+    public function filterListener($id)
     {
-        $datas = Ruangan::with([
-            'lantai:id,lantai,gedung_id',
-            'asset:ruangan_id,nama_asset,jumlah_asset',
-        ])
-            ->select('id', 'kode_ruangan', 'status', 'muatan_kapasitas', 'lantai_id')
-            ->whereHas('lantai', function ($q) {
-                $q->where('gedung_id', $this->gedungID);
-            })
-            ->paginate(5);
+        $this->filter = true;
+        $this->id = $id;
+    }
 
+    public function render(RuanganService $service)
+    {
         return view('livewire.table-kelola-ruangan', [
-            'datas' => $datas,
+            'datas' => $service->getData($this->gedungID, $this->search, $this->filter, $this->id),
         ]);
     }
 }

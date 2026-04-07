@@ -23,7 +23,8 @@ class PeminjamanNonAkademik extends Component
     public $muatanKapasitas;
     public $deskripsi;
     public $penanggungJawab;
-    public $kontakPenanggungJawab;  
+    public $kontakPenanggungJawab;
+    public $userIdentifier;
 
     protected function service()
     {
@@ -52,6 +53,41 @@ class PeminjamanNonAkademik extends Component
         ];
     }
 
+    protected function messages()
+    {
+        return [
+            'fakultas.required' => 'Fakultas wajib diisi',
+            'prodi.required' => 'Program studi wajib diisi',
+
+            'jenisPeminjaman.required' => 'Jenis peminjaman wajib dipilih',
+
+            'tanggal.required' => 'Tanggal wajib diisi',
+            'tanggal.date' => 'Format tanggal tidak valid',
+
+            'lantaiID.required' => 'Lantai wajib dipilih',
+            'lantaiID.integer' => 'Lantai tidak valid',
+
+            'ruanganID.required' => 'Ruangan wajib dipilih',
+            'ruanganID.integer' => 'Ruangan tidak valid',
+
+            'pilihJam.required' => 'Minimal pilih satu jam',
+            'pilihJam.array' => 'Format jam tidak valid',
+            'pilihJam.min' => 'Minimal pilih satu jam',
+
+            'muatanKapasitas.required' => 'Kapasitas wajib diisi',
+            'muatanKapasitas.integer' => 'Kapasitas harus angka',
+            'muatanKapasitas.min' => 'Kapasitas minimal 1',
+
+            'penanggungJawab.required' => 'Penanggung jawab wajib diisi',
+            'penanggungJawab.min' => 'Minimal 3 karakter',
+
+            'kontakPenanggungJawab.required' => 'Kontak wajib diisi',
+            'kontakPenanggungJawab.numeric' => 'Kontak harus angka',
+
+            'deskripsi.max' => 'Deskripsi maksimal 500 karakter',
+        ];
+    }
+
     public function mount($id, $jenisPeminjaman, $fakultas, $prodi)
     {
         $this->lantai = $this->service()->getLantai($id);
@@ -60,6 +96,7 @@ class PeminjamanNonAkademik extends Component
         $this->jenisPeminjaman = $jenisPeminjaman;
         $this->fakultas = $fakultas;
         $this->prodi = $prodi;
+        $this->userIdentifier = session('user_identifier');
     }
 
     public function updatedLantaiID($value)
@@ -70,24 +107,59 @@ class PeminjamanNonAkademik extends Component
     public function updatedRuanganID($value)
     {
         $this->maxKapasitas = $this->service()->getMaxKapasitas($value);
-        $this->dispatch('getRuanganID' , $this->ruanganID);
+        $this->dispatch('getRuanganID', $this->ruanganID);
     }
 
     #[On('non-akademik')]
     public function submitForm()
     {
-        $data = $this->validate();
+        try {
+            $data = $this->validate();
 
-        try{    
             $peminjaman = $this->service()->create($data);
-            
-            if($peminjaman){
+            if ($peminjaman) {
                 $this->service()->createKegiatan($this->penanggungJawab, $this->ruanganID);
                 $this->dispatch('successNonAkademik');
 
-                $this->reset();
+                $this->reset([
+                    'lantaiID',
+                    'ruanganID',
+                    'pilihJam',
+                    'muatanKapasitas',
+                    'tanggal',
+                    'deskripsi',
+                    'penanggungJawab',
+                    'kontakPenanggungJawab',
+                    'maxKapasitas',
+                ]);
+
+                $this->dispatch('resetSelect');
             }
-        } catch(\DomainException $e){
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangkap error validasi
+            $errors = $e->validator->errors();
+
+            // Untuk validasi di parent component dikirim melewati event dispatch
+            if ($errors->has('fakultas')) {
+                \Log::info('jalan fakultas error');
+                $this->dispatch('fakultasError', [
+                    'error' => $errors->first('fakultas'),
+                    'source' => 'fakultas'
+                ]);
+            }
+
+            // Untuk validasi di parent component dikirim melewati event dispatch
+            if ($errors->has('prodi')) {
+                \Log::info('jalan prodi error');
+                $this->dispatch('prodiError', [
+                    'error' => $errors->first('prodi'),
+                    'source' => 'prodi'
+                ]);
+            }
+
+            // Lempar pesan error validasi 
+            throw $e;
+        } catch (\Exception $e) {
             $this->dispatch('errorNonAkadedmik', $e->getMessage());
         }
     }

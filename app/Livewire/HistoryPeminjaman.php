@@ -2,33 +2,51 @@
 
 namespace App\Livewire;
 
-use App\Services\ApprovalService;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\DataPeminjaman;
 
 class HistoryPeminjaman extends Component
 {
     use WithPagination;
 
-    public function render(ApprovalService $service)
+    protected function service()
     {
+        return new \App\Services\HistoryPeminjamanService();
+    }
+
+    public function render()
+    {
+        $user_identifier = session('user_identifier');
+        $user_role = session('role_name');
+
         return view('livewire.history-peminjaman', [
-            'peminjaman' => $service->getData('historyPeminjaman', null),
+            'peminjaman' => $this->service()->getData($user_role, $user_identifier),
         ]);
     }
 
     #[On('cancelBooking')]
-    public function cancelBooking($id)
+    public function cancelBooking($id, $alasan)
     {
-        $data_peminjaman = DataPeminjaman::findOrFail($id);
+        $user_role = session('role_name');
+        $user_identifier = session('user_identifier');
 
-        if ($data_peminjaman->status === 'Waiting') {
-            $data_peminjaman->update(['status' => 'Canceled']);
+        $data = [
+            'id' => $id,
+            'user_identifier' => $user_identifier,
+            'user_role' => $user_role,
+            'alasan' => $alasan
+        ];
+
+        try {
+            $this->service()->cancel($data);
 
             $this->dispatch('successCancel', [
-                'text' => 'berhasil cancel booking'
+                'text' => 'berhasil membatalkan peminjaman'
+            ]);
+        } catch (\DomainException $e) {
+            $this->dispatch('failedCancel', [
+                'text' => $e->getMessage()
             ]);
         }
     }
