@@ -25,40 +25,28 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapperEdit.innerHTML = '';
 
             data.data.asset.forEach(asset => {
-
                 const row = document.createElement('div');
                 row.className = 'wrapper flex flex-row gap-5';
 
-                const inputId = document.createElement('input');
-                inputId.type = 'hidden';
-                inputId.name = 'asset_id[]';
-                inputId.value = asset.id;
-
-                const inputNama = document.createElement('input');
-                inputNama.type = 'text';
-                inputNama.name = 'nama_asset[]';
-                inputNama.value = asset.nama_asset;
-                inputNama.placeholder = 'Masukkan Nama Asset';
-                inputNama.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] text-black';
-
-                const inputJumlah = document.createElement('input');
-                inputJumlah.type = 'text';
-                inputJumlah.name = 'total_asset[]';
-                inputJumlah.value = asset.jumlah_asset;
-                inputJumlah.placeholder = 'Masukkan Total';
-                inputJumlah.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] text-black';
-
-                const buttonDelete = document.createElement('button');
-                buttonDelete.type = 'button';
-                buttonDelete.onclick = () => destroyAsset(asset.id);
-                buttonDelete.className = 'border rounded-lg flex items-center p-2 bg-[red]';
-
-                const icon = document.createElement('iconify-icon');
-                icon.icon = 'typcn:minus';
-                icon.className = 'text-3xl sm:text-sm text-white';
-
-                buttonDelete.append(icon);
-                row.append(inputId, inputNama, inputJumlah, buttonDelete);
+                row.innerHTML = `
+                    <input type="hidden" name="asset_id[]" value="${asset.id}">
+                    <div class="flex-[1.5] relative group">
+                        <iconify-icon icon="solar:box-minimalistic-bold" 
+                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
+                        <input type="text" name="nama_asset[]" value="${asset.nama_asset}" placeholder="Nama Barang" 
+                            class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
+                    </div>
+                    <div class="flex-1 relative group">
+                        <iconify-icon icon="mdi:numeric-count-2" 
+                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
+                        <input type="number" name="total_asset[]" value="${asset.jumlah_asset}" placeholder="Qty" 
+                            class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
+                    </div>
+                    <button type="button" onclick="window.destroyAsset(${asset.id})"
+                        class="flex items-center justify-center w-12 h-12 bg-gray-100 text-gray-400 rounded-xl hover:bg-red-50 hover:text-red-500 transition-all border border-gray-200">
+                        <iconify-icon icon="solar:minus-circle-bold" class="text-xl"></iconify-icon>
+                    </button>
+                `;
                 wrapperEdit.append(row);
             });
 
@@ -214,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    async function destroyAsset(id) {
+    window.destroyAsset = async function (id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Apakah Anda yakin ingin menyimpan data ini?",

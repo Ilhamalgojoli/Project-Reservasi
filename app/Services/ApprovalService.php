@@ -13,15 +13,6 @@ class ApprovalService
     {
         $peminjaman = DataPeminjaman::findOrFail($id);
         $peminjaman->update(['status' => 'Approve']);
-
-        $waktu = WaktuPeminjaman::where('peminjaman_id', $peminjaman->id)
-            ->orderBy('waktu_peminjaman')->get();
-
-        Monitor::create([
-            'waktu_mulai' => $waktu->first()->waktu_peminjaman,
-            'waktu_selesai' => $waktu->last()->waktu_peminjaman,
-            'peminjaman_id' => $peminjaman->id,
-        ]);
     }
 
     public function reject($id, $alasan)
@@ -31,8 +22,6 @@ class ApprovalService
             'status' => 'Reject',
             'alasan_penolakan' => $alasan,
         ]);
-
-        WaktuPeminjaman::where('peminjaman_id', $id)->delete();
     }
 
     public function getData($search)
@@ -45,11 +34,11 @@ class ApprovalService
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-        ])->when(function ($q) {
-            $q->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan');
-        })->when(function ($q) {
-            $q->where('status', 'Waiting');
-        })->when($search, function ($query) use ($search) {
+            'fakultas',
+            'prodi',
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'fakultas_id', 'prodi_id', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status')
+        ->where('status', 'Waiting')
+        ->when($search, function ($query) use ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('jenis_peminjaman', 'like', "%{$search}%")
                     ->orWhere('penanggung_jawab', 'like', "%{$search}%");
@@ -66,6 +55,9 @@ class ApprovalService
         foreach ($data_peminjaman as $r) {
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
             $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
+            $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
+            $r->fakultas = $r->fakultas?->fakultas ?? '-';
+            $r->prodi = $r->prodi?->prodi ?? '-';
 
             if ($r->waktuPeminjaman->isNotEmpty()) {
                 $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();

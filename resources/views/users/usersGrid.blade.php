@@ -2,12 +2,15 @@
 @php
     $title='Users Grid';
     $subTitle = 'Users Grid';
-    $script = '<script>
-                        $(".delete-btn").on("click", function() {
-                            $(this).closest(".user-grid-card").addClass("hidden")
-                        });
-                </script>';
 @endphp
+
+@push('extra_scripts')
+    <script>
+        $(".delete-btn").on("click", function() {
+            $(this).closest(".user-grid-card").addClass("hidden")
+        });
+    </script>
+@endpush
 
 @section('content')
 
@@ -44,7 +47,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown1" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown1" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -69,7 +72,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Jacob Jones</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -91,7 +94,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg2.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown2" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown2" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -116,7 +119,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Darrell Steward</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -138,7 +141,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg3.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown3" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown3" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -163,7 +166,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Jerome Bell</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -185,7 +188,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg4.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown4" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown4" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -210,7 +213,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Eleanor Pena</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -232,7 +235,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg5.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown5" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown5" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -257,7 +260,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Ralph Edwards</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -279,7 +282,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg6.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown6" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown6" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -304,7 +307,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Annette Black</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -326,7 +329,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg7.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown7" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown7" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -351,7 +354,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Robert Fox</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -373,7 +376,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg8.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown8" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown8" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -398,7 +401,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Albert Flores</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -420,7 +423,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg9.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown9" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown9" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -445,7 +448,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Dianne Russell</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -467,7 +470,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg10.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown10" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown10" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -492,7 +495,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Esther Howard</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -514,7 +517,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg11.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown11" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown11" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -539,7 +542,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Marvin McKinney</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>
@@ -561,7 +564,7 @@
                         <img src="{{ asset('assets/images/user-grid/user-grid-bg12.png') }}" alt="" class="w-full object-fit-cover">
 
                         <div class="dropdown absolute top-0 end-0 me-4 mt-4">
-                            <button data-dropdown-toggle="dropdown12" class="bg-gradient-to-r from-white/50 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
+                            <button data-dropdown-toggle="dropdown12" class="bg-white/40 w-8 h-8 rounded-lg border border-light-white flex justify-center items-center text-white" type="button">
                                 <i class="ri-more-2-fill"></i>
                             </button>
 
@@ -586,7 +589,7 @@
                             <h6 class="text-lg mb-0 mt-1.5">Guy Hawkins</h6>
                             <span class="text-secondary-light mb-4">ifrandom@gmail.com</span>
 
-                            <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                            <div class="center-border relative bg-red-50 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
                                 <div class="text-center w-1/2">
                                     <h6 class="text-base mb-0">Design</h6>
                                     <span class="text-secondary-light text-sm mb-0">Department</span>

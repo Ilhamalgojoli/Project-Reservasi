@@ -1,23 +1,11 @@
-@extends('layout.layout')
-
-@php
-    $title = 'Dashboard';
-    $script = '
-            <script src="' . asset('assets/js/basilaChart.js') . '"></script>
-        ';
-@endphp
-
-@section('content')
-    <div class="lg:col-span-12 2xl:col-span-8 mb-5">
-        <h1 class="font-bold text-2xl">{{ $title }}</h1>
-    </div>
-
+<div>
     <main class="w-full h-auto space-y-5 mb-5">
         <section class="grid lg:grid-cols-12 sm:grid-cols-1 md:grid-cols-2 gap-5">
-            @livewire('home')
+            @livewire('card-dashboard-admin')
             <div class="lg:col-span-4 md:col-span-12 sm:col-span-12 space-y-5 ">
                 @livewire('kegiatan-terkini')
                 @livewire('aktif-tidak-aktif-ruangan')
+            </div>
         </section>
         <section class="grid grid-cols-12">
             @livewire('okkupansi-ruangan')
@@ -30,4 +18,8 @@
             </div>
         </section>
     </main>
-@endsection
+
+    @push('extra_scripts')
+        <script src="{{ asset('assets/js/lib/apexcharts.min.js') }}"></script>
+    @endpush
+</div>

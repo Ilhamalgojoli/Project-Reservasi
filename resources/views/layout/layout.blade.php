@@ -30,7 +30,8 @@
     @livewireScripts
 
     <!-- ..::  scripts  start ::.. -->
-    <x-script  script='{!! isset($script) ? $script : "" !!}' />
+    <x-script />
+    @stack('extra_scripts')
     <!-- ..::  scripts  end ::.. -->
 
 </body>

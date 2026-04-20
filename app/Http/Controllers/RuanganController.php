@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\Lantai;
 use App\Models\Ruangan;
+use App\Services\RuanganService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class RuanganController extends Controller
 {
+    protected function service()
+    {
+        return new RuanganService();
+    }
+
     public function index($id)
     {
         $lantais = Lantai::where('gedung_id', $id)->get();
@@ -31,44 +37,18 @@ class RuanganController extends Controller
                 'total_asset' => 'required|array',
             ]);
 
-            $ruangan = Ruangan::create([
-                'kode_ruangan' => $validate['kode_ruangan'],
-                'status' => $validate['status'],
-                'muatan_kapasitas' => $validate['muatan_kapasitas'],
-                'lantai_id' => $validate['lantai'],
-            ]);
-
-            DB::transaction(function () use ($ruangan, $request) {
-                $asset_map = array_map(null, $request->nama_asset, $request->total_asset);
-                foreach ($asset_map as [$nama, $total]) {
-                    if (! $nama || ! $total) {
-                        continue;
-                    }
-
-                    $asset = Asset::create([
-                        'nama_asset' => $nama,
-                        'jumlah_asset' => $total,
-                        'ruangan_id' => $ruangan->id,
-                    ]);
-                }
-            });
+            $service = $this->service()->store($validate);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Ruangan berhasil ditambahkan!',
+                'message' => $service['message'],
             ], 200);
+            
         } catch (\Exception $e) {
             if ($e instanceof ValidationException) {
-                $errors = $e->errors();
-                if (isset($errors['muatan_kapasitas'])) {
-                    $msg = 'Isi jumlah kapasitas dengan sebuah angka!';
-                } else {
-                    $msg = 'Lengkapi form!';
-                }
-
                 return response()->json([
                     'success' => false,
-                    'message' => $msg,
+                    'message' => isset($e->errors()['muatan_kapasitas']) ? 'Isi jumlah kapasitas dengan sebuah angka!' : 'Lengkapi form!',
                 ], 422);
             }
 
@@ -85,81 +65,30 @@ class RuanganController extends Controller
             ->select('id', 'kode_ruangan', 'status', 'muatan_kapasitas', 'lantai_id')
             ->find($id);
 
-        // $data = Ruangan::with('asset')->find($id);
-        // \Log::info($data->toArray());
-
         if (! $data) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ruangan tidak ditemukan!',
-            ]);
+            return response()->json(['success' => false, 'message' => 'Ruangan tidak ditemukan!']);
         }
 
-        \Log::info('id : '.$id);
-
-        return response()->json([
-            'success' => false,
-            'data' => $data,
-        ]);
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     public function update(Request $request)
     {
-        $validate = $request->validate([
-            'id' => 'required|integer',
-            'kode_ruangan' => 'required|string|max:12',
-            'status' => 'required|string',
-            'kapasitas' => 'required|integer',
-            'asset_id' => 'nullable|array',
-            'nama_asset' => 'required|array',
-            'total_asset' => 'required|array',
-        ]);
-
-        \Log::info('id : '.$request->id);
-
-        $ruangan = Ruangan::find($request->id);
-
-        if (! $ruangan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ruangan tidak ditemukan.',
-            ]);
-        }
-
         try {
-            $ruangan->update([
-                'kode_ruangan' => $validate['kode_ruangan'],
-                'status' => $validate['status'],
-                'muatan_kapasitas' => $validate['kapasitas'],
+            $validate = $request->validate([
+                'id' => 'required|integer',
+                'kode_ruangan' => 'required|string|max:12',
+                'status' => 'required|string',
+                'kapasitas' => 'required|integer',
+                'asset_id' => 'nullable|array',
+                'nama_asset' => 'required|array',
+                'total_asset' => 'required|array',
             ]);
 
-            DB::transaction(function () use ($request) {
-                $asset_id = $request->asset_id ?? [];
-                $asset_map = array_map(null, $asset_id, $request->nama_asset, $request->total_asset);
-                foreach ($asset_map as [$id ,$nama, $jumlah]) {
-                    if (! $nama || ! $jumlah) {
-                        continue;
-                    }
-
-                    if ($id) {
-                        $asset = Asset::find($id);
-
-                        $asset->update([
-                            'nama_asset' => $nama,
-                            'jumlah_asset' => $jumlah,
-                        ]);
-                    } else {
-                        Asset::create([
-                            'nama_asset' => $nama,
-                            'jumlah_asset' => $jumlah,
-                            'ruangan_id' => $request->id,
-                        ]);
-                    }
-                }
-            });
+            $this->service()->update($validate);
 
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'Ruangan berhasil diupdate!',
             ], 200);
         } catch (\Exception $e) {
@@ -173,38 +102,20 @@ class RuanganController extends Controller
     public function destroyAsset($id)
     {
         try {
-            $asset = Asset::findOrFail($id);
-
-            $asset->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil dihapus',
-            ], 200);
+            $this->service()->deleteAsset($id);
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan internal',
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan internal'], 500);
         }
     }
 
     public function destroyRuangan($id)
     {
         try {
-            $ruangan = Ruangan::findOrFail($id);
-
-            $ruangan->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil dihapus',
-            ], 200);
+            $this->service()->destroyRuangan($id);
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan internal',
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan internal'], 500);
         }
     }
 
@@ -213,7 +124,6 @@ class RuanganController extends Controller
         $asset = Asset::select('nama_asset', 'jumlah_asset')
             ->where('ruangan_id', $id)->get();
 
-        \Log::info('asset : ' . $asset);
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil',

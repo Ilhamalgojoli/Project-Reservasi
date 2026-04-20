@@ -13,9 +13,9 @@ class DataPeminjaman extends Model
     use HasFactory;
 
     protected $table = 'data_peminjaman';
-    protected $fillable =[
-        'fakultas',
-        'prodi',
+    protected $fillable = [
+        'fakultas_id',
+        'prodi_id',
         'jenis_peminjaman',
         'kode_matkul',
         'lantai',
@@ -33,15 +33,23 @@ class DataPeminjaman extends Model
         'keterangan_peminjaman'
     ];
 
-    public function ruangan(){
+    public function ruangan()
+    {
         return $this->belongsTo(Ruangan::class);
     }
 
-    public function waktuPeminjaman(){
+    public function waktuPeminjaman()
+    {
         return $this->hasMany(WaktuPeminjaman::class, 'peminjaman_id');
     }
 
-    public function monitors(){
-        return $this->hasMany(Monitor::class);
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class);
+    }
+
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class);
     }
 }

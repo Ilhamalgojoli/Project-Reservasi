@@ -22,8 +22,12 @@
                     startAngle: 0,
                     endAngle: 360,
                 },
-                dataLabels: { enabled: false },
-                legend: { position: 'right' },
+                dataLabels: {
+                    enabled: false
+                },
+                legend: {
+                    position: 'right'
+                },
             };
 
             var chart = new ApexCharts(document.querySelector("#userOverviewDonutChart"), options);

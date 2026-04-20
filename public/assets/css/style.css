@@ -42,6 +42,7 @@ html {
     /* 3 */
     -o-tab-size: 4;
     tab-size: 4;
+    overflow-y: scroll;
     /* 4 */
     font-feature-settings: normal;
     /* 5 */
@@ -2859,6 +2860,39 @@ td.fc-header-center {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideInUp 0.5s ease-out forwards;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
 }
 
 .fc-day.fc-mon.fc-widget-content.fc-today.fc-state-highlight.fc-first {
@@ -7564,7 +7598,7 @@ h6,
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;

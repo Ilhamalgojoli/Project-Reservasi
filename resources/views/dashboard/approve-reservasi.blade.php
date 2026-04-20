@@ -1,14 +1,17 @@
 @extends('layout.layout')
 @php
     $title = 'Kelola Persetujuan Peminjaman';
-    $script = '
-        <script src="' . asset('assets/js/data-table.js') . '" defer></script>
-        <script src="' . asset('assets/js/popup.js') . '" defer></script>
-    ';
 @endphp
 
+@push('extra_scripts')
+    <script src="{{ asset('assets/js/popup.js') }}" defer></script>
+@endpush
+
 @section('content')
-    <h1 class="text-2xl font-bold mb-5">{{ $title }}</h1>
+    <div class="mb-5 flex flex-col gap-2">
+        <h1 class="font-extrabold text-3xl text-gray-800 tracking-tight">{{ $title }}</h1>
+        <p class="text-gray-400 text-sm font-medium">Daftar peminjaman ruangan yang perlu disetujui</p>
+    </div>
 
     <main class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-6">
         {{-- <section class="col-span-12 rounded-[8px] bg-white shadow-md p-8">

@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('data_peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->string('fakultas');
-            $table->string('prodi');
+            $table->foreignId('fakultas_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('prodi_id')->nullable()->constrained('prodi')->nullOnDelete();
             $table->string('jenis_peminjaman');
             $table->string('kode_matkul')->nullable();
             $table->integer('lantai');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('alasan_penolakan')->nullable();
             $table->string('alasan_pembatalan')->nullable();
             $table->string('cancel_by')->nullable();
-            $table->enum('status', ['Waiting', 'Approve', 'Reject', 'Canceled'])->default('Waiting');
+            $table->enum('status', ['Waiting', 'Approve', 'Reject', 'Canceled', 'Finish'])->default('Waiting');
             $table->timestamps();
         });
     }

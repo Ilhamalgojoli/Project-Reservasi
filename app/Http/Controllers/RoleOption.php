@@ -14,7 +14,7 @@ class RoleOption extends Controller
     public function choseRole(Request $request)
     {
         $validate = $request->validate([
-            'role_id' => 'required|integer',
+            'role_id' => 'required',
             'role_name' => 'required|string'
         ]);
 

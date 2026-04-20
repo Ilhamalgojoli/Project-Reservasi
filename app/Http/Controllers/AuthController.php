@@ -17,6 +17,7 @@ class AuthController extends Controller
         return view('authentication.signin');
     }
 
+    # Controller login
     public function login(Request $request)
     {
         $validate = $request->validate([
@@ -28,13 +29,15 @@ class AuthController extends Controller
 
         try {
             $service = $this->service->login($validate);
-
+            
             session([
                 'roles' => $service['data_role'],
                 'token' => $service['token'],
                 'username' => $service['profile']['fullname'] ?? 'Admin',
                 'user_identifier' => $service['profile']['numberid'] ?? rand(10000000, 99999999),
-                'profilephoto' => $service['profile']['photo'] ?? null
+                'profilephoto' => $service['profile']['photo'] ?? null,
+                'faculty' => $service['profile']['facultyid'] ?? null,
+                'studyProgram' => $service['profile']['studyprogramid'] ?? null,
             ]);
 
             return redirect()->route('role-option');

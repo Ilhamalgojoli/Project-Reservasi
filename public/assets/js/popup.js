@@ -11,38 +11,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 popup.classList.remove("hidden");
             }
 
-            x.innerHTML = '';
-            y.innerHTML = '';
+            if (x) x.innerHTML = '';
+            if (y) y.innerHTML = '';
 
-            var map = L.map('map-tambah').setView([-6.973007, 107.630403], 20);
+            const mapContainer = document.getElementById('map-tambah');
+            if (mapContainer) {
+                var map = L.map('map-tambah').setView([-6.973007, 107.630403], 20);
 
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
 
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 200);
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 200);
 
-            var markersGroup = L.layerGroup();
-            map.addLayer(markersGroup);
-            var MARKERS_MAX = 1;
+                var markersGroup = L.layerGroup();
+                map.addLayer(markersGroup);
+                var MARKERS_MAX = 1;
 
-            map.on('click', function (e) {
-                var markersCount = markersGroup.getLayers().length;
+                map.on('click', function (e) {
+                    var markersCount = markersGroup.getLayers().length;
 
-                if (markersCount < MARKERS_MAX) {
-                    L.marker(e.latlng).addTo(markersGroup);
-                    lat = e.latlng.lat;
-                    lng = e.latlng.lng;
-                    x.innerHTML = lat;
-                    y.innerHTML = lng;
+                    if (markersCount < MARKERS_MAX) {
+                        L.marker(e.latlng).addTo(markersGroup);
+                        lat = e.latlng.lat;
+                        lng = e.latlng.lng;
+                        if (x) x.innerHTML = lat;
+                        if (y) y.innerHTML = lng;
 
-                    return;
-                }
+                        return;
+                    }
 
-                markersGroup.clearLayers();
-            });
+                    markersGroup.clearLayers();
+                });
+            }
         });
     });
 

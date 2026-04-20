@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Validation\Rule;
 
 class PopUpEdit extends Component
 {
@@ -25,7 +26,12 @@ class PopUpEdit extends Component
             'id' => 'required|integer',
             'gambar' => 'nullable|file|image|mimes:jpeg,png,jpg|max:10240',
             'nama' => 'required|string|min:3|max:100',
-            'kode' => 'required|string|max:16|unique:gedungs,kode_gedung',
+            'kode' => [
+                'required',
+                'string',
+                'max:16',
+                Rule::unique('gedungs', 'kode_gedung')->ignore($this->id),
+            ],
             'jumlahLantai' => 'required|integer|min:1',
             'status' => 'required|string|in:Aktif,Tidak Aktif',
             'keterangan' => 'required|string|max:500',

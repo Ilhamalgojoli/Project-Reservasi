@@ -33,59 +33,12 @@ class PeminjamanNonAkademik extends Component
 
     protected function rules()
     {
-        return [
-            'tanggal' => 'required|date',
-
-            'lantaiID' => 'required|integer',
-            'ruanganID' => 'required|integer',
-
-            'pilihJam' => 'required|array|min:1',
-            'muatanKapasitas' => 'required|integer|min:1',
-
-            'fakultas' => 'required|string',
-            'prodi' => 'required|string',
-            'jenisPeminjaman' => 'required|string',
-
-            'penanggungJawab' => 'required|string|min:3',
-            'kontakPenanggungJawab' => 'required|numeric',
-
-            'deskripsi' => 'nullable|string|max:500',
-        ];
+        return $this->service()->getRules('non-akademik');
     }
 
     protected function messages()
     {
-        return [
-            'fakultas.required' => 'Fakultas wajib diisi',
-            'prodi.required' => 'Program studi wajib diisi',
-
-            'jenisPeminjaman.required' => 'Jenis peminjaman wajib dipilih',
-
-            'tanggal.required' => 'Tanggal wajib diisi',
-            'tanggal.date' => 'Format tanggal tidak valid',
-
-            'lantaiID.required' => 'Lantai wajib dipilih',
-            'lantaiID.integer' => 'Lantai tidak valid',
-
-            'ruanganID.required' => 'Ruangan wajib dipilih',
-            'ruanganID.integer' => 'Ruangan tidak valid',
-
-            'pilihJam.required' => 'Minimal pilih satu jam',
-            'pilihJam.array' => 'Format jam tidak valid',
-            'pilihJam.min' => 'Minimal pilih satu jam',
-
-            'muatanKapasitas.required' => 'Kapasitas wajib diisi',
-            'muatanKapasitas.integer' => 'Kapasitas harus angka',
-            'muatanKapasitas.min' => 'Kapasitas minimal 1',
-
-            'penanggungJawab.required' => 'Penanggung jawab wajib diisi',
-            'penanggungJawab.min' => 'Minimal 3 karakter',
-
-            'kontakPenanggungJawab.required' => 'Kontak wajib diisi',
-            'kontakPenanggungJawab.numeric' => 'Kontak harus angka',
-
-            'deskripsi.max' => 'Deskripsi maksimal 500 karakter',
-        ];
+        return $this->service()->getMessages();
     }
 
     public function mount($id, $jenisPeminjaman, $fakultas, $prodi)
@@ -107,7 +60,7 @@ class PeminjamanNonAkademik extends Component
     public function updatedRuanganID($value)
     {
         $this->maxKapasitas = $this->service()->getMaxKapasitas($value);
-        $this->dispatch('getRuanganID', $this->ruanganID);
+        $this->dispatch('getRuanganID', ruanganID: $value);
     }
 
     #[On('non-akademik')]
@@ -116,51 +69,41 @@ class PeminjamanNonAkademik extends Component
         try {
             $data = $this->validate();
 
-            $peminjaman = $this->service()->create($data);
-            if ($peminjaman) {
+            if ($this->service()->create($data)) {
                 $this->service()->createKegiatan($this->penanggungJawab, $this->ruanganID);
-                $this->dispatch('successNonAkademik');
-
-                $this->reset([
-                    'lantaiID',
-                    'ruanganID',
-                    'pilihJam',
-                    'muatanKapasitas',
-                    'tanggal',
-                    'deskripsi',
-                    'penanggungJawab',
-                    'kontakPenanggungJawab',
-                    'maxKapasitas',
-                ]);
-
-                $this->dispatch('resetSelect');
+                $this->sendSuccessResponse();
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Tangkap error validasi
-            $errors = $e->validator->errors();
-
-            // Untuk validasi di parent component dikirim melewati event dispatch
-            if ($errors->has('fakultas')) {
-                \Log::info('jalan fakultas error');
-                $this->dispatch('fakultasError', [
-                    'error' => $errors->first('fakultas'),
-                    'source' => 'fakultas'
-                ]);
-            }
-
-            // Untuk validasi di parent component dikirim melewati event dispatch
-            if ($errors->has('prodi')) {
-                \Log::info('jalan prodi error');
-                $this->dispatch('prodiError', [
-                    'error' => $errors->first('prodi'),
-                    'source' => 'prodi'
-                ]);
-            }
-
-            // Lempar pesan error validasi 
+            $this->dispatchValidationErrors($e->validator->errors());
             throw $e;
         } catch (\Exception $e) {
-            $this->dispatch('errorNonAkadedmik', $e->getMessage());
+            $this->dispatch('errorNonAkademik', $e->getMessage());
+        }
+    }
+
+    private function sendSuccessResponse()
+    {
+        $this->dispatch('successNonAkademik');
+        $this->reset([
+            'lantaiID',
+            'ruanganID',
+            'pilihJam',
+            'muatanKapasitas',
+            'tanggal',
+            'deskripsi',
+            'penanggungJawab',
+            'kontakPenanggungJawab',
+            'maxKapasitas'
+        ]);
+    }
+
+    private function dispatchValidationErrors($errors)
+    {
+        if ($errors->has('fakultas')) {
+            $this->dispatch('fakultasError', ['error' => $errors->first('fakultas'), 'source' => 'fakultas']);
+        }
+        if ($errors->has('prodi')) {
+            $this->dispatch('prodiError', ['error' => $errors->first('prodi'), 'source' => 'prodi']);
         }
     }
 

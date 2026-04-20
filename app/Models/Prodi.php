@@ -17,7 +17,7 @@ class Prodi extends Model
         'fakultas_id'
     ];
 
-    public function prodi()
+    public function fakultas()
     {
         return $this->belongsTo(Fakultas::class);
     }

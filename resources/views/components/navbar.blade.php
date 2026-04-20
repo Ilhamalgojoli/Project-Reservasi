@@ -38,14 +38,7 @@
 
                 <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
                     <ul class="flex flex-col">
-                        <li>
-                            <a class="text-black px-0 py-2 hover:text-primary-600 flex items-center gap-4"
-                                href="">
-                                <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My
-                                Profile
-                            </a>
-                        </li>
-                        <li>
+                        <li class="z-50">
                             <form action="{{ route('logout') }}" method="POST" class="w-full">
                                 @csrf
                                 <button type="submit"

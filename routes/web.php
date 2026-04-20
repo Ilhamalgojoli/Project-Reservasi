@@ -33,9 +33,9 @@ Route::middleware(['middleware' => 'ensuretoken'])->group(function () {
             Route::get('/ruangan/detail/{id}', [RuanganController::class, 'edit']);
             Route::post('/ruangan/ubah-data', 'update')->name('update.ruang');
             Route::post('/ruangan/baru', [RuanganController::class, 'store'])->name('tambah.ruang');
-            Route::delete('/asset/{id}', [RuanganController::class, 'destroyAsset']);
-            Route::delete('/ruangan/{id}', [RuanganController::class, 'destroyRuangan']);
-            Route::get('/asset/{id}', [RuanganController::class, 'getAssetByRuangan']);
+            Route::delete('/dashboard/asset/{id}', [RuanganController::class, 'destroyAsset']);
+            Route::delete('/dashboard/ruangan/{id}', [RuanganController::class, 'destroyRuangan']);
+            Route::get('/dashboard/asset/{id}', [RuanganController::class, 'getAssetByRuangan']);
         });
     });
 

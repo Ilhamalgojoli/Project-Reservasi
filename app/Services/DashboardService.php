@@ -5,41 +5,93 @@ namespace App\Services;
 use App\Models\DataPeminjaman;
 use App\Models\Gedung;
 use App\Models\KegiatanTerkiniModel;
-use App\Models\Monitor;
 use App\Models\Ruangan;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
+    public function updateStatusFinish()
+    {
+        $today = date('Y-m-d');
+        $nowTime = date('H:i:s');
+
+        # 1. Update data dari hari-hari sebelumnya
+        DataPeminjaman::where('status', 'Approve')
+            ->where('tanggal_peminjaman', '<', $today)
+            ->update(['status' => 'Finish']);
+
+        # 2. Update data hari ini yang sudah selesai
+        DataPeminjaman::where('status', 'Approve')
+            ->where('tanggal_peminjaman', $today)
+            ->whereNotExists(function ($query) use ($nowTime) {
+                $query->select(DB::raw(1))
+                    ->from('waktu_peminjaman')
+                    ->whereColumn('waktu_peminjaman.peminjaman_id', 'data_peminjaman.id')
+                    ->whereRaw("DATE_ADD(waktu_peminjaman.waktu_peminjaman, INTERVAL 30 MINUTE) >= ?", [$nowTime]);
+            })
+            ->update(['status' => 'Finish']);
+    }
+
     public function ambilData(string $jenis)
     {
+        $this->updateStatusFinish();
         $pageName = $jenis === 'akademik'
             ? 'pageAkademik'
             : 'pageNonAkademik';
 
-        $monitor = Monitor::with([
-            'peminjaman:id,fakultas,prodi,kode_matkul,lantai,ruangan_id,tanggal_peminjaman,muatan,kontak_penanggung_jawab,penanggung_jawab',
-            'peminjaman.ruangan:id,kode_ruangan,lantai_id',
-            'peminjaman.ruangan.lantai:id,lantai,gedung_id',
-            'peminjaman.ruangan.lantai.gedung:id,nama_gedung',
-        ])->whereHas('peminjaman', function ($q) use ($jenis) {
-            $q->where('jenis_peminjaman', $jenis);
-        })
-            ->select('waktu_mulai', 'waktu_selesai', 'peminjaman_id', 'status')
-            ->where('status', 'Di jadwalkan')
+        $today = Carbon::today()->toDateString();
+        $fourDaysLater = Carbon::today()->addDays(3)->toDateString();
+
+        $data = DataPeminjaman::with([
+            'fakultas',
+            'prodi',
+            'ruangan:id,kode_ruangan,lantai_id',
+            'ruangan.lantai:id,lantai,gedung_id',
+            'ruangan.lantai.gedung:id,nama_gedung',
+            'waktuPeminjaman:peminjaman_id,waktu_peminjaman'
+        ])
+            ->where('jenis_peminjaman', $jenis)
+            ->where('status', 'Approve')
+            ->whereBetween('tanggal_peminjaman', [$today, $fourDaysLater])
+            ->orderBy('tanggal_peminjaman', 'asc')
             ->paginate(5, ['*'], $pageName)
             ->through(function ($item) {
-                $now = Carbon::now();
-                $end = Carbon::parse($item->waktu_selesai);
+                $waktu = $item->waktuPeminjaman->sortBy('waktu_peminjaman');
 
-                $item->sisa_detik = $now->lt($end)
-                    ? $now->diffInSeconds($end)
-                    : 0;
+                if ($waktu->isNotEmpty()) {
+                    $start = Carbon::parse($waktu->first()->waktu_peminjaman);
+                    $end = Carbon::parse($waktu->last()->waktu_peminjaman)->addMinutes(30);
+
+                    $item->waktu_mulai = $start->format('H:i');
+                    $item->waktu_selesai = $end->format('H:i');
+
+                    $now = Carbon::now();
+                    $item->sisa_detik = $now->lt($end)
+                        ? $now->diffInSeconds($end)
+                        : 0;
+
+                    if ($now->lt($start)) {
+                        $item->status_display = 'Di Jadwalkan';
+                    } elseif ($now->between($start, $end)) {
+                        $item->status_display = 'Sedang Berlangsung';
+                    } else {
+                        $item->status_display = 'Selesai';
+                    }
+                } else {
+                    $item->waktu_mulai = '-';
+                    $item->waktu_selesai = '-';
+                    $item->sisa_detik = 0;
+                    $item->status_display = 'Tidak Ada Jadwal';
+                }
+
+                $item->fakultas_name = $item->fakultas?->fakultas ?? '-';
+                $item->prodi_name = $item->prodi?->prodi ?? '-';
 
                 return $item;
             });
 
-        return $monitor;
+        return $data;
     }
 
     public function getDataKegiatanTerkini()
@@ -54,11 +106,13 @@ class DashboardService
 
     public function getRuanganWaiting()
     {
+        $this->updateStatusFinish();
         return $data = DataPeminjaman::where('status', 'Waiting')->count();
     }
 
     public function getRuanganTerpakai()
     {
+        $this->updateStatusFinish();
         return $data = Ruangan::whereHas('dataPeminjaman', function ($q) {
             $q->where('status', 'Approve');
         })->count();
@@ -73,6 +127,7 @@ class DashboardService
 
     public function chartGedung()
     {
+        $this->updateStatusFinish();
         $data = Gedung::select('nama_gedung')
             ->withCount([
                 'ruangan as totalWaiting' => function ($q) {
@@ -100,6 +155,7 @@ class DashboardService
 
     public function getDataOkkupansi()
     {
+        $this->updateStatusFinish();
         $data = Gedung::select('id', 'nama_gedung')
             ->withCount([
                 'ruangan as totalRuanganTerpakai' => function ($q) {

@@ -2,8 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\DataPeminjaman;
-use Carbon\Carbon;
+use App\Services\ApprovalService;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,7 +18,7 @@ class ApproveRejectBooking extends Component
 
     protected function service()
     {
-        return new \App\Services\ApprovalService;
+        return new ApprovalService();
     }
 
     #[On('approve')]
@@ -46,11 +45,6 @@ class ApproveRejectBooking extends Component
                 'text' => 'Peminjaman berhasil ditolak',
             ]);
         }
-    }
-
-    public function filters()
-    {
-        info('click');
     }
 
     public function render()

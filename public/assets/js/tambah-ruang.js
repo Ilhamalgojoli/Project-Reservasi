@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmit = document.getElementById('btn-submit-tambah');
     const formAsset = document.getElementById('form-asset');
 
-    btnSubmit.addEventListener('click', async() => {
+    btnSubmit.addEventListener('click', async () => {
         // Validasi input kosong
         if (idRuangan.value === "" || status.value === "" || kapasitas.value === "") {
             Swal.fire({

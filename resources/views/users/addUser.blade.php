@@ -2,25 +2,28 @@
 @php
     $title='Add User';
     $subTitle = 'Add User';
-    $script = '<script>
-                    // ================== Image Upload Js Start ===========================
-                    function readURL(input) {
-                        if (input.files && input.files[0]) {
-                            var reader = new FileReader();
-                            reader.onload = function(e) {
-                                $("#imagePreview").css("background-image", "url(" + e.target.result + ")");
-                                $("#imagePreview").hide();
-                                $("#imagePreview").fadeIn(650);
-                            }
-                            reader.readAsDataURL(input.files[0]);
-                        }
-                    }
-                    $("#imageUpload").change(function() {
-                        readURL(this);
-                    });
-                    // ================== Image Upload Js End ===========================
-             </script>';
 @endphp
+
+@push('extra_scripts')
+    <script>
+        // ================== Image Upload Js Start ===========================
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $("#imagePreview").css("background-image", "url(" + e.target.result + ")");
+                    $("#imagePreview").hide();
+                    $("#imagePreview").fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUpload").change(function() {
+            readURL(this);
+        });
+        // ================== Image Upload Js End ===========================
+    </script>
+@endpush
 
 @section('content')
 

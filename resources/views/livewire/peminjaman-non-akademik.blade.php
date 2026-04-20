@@ -1,137 +1,152 @@
-<div>
-    <form id="non-akademik">
-        <div class="space-y-5" id="Non-Akademik">
-            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                    <div class="flex flex-col flex-1 gap-5">
-                        <!-- Lantai -->
+<div class="w-full mx-auto bg-white p-2">
+    <form id="non-akademik" class="space-y-8">
+        
+        {{-- Section 1: Lokasi & Jadwal --}}
+        <div class="space-y-6">
+            <div class="flex items-center gap-2 pb-2 border-b border-gray-100">
+                <iconify-icon icon="solar:map-point-bold-duotone" class="text-[#e51411] text-xl"></iconify-icon>
+                <h2 class="text-sm font-bold uppercase tracking-wider text-gray-700">Lokasi & Jadwal Kegiatan</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {{-- Lantai --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Lantai</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:stairs" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <select wire:model.live="lantaiID"
-                            class="lantai rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                            bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                            <option selected>Lantai</option>
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all appearance-none outline-none">
+                            <option selected>Pilih Lantai</option>
                             @foreach ($lantai as $data)
                                 <option value="{{ $data->id }}">{{ $data->lantai }}</option>
                             @endforeach
                         </select>
-                        @error('lantaiID')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
-                    <div class="flex flex-col flex-1 gap-5">
-                        <!-- Ruangan -->
+                    @error('lantaiID') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Ruangan --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Ruangan</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:office-building-marker" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <select wire:model.live="ruanganID"
-                            class="ruangan rounded-md md:w-auto sm:w-auto text-[#808080] py-2 px-3 appearance-none
-                            bg-transparent border border-[#808080] border-opacity-50 font-bold">
-                            <option selected>Ruangan</option>
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all appearance-none outline-none">
+                            <option selected>Pilih Ruangan</option>
                             @foreach ($ruangan as $data)
                                 <option value="{{ $data->id }}">{{ $data->kode_ruangan }}</option>
                             @endforeach
                         </select>
-                        @error('ruanganID')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
+                    @error('ruanganID') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
                 </div>
-            </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-5">
-                <div class="flex flex-row gap-5 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                    <div class="flex flex-col flex-1 relative">
-                        <input type="date" wire:model="tanggal"
-                            class="tanggal-peminjaman rounded-lg py-2 px-3 border border-[#808080] text-[#808080]
-                                border-opacity-50 font-bold appearance-none"
-                            style="appearance:none;
-                                -webkit-appearance:none;
-                                -moz-appearance:none;"
-                            placeholder="Tanggal" />
-                        <iconify-icon icon="solar:calendar-linear" onclick="this.previousElementSibling.showPicker()"
-                            class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
-                        @error('tanggal')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                {{-- Tanggal --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Tanggal</label>
+                    <div class="relative group">
+                        <iconify-icon icon="solar:calendar-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl cursor-pointer" onclick="this.nextElementSibling.showPicker()"></iconify-icon>
+                        <input type="date" wire:model="tanggal" min="{{ date('Y-m-d') }}"
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none" />
                     </div>
-                    <div class="flex flex-col flex-1 relative">
+                    @error('tanggal') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Jam Peminjaman --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Jam / Shift</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:clock-time-four" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <input type="text" value="{{ implode(', ', $pilihJam ?? []) }}" readonly
-                            placeholder="Pilih Jam Peminjaman"
-                            class="w-full border text-black border-gray-400 rounded-md py-2 px-3 cursor-pointer"
+                            placeholder="Pilih Jam ..."
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none cursor-pointer"
                             wire:click="toggleDropdown" />
-                        <!-- Dropdown -->
+                        
                         @if ($dropdownOpen)
-                            <div
-                                class="absolute w-full border border-gray-400 text-black rounded-md mt-11 bg-white max-h-48 overflow-y-auto z-10">
+                            <div class="absolute w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-48 overflow-y-auto z-20 p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-200">
                                 @foreach ($jamList as $jam)
-                                    <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                                        <input type="checkbox" value="{{ $jam }}" class="mr-2"
-                                            wire:model.live="pilihJam" />
-                                        {{ $jam }}
+                                    <label class="flex items-center px-3 py-2 hover:bg-red-50 rounded-lg cursor-pointer transition-colors group/item">
+                                        <input type="checkbox" value="{{ $jam }}" class="w-4 h-4 text-[#e51411] border-gray-300 rounded focus:ring-[#e51411]" wire:model.live="pilihJam" />
+                                        <span class="ml-3 text-sm font-bold text-gray-600 group-hover/item:text-[#e51411]">{{ $jam }}</span>
                                     </label>
                                 @endforeach
                             </div>
                         @endif
-                        @error('pilihJam')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
                     </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1">
-                <div class="flex flex-row gap-10 sm:flex-col md:flex-col lg:flex-row">
-                    <div class="flex flex-col flex-1 relative">
-                        <!-- Muatan/Kapasitas -->
-                        <input type="number" inputmode="numeric" wire:model="muatanKapasitas"
-                            class="rounded-lg py-2 px-3 border border-[#808080] text-black appearance-none
-                                border-opacity-50 font-bold"
-                            placeholder="Kapasitas" />
-                        <p class="muatan text-black text-md absolute right-10 font-bold top-2.5 cursor-pointer">
-                            Max {{ $maxKapasitas }}
-                        </p>
-                        <iconify-icon icon="mdi:people-outline"
-                            class="text-black absolute right-2 top-2.5 text-2xl cursor-pointer"></iconify-icon>
-                        @error('muatanKapasitas')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-1 gap-10">
-                <div class="flex flex-row gap-10 sm:gap-5 sm:flex-col md:flex-col lg:flex-row">
-                    <div class="flex flex-col flex-1 relative">
-                        <input type="text" wire:model="penanggungJawab"
-                            class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                            border-opacity-50 font-bold"
-                            placeholder="Penanggung Jawab" />
-                        @error('penanggungJawab')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="flex flex-col flex-1 relative">
-                        <input type="number" name="kontak_penanggung_jawab" wire:model="kontakPenanggungJawab"
-                            class="rounded-lg py-2 px-3 border border-[#808080] text-black
-                            border-opacity-50 font-bold"
-                            placeholder="Kontak Penanggung Jawab" />
-                        @error('kontakPenanggungJawab')
-                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex lg:flex-row sm:flex-col md:flex-col gap-5">
-                <div class="flex flex-col flex-1 gap-5">
-                    <textarea name="keterangan_peminjaman" wire:model="deskripsi"
-                        class="rounded-lg py-2 px-3 h-24 border border-[#808080] text-[#808080] font-bold
-                        border-opacity-50"
-                        placeholder="Deskripsi"></textarea>
+                    @error('pilihJam') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
                 </div>
             </div>
         </div>
 
-        <div class="w-auto flex justify-center mt-5">
-            <button wire:click="$dispatch('confirmNonAkademik')" type="button"
-                class="bg-[#FF0101] w-[150px] font-bold py-2 rounded-md">
-                Submit
+        {{-- Section 2: Kapasitas & Penanggung Jawab --}}
+        <div class="space-y-6">
+            <div class="flex items-center gap-2 pb-2 border-b border-gray-100">
+                <iconify-icon icon="solar:user-bold-duotone" class="text-[#e51411] text-xl"></iconify-icon>
+                <h2 class="text-sm font-bold uppercase tracking-wider text-gray-700">Kapasitas & Penanggung Jawab</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{-- Kapasitas --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:account-group" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
+                        <input type="number" wire:model="muatanKapasitas" inputmode="numeric"
+                            class="w-full pl-10 pr-20 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none"
+                            placeholder="Contoh: 50" />
+                        <div class="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-red-50 text-[#e51411] text-[10px] font-bold rounded-lg border border-red-100">
+                            Max {{ $maxKapasitas }}
+                        </div>
+                    </div>
+                    @error('muatanKapasitas') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Penanggung Jawab --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Nama Penanggung Jawab</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:account-outline" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
+                        <input wire:model="penanggungJawab" type="text"
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none"
+                            placeholder="Contoh: Budi" />
+                    </div>
+                    @error('penanggungJawab') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Kontak --}}
+                <div class="flex flex-col gap-2 lg:col-span-1">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Nomor WhatsApp / HP</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:phone-outline" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
+                        <input wire:model="kontakPenanggungJawab" type="number"
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none"
+                            placeholder="08123xxx" />
+                    </div>
+                    @error('kontakPenanggungJawab') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Deskripsi --}}
+                <div class="flex flex-col gap-2 md:col-span-2 lg:col-span-4">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Keperluan / Deskripsi Kegiatan</label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:text-box-outline" class="absolute left-3 top-3 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
+                        <textarea wire:model="deskripsi"
+                            class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none min-h-[100px]"
+                            placeholder="Tuliskan tujuan peminjaman secara jelas..."></textarea>
+                    </div>
+                    @error('deskripsi') <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p> @enderror
+                </div>
+            </div>
+        </div>
+
+        {{-- Submit Button --}}
+        <div class="flex justify-center pt-4">
+            <button type="button" wire:click="$dispatch('confirmNonAkademik')"
+                class="group flex items-center gap-3 px-10 py-3.5 bg-gradient-to-r from-[#e51411] to-[#ff3b38] text-white rounded-xl font-bold shadow-lg shadow-red-200 hover:shadow-red-300 hover:-translate-y-0.5 transition-all duration-300">
+                <iconify-icon icon="mdi:send-variant" class="text-xl"></iconify-icon>
+                <span>Ajukan Peminjaman</span>
             </button>
         </div>
     </form>

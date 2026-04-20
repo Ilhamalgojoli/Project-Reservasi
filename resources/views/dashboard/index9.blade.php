@@ -1,8 +1,6 @@
 @extends('layout.layout')
 @php
-    $title='Analytics';
     $subTitle = 'Analytics';
-    $script = '';
 @endphp
 
 @section('content')

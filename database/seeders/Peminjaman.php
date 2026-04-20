@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\DataPeminjaman;
 use App\Models\WaktuPeminjaman;
+use App\Models\Prodi;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
@@ -14,62 +15,19 @@ class Peminjaman extends Seeder
      */
     public function run(): void
     {
-        $fakultasList = ['Teknik', 'Ekonomi', 'Hukum', 'Sains'];
-        $prodiList = ['TI', 'SI', 'Manajemen', 'Hukum', 'Fisika'];
+        $prodis = Prodi::all();
         $jenisPeminjaman = ['akademik', 'non-akademik'];
-        $ruanganList = [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19
-            ,
-            20,
-            21,
-            22,
-            23,
-            24,
-            25,
-            26,
-            27,
-            28,
-            29,
-            30,
-            31,
-            32,
-            33,
-            34,
-            35
-            ,
-            36,
-            37,
-            38,
-            39,
-            40
-        ];
+        $ruanganList = range(1, 40);
         $lantaiList = [1, 2, 3, 4];
         $muatanList = [20, 30, 40, 50];
 
         // Buat 10 data peminjaman random
         for ($i = 1; $i <= 20; $i++) {
+            $randomProdi = $prodis->random();
             $data = DataPeminjaman::create([
                 'user_identifier' => '12345' . $i, // 🔥 WAJIB
-                'fakultas' => $fakultasList[array_rand($fakultasList)],
-                'prodi' => $prodiList[array_rand($prodiList)],
+                'fakultas_id' => $randomProdi->fakultas_id,
+                'prodi_id' => $randomProdi->id,
                 'jenis_peminjaman' => $jenisPeminjaman[array_rand($jenisPeminjaman)],
                 'kode_matkul' => 'MAT' . rand(100, 999),
                 'lantai' => $lantaiList[array_rand($lantaiList)],
@@ -79,7 +37,7 @@ class Peminjaman extends Seeder
                 'penanggung_jawab' => 'User ' . $i,
                 'kontak_penanggung_jawab' => '0812' . rand(1000000, 9999999),
                 'keterangan_peminjaman' => 'Keterangan contoh ' . $i,
-                'status' => 'Waiting',
+                'status' => $i % 3 == 0 ? 'Approve' : 'Waiting',
             ]);
 
             // Buat 2-4 waktu peminjaman per data

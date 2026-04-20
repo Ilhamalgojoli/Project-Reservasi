@@ -13,24 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (count < limit) {
                 const wrapper = document.createElement('div');
-                const inputNama = document.createElement('input');
-                const inputTotal = document.createElement('input');
-
                 wrapper.className = 'flex flex-row gap-5';
 
-                // Untuk input nama
-                inputNama.type = 'text';
-                inputNama.name = 'nama_asset[]';
-                inputNama.placeholder = 'Masukkan nama asset';
-                inputNama.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
+                const wrapperNama = document.createElement('div');
+                wrapperNama.className = 'flex-[1.5] relative group';
+                wrapperNama.innerHTML = `
+                    <iconify-icon icon="solar:box-minimalistic-bold" 
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
+                    <input type="text" name="nama_asset[]" placeholder="Nama Barang" 
+                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
+                `;
 
-                // Untuk total type
-                inputTotal.type = 'text';
-                inputTotal.name = 'total_asset[]';
-                inputTotal.placeholder = 'Masukkan Total';
-                inputTotal.className = 'rounded-lg flex-1 py-2 px-3 border border-[#808080] border-opacity-50 text-black';
+                const wrapperTotal = document.createElement('div');
+                wrapperTotal.className = 'flex-1 relative group';
+                wrapperTotal.innerHTML = `
+                    <iconify-icon icon="mdi:numeric-count-2" 
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
+                    <input type="number" name="total_asset[]" placeholder="Qty" 
+                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
+                `;
 
-                wrapper.append(inputNama, inputTotal);
+                wrapper.append(wrapperNama, wrapperTotal);
                 wrapperInput.append(wrapper);
 
                 wrappers.push(wrapper);
@@ -99,20 +102,4 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(window.wrappers);
         });
     });
-
-    // Hover info untuk guide user admin dalam menambahkan ruangan
-    // Ga jadi pakai
-
-    // btnInfo.addEventListener('mouseover', () => {
-    //     const rect = btnInfo.getBoundingClientRect();
-
-    //     hoverInfo.style.left = rect.left + window.scrollX + btnInfo.offsetWidth - 10 + 'px';
-    //     hoverInfo.style.top = rect.top + window.scrollY + btnInfo.offsetHeight - 60 + 'px';
-
-    //     hoverInfo.classList.remove('hidden');
-    // });
-
-    // btnInfo.addEventListener('mouseout', () => {
-    //     hoverInfo.classList.add('hidden');
-    // });
 });

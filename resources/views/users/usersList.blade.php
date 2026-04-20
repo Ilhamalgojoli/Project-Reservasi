@@ -2,12 +2,15 @@
 @php
     $title='Users List';
     $subTitle = 'Users List';
-    $script ='<script>
-                        $(".remove-item-btn").on("click", function() {
-                            $(this).closest("tr").addClass("hidden")
-                        });
-            </script>';
 @endphp
+
+@push('extra_scripts')
+    <script>
+        $(".remove-item-btn").on("click", function() {
+            $(this).closest("tr").addClass("hidden")
+        });
+    </script>
+@endpush
 
 @section('content')
 

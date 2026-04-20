@@ -5,7 +5,8 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App;
+use App\Models\Role;
+use Illuminate\Support\Facades\App;
 
 class SignInSignOutService
 {
@@ -25,6 +26,7 @@ class SignInSignOutService
         }
     }
 
+    # Login SSO yang nanti dipakai diproduction
     public function loginSso(array $data)
     {
         $url = env('URL_SSO');
@@ -54,7 +56,7 @@ class SignInSignOutService
             }
         } else {
             throw new \Exception('Username atau password tidak valid.');
-        }   
+        }
     }
 
     public function loginLocal(array $data)
@@ -68,21 +70,15 @@ class SignInSignOutService
             if (!$user || !Hash::check($password, $user->password)) {
                 throw new \Exception('Username atau password tidak valid.');
             }
+            
+            $data_role = Role::select('id_role as id', 'role')
+                ->get()
+                ->toArray();
 
-            $getToken = env('URL_TOKEN');
-            $token = Http::get($getToken);
-
-            if ($token->successful()) {
-                $data = $token->body();
-
-                $res_role = Http::withToken($data)->get($this->get_role);
-                $data_role = $res_role->json();
-
-                return [
-                    'data_role' => $data_role,
-                    'token' => $token,
-                ];
-            }
+            return [
+                'data_role' => $data_role,
+                'token' => rand(10000000, 99999999),
+            ];
         }
     }
 }

@@ -15,6 +15,8 @@ class Peminjaman extends Component
     public $prodi;
     public $errorFakultas = null;
     public $errorProdi = null;
+    public $buildingName = 'Gedung';
+    public $buildingDesc = '';
 
     protected $listeners = [
         'fakultasError' => 'errorHandle',
@@ -29,8 +31,25 @@ class Peminjaman extends Component
     public function mount()
     {
         $this->routeId = request()->route('id');
-        $this->jenisPeminjaman = 'akademik';
+
+        $this->jenisPeminjaman = session('role_name') === 'DOSEN' ? 'akademik' : 'non-akademik';
+
         $this->faculties = $this->service()->getFakultas();
+
+        # Simpen value ke variable server
+        if (session('faculty')) {
+            $this->fakultas = (int) session('faculty');
+        }
+
+        if ($this->fakultas) {
+            $this->updatedFakultas();
+        }
+
+        $building = $this->service()->getBuilding($this->routeId);
+        if ($building) {
+            $this->buildingName = $building->nama_gedung;
+            $this->buildingDesc = $building->keterangan;
+        }
     }
 
     #[On('resetSelect')]
@@ -42,9 +61,8 @@ class Peminjaman extends Component
 
     public function errorHandle($data)
     {
-        if (!isset($data['source'], $data['error'])) 
-            return ;
-        
+        if (!isset($data['source'], $data['error']))
+            return;
 
         switch ($data['source']) {
             case 'fakultas':
@@ -61,7 +79,13 @@ class Peminjaman extends Component
     public function updatedFakultas()
     {
         $this->prodies = $this->service()->getProdi($this->fakultas);
-        $this->prodi = null;
+
+        if (session('studyProgram')) {
+            $this->prodi = (int) session('studyProgram');
+        } else {
+            $this->prodi = null;
+        }
+
         $this->errorFakultas = null;
         $this->errorProdi = null;
     }

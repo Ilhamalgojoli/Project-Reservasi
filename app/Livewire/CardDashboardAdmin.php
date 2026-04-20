@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Services\DashboardService;
 use Livewire\Component;
 
-class Home extends Component
+class CardDashboardAdmin extends Component
 {
     public $waiting;
     public $approve;
@@ -21,6 +21,6 @@ class Home extends Component
 
         $this->dispatch('dataGedung', $this->gedung);
 
-        return view('livewire.home');
+        return view('livewire.card-dashboard-admin',);
     }
 }

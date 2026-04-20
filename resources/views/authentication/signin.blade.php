@@ -16,8 +16,8 @@
     @endif
     <section class="bg-white dark:bg-dark-2 flex flex-wrap min-h-[100vh] text-neutral-400">
         <div class="lg:w-1/2 lg:block hidden">
-            <div class="flex items-center flex-col h-full justify-center background-primary">
-                <img src="{{ asset('assets/basila_images/telu.png') }}" alt="telu" width="500px">
+            <div class="flex items-center flex-col h-full justify-center bg-red-600">
+                <img src="{{ asset('assets/basila_images/telu.png') }}" alt="telu" class="w-2/3 max-w-[500px] drop-shadow-2xl">
             </div>
         </div>
 
@@ -48,50 +48,55 @@
                     </div>
                 @endif
 
-                <form action="{{ route('login') }}" method="POST" class="form">
+                <form action="{{ route('login') }}" method="POST" class="form flex flex-col gap-5">
                     @csrf
-                    <div class="icon-field mb-4 relative">
-                        <span class="absolute start-4 top-1/2 -translate-y-1/2 pointer-events-none flex text-xl">
-                            <iconify-icon icon="mage:email" class="text-black"></iconify-icon>
-                        </span>
-                        <input type="text" name="username"
-                            class="form-control py-4 ps-11 border-neutral-300
-                            bg-neutral-50 dark:bg-dark-2 rounded-xl"
-                            placeholder="username SSO" autocomplete="username">
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Username SSO</label>
+                        <div class="relative group">
+                            <span class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none text-gray-400 group-focus-within:text-red-600 transition-colors">
+                                <iconify-icon icon="solar:user-bold" class="text-xl"></iconify-icon>
+                            </span>
+                            <input type="text" name="username"
+                                class="w-full py-3.5 ps-11 pe-4 border border-neutral-200 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all
+                                bg-neutral-50 dark:bg-dark-2 rounded-xl outline-none text-gray-900 dark:text-white"
+                                placeholder="Masukkan username SSO Anda" autocomplete="username">
+                        </div>
                         @error('username')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
+                            <p class="text-red-600 text-xs font-medium">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="relative mb-5">
-                        <div class="icon-field">
-                            <span class="absolute start-4 top-1/2 -translate-y-1/2 pointer-events-none flex text-xl">
-                                <iconify-icon icon="solar:lock-password-outline" class="text-black"></iconify-icon>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Password</label>
+                        <div class="relative group">
+                            <span class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none text-gray-400 group-focus-within:text-red-600 transition-colors">
+                                <iconify-icon icon="solar:lock-password-bold" class="text-xl"></iconify-icon>
                             </span>
                             <input type="password" name="password"
-                                class="form-control h-[56px] ps-11 border-neutral-300 bg-neutral-50 dark:bg-dark-2 rounded-xl"
-                                id="your-password" placeholder="Password" autocomplete="current-password">
-                            @error('password')
-                                <p class="text-red-600 text-sm">{{ $message }}</p>
-                            @enderror
+                                class="w-full py-3.5 ps-11 pe-12 border border-neutral-200 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all
+                                bg-neutral-50 dark:bg-dark-2 rounded-xl outline-none text-gray-900 dark:text-white"
+                                id="your-password" placeholder="••••••••" autocomplete="current-password">
+                            <button type="button" 
+                                class="toggle-password absolute inset-y-0 end-0 ps-3 pe-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                                data-toggle="#your-password">
+                                <iconify-icon icon="solar:eye-bold" class="text-xl"></iconify-icon>
+                            </button>
                         </div>
-                        <span
-                            class="toggle-password ri-eye-line cursor-pointer absolute end-0 top-1/2 -translate-y-1/2 me-4 text-secondary-light"
-                            data-toggle="#your-password"></span>
+                        @error('password')
+                            <p class="text-red-600 text-xs font-medium">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <div class="mt-7">
-                        <div class="flex justify-between gap-2">
-                            <div class="flex items-center">
-                                <!-- <input class="form-check-input border border-neutral-300" type="checkbox" value=""
-                                    id="remember" name="remember">
-                                <label class="ps-2" for="remember" name="remember">Remember me </label> -->
-                            </div>
-                            <a href="https://satu.telkomuniversity.ac.id/auth/forgot-password"
-                                class="text-primary-600 font-medium hover:underline">Lupa password?</a>
-                        </div>
+
+                    <div class="flex items-center justify-end mt-1">
+                        <a href="https://satu.telkomuniversity.ac.id/auth/forgot-password"
+                            class="text-sm font-semibold text-red-600 hover:text-red-700 transition-colors">Lupa password?</a>
                     </div>
+
                     <button type="submit"
-                        class="btn bg-red-500 justify-center text-sm btn-sm px-3 py-4 w-full rounded-xl mt-8 text-neutral-50">
-                        SSO Login</button>
+                        class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-600/20 hover:shadow-red-600/40 transition-all transform active:scale-[0.98] mt-4 flex items-center justify-center gap-2">
+                        <span>Masuk Sekarang</span>
+                        <iconify-icon icon="solar:alt-arrow-right-bold" class="text-xl"></iconify-icon>
+                    </button>
                 </form>
             </div>
         </div>
