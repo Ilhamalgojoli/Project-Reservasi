@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Livewire\Peminjaman;
+use App\Models\DataPeminjaman;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Prodi;
@@ -19,11 +19,11 @@ class Fakultas extends Model
 
     public function prodi()
     {
-        return $this->hasMany(Prodi::class);
+        return $this->hasMany(Prodi::class, 'fakultas_id');
     }
 
     public function peminjaman()
     {
-        return $this->hasMany(Peminjaman::class);
+        return $this->hasMany(DataPeminjaman::class, 'fakultas_id');
     }
 }

@@ -29,6 +29,7 @@ class Peminjaman extends Seeder
                 'fakultas_id' => $randomProdi->fakultas_id,
                 'prodi_id' => $randomProdi->id,
                 'jenis_peminjaman' => $jenisPeminjaman[array_rand($jenisPeminjaman)],
+                'email' => 'rilhamgojali123@gmail.com',
                 'kode_matkul' => 'MAT' . rand(100, 999),
                 'lantai' => $lantaiList[array_rand($lantaiList)],
                 'ruangan_id' => $ruanganList[array_rand($ruanganList)],

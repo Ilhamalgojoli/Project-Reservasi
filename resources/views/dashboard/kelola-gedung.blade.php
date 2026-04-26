@@ -9,5 +9,5 @@
 @endpush
 
 @section('content')
-    @livewire('tambah-gedung') 
+    @livewire('admin.tambah-gedung') 
 @endsection

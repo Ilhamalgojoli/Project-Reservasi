@@ -23,7 +23,7 @@
         <main class="grid grid-cols-12 gap-8">
             {{-- Search & Filter Section (Moved to Right) --}}
             <div class="col-span-12 lg:col-span-7 xl:col-span-8 animate-slide-up" style="animation-delay: 200ms">
-                @livewire('filters-ruangan')
+                @livewire('admin.filters-ruangan')
             </div>
 
             {{-- Action Card: Tambah Ruangan (Moved to Left) --}}
@@ -73,7 +73,7 @@
                         <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-800">Inventaris Ruang</h3>
                     </div>
                 </div>
-                @livewire('table-kelola-ruangan', ['id' => request()->route('id')])
+                @livewire('admin.table-kelola-ruangan', ['id' => request()->route('id')])
             </section>
         </main>
 

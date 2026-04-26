@@ -65,12 +65,14 @@ class SignInSignOutService
             $username = $data['username'];
             $password = $data['password'];
 
-            $user = User::where('username', $username)->first();
+            $user = User::select('id', 'username', 'password')
+                ->where('username', $username)
+                ->first();
 
             if (!$user || !Hash::check($password, $user->password)) {
                 throw new \Exception('Username atau password tidak valid.');
             }
-            
+
             $data_role = Role::select('id_role as id', 'role')
                 ->get()
                 ->toArray();

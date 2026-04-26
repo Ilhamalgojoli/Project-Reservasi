@@ -12,15 +12,18 @@
     </div>
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
-            <div class="identitas flex flex-col items-center gap-3 my-16">
-                <img src="{{ asset('assets/basila_images/favicon.png') }}" class="w-20 object-cover mx-auto object-top"
-                    alt="logo basila" id="logo">
-                <div class="flex flex-col items-center w-full gap-2">
-                    <h1 class="uppercase text-xl truncate overflow-hidden whitespace-nowrap max-w-[80%]"
-                        id="sidebar-name">{{ session('username') }}</h1>
-                    <h5 class="text-sm font-normal" id="sidebar-nim">{{ session('nim') }}</h5>
+            <li class="w-full !pl-0">
+                <div class="identitas w-full flex flex-col items-center justify-center gap-4 my-10">
+                    <img src="{{ session('profilephoto') ?? asset('assets/basila_images/favicon.png') }}" 
+                        class="w-28 h-28 rounded-full aspect-square object-cover object-top border-2 border-red-100 shadow-sm flex-shrink-0"
+                        alt="profile photo" id="logo">
+                    <div class="flex flex-col items-center w-full gap-1 px-4 text-center">
+                        <h1 class="uppercase text-lg font-bold text-gray-800 tracking-tight truncate w-full"
+                            id="sidebar-name">{{ session('username') }}</h1>
+                        <h5 class="text-[11px] font-medium text-gray-400 uppercase tracking-widest leading-none mt-1" id="sidebar-nim">{{ session('nim') }}</h5>
+                    </div>
                 </div>
-            </div>
+            </li>
             <li class="mb-4">
                 <a href="https://basila.telkomuniversity.ac.id/basilav2/">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
@@ -39,7 +42,7 @@
                             Home
                         </a>
                     </li>
-                    @if (session('role_name') === 'SUPERADMIN' || session('role_name') === 'KEPALA URUSAN ADMINISTRASI AKADEMIK')
+                    @if (session('role_name') === 'BAA')
                         <li>
                             <a href="{{ route('pengelolaan-gedung') }}" class="">
                                 <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
@@ -53,7 +56,7 @@
                             Peminjaman Ruangan
                         </a>
                     </li>
-                    @if (session('role_name') === 'SUPERADMIN' || session('role_name') === 'KEPALA URUSAN ADMINISTRASI AKADEMIK')
+                    @if (session('role_name') === 'BAA')
                         <li>
                             <a href="{{ route('approve-reservasi') }}">
                                 <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>

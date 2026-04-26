@@ -21,7 +21,7 @@
             </div>
         </section> --}}
         <section class="col-span-12 rounded-[8px] bg-white shadow-md p-8">
-            @livewire('approve-reject-booking')
+            @livewire('admin.approve-reject-booking')
         </section>
     </main>
 @endsection

@@ -574,6 +574,7 @@ select:not([size]) {
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
+    appearance: none;
     opacity: 0 !important;
     display: none !important;
 }

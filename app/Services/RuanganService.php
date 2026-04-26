@@ -12,7 +12,8 @@ class RuanganService
     public function getDataLantai($id)
     {
         return Lantai::select('id', 'lantai')->where('gedung_id', $id)
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function getData($id, $search, $filters = false, $idLantai = null)

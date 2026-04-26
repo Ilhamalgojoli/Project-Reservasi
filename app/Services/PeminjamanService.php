@@ -17,13 +17,15 @@ class PeminjamanService
 {
     public function getBuilding(int $id)
     {
-        return Gedung::find($id);
+        return Gedung::select('id', 'nama_gedung')
+            ->find($id);
     }
     public function getLantai($gedungId)
     {
         return Lantai::select('id', 'lantai')
             ->where('gedung_id', $gedungId)
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function getRuangan($lantaiId)
@@ -31,20 +33,23 @@ class PeminjamanService
         return Ruangan::select('id', 'kode_ruangan')
             ->where('status', 'Aktif')
             ->where('lantai_id', $lantaiId)
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function getFakultas()
     {
         return Fakultas::select('id', 'fakultas')
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function getProdi($fakultasId)
     {
         return Prodi::select('id', 'prodi')
             ->where('fakultas_id', $fakultasId)
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function getMaxKapasitas($ruanganId)
@@ -73,6 +78,7 @@ class PeminjamanService
             'jenisPeminjaman'       => 'required|string',
             'penanggungJawab'       => 'required|string|min:3',
             'kontakPenanggungJawab' => 'required|numeric|digits_between:10,15',
+            'email'                 => 'required|email',
             'deskripsi'             => 'nullable|string|max:500',
             'userIdentifier'        => 'required|string',
         ];
@@ -103,6 +109,8 @@ class PeminjamanService
             'kontakPenanggungJawab.required' => 'Kontak wajib diisi',
             'kontakPenanggungJawab.numeric'  => 'Kontak harus angka',
             'kontakPenanggungJawab.digits_between' => 'Kontak harus 10-15 digit',
+            'email.required'                 => 'Email wajib diisi',
+            'email.email'                    => 'Format email tidak valid',
             'deskripsi.max'                  => 'Deskripsi maksimal 500 karakter',
         ];
     }
@@ -142,7 +150,7 @@ class PeminjamanService
         $this->cekIntervalJadwal($jam);
 
         # Masuk transaction dikarenakan ada 2 proses query,menjaga data agar tetap konsisten
-        return DB::transaction(function () use ($data, $jam) {
+        $peminjaman = DB::transaction(function () use ($data, $jam) {
             $peminjaman = DataPeminjaman::create([
                 'fakultas_id' => $data['fakultas'],
                 'prodi_id' => $data['prodi'],
@@ -155,6 +163,7 @@ class PeminjamanService
                 'muatan' => $data['muatanKapasitas'],
                 'penanggung_jawab' => $data['penanggungJawab'],
                 'kontak_penanggung_jawab' => $data['kontakPenanggungJawab'],
+                'email' => $data['email'],
                 'keterangan_peminjaman' => $data['deskripsi'],
             ]);
 
@@ -167,6 +176,15 @@ class PeminjamanService
 
             return $peminjaman;
         });
+
+        # Refresh Cache Riwayat (Mahasiswa & Admin)
+        // $nim = $data['userIdentifier'];
+        // for ($i = 1; $i <= 5; $i++) {
+        //     Cache::forget("history-users-{$nim}-page-{$i}");
+        //     Cache::forget("history-admin-page-{$i}");
+        // }
+
+        return $peminjaman;
     }
 
     # Cek interval waktu yang di pinjam,apakah format peminjaman sudah benar atau belum
@@ -189,26 +207,28 @@ class PeminjamanService
     # Cek apakah jadwal yang dipinjam apakah sudah pernah dipinjam atau belum
     private function cekTabrakanJadwal(array $data)
     {
-        $tabrakan = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($data) {
-            $q->where('ruangan_id', $data['ruanganID'])
-                ->where('tanggal_peminjaman', $data['tanggal'])
-                ->whereIn('status', ['Approve', 'Waiting']);
-        })
-            ->whereIn('waktu_peminjaman', $data['pilihJam'])
-            ->orderBy('waktu_peminjaman')
-            ->get();
-
-        if ($tabrakan->isNotEmpty()) {
-            $rangeDb = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($data) {
+        # Ambil semua waktu yang sudah terisi di ruangan dan tanggal tersebut
+        $rangeDb = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($data) {
                 $q->where('ruangan_id', $data['ruanganID'])
                     ->where('tanggal_peminjaman', $data['tanggal'])
                     ->whereIn('status', ['Approve', 'Waiting']);
-            })->orderBy('waktu_peminjaman')->get();
+            })
+            ->orderBy('waktu_peminjaman')
+            ->get();
 
-            $start = Carbon::parse($rangeDb->first()->waktu_peminjaman);
-            $end = Carbon::parse($rangeDb->last()->waktu_peminjaman);
+        if ($rangeDb->isNotEmpty()) {
+            # Ambil hanya jam nya saja
+            $takenHours = $rangeDb->pluck('waktu_peminjaman')->toArray();
 
-            throw new \Exception("Ruangan pada jam $start sudah dipakai sampai jam $end");
+            # Cek apakah ada jam yang dipilih user yang sudah terisi di DB
+            $overlap = array_intersect($takenHours, $data['pilihJam']);
+
+            if (!empty($overlap)) {
+                $start = Carbon::parse($rangeDb->first()->waktu_peminjaman)->format('H:i');
+                $end   = Carbon::parse($rangeDb->last()->waktu_peminjaman)->format('H:i');
+
+                throw new \Exception("Ruangan pada jam $start sudah dipakai sampai jam $end");
+            }
         }
     }
 
@@ -245,7 +265,7 @@ class PeminjamanService
             return [
                 'dates' => [],
                 'bookings' => collect([]),
-                'timeSlots' => $this->generateJam('07:00', '21:00'),
+                'timeSlots' => $this->generateJam('06:30', '22:30'),
                 'kodeRuangan' => null
             ];
         }
@@ -294,27 +314,8 @@ class PeminjamanService
         return [
             'dates' => $dates,
             'bookings' => $grouped,
-            'timeSlots' => $this->generateJam('07:00', '21:00'),
+            'timeSlots' => $this->generateJam('06:30', '22:30'),
             'kodeRuangan' => $ruangan->kode_ruangan ?? '-'
         ];
-    }
-
-    public function cancel(array $data)
-    {
-        $peminjaman = DataPeminjaman::findOrFail($data['id']);
-
-        if ($peminjaman->user_identifier != $data['user_identifier']) {
-            throw new \DomainException('Anda tidak berhak membatalkan peminjaman ini.');
-        }
-
-        if ($peminjaman->status != 'Waiting') {
-            throw new \DomainException('Peminjaman tidak bisa dibatalkan.');
-        }
-
-        $peminjaman->update([
-            'status'            => 'Canceled',
-            'alasan_pembatalan' => $data['alasan'],
-            'cancel_by'         => $data['user_identifier'],
-        ]);
     }
 }

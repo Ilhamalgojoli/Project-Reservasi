@@ -22,24 +22,24 @@
     <main class="grid lg:grid-cols-12 md:grid-cols-1 sm:grid-cols-1 gap-8">
         {{-- Main Form Selection --}}
         <div class="lg:col-span-7">
-            @livewire('peminjaman', ['id' => request()->route('id')])
+            @livewire('user.peminjaman', ['id' => request()->route('id')])
         </div>
 
         {{-- Sidebar Widgets --}}
         <section class="lg:col-span-5 flex flex-col gap-6">
             {{-- Room Assets --}}
             <div class="transition-all duration-500">
-                @livewire('view-asset')
+                @livewire('user.view-asset')
             </div>
 
             {{-- Location Map --}}
             <div class="transition-all duration-500">
-                @livewire('map-peminjaman')
+                @livewire('user.map-peminjaman', ['id' => request()->route('id')])
             </div>
             
             {{-- Check Schedule Widget --}}
             <div class="transition-all duration-500">
-                @livewire('peminjaman-per-ruangan')
+                @livewire('user.peminjaman-per-ruangan')
             </div>
         </section>
     </main>

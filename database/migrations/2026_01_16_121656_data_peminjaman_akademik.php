@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('muatan');
             $table->string('penanggung_jawab');
             $table->string('kontak_penanggung_jawab');
+            $table->string('email');    
             $table->string('user_identifier');
             $table->string('keterangan_peminjaman');
             $table->string('alasan_penolakan')->nullable();

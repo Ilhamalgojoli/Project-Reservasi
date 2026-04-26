@@ -109,12 +109,19 @@ window.initMapUpdate = function () {
     });
 }
 
-window.initMap = function () {
-    const x = document.getElementById('lat-map');
-    const y = document.getElementById('lng-map');
+window.initMap = function (argLat = null, argLng = null) {
+    let lat = parseFloat(argLat);
+    let lng = parseFloat(argLng);
 
-    const lat = parseFloat(x.value);
-    const lng = parseFloat(y.value);
+    // Fallback: baca dari hidden input jika argumen tidak valid
+    if (isNaN(lat) || isNaN(lng)) {
+        const x = document.getElementById('lat-map');
+        const y = document.getElementById('lng-map');
+        if (x && y) {
+            lat = parseFloat(x.value);
+            lng = parseFloat(y.value);
+        }
+    }
 
     if (isNaN(lat) || isNaN(lng)) return;
 
@@ -122,7 +129,7 @@ window.initMap = function () {
         map.remove();
     }
 
-    map = L.map('map').setView([-6.973007, 107.630403], 20);
+    map = L.map('map').setView([lat, lng], 20);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'

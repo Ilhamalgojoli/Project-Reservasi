@@ -13,11 +13,9 @@
         <p class="text-gray-400 text-sm font-medium">Selamat datang di dashboard {{ session('username') }}</p>
     </div>
 
-    @if (session('role_name') == 'MAHASISWA' || session('role_name') == 'DOSEN')
-        @livewire('dashboard-user')
-    @endif
-
-    @if (session('role_name') == 'SUPERADMIN')
-        @livewire('dashboard-admin')
+    @if (session('role_name') === 'BAA')
+        @livewire('admin.dashboard-admin')
+    @else
+        @livewire('user.dashboard-user')
     @endif
 @endsection

@@ -27,6 +27,7 @@ class DataPeminjaman extends Model
         'muatan',
         'penanggung_jawab',
         'kontak_penanggung_jawab',
+        'email',
         'alasan_pembatalan',
         'cancel_by',
         'alasan_penolakan',

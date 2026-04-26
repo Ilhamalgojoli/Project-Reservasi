@@ -25,7 +25,7 @@ Route::middleware(['middleware' => 'ensuretoken'])->group(function () {
         Route::get('/pilih-gedung', 'show')->name('index2');
     });
 
-    Route::group(['middleware' => ['ensuretoken', 'rolecheck:SUPERADMIN,KEPALA URUSAN ADMINISTRASI AKADEMIK']], function () {
+    Route::group(['middleware' => ['ensuretoken', 'rolecheck:BAA']], function () {
         Route::get('/kelola-gedung', [GedungController::class, 'index'])->name('pengelolaan-gedung');
 
         Route::controller(RuanganController::class)->group(function () {
@@ -37,17 +37,17 @@ Route::middleware(['middleware' => 'ensuretoken'])->group(function () {
             Route::delete('/dashboard/ruangan/{id}', [RuanganController::class, 'destroyRuangan']);
             Route::get('/dashboard/asset/{id}', [RuanganController::class, 'getAssetByRuangan']);
         });
+
+        Route::controller(ApproveController::class)->group(function () {
+            Route::get('/approve', [ApproveController::class, 'index'])->name('approve-reservasi');
+            Route::post('/approve/{id}', [ApproveController::class, 'approve']);
+            Route::post('/reject/{id}', [ApproveController::class, 'reject'])->name('reject');
+        });
     });
 
     Route::controller(DataPeminjamanController::class)->group(function () {
         Route::get('/dashboard/pilih-ruang/{id}', [DataPeminjamanController::class, 'index'])->name('pilih-ruang');
         Route::get('/history-peminjaman', [DataPeminjamanController::class, 'show'])->name('history-peminjaman');
-    });
-
-    Route::controller(ApproveController::class)->group(function () {
-        Route::get('/approve', [ApproveController::class, 'index'])->name('approve-reservasi');
-        Route::post('/approve/{id}', [ApproveController::class, 'approve']);
-        Route::post('/reject/{id}', [ApproveController::class, 'reject'])->name('reject');
     });
 });
 
