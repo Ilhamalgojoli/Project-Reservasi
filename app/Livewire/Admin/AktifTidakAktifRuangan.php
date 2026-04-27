@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class AktifTidakAktifRuangan extends Component
 {
-    public $data = [];
+    protected $data = [];
 
     public function getAktifTidakAktif()
     {
@@ -18,14 +18,19 @@ class AktifTidakAktifRuangan extends Component
         
         return [
             'ruanganAktif' => $aktif, 
-            'ruanganTidakAktif' => $tidakAktif];
+            'ruanganTidakAktif' => $tidakAktif
+        ];
+    }
+
+    public function mount()
+    {
+        $this->data = $this->getAktifTidakAktif();
     }
 
     public function render()
     {
-        $this->data = $this->getAktifTidakAktif();
-        $this->dispatch('totalRuangan', $this->data);
-
-        return view('livewire.admin.aktif-tidak-aktif-ruangan');
+        return view('livewire.admin.aktif-tidak-aktif-ruangan', [
+            'data' => $this->data
+        ]);
     }
 }

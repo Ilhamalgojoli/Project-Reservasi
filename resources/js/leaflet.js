@@ -4,6 +4,13 @@ import 'leaflet/dist/leaflet.css'
 let map = null;
 let markersGroup = null;
 
+document.addEventListener('livewire:navigating', () => {
+    if (map !== null) {
+        map.remove();
+        map = null;
+    }
+});
+
 window.initMapCreate = function () {
     const x = document.getElementById('lat');
     const y = document.getElementById('lng');

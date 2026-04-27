@@ -52,11 +52,12 @@
 
     </div>
 
-    <div class="border-t border-gray-100 pt-4">
+    <div class="border-t border-gray-100 pt-4"
+         x-data="cardDashboardChart(@js($gedung))">
         <h2 class="text-lg font-bold text-gray-700 text-center mb-2">Penggunaan Ruang Gedung Telkom University</h2>
         <div class="overflow-x-auto text-black">
             @if(count($gedung) > 0)
-                <div id="columnChart" class="overflow-x-auto min-w-[800px]"></div>
+                <div x-ref="chart" class="overflow-x-auto min-w-[800px]"></div>
             @else
                 <div class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3 bg-gray-50/50 rounded-xl">
                     <iconify-icon icon="solar:buildings-bold-duotone" class="text-6xl opacity-20"></iconify-icon>
@@ -70,111 +71,95 @@
     </div>
 
     <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('dataGedung', (e) => {
-                data = e[0]
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('cardDashboardChart', (data) => ({
+                chart: null,
+                init() {
+                    if (!data || data.length === 0) return;
 
-                let categories = data.map(item => item.nama_gedung);
-                let totalWaiting = data.map(item => item.totalWaiting);
-                let totalTerpakai = data.map(item => item.totalTerpakai);
-                let totalTersedia = data.map(item => item.totalTersedia);
+                    let categories = data.map(item => item.nama_gedung);
+                    let totalWaiting = data.map(item => item.totalWaiting);
+                    let totalTerpakai = data.map(item => item.totalTerpakai);
+                    let totalTersedia = data.map(item => item.totalTersedia);
 
-                var options = {
-                    series: [{
-                            name: 'Total Waiting',
-                            data: totalWaiting
+                    var options = {
+                        series: [
+                            { name: 'Total Waiting', data: totalWaiting },
+                            { name: 'Total Terpakai', data: totalTerpakai },
+                            { name: 'Total Tersedia', data: totalTersedia }
+                        ],
+                        colors: ['#ffb800', '#e51411', '#3ea83f'],
+                        labels: ['Total Waiting', 'Total Terpakai', 'Total Tersedia'],
+                        legend: { show: false },
+                        chart: {
+                            type: 'bar',
+                            height: 520,
+                            toolbar: { show: false },
                         },
-                        {
-                            name: 'Total Terpakai',
-                            data: totalTerpakai
+                        grid: {
+                            show: true,
+                            borderColor: '#D1D5DB',
+                            strokeDashArray: 4,
+                            position: 'back',
                         },
-                        {
-                            name: 'Total Tersedia',
-                            data: totalTersedia
-                        }
-                    ],
-                    colors: ['#ffb800', '#e51411', '#3ea83f'],
-                    labels: ['Total Waiting', 'Total Terpakai', 'Total Tersedia'],
-                    legend: {
-                        show: false
-                    },
-                    chart: {
-                        type: 'bar',
-                        height: 520,
-                        toolbar: {
-                            show: false
-                        },
-                    },
-                    grid: {
-                        show: true,
-                        borderColor: '#D1D5DB',
-                        strokeDashArray: 4,
-                        position: 'back',
-                    },
-                    plotOptions: {
-                        bar: {
-                            borderRadius: 4,
-                            columnWidth: 20,
-                        },
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    legend: {
-                        position: 'bottom',
-                        horizontalAlign: 'center',
-                        markers: {
-                            width: 14,
-                            height: 14,
-                            radius: 2
-                        },
-                        itemMargin: {
-                            horizontal: 15,
-                            vertical: 25
-                        }
-                    },
-                    stroke: {
-                        show: true,
-                        width: 2,
-                        colors: ['transparent']
-                    },
-                    xaxis: {
-                        categories: categories
-                    },
-                    yaxis: {
-                        labels: {
-                            formatter: function(value) {
-                                return value.toFixed(0);
-                            }
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: function(value) {
-                                return value.toFixed(1);
-                            }
-                        }
-                    },
-                    fill: {
-                        opacity: 1,
-                        width: 18,
-                    },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            plotOptions: {
-                                bar: {
-                                    borderRadius: 4,
-                                    columnWidth: 10,
-                                },
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 4,
+                                columnWidth: 20,
                             },
-                        }
-                    }]
-                };
+                        },
+                        dataLabels: { enabled: false },
+                        legend: {
+                            position: 'bottom',
+                            horizontalAlign: 'center',
+                            markers: { width: 14, height: 14, radius: 2 },
+                            itemMargin: { horizontal: 15, vertical: 25 }
+                        },
+                        stroke: {
+                            show: true,
+                            width: 2,
+                            colors: ['transparent']
+                        },
+                        xaxis: { categories: categories },
+                        yaxis: {
+                            labels: {
+                                formatter: function(value) { return value.toFixed(0); }
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function(value) { return value.toFixed(1); }
+                            }
+                        },
+                        fill: {
+                            opacity: 1,
+                            width: 18,
+                        },
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                plotOptions: {
+                                    bar: { borderRadius: 4, columnWidth: 10 },
+                                },
+                            }
+                        }]
+                    };
 
-                var chart = new ApexCharts(document.querySelector("#columnChart"), options);
-                chart.render();
-            });
-        })
+                    let checkInterval = setInterval(() => {
+                        if (typeof ApexCharts !== 'undefined' && this.$refs.chart) {
+                            clearInterval(checkInterval);
+                            this.chart = new ApexCharts(this.$refs.chart, options);
+                            this.chart.render();
+                        }
+                    }, 50);
+                },
+                destroy() {
+                    if (this.chart) {
+                        this.chart.destroy();
+                        this.chart = null;
+                    }
+                }
+            }));
+        });
     </script>
 </div>

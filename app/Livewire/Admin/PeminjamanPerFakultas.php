@@ -7,13 +7,21 @@ use Livewire\Component;
 
 class PeminjamanPerFakultas extends Component
 {
-    public $peminjamanPerFakultas = [];
+    protected $peminjamanPerFakultas = [];
 
-    public function render(DashboardService $dashboard)
+    public function mount(DashboardService $dashboard)
     {
-        $this->peminjamanPerFakultas = $dashboard->getDataPeminjamanPerFakultas();
-        $this->dispatch('peminjamanPerFakultas', $this->peminjamanPerFakultas);
+        if (session('role_name') !== 'BAA') {
+            $this->peminjamanPerFakultas = null;
+        }
 
-        return view('livewire.admin.peminjaman-per-fakultas');
+        $this->peminjamanPerFakultas = $dashboard->getDataPeminjamanPerFakultas();
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.peminjaman-per-fakultas', [
+            'peminjamanPerFakultas' => $this->peminjamanPerFakultas,
+        ]);
     }
 }

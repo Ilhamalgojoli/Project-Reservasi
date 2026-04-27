@@ -51,6 +51,13 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->session()->flush();
+        session()->forget('roles');
+        session()->forget('token');
+        session()->forget('username');
+        session()->forget('user_identifier');
+        session()->forget('profilephoto');
+        session()->forget('faculty');
+        session()->forget('studyProgram');
 
         return redirect()->route('login')->with('success', 'Berhasil logout');
     }

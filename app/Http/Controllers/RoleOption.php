@@ -23,6 +23,8 @@ class RoleOption extends Controller
             'role_name' => $validate['role_name']
         ]);
 
+        session()->forget('data_role');
+
         return redirect()->route('index');
     }
 }

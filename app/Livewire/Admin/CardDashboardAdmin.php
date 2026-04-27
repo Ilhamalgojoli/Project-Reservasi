@@ -7,20 +7,26 @@ use Livewire\Component;
 
 class CardDashboardAdmin extends Component
 {
-    public $waiting;
-    public $approve;
-    public $tersedia;
-    public $gedung = [];
+    protected $waiting;
+    protected $approve;
+    protected $tersedia;
+    protected $gedung = [];
     
-    public function render(DashboardService $dashboard)
+    public function mount(DashboardService $dashboard)
     {
         $this->waiting = $dashboard->getRuanganWaiting();
         $this->approve = $dashboard->getRuanganTerpakai();
         $this->tersedia = $dashboard->getRuanganTersedia($this->approve);
         $this->gedung = $dashboard->chartGedung();
+    }
 
-        $this->dispatch('dataGedung', $this->gedung);
-
-        return view('livewire.admin.card-dashboard-admin',);
+    public function render()
+    {
+        return view('livewire.admin.card-dashboard-admin', [
+            'waiting' => $this->waiting,
+            'approve' => $this->approve,
+            'tersedia' => $this->tersedia,
+            'gedung' => $this->gedung,
+        ]);
     }
 }

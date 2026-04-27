@@ -7,13 +7,22 @@ use Livewire\Component;
 
 class OkkupansiRuangan extends Component
 {
-    public $okkupansi = [];
+    protected $okkupansi = [];
 
-    public function render(DashboardService $dashboard)
+    public function mount(DashboardService $dashboard)
     {
-        $this->okkupansi = $dashboard->getDataOkkupansi();
-        $this->dispatch('okkupansi', $this->okkupansi);
+        if (session('role_name') !== 'BAA') {
+            $this->okkupansi = null ;
+            abort(403);
+        }
 
-        return view('livewire.admin.okkupansi-ruangan');
+        $this->okkupansi = $dashboard->getDataOkkupansi();
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.okkupansi-ruangan', [
+            'okkupansi' => $this->okkupansi,
+        ]);
     }
 }
