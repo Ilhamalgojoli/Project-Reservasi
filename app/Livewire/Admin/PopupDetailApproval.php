@@ -35,26 +35,32 @@ class PopupDetailApproval extends Component
     public function approve()
     {
         if ($this->peminjamanId) {
-            $this->service()->approve($this->peminjamanId);
-            $this->closeDetail();
-            $this->dispatch('refreshHistory');
+            try {
+                $this->service()->approve($this->peminjamanId);
+                $this->closeDetail();
+                $this->dispatch('refreshHistory');
 
-            $this->dispatch('successApprove', [
-                'text' => 'Peminjaman berhasil diterima',
-            ]);
+                $this->dispatch('successApprove', text: 'Peminjaman berhasil diterima');
+            } catch (\Exception $e) {
+                $this->closeDetail();
+                $this->dispatch('errorApproval', text: $e->getMessage());
+            }
         }
     }
 
     public function reject($alasan)
     {
         if ($this->peminjamanId && $alasan) {
-            $this->service()->reject($this->peminjamanId, $alasan);
-            $this->closeDetail();
-            $this->dispatch('refreshHistory');
+            try {
+                $this->service()->reject($this->peminjamanId, $alasan);
+                $this->closeDetail();
+                $this->dispatch('refreshHistory');
 
-            $this->dispatch('successReject', [
-                'text' => 'Peminjaman berhasil ditolak',
-            ]);
+                $this->dispatch('successReject', text: 'Peminjaman berhasil ditolak');
+            } catch (\Exception $e) {
+                $this->closeDetail();
+                $this->dispatch('errorApproval', text: $e->getMessage());
+            }
         }
     }
 

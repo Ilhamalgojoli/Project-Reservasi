@@ -5,7 +5,7 @@
         @forelse ($datas as $data)
             <li class="flex flex-row items-center gap-5">
                 <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]" style="font-size: 20px;"></iconify-icon>
-                <span>{{ $data->pesan }}</span>
+                <span>{{ $data['pesan'] }}</span>
             </li>
         @empty
             <li class="flex flex-col items-center justify-center py-8 text-gray-400 gap-2">

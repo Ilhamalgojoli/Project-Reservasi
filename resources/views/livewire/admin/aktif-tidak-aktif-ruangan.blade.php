@@ -14,7 +14,7 @@
     @endif
 </div>
 
-<script>
+<script data-navigate-once>
     document.addEventListener('alpine:init', () => {
         Alpine.data('aktifChart', (data) => ({
             chart: null,
@@ -39,16 +39,17 @@
                     legend: { position: 'right' },
                 };
 
-                let checkInterval = setInterval(() => {
+                this.checkInterval = setInterval(() => {
                     const chartEl = document.querySelector("#userOverviewDonutChart");
                     if (typeof ApexCharts !== 'undefined' && chartEl) {
-                        clearInterval(checkInterval);
+                        clearInterval(this.checkInterval);
                         this.chart = new ApexCharts(chartEl, options);
                         this.chart.render();
                     }
                 }, 50);
             },
             destroy() {
+                if (this.checkInterval) clearInterval(this.checkInterval);
                 if (this.chart) {
                     this.chart.destroy();
                     this.chart = null;

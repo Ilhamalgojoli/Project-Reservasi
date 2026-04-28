@@ -283,7 +283,7 @@
     @endif
 </div>
 
-<script>
+<script data-navigate-once>
     document.addEventListener('livewire:initialized', () => {
         Livewire.on('swal:success', (e) => {
             Swal.fire({

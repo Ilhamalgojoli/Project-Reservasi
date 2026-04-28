@@ -90,7 +90,7 @@
     @endif
 
     
-    <script>
+    <script data-navigate-once>
         document.addEventListener('livewire:init', () => {
             Livewire.on('init-map-tambah', () => {
                 setTimeout(() => {

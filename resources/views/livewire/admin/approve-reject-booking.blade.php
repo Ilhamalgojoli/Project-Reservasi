@@ -96,7 +96,7 @@
     @livewire('admin.popup-detail-approval')
 </div>
 
-<script>
+<script data-navigate-once>
     document.addEventListener('livewire:init', () => {
         Livewire.on('successApprove', (event) => {
             Swal.fire({
@@ -112,6 +112,15 @@
                 title: 'Berhasil!',
                 text: event.text,
                 icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        });
+
+        Livewire.on('errorApproval', (event) => {
+            Swal.fire({
+                title: 'Gagal!',
+                text: event.text,
+                icon: 'error',
                 confirmButtonText: 'OK'
             });
         });

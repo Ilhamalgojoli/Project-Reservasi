@@ -43,10 +43,10 @@
                                     {{ ($akademik->currentPage() - 1) * $akademik->perPage() + $loop->iteration }}
                                 </td>
                                 <td class="px-4 py-3 font-medium whitespace-nowrap">
-                                    {{ $data->ruangan->lantai->gedung->nama_gedung ?? '-' }}
+                                    {{ $data->nama_gedung ?? '-' }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap">
-                                    {{ $data->ruangan->kode_ruangan ?? '-' }}
+                                    {{ $data->kode_ruangan ?? '-' }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     {{ $data->fakultas_name ?? '-' }}
@@ -140,10 +140,10 @@
                                     {{ ($non_akademik->currentPage() - 1) * $non_akademik->perPage() + $loop->iteration }}
                                 </td>
                                 <td class="px-4 py-3 font-medium whitespace-nowrap">
-                                    {{ $data->ruangan->lantai->gedung->nama_gedung ?? '-' }}
+                                    {{ $data->nama_gedung ?? '-' }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap">
-                                    {{ $data->ruangan->kode_ruangan ?? '-' }}
+                                    {{ $data->kode_ruangan ?? '-' }}
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     {{ $data->fakultas_name ?? '-' }}

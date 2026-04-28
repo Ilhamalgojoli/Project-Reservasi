@@ -17,23 +17,29 @@ class DashboardService
         $today = date('Y-m-d');
         $nowTime = date('H:i:s');
 
-        Db::transaction(function () use ($today, $nowTime) {
-            # Update data dari hari-hari sebelumnya
-            DataPeminjaman::where('status', 'Approve')
-                ->where('tanggal_peminjaman', '<', $today)
-                ->update(['status' => 'Finish']);
+        # Ambil ID data hari sebelumnya yang masih Approve
+        $idsPast = DataPeminjaman::select('id')
+            ->where('status', 'Approve')
+            ->where('tanggal_peminjaman', '<', $today)
+            ->pluck('id');
 
-            # Update data hari ini yang sudah selesai
-            DataPeminjaman::where('status', 'Approve')
-                ->where('tanggal_peminjaman', $today)
-                ->whereNotExists(function ($query) use ($nowTime) {
-                    $query->select(DB::raw(1))
-                        ->from('waktu_peminjaman')
-                        ->whereColumn('waktu_peminjaman.peminjaman_id', 'data_peminjaman.id')
-                        ->whereRaw("DATE_ADD(waktu_peminjaman.waktu_peminjaman, INTERVAL 30 MINUTE) >= ?", [$nowTime]);
-                })
-                ->update(['status' => 'Finish']);
-        });
+        # Ambil ID data hari ini yang sudah selesai jadwalnya
+        $idsToday = DataPeminjaman::select('id')
+            ->where('status', 'Approve')
+            ->where('tanggal_peminjaman', $today)
+            ->whereNotExists(function ($query) use ($nowTime) {
+                $query->select(DB::raw(1))
+                    ->from('waktu_peminjaman')
+                    ->whereColumn('waktu_peminjaman.peminjaman_id', 'data_peminjaman.id')
+                    ->whereRaw("DATE_ADD(waktu_peminjaman.waktu_peminjaman, INTERVAL 30 MINUTE) >= ?", [$nowTime]);
+            })
+            ->pluck('id');
+
+        $allIds = $idsPast->merge($idsToday);
+
+        if ($allIds->isNotEmpty()) {
+            DataPeminjaman::whereIn('id', $allIds)->update(['status' => 'Finish']);
+        }
     }
 
     public function ambilData(string $jenis)
@@ -90,6 +96,10 @@ class DashboardService
 
                 $item->fakultas_name = $item->fakultas?->fakultas ?? '-';
                 $item->prodi_name = $item->prodi?->prodi ?? '-';
+                $item->nama_gedung = $item->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
+                $item->kode_ruangan = $item->ruangan?->kode_ruangan ?? '-';
+
+                unset($item->fakultas, $item->prodi, $item->ruangan, $item->waktuPeminjaman);
 
                 return $item;
             });
@@ -100,7 +110,7 @@ class DashboardService
         return KegiatanTerkiniModel::select('pesan')
             ->orderBy('id', 'desc')
             ->limit(10)
-            ->get();
+            ->get()->toArray();
     }
 
     public function getRuanganWaiting()
@@ -141,10 +151,14 @@ class DashboardService
             ])
             ->get()
             ->map(function ($i) {
-                $i->totalTersedia = $i->totalRuangan - $i->totalTerpakai;
-
-                return $i;
-            });
+                return [
+                    'id' => $i->id,
+                    'nama_gedung' => $i->nama_gedung,
+                    'totalWaiting' => $i->totalWaiting,
+                    'totalTerpakai' => $i->totalTerpakai,
+                    'totalTersedia' => $i->totalRuangan - $i->totalTerpakai,
+                ];
+            })->toArray();
     }
 
     public function getDataOkkupansi()
@@ -165,15 +179,17 @@ class DashboardService
             ])
             ->get()
             ->map(function ($i) {
-                $i->terpakai = $i->totalRuangan > 0
-                    ? ($i->totalRuanganTerpakai / $i->totalRuangan) * 100
-                    : 0;
-                $i->tidakTerpakai = $i->totalRuangan > 0
-                    ? ($i->totalRuanganTidakTerpakai / $i->totalRuangan) * 100
-                    : 0;
-
-                return $i;
-            });
+                return [
+                    'id' => $i->id,
+                    'nama_gedung' => $i->nama_gedung,
+                    'terpakai' => $i->totalRuangan > 0
+                        ? round(($i->totalRuanganTerpakai / $i->totalRuangan) * 100, 2)
+                        : 0,
+                    'tidakTerpakai' => $i->totalRuangan > 0
+                        ? round(($i->totalRuanganTidakTerpakai / $i->totalRuangan) * 100, 2)
+                        : 0,
+                ];
+            })->toArray();
     }
 
     public function getDataPeminjamanPerFakultas()
@@ -181,6 +197,6 @@ class DashboardService
         return Fakultas::select('id', 'fakultas')
             ->withCount(['peminjaman as total' => function ($q) {
                 $q->where('status', 'Approve');
-            }])->get();
+            }])->get()->toArray();
     }
 }

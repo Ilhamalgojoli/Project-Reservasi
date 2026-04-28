@@ -355,7 +355,7 @@
 </div>
 
 @script
-    <script>
+    <script data-navigate-once>
         Livewire.on('open-cancel-modal', (event) => {
             Swal.fire({
                 title: 'Batalkan Peminjaman?',

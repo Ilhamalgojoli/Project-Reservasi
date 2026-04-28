@@ -138,7 +138,7 @@ class PeminjamanService
         return $result;
     }
 
-    public function create(array $data)
+    public function create(array $data, $role = null)
     {
         $this->cekTabrakanJadwal($data);
         $this->cekMuatan($data['ruanganID'], $data['muatanKapasitas']);
@@ -150,7 +150,7 @@ class PeminjamanService
         $this->cekIntervalJadwal($jam);
 
         # Masuk transaction dikarenakan ada 2 proses query,menjaga data agar tetap konsisten
-        $peminjaman = DB::transaction(function () use ($data, $jam) {
+        $peminjaman = DB::transaction(function () use ($data, $jam, $role) {
             $peminjaman = DataPeminjaman::create([
                 'fakultas_id' => $data['fakultas'],
                 'prodi_id' => $data['prodi'],
@@ -165,6 +165,7 @@ class PeminjamanService
                 'kontak_penanggung_jawab' => $data['kontakPenanggungJawab'],
                 'email' => $data['email'],
                 'keterangan_peminjaman' => $data['deskripsi'],
+                'status' => ($role === 'BAA') ? 'Approve' : 'Waiting',
             ]);
 
             foreach ($jam as $waktu) {
@@ -176,13 +177,6 @@ class PeminjamanService
 
             return $peminjaman;
         });
-
-        # Refresh Cache Riwayat (Mahasiswa & Admin)
-        // $nim = $data['userIdentifier'];
-        // for ($i = 1; $i <= 5; $i++) {
-        //     Cache::forget("history-users-{$nim}-page-{$i}");
-        //     Cache::forget("history-admin-page-{$i}");
-        // }
 
         return $peminjaman;
     }
@@ -209,10 +203,10 @@ class PeminjamanService
     {
         # Ambil semua waktu yang sudah terisi di ruangan dan tanggal tersebut
         $rangeDb = WaktuPeminjaman::whereHas('peminjaman', function ($q) use ($data) {
-                $q->where('ruangan_id', $data['ruanganID'])
-                    ->where('tanggal_peminjaman', $data['tanggal'])
-                    ->whereIn('status', ['Approve', 'Waiting']);
-            })
+            $q->where('ruangan_id', $data['ruanganID'])
+                ->where('tanggal_peminjaman', $data['tanggal'])
+                ->whereIn('status', ['Approve', 'Waiting']);
+        })
             ->orderBy('waktu_peminjaman')
             ->get();
 
@@ -284,11 +278,12 @@ class PeminjamanService
 
         $fullDates = array_column($dates, 'full');
 
-        $bookings = DataPeminjaman::with('waktuPeminjaman:peminjaman_id,waktu_peminjaman')
+        $bookings = DataPeminjaman::select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'penanggung_jawab')
+            ->with('waktuPeminjaman:peminjaman_id,waktu_peminjaman')
             ->where('ruangan_id', (int) $ruanganId)
             ->whereIn('tanggal_peminjaman', $fullDates)
             ->whereIn('status', ['Waiting', 'Approve'])
-            ->get(['id', 'tanggal_peminjaman', 'status', 'penanggung_jawab']);
+            ->get();
 
         $grouped = $bookings->map(function ($booking) {
             return [

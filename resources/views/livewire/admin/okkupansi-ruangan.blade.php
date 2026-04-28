@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<script>
+<script data-navigate-once>
     document.addEventListener('alpine:init', () => {
         Alpine.data('okkupansiChart', (data) => ({
             charts: [],
@@ -31,9 +31,9 @@
 
                 container.innerHTML = "";
 
-                let checkInterval = setInterval(() => {
+                this.checkInterval = setInterval(() => {
                     if (typeof ApexCharts !== 'undefined') {
-                        clearInterval(checkInterval);
+                        clearInterval(this.checkInterval);
                         
                         data.forEach((item) => {
                             let chartDiv = document.createElement('div');
@@ -76,6 +76,7 @@
                 }, 50);
             },
             destroy() {
+                if (this.checkInterval) clearInterval(this.checkInterval);
                 this.charts.forEach(chart => chart.destroy());
                 this.charts = [];
             }

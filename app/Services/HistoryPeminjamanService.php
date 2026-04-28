@@ -34,6 +34,8 @@ class HistoryPeminjamanService
                 $r->jam_mulai = '-';
                 $r->jam_selesai = '-';
             }
+
+            unset($r->ruangan, $r->waktuPeminjaman);
         }
 
         return $data_peminjaman;
@@ -66,6 +68,8 @@ class HistoryPeminjamanService
                 $r->jam_mulai = '-';
                 $r->jam_selesai = '-';
             }
+
+            unset($r->ruangan, $r->waktuPeminjaman, $r->prodi);
         }
 
         return $data_peminjaman;

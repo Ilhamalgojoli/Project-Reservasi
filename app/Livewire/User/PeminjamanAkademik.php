@@ -93,7 +93,7 @@ class PeminjamanAkademik extends Component
         try {
             $data = $this->validate();
 
-            if ($this->service()->create($data)) {
+            if ($this->service()->create($data, session('role_name'))) {
                 $this->service()->createKegiatan($this->penanggungJawab, $this->ruanganID);
                 $this->sendSuccessResponse();
             }

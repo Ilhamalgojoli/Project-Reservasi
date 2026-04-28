@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-navigate-once>
         document.addEventListener('alpine:init', () => {
             Alpine.data('cardDashboardChart', (data) => ({
                 chart: null,
@@ -145,15 +145,16 @@
                         }]
                     };
 
-                    let checkInterval = setInterval(() => {
+                    this.checkInterval = setInterval(() => {
                         if (typeof ApexCharts !== 'undefined' && this.$refs.chart) {
-                            clearInterval(checkInterval);
+                            clearInterval(this.checkInterval);
                             this.chart = new ApexCharts(this.$refs.chart, options);
                             this.chart.render();
                         }
                     }, 50);
                 },
                 destroy() {
+                    if (this.checkInterval) clearInterval(this.checkInterval);
                     if (this.chart) {
                         this.chart.destroy();
                         this.chart = null;

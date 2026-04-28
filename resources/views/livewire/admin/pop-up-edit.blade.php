@@ -8,7 +8,7 @@
                     <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-2xl"></iconify-icon>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-black tracking-tight leading-none">Modifier Data Gedung</h2>
+                    <h2 class="text-2xl font-black tracking-tight leading-none">Edit Data Gedung</h2>
                     <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Sinkronisasi & pembaruan aset gedung</p>
                 </div>
             </div>

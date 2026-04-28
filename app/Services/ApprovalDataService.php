@@ -53,6 +53,8 @@ class ApprovalDataService
                 $r->jam_selesai = '-';
                 $r->total_menit = 0;
             }
+
+            unset($r->ruangan, $r->waktuPeminjaman, $r->fakultas, $r->prodi);
         }
 
         return $data_peminjaman;

@@ -44,7 +44,7 @@
                                     class="text-[#e51411] text-3xl"></iconify-icon>
                             </div>
                             <h2 class="text-xl font-black text-gray-800 tracking-tight leading-tight uppercase">
-                                Registrasi<br>Unit Ruang</h2>
+                                Tambah<br>Unit Ruangan</h2>
                         </div>
 
                         <p class="text-gray-400 text-xs font-normal leading-relaxed mb-8 italic">
@@ -91,7 +91,7 @@
                             <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-2xl"></iconify-icon>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-black tracking-tight leading-none">Modifier Fasilitas</h2>
+                            <h2 class="text-2xl font-black tracking-tight leading-none">Edit Ruangan & Assets</h2>
                             <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Sinkronisasi data & inventaris aset ruang</p>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                     {{-- Section 2: Fasilitas --}}
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-1">
-                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Fasilitas</h3>
+                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Assets Ruangan</h3>
                             <div class="w-full border-b border-dashed border-gray-200 mt-2"></div>
                         </div>
 
@@ -214,7 +214,7 @@
                             <iconify-icon icon="solar:home-add-bold-duotone" class="text-2xl"></iconify-icon>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-black tracking-tight leading-none">Registrasi Inventaris</h2>
+                            <h2 class="text-2xl font-black tracking-tight leading-none">Tambah Ruangan & Assets ruangan</h2>
                             <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Daftarkan unit ruangan baru</p>
                         </div>
                     </div>
@@ -299,7 +299,7 @@
                     {{-- Section 2: Fasilitas --}}
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-1">
-                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Fasilitas</h3>
+                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Assets Ruangan</h3>
                             <div class="w-full border-b border-dashed border-gray-200 mt-2"></div>
                         </div>
 

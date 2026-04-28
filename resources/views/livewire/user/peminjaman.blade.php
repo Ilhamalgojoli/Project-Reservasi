@@ -104,18 +104,19 @@
             <div class="px-1 animate-in fade-in slide-in-from-bottom-5 duration-700">
                 @if ($jenisPeminjaman === 'akademik')
                     <livewire:user.peminjaman-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
-                        :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman . '-' . $fakultas . '-' . $prodi" />
+                        :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman" />
                 @endif
+
                 @if ($jenisPeminjaman === 'non-akademik')
                     <livewire:user.peminjaman-non-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
-                        :prodi="$prodi" :key="'non-akademik-' . $jenisPeminjaman . '-' . $fakultas . '-' . $prodi" />
+                        :prodi="$prodi" :key="'non-akademik-' . $jenisPeminjaman" />
                 @endif
             </div>
         </div>
     </div>
 </section>
 
-<script>
+<script data-navigate-once>
     document.addEventListener('livewire:init', () => {
         window.swalConfig = {
             buttonsStyling: false,

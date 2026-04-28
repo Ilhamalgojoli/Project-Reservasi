@@ -8,7 +8,7 @@
                     <iconify-icon icon="solar:home-add-bold-duotone" class="text-2xl"></iconify-icon>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-black tracking-tight leading-none">Registrasi Gedung</h2>
+                    <h2 class="text-2xl font-black tracking-tight leading-none">Tambah Gedung</h2>
                     <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Tambahkan aset infrastruktur baru</p>
                 </div>
             </div>
