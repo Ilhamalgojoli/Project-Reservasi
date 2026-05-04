@@ -11,23 +11,12 @@ class GedungController extends Controller
      */
     public function index()
     {
-        $datas = Gedung::withCount('ruangan')->withCount('lantai')->get();
-
-        return view(
-            'dashboard.kelola-gedung', [
-                'datas' => $datas,
-            ]);
+        return view('dashboard.kelola-gedung');
     }
 
     // Untuk ditampilkan ke client side
     public function show()
     {
-        $datas = Gedung::select('id', 'nama_gedung', 'keterangan', 'gambar')
-            ->where('status', '=', 'Aktif')->get();
-
-        return view(
-            'dashboard.pemilihan-gedung', [
-                'datas' => $datas,
-            ]);
+        return view('dashboard.pemilihan-gedung');
     }
 }

@@ -9,5 +9,5 @@
 @endpush
 
 @section('content')
-    @livewire('admin.tambah-gedung') 
+    @livewire('admin.tambah-gedung', [], key('kelola-gedung-' . url()->current())) 
 @endsection

@@ -81,8 +81,6 @@ class PopUpEdit extends Component
 
     public function closeButton()
     {
-        // $this->latitude = null;
-        // $this->longitude = null;
         $this->dispatch('closeButtonEdit');
     }
 

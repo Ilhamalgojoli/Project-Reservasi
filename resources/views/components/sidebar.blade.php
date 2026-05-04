@@ -63,6 +63,12 @@
                                 Persetujuan Peminjaman
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('pembatalan-reservasi') }}">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Pembatalan Peminjaman
+                            </a>
+                        </li>
                     @endif
                     <li>
                         <a href="{{ route('history-peminjaman') }}">

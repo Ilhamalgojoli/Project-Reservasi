@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin;
 
 use App\Services\GedungService;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class TambahGedung extends Component
@@ -10,6 +12,9 @@ class TambahGedung extends Component
     public $popUpTambah = false;
     public $popUpEdit = false;
     public $gedungId;
+
+    #[Url]
+    public $search = '';
 
     protected $listeners = [
         "closeButtonTambah" => "closePopUpTambah",
@@ -23,6 +28,13 @@ class TambahGedung extends Component
         if (session('role_name') !== 'BAA') {
             abort(403);
         }
+    }
+
+    #[Computed]
+    public function datas()
+    {
+        $service = app(GedungService::class);
+        return $service->getDataGedung($this->search);
     }
 
     public function openPopUpTambah()
@@ -48,12 +60,10 @@ class TambahGedung extends Component
         $this->popUpEdit = false;
     }
 
-    public function render(GedungService $service)
+    public function render()
     {
-        $data = $service->getDataGedung('kelolaGedung');
-
         return view('livewire.admin.tambah-gedung', [
-            'datas' => $data
+            'datas' => $this->datas
         ]);
     }
 }

@@ -36,7 +36,7 @@
             <div class="transition-all duration-500">
                 @livewire('user.map-peminjaman', ['id' => request()->route('id')])
             </div>
-            
+
             {{-- Check Schedule Widget --}}
             <div class="transition-all duration-500">
                 @livewire('user.peminjaman-per-ruangan')

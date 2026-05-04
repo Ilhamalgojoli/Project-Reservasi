@@ -165,8 +165,9 @@
                     </button>
 
                     <div class="flex items-center gap-3">
-                        <button type="button"
-                            @click="
+                        @if ($peminjamanDetail->status === 'Waiting')
+                            <button type="button"
+                                @click="
                                 Swal.fire({
                                     title: 'Tolak Peminjaman?',
                                     text: 'Berikan alasan singkat penolakan reservasi ini:',
@@ -192,14 +193,14 @@
                                     }
                                 });
                             "
-                            class="px-8 py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 transition-all duration-300 shadow-sm flex items-center gap-2 group">
-                            <iconify-icon icon="solar:close-circle-bold-duotone"
-                                class="text-lg group-hover:rotate-90 transition-transform duration-300"></iconify-icon>
-                            Tolak
-                        </button>
+                                class="px-8 py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 transition-all duration-300 shadow-sm flex items-center gap-2 group">
+                                <iconify-icon icon="solar:close-circle-bold-duotone"
+                                    class="text-lg group-hover:rotate-90 transition-transform duration-300"></iconify-icon>
+                                Tolak
+                            </button>
 
-                        <button type="button"
-                            @click="
+                            <button type="button"
+                                @click="
                                 Swal.fire({
                                     title: 'Setujui Peminjaman?',
                                     text: 'Reservasi ini akan segera dijadwalkan secara resmi.',
@@ -219,11 +220,17 @@
                                     }
                                 });
                             "
-                            class="px-8 py-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm flex items-center gap-2 group">
-                            <iconify-icon icon="solar:check-circle-bold-duotone"
-                                class="text-lg group-hover:scale-110 transition-transform"></iconify-icon>
-                            Setujui
-                        </button>
+                                class="px-8 py-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm flex items-center gap-2 group">
+                                <iconify-icon icon="solar:check-circle-bold-duotone"
+                                    class="text-lg group-hover:scale-110 transition-transform"></iconify-icon>
+                                Setujui
+                            </button>
+                        @else
+                            <div class="px-6 py-3 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-emerald-100 flex items-center gap-2">
+                                <iconify-icon icon="solar:check-circle-bold" class="text-lg"></iconify-icon>
+                                Approve
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

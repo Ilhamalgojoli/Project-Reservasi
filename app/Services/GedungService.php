@@ -14,9 +14,14 @@ class GedungService
         return Gedung::withCount('lantai')->find($gedungID);
     }
 
-    public function getDataGedung($page = null)
+    public function getDataGedung($search = null)
     {
-        return Gedung::withCount('ruangan')->withCount('lantai')->get();
+        return Gedung::withCount('ruangan')->withCount('lantai')
+            ->when($search, function($query) use ($search) {
+                $query->where('nama_gedung', 'like', '%' . $search . '%')
+                      ->orWhere('kode_gedung', 'like', '%' . $search . '%');
+            })
+            ->get();
     }
 
     public function getDataLantaiPerGedung($id)

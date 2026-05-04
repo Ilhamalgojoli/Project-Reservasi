@@ -17,6 +17,7 @@ class HistoryPeminjamanService
             'ruangan.lantai.gedung:id,nama_gedung',
         ])
             ->where('user_identifier', $nim)
+            ->where('status', 'Finish')
             ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);
@@ -41,16 +42,25 @@ class HistoryPeminjamanService
         return $data_peminjaman;
     }
 
-    public function getDataAdmin($page = 1)
+    public function getDataAdmin($page = 1, $fakultas_id = '', $jenis_peminjaman = '')
     {
-        $data_peminjaman = DataPeminjaman::with([
+        $query = DataPeminjaman::with([
             'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
             'prodi:id,prodi',
-        ])
-            ->select('id', 'penanggung_jawab', 'prodi_id', 'ruangan_id', 'status', 'tanggal_peminjaman')
+        ])->where('status', 'Finish');
+
+        if (!empty($fakultas_id)) {
+            $query->where('fakultas_id', $fakultas_id);
+        }
+
+        if (!empty($jenis_peminjaman)) {
+            $query->where('jenis_peminjaman', $jenis_peminjaman);
+        }
+
+        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi_id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'fakultas_id', 'jenis_peminjaman')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);
 

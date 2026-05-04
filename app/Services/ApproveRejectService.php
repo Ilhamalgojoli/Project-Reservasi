@@ -44,7 +44,7 @@ class ApproveRejectService
         return true;
     }
 
-    public function cancel($id, $userIdentifier = null, $reason = '-')
+    public function cancel($id, $userIdentifier = null, $reason = '-', $isAdmin = false)
     {
         $data = DataPeminjaman::with(['waktuPeminjaman', 'ruangan.lantai.gedung'])->find($id);
 
@@ -52,8 +52,8 @@ class ApproveRejectService
             throw new \Exception("Data peminjaman tidak ditemukan.");
         }
 
-        # Jika pembatalan dari sisi User, cek hak akses
-        if ($userIdentifier && $data->user_identifier !== $userIdentifier) {
+        # Jika bukan admin dan pembatalan dari sisi User, cek hak akses
+        if (!$isAdmin && $userIdentifier && $data->user_identifier !== $userIdentifier) {
             throw new \Exception("Anda tidak berhak membatalkan peminjaman ini.");
         }
 
@@ -68,13 +68,14 @@ class ApproveRejectService
             'cancel_by' => $userIdentifier ?? 'Admin/BAA'
         ]);
 
-        if ($userIdentifier === null) {
+        # Kirim email jika dibatalkan oleh Admin (userIdentifier null atau isAdmin true)
+        if ($userIdentifier === null || $isAdmin) {
             $this->prepareEmailData($data);
 
             try {
-                Mail::to($data->email)->send(new NotifikasiMail($data, 'cancel'));
+                \Illuminate\Support\Facades\Mail::to($data->email)->send(new \App\Mail\NotifikasiMail($data, 'cancel'));
             } catch (\Exception $e) {
-                throw new \Exception("Gagal membatalkan peminjaman karena email tidak terkirim.");
+                // Email gagal tidak apa-apa, yang penting status terupdate
             }
         }
 

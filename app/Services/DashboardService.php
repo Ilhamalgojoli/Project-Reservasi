@@ -12,18 +12,18 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
-    public function updateStatusFinish()
+    public function updateStatusFinish(): void
     {
         $today = date('Y-m-d');
         $nowTime = date('H:i:s');
 
-        # Ambil ID data hari sebelumnya yang masih Approve
+        # ID of past reservations still marked as 'Approve'
         $idsPast = DataPeminjaman::select('id')
             ->where('status', 'Approve')
             ->where('tanggal_peminjaman', '<', $today)
             ->pluck('id');
 
-        # Ambil ID data hari ini yang sudah selesai jadwalnya
+        # ID of today's reservations that have ended (plus 30 min buffer)
         $idsToday = DataPeminjaman::select('id')
             ->where('status', 'Approve')
             ->where('tanggal_peminjaman', $today)
@@ -45,12 +45,10 @@ class DashboardService
     public function ambilData(string $jenis)
     {
         $this->updateStatusFinish();
-        $pageName = $jenis === 'akademik'
-            ? 'pageAkademik'
-            : 'pageNonAkademik';
 
+        $pageName = $jenis === 'akademik' ? 'pageAkademik' : 'pageNonAkademik';
         $today = Carbon::today()->toDateString();
-        $threeDaysLater = Carbon::today()->addDays(5)->toDateString();
+        $limitDate = Carbon::today()->addDays(5)->toDateString();
 
         return DataPeminjaman::with([
             'fakultas',
@@ -60,9 +58,10 @@ class DashboardService
             'ruangan.lantai.gedung:id,nama_gedung',
             'waktuPeminjaman:peminjaman_id,waktu_peminjaman'
         ])
+            ->select('id', 'penanggung_jawab', 'fakultas_id', 'prodi_id', 'ruangan_id', 'tanggal_peminjaman', 'status', 'jenis_peminjaman', 'kode_matkul', 'muatan', 'kontak_penanggung_jawab')
             ->where('jenis_peminjaman', $jenis)
-            ->where('status', 'Approve')
-            ->whereBetween('tanggal_peminjaman', [$today, $threeDaysLater])
+            ->whereIn('status', ['Approve', 'Finish'])
+            ->whereBetween('tanggal_peminjaman', [$today, $limitDate])
             ->orderBy('tanggal_peminjaman', 'asc')
             ->paginate(5, ['*'], $pageName)
             ->through(function ($item) {
@@ -76,10 +75,6 @@ class DashboardService
                     $item->waktu_selesai = $end->format('H:i');
 
                     $now = Carbon::now();
-                    $item->sisa_detik = $now->lt($end)
-                        ? $now->diffInSeconds($end)
-                        : 0;
-
                     if ($now->lt($start)) {
                         $item->status_display = 'Di Jadwalkan';
                     } elseif ($now->between($start, $end)) {
@@ -90,7 +85,6 @@ class DashboardService
                 } else {
                     $item->waktu_mulai = '-';
                     $item->waktu_selesai = '-';
-                    $item->sisa_detik = 0;
                     $item->status_display = 'Tidak Ada Jadwal';
                 }
 
@@ -105,7 +99,7 @@ class DashboardService
             });
     }
 
-    public function getDataKegiatanTerkini()
+    public function getDataKegiatanTerkini(): array
     {
         return KegiatanTerkiniModel::select('pesan')
             ->orderBy('id', 'desc')
@@ -113,38 +107,97 @@ class DashboardService
             ->get()->toArray();
     }
 
-    public function getRuanganWaiting()
+    public function getPeriodeOptions(): array
     {
-        return DataPeminjaman::where('status', 'Waiting')->count();
+        $currentMonth = (int) date('n');
+        $currentYear = (int) date('Y');
+
+        if ($currentMonth >= 2 && $currentMonth <= 7) {
+            $y = $currentYear;
+            $sem = 'genap';
+        } else {
+            $y = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+            $sem = 'ganjil';
+        }
+
+        $temp = [];
+        for ($i = 0; $i < 6; $i++) {
+            if ($sem === 'genap') {
+                $temp["$y-genap"] = "Genap " . ($y - 1) . "/" . $y;
+                $sem = 'ganjil';
+                $y--;
+            } else {
+                $temp["$y-ganjil"] = "Ganjil " . $y . "/" . ($y + 1);
+                $sem = 'genap';
+            }
+        }
+
+        $options = ['' => 'Semua Periode'];
+        foreach (array_reverse($temp, true) as $k => $v) {
+            $options[$k] = $v;
+        }
+
+        return $options;
     }
 
-    public function getRuanganTerpakai()
+    private function applyPeriodeFilter($query, ?string $periode)
     {
-        return Ruangan::whereHas('dataPeminjaman', function ($q) {
-            $q->where('status', 'Approve');
+        if (!$periode) return $query;
+        
+        $parts = explode('-', $periode);
+        if (count($parts) !== 2) return $query;
+        
+        $year = $parts[0];
+        $semester = $parts[1];
+
+        if ($semester === 'genap') {
+            $start = $year . '-02-01';
+            $end = $year . '-06-31';
+        } else {
+            $start = $year . '-09-01';
+            $end = ($year + 1) . '-01-31';
+        }
+
+        if ($query->getModel() instanceof DataPeminjaman) {
+             return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
+        }
+        
+        return $query->whereBetween('tanggal_peminjaman', [$start, $end]);
+    }
+
+    public function getRuanganWaiting(?string $periode = null): int
+    {
+        $query = DataPeminjaman::where('status', 'Waiting');
+        return $this->applyPeriodeFilter($query, $periode)->count();
+    }
+
+    public function getRuanganTerpakai(?string $periode = null): int
+    {
+        return Ruangan::whereHas('dataPeminjaman', function ($q) use ($periode) {
+            $q->whereIn('status', ['Approve', 'Finish']);
+            $this->applyPeriodeFilter($q, $periode);
         })->count();
     }
 
-    public function getRuanganTersedia($approve)
+    public function getRuanganTersedia(int $occupiedCount): int
     {
-        $totalRuangan = Ruangan::count();
-
-        return $totalRuangan - $approve;
+        return Ruangan::count() - $occupiedCount;
     }
 
-    public function chartGedung()
+    public function chartGedung(?string $periode = null): array
     {
         return Gedung::select('id', 'nama_gedung')
             ->withCount([
-                'ruangan as totalWaiting' => function ($q) {
-                    $q->whereHas('dataPeminjaman', function ($q) {
+                'ruangan as totalWaiting' => function ($q) use ($periode) {
+                    $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
                         $q->where('status', 'Waiting');
+                        $this->applyPeriodeFilter($q, $periode);
                     });
                 },
-
-                'ruangan as totalTerpakai' => function ($q) {
-                    $q->whereHas('dataPeminjaman', function ($q) {
-                        $q->where('status', 'Approve');
+                'ruangan as totalTerpakai' => function ($q) use ($periode) {
+                    $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
+                        $q->whereIn('status', ['Approve', 'Finish']);
+                        $this->applyPeriodeFilter($q, $periode);
                     });
                 },
                 'ruangan as totalRuangan',
@@ -161,42 +214,36 @@ class DashboardService
             })->toArray();
     }
 
-    public function getDataOkkupansi()
+    public function getDataOkkupansi(?string $periode = null): array
     {
         return Gedung::select('id', 'nama_gedung')
             ->withCount([
-                'ruangan as totalRuanganTerpakai' => function ($q) {
-                    $q->whereHas('dataPeminjaman', function ($q) {
-                        $q->where('status', 'Approve');
-                    });
-                },
-                'ruangan as totalRuanganTidakTerpakai' => function ($q) {
-                    $q->whereDoesntHave('dataPeminjaman', function ($q) {
-                        $q->where('status', 'Approve');
+                'ruangan as totalRuanganTerpakai' => function ($q) use ($periode) {
+                    $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
+                        $q->whereIn('status', ['Approve', 'Finish']);
+                        $this->applyPeriodeFilter($q, $periode);
                     });
                 },
                 'ruangan as totalRuangan',
             ])
             ->get()
             ->map(function ($i) {
+                $terpakai = $i->totalRuangan > 0 ? round(($i->totalRuanganTerpakai / $i->totalRuangan) * 100, 2) : 0;
                 return [
                     'id' => $i->id,
                     'nama_gedung' => $i->nama_gedung,
-                    'terpakai' => $i->totalRuangan > 0
-                        ? round(($i->totalRuanganTerpakai / $i->totalRuangan) * 100, 2)
-                        : 0,
-                    'tidakTerpakai' => $i->totalRuangan > 0
-                        ? round(($i->totalRuanganTidakTerpakai / $i->totalRuangan) * 100, 2)
-                        : 0,
+                    'terpakai' => $terpakai,
+                    'tidakTerpakai' => 100 - $terpakai,
                 ];
             })->toArray();
     }
 
-    public function getDataPeminjamanPerFakultas()
+    public function getDataPeminjamanPerFakultas(?string $periode = null): array
     {
         return Fakultas::select('id', 'fakultas')
-            ->withCount(['peminjaman as total' => function ($q) {
-                $q->where('status', 'Approve');
+            ->withCount(['peminjaman as total' => function ($q) use ($periode) {
+                $q->whereIn('status', ['Approve', 'Finish']);
+                $this->applyPeriodeFilter($q, $periode);
             }])->get()->toArray();
     }
 }

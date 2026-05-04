@@ -1,9 +1,39 @@
-<div class="overflow-x-auto rounded-xl">
-    <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1 w-full text-black">
+<div>
+    <div class="bg-white p-4 rounded-xl shadow-sm mb-5 border border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <div class="flex flex-col gap-1.5 w-full sm:w-64">
+                <label for="fakultasFilter" class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                    <iconify-icon icon="solar:buildings-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
+                    Fakultas
+                </label>
+                <select wire:model.live="fakultas_id" id="fakultasFilter" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
+                    <option value="">Semua Fakultas</option>
+                    @foreach ($this->fakultasList as $fakultas)
+                        <option value="{{ $fakultas->id }}">{{ $fakultas->fakultas }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <div class="flex flex-col gap-1.5 w-full sm:w-56">
+                <label for="jenisFilter" class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                    <iconify-icon icon="solar:document-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
+                    Jenis Peminjaman
+                </label>
+                <select wire:model.live="jenis_peminjaman" id="jenisFilter" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
+                    <option value="">Semua Jenis</option>
+                    <option value="akademik">Akademik</option>
+                    <option value="non_akademik">Non Akademik</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-xl">
+        <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1 w-full text-black">
         <thead class="bg-gray-50 uppercase text-[12px] font-bold text-gray-700">
             <tr>
                 <th class="px-4 py-4 text-center border-black">No</th>
-                <th class="px-4 py-4 text-center border-black text-left">Ruangan & Lokasi</th>
+                <th class="px-4 py-4 text-center border-black">Ruangan & Lokasi</th>
                 <th class="px-4 py-4 text-center border-black">Penanggung Jawab</th>
                 <th class="px-4 py-4 text-center border-black">Jadwal Peminjaman</th>
                 <th class="px-4 py-4 text-center border-black">Status</th>
@@ -16,8 +46,8 @@
                     <td class="px-4 py-4 text-center border-black font-semibold text-gray-500">
                         {{ ($peminjaman->currentPage() - 1) * $peminjaman->perPage() + $loop->iteration }}
                     </td>
-                    <td class="px-4 py-4 text-left border-black">
-                        <div class="flex flex-col gap-0.5">
+                    <td class="px-4 py-4 border-black">
+                        <div class="flex flex-col gap-0.5 w-max mx-auto">
                             <div class="flex items-center gap-2">
                                 <iconify-icon icon="mdi:office-building-marker" class="text-red-500 text-lg"></iconify-icon>
                                 <span class="font-extrabold text-gray-900">{{ $data->kode_ruangan }}</span>

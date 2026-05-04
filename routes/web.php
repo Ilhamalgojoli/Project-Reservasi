@@ -40,6 +40,7 @@ Route::middleware(['middleware' => 'ensuretoken'])->group(function () {
 
         Route::controller(ApproveController::class)->group(function () {
             Route::get('/approve', [ApproveController::class, 'index'])->name('approve-reservasi');
+            Route::get('/pembatalan', [ApproveController::class, 'pembatalan'])->name('pembatalan-reservasi');
             Route::post('/approve/{id}', [ApproveController::class, 'approve']);
             Route::post('/reject/{id}', [ApproveController::class, 'reject'])->name('reject');
         });
