@@ -18,7 +18,7 @@ class HistoryPeminjamanService
         ])
             ->where('user_identifier', $nim)
             ->where('status', 'Finish')
-            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman')
+            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);
 
@@ -60,7 +60,7 @@ class HistoryPeminjamanService
             $query->where('jenis_peminjaman', $jenis_peminjaman);
         }
 
-        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi_id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'fakultas_id', 'jenis_peminjaman')
+        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi_id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'fakultas_id', 'jenis_peminjaman', 'hari')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);
 

@@ -73,7 +73,8 @@
                     </div>
                 </div>
 
-                <div class="border-t border-gray-100 pt-4" x-data="cardDashboardChart(@js($gedung))" wire:key="chart-gedung-{{ md5(json_encode($gedung)) }}">
+                <div class="border-t border-gray-100 pt-4" x-data="cardDashboardChart(@js($gedung))"
+                    wire:key="chart-gedung-{{ md5(json_encode($gedung)) }}">
                     <h2 class="text-lg font-bold text-gray-700 text-center mb-2">Penggunaan Ruang Gedung Telkom
                         University</h2>
                     <div class="overflow-x-auto text-black">
@@ -98,16 +99,19 @@
                 {{-- Filter Semester Section --}}
                 <div class="bg-white p-5 rounded-[8px] shadow-md flex flex-col gap-3">
                     <label for="periodeFilter" class="text-sm font-semibold text-gray-600">
-                        <iconify-icon icon="solar:calendar-bold-duotone" class="inline text-lg align-text-bottom mr-1"></iconify-icon>
+                        <iconify-icon icon="solar:calendar-bold-duotone"
+                            class="inline text-lg align-text-bottom mr-1"></iconify-icon>
                         Filter Berdasarkan Semester
                     </label>
                     <div class="flex items-center gap-2 w-full">
-                        <select wire:model="periode_semester" id="periodeFilter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-pointer shadow-sm">
+                        <select wire:model="periode_semester" id="periodeFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-pointer shadow-sm">
                             @foreach ($periodeOptions as $value => $label)
                                 <option value="{{ $value }}">{{ $label }}</option>
                             @endforeach
                         </select>
-                        <button wire:click="applyFilter" class="bg-[#e51411] hover:bg-[#c7110f] text-white font-medium text-sm px-4 py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
+                        <button wire:click="applyFilter"
+                            class="bg-[#e51411] hover:bg-[#c7110f] text-white font-medium text-sm px-4 py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
                             <iconify-icon icon="solar:filter-bold-duotone" class="text-lg"></iconify-icon>
                             Filter
                         </button>
@@ -159,7 +163,8 @@
 
         {{-- Peminjaman Per Fakultas Section --}}
         <section class="grid grid-cols-12">
-            <div class="col-span-12" x-data="peminjamanChart(@js($peminjamanPerFakultas))" wire:key="chart-fakultas-{{ md5(json_encode($peminjamanPerFakultas)) }}">
+            <div class="col-span-12" x-data="peminjamanChart(@js($peminjamanPerFakultas))"
+                wire:key="chart-fakultas-{{ md5(json_encode($peminjamanPerFakultas)) }}">
                 <div
                     class="bg-white p-5 rounded-[12px] flex flex-col shadow-lg gap-6 w-full border border-gray-50 transition-all duration-300 hover:shadow-xl">
                     <div class="flex items-center justify-between">
@@ -191,7 +196,8 @@
 
         {{-- Okkupansi Ruangan Section --}}
         <section class="grid grid-cols-12">
-            <div class="col-span-12" x-data="okkupansiChart(@js($okkupansi))" wire:key="chart-okkupansi-{{ md5(json_encode($okkupansi)) }}">
+            <div class="col-span-12" x-data="okkupansiChart(@js($okkupansi))"
+                wire:key="chart-okkupansi-{{ md5(json_encode($okkupansi)) }}">
                 <div class="bg-white p-5 rounded-[8px] flex flex-col shadow-md gap-5 w-full">
                     <div class="bg-[#e51411] p-2 rounded-lg w-fit">
                         <p class="text-white font-bold">Okkupansi</p>
@@ -232,7 +238,7 @@
                     navListener: null,
                     init() {
                         if (!data || data.length === 0) return;
-                        
+
                         this.navListener = () => this.destroy();
                         document.addEventListener('livewire:navigating', this.navListener);
 
@@ -307,7 +313,8 @@
                         }, 50);
                     },
                     destroy() {
-                        if (this.navListener) document.removeEventListener('livewire:navigating', this.navListener);
+                        if (this.navListener) document.removeEventListener('livewire:navigating', this
+                            .navListener);
                         if (this.checkInterval) clearInterval(this.checkInterval);
                         if (this.chart) {
                             this.chart.destroy();
@@ -322,7 +329,7 @@
                     navListener: null,
                     init() {
                         if (!data) return;
-                        
+
                         this.navListener = () => this.destroy();
                         document.addEventListener('livewire:navigating', this.navListener);
                         var options = {
@@ -356,7 +363,8 @@
                         }, 50);
                     },
                     destroy() {
-                        if (this.navListener) document.removeEventListener('livewire:navigating', this.navListener);
+                        if (this.navListener) document.removeEventListener('livewire:navigating', this
+                            .navListener);
                         if (this.checkInterval) clearInterval(this.checkInterval);
                         if (this.chart) {
                             this.chart.destroy();
@@ -439,7 +447,7 @@
                                 labels: {
                                     style: {
                                         fontWeight: 500,
-                                        colors: '#000' 
+                                        colors: '#000'
                                     }
                                 }
                             },
@@ -447,12 +455,12 @@
                                 labels: {
                                     style: {
                                         fontWeight: 600,
-                                        colors: '#000' 
+                                        colors: '#000'
                                     }
                                 }
                             },
                             tooltip: {
-                                theme: 'light', 
+                                theme: 'light',
                                 fillSeriesColor: false,
                                 y: {
                                     formatter: function(val) {
@@ -475,7 +483,8 @@
                         }, 50);
                     },
                     destroy() {
-                        if (this.navListener) document.removeEventListener('livewire:navigating', this.navListener);
+                        if (this.navListener) document.removeEventListener('livewire:navigating', this
+                            .navListener);
                         if (this.checkInterval) clearInterval(this.checkInterval);
                         if (this.chart) {
                             this.chart.destroy();
@@ -489,7 +498,7 @@
                     navListener: null,
                     init() {
                         if (!data) return;
-                        
+
                         this.navListener = () => this.destroy();
                         document.addEventListener('livewire:navigating', this.navListener);
                         let container = document.getElementById('chart-okkupansi');
@@ -538,7 +547,8 @@
                         }, 50);
                     },
                     destroy() {
-                        if (this.navListener) document.removeEventListener('livewire:navigating', this.navListener);
+                        if (this.navListener) document.removeEventListener('livewire:navigating', this
+                            .navListener);
                         if (this.checkInterval) clearInterval(this.checkInterval);
                         if (this.charts && this.charts.length > 0) {
                             this.charts.forEach(chart => chart.destroy());

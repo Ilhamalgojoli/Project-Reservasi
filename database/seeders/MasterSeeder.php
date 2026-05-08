@@ -18,7 +18,8 @@ class MasterSeeder extends Seeder
             GedungLantaiRuanganSeeder::class,
             Users::class,
             RoleSeeder::class,
-            Peminjaman::class
+            Peminjaman::class,
+            MatkulSeeder::class,
         ]);
     }
 }

@@ -23,6 +23,7 @@ class DataPeminjaman extends Model
         'ruangan_id',
         'user_identifier',
         'tanggal_peminjaman',
+        'hari',
         'jadwal_peminjaman',
         'muatan',
         'penanggung_jawab',
@@ -52,5 +53,10 @@ class DataPeminjaman extends Model
     public function prodi()
     {
         return $this->belongsTo(Prodi::class);
+    }
+
+    public function mataKuliah()
+    {
+        return $this->belongsTo(MataKuliah::class, 'kode_matkul', 'kode_matkul');
     }
 }

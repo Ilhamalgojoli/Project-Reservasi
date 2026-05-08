@@ -23,6 +23,10 @@ class DashboardAdmin extends Component
 
         # Update status sekali di awal
         $dashboard->updateStatusFinish();
+
+        # Set default periode ke yang sekarang
+        $data = $dashboard->getPeriodeOptions();
+        $this->periode_semester = $data['current'] ?? '';
     }
 
     public function applyFilter()
@@ -46,7 +50,7 @@ class DashboardAdmin extends Component
             'peminjamanPerFakultas' => $dashboard->getDataPeminjamanPerFakultas($this->periode_semester),
             'okkupansi' => $dashboard->getDataOkkupansi($this->periode_semester),
             'kegiatanTerkini' => $dashboard->getDataKegiatanTerkini(),
-            'periodeOptions' => $dashboard->getPeriodeOptions(),
+            'periodeOptions' => $dashboard->getPeriodeOptions()['options'],
         ];
     }
 

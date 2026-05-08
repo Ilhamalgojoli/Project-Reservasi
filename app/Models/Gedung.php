@@ -35,5 +35,5 @@ class Gedung extends Model
             'id',
             'id'
         );
-    }
+   }
 }

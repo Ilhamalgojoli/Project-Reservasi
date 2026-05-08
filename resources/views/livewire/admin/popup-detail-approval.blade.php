@@ -133,7 +133,7 @@
                                             class="text-xl text-amber-500"></iconify-icon>
                                         <div class="flex flex-col">
                                             <span
-                                                class="text-sm font-bold text-gray-800">{{ \Carbon\Carbon::parse($peminjamanDetail->tanggal_peminjaman)->translatedFormat('d F Y') }}</span>
+                                                class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->hari }}, {{ \Carbon\Carbon::parse($peminjamanDetail->tanggal_peminjaman)->translatedFormat('d F Y') }}</span>
                                             <span
                                                 class="text-[10px] font-bold text-gray-400 uppercase">{{ $peminjamanDetail->jam_mulai }}
                                                 – {{ $peminjamanDetail->jam_selesai }} <span

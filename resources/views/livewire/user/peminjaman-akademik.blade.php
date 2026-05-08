@@ -17,10 +17,10 @@
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <select wire:model="kodeMatkul"
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all appearance-none outline-none">
-                            <option value="" selected>Pilih Kode Mata Kuliah</option>
-                            <option value="FTE123">FTE123 - Teknik Elektro</option>
-                            <option value="FIA456">FIA456 - Akuntansi</option>
-                            <option value="FBA789">FBA789 - Bahasa Inggris</option>
+                            <option value="" selected>Pilih Mata Kuliah</option>
+                            @foreach ($mataKuliahList as $mk)
+                                <option value="{{ $mk['kode_matkul'] }}">{{ $mk['kode_matkul'] }} - {{ $mk['nama_matkul'] }}</option>
+                            @endforeach
                         </select>
                         <iconify-icon icon="mdi:chevron-down"
                             class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>

@@ -8,6 +8,7 @@ use App\Models\Prodi;
 use App\Models\Gedung;
 use App\Models\KegiatanTerkiniModel;
 use App\Models\Lantai;
+use App\Models\MataKuliah;
 use App\Models\Ruangan;
 use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
@@ -50,6 +51,22 @@ class PeminjamanService
             ->where('fakultas_id', $fakultasId)
             ->get()
             ->toArray();
+    }
+
+    public function getMataKuliah($prodiId)
+    {
+        $data = MataKuliah::select('kode_matkul', 'nama_matkul')
+            ->where(function($query) use ($prodiId) {
+                if ($prodiId) {
+                    $query->where('prodi_id', $prodiId)
+                          ->orWhereNull('prodi_id');
+                } else {
+                    $query->whereNull('prodi_id');
+                }
+            })
+            ->get();
+            
+        return $data->toArray();
     }
 
     public function getMaxKapasitas($ruanganId)
@@ -160,6 +177,7 @@ class PeminjamanService
                 'lantai' => (int) $data['lantaiID'],
                 'ruangan_id' => (int) $data['ruanganID'],
                 'tanggal_peminjaman' => $data['tanggal'],
+                'hari' => Carbon::parse($data['tanggal'])->locale('id')->translatedFormat('l'),
                 'muatan' => $data['muatanKapasitas'],
                 'penanggung_jawab' => $data['penanggungJawab'],
                 'kontak_penanggung_jawab' => $data['kontakPenanggungJawab'],

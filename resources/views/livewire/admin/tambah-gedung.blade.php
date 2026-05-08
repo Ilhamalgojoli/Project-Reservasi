@@ -13,7 +13,7 @@
                     class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                 <input type="text" wire:model.live.debounce.300ms="search"
                     placeholder="Cari Nama Gedung..."
-                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none shadow-sm">
+                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none shadow-sm">
             </div>
 
             <button wire:click="openPopUpTambah()"
@@ -28,7 +28,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         @foreach ($datas as $data)
             <div
-                class="group bg-white rounded-[32px] overflow-hidden shadow-xl shadow-gray-100 border border-gray-100 flex flex-col hover:shadow-2xl hover:border-gray-200 hover:-translate-y-2 transition-all duration-500">
+                class="group bg-white rounded-[40px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500">
                 {{-- Image Container --}}
                 <div class="relative h-64 overflow-hidden">
                     <img src="{{ $data['gambar'] ? asset('storage/' . $data['gambar']) : asset('assets/basila_images/DefaultBuilding.png') }}"

@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class PeminjamanAkademik extends Component
@@ -69,6 +70,11 @@ class PeminjamanAkademik extends Component
         $this->fakultas = $fakultas;
         $this->prodi = $prodi;
         $this->userIdentifier = (string) session('user_identifier');
+    }
+
+    public function updatedProdi($value)
+    {
+        // No longer needed but kept for potential other logic
     }
 
     public function updatedLantaiID($value)
@@ -145,6 +151,7 @@ class PeminjamanAkademik extends Component
 
     public function render()
     {
-        return view('livewire.user.peminjaman-akademik');
+        $mataKuliahList = $this->service()->getMataKuliah($this->prodi);
+        return view('livewire.user.peminjaman-akademik', compact('mataKuliahList'));
     }
 }

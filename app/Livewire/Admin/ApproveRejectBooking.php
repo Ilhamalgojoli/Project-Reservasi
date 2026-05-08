@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Fakultas;
 use App\Services\ApprovalDataService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,9 +12,21 @@ class ApproveRejectBooking extends Component
     use WithPagination;
 
     public $search = '';
+    public $filterFakultas = '';
+    public $filterJenis = '';
+    public $filterHari = '';
 
-    protected $queryString = ['search'];
-    private $data = [];
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'filterFakultas' => ['except' => ''],
+        'filterJenis' => ['except' => ''],
+        'filterHari' => ['except' => ''],
+    ];
+
+    public function updating()
+    {
+        $this->resetPage();
+    }
 
     public function mount()
     {
@@ -22,13 +35,23 @@ class ApproveRejectBooking extends Component
         }
     }
 
-
     public function render(ApprovalDataService $service)
     {
-        $this->data = $service->getData($this->search);
+        $data = $service->getData(
+            $this->search,
+            $this->filterFakultas,
+            $this->filterJenis,
+            $this->filterHari
+        );
 
         return view('livewire.admin.approve-reject-booking', [
-            'peminjaman' => $this->data,
+            'peminjaman' => $data,
+            'fakultas' => Fakultas::all(),
+            'jenis_peminjaman' => [
+                'akademik' => 'Akademik',
+                'non-akademik' => 'Non Akademik'
+            ],
+            'hari_list' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
         ]);
     }
 }

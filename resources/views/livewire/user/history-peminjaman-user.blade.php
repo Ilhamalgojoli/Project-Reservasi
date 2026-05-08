@@ -31,7 +31,7 @@
                         <div class="flex flex-col items-center gap-1">
                             <div class="flex items-center gap-1.5 font-bold text-gray-800">
                                 <iconify-icon icon="solar:calendar-bold" class="text-[#e51411] text-md"></iconify-icon>
-                                <span>{{ \Carbon\Carbon::parse($data->tanggal_peminjaman)->translatedFormat('d M Y') }}</span>
+                                <span>{{ $data->hari }}, {{ \Carbon\Carbon::parse($data->tanggal_peminjaman)->translatedFormat('d M Y') }}</span>
                             </div>
                             <span class="text-[11px] text-gray-400 font-semibold uppercase tracking-tight">{{ $data->jam_mulai }} –
                                 {{ $data->jam_selesai }}</span>

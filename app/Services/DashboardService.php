@@ -56,9 +56,10 @@ class DashboardService
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,lantai,gedung_id',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'waktuPeminjaman:peminjaman_id,waktu_peminjaman'
+            'waktuPeminjaman:peminjaman_id,waktu_peminjaman',
+            'mataKuliah:kode_matkul,nama_matkul'
         ])
-            ->select('id', 'penanggung_jawab', 'fakultas_id', 'prodi_id', 'ruangan_id', 'tanggal_peminjaman', 'status', 'jenis_peminjaman', 'kode_matkul', 'muatan', 'kontak_penanggung_jawab')
+            ->select('id', 'penanggung_jawab', 'fakultas_id', 'prodi_id', 'ruangan_id', 'tanggal_peminjaman', 'status', 'jenis_peminjaman', 'kode_matkul', 'muatan', 'kontak_penanggung_jawab', 'hari', 'lantai')
             ->where('jenis_peminjaman', $jenis)
             ->whereIn('status', ['Approve', 'Finish'])
             ->whereBetween('tanggal_peminjaman', [$today, $limitDate])
@@ -92,8 +93,9 @@ class DashboardService
                 $item->prodi_name = $item->prodi?->prodi ?? '-';
                 $item->nama_gedung = $item->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
                 $item->kode_ruangan = $item->ruangan?->kode_ruangan ?? '-';
+                $item->nama_matkul = $item->mataKuliah?->nama_matkul ?? '-';
 
-                unset($item->fakultas, $item->prodi, $item->ruangan, $item->waktuPeminjaman);
+                unset($item->fakultas, $item->prodi, $item->ruangan, $item->waktuPeminjaman, $item->mataKuliah);
 
                 return $item;
             });
@@ -114,54 +116,73 @@ class DashboardService
 
         if ($currentMonth >= 2 && $currentMonth <= 7) {
             $y = $currentYear;
-            $sem = 'genap';
+            $sem = 'Genap';
         } else {
             $y = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
-            $sem = 'ganjil';
+            $sem = 'Ganjil';
         }
+        $keyPeriodeSekarang = "$y - $sem";
 
-        $temp = [];
-        for ($i = 0; $i < 6; $i++) {
-            if ($sem === 'genap') {
-                $temp["$y-genap"] = "Genap " . ($y - 1) . "/" . $y;
-                $sem = 'ganjil';
-                $y--;
+
+        // Move pointer 2 semesters forward to include 1 year in the future
+        for ($j = 0; $j < 2; $j++) {
+            if ($sem === 'Genap') {
+                $sem = 'Ganjil';
             } else {
-                $temp["$y-ganjil"] = "Ganjil " . $y . "/" . ($y + 1);
-                $sem = 'genap';
+                $sem = 'Genap';
+                $y++;
             }
         }
 
-        $options = ['' => 'Semua Periode'];
-        foreach (array_reverse($temp, true) as $k => $v) {
-            $options[$k] = $v;
+        $periode = [];
+        for ($i = 0; $i < 6; $i++) {
+            if ($sem === 'Genap') {
+                $key = "$y - Genap";
+                $val = "Semester Genap " . ($y - 1) . "/" . $y;
+                $periode[$key] = $val;
+                $sem = 'Ganjil';
+                $y--;
+            } else {
+                $key = "$y - Ganjil";
+                $val = "Semester Ganjil " . $y . "/" . ($y + 1);
+                $periode[$key] = $val;
+                $sem = 'Genap';
+            }
         }
 
-        return $options;
+        $options = ['' => 'Pilih periode'];
+        foreach ($periode as $key => $val) {
+            $options[$key] = $val;
+        }
+
+        return [
+            'options' => $options,
+            'current' => $keyPeriodeSekarang
+        ];
     }
 
     private function applyPeriodeFilter($query, ?string $periode)
     {
         if (!$periode) return $query;
-        
+
         $parts = explode('-', $periode);
         if (count($parts) !== 2) return $query;
-        
-        $year = $parts[0];
-        $semester = $parts[1];
+
+        $year = trim($parts[0]);
+        $semester = strtolower(trim($parts[1]));
 
         if ($semester === 'genap') {
             $start = $year . '-02-01';
-            $end = $year . '-06-31';
+            $end = $year . '-07-31';
         } else {
-            $start = $year . '-09-01';
+            $start = $year . '-08-01';
             $end = ($year + 1) . '-01-31';
         }
 
         if ($query->getModel() instanceof DataPeminjaman) {
-             return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
+            return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
         }
-        
+
         return $query->whereBetween('tanggal_peminjaman', [$start, $end]);
     }
 
