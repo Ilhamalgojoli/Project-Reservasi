@@ -20,6 +20,7 @@ class MasterSeeder extends Seeder
             RoleSeeder::class,
             Peminjaman::class,
             MatkulSeeder::class,
+            JadwalMatkulWajibSeeder::class,
         ]);
     }
 }

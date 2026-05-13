@@ -136,10 +136,6 @@
                             </li>
                         @endforelse
                     </ul>
-                    <button class="flex justify-center items-center mt-3" wire:click="refreshKegiatanTerkini">
-                        <iconify-icon icon="material-symbols:refresh-rounded"
-                            class="text-black text-2xl"></iconify-icon>
-                    </button>
                 </div>
 
                 {{-- Aktif/Tidak Aktif Ruangan Section --}}

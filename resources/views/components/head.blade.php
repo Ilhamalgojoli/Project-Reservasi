@@ -6,7 +6,7 @@
 
     @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js', 'resources/js/leaflet.js'])
 
-    <link rel="icon" type="image/png') }}" href="{{ asset('assets/basila_images/favicon.png') }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ asset('assets/basila_images/favicon.png') }}" sizes="16x16">
     <!-- google fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
@@ -16,9 +16,11 @@
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <!-- SweetAlert2 CDN -->
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Livewire script -->
+    <!-- Livewire style -->
     @livewireStyles
+
+
 </head>

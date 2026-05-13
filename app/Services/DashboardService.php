@@ -6,6 +6,7 @@ use App\Models\DataPeminjaman;
 use App\Models\Fakultas;
 use App\Models\Gedung;
 use App\Models\KegiatanTerkiniModel;
+use App\Models\JadwalMatkulWajib;
 use App\Models\Ruangan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +65,7 @@ class DashboardService
             ->whereIn('status', ['Approve', 'Finish'])
             ->whereBetween('tanggal_peminjaman', [$today, $limitDate])
             ->orderBy('tanggal_peminjaman', 'asc')
-            ->paginate(5, ['*'], $pageName)
+            ->paginate(10, ['*'], $pageName)
             ->through(function ($item) {
                 $waktu = $item->waktuPeminjaman->sortBy('waktu_peminjaman');
 
@@ -101,6 +102,69 @@ class DashboardService
             });
     }
 
+    public function ambilDataMatkulWajib(?string $lantai = null, ?string $status = null)
+    {
+        $dayMapping = [
+            'Monday' => 'SENIN',
+            'Tuesday' => 'SELASA',
+            'Wednesday' => 'RABU',
+            'Thursday' => 'KAMIS',
+            'Friday' => 'JUMAT',
+            'Saturday' => 'SABTU',
+            'Sunday' => 'MINGGU',
+        ];
+        $currentDay = $dayMapping[Carbon::now()->format('l')];
+        $nowTime = Carbon::now()->format('H:i:s');
+
+        $query = JadwalMatkulWajib::with([
+            'ruangan:id,kode_ruangan,lantai_id',
+            'ruangan.lantai:id,lantai,gedung_id',
+            'ruangan.lantai.gedung:id,nama_gedung',
+        ])
+            ->where('hari', $currentDay);
+
+        if ($lantai) {
+            $query->whereHas('ruangan.lantai', function ($q) use ($lantai) {
+                $q->where('lantai', $lantai);
+            });
+        }
+
+        if ($status) {
+            if ($status === 'Di Jadwalkan') {
+                $query->where('shift_mulai', '>', $nowTime);
+            } elseif ($status === 'Sedang Berlangsung') {
+                $query->where('shift_mulai', '<=', $nowTime)
+                    ->where('shift_selesai', '>=', $nowTime);
+            } elseif ($status === 'Selesai') {
+                $query->where('shift_selesai', '<', $nowTime);
+            }
+        }
+
+        return $query->paginate(10, ['*'], 'pageMatkulWajib')
+            ->through(function ($item) {
+                $item->waktu_mulai = Carbon::parse($item->shift_mulai)->format('H:i');
+                $item->waktu_selesai = Carbon::parse($item->shift_selesai)->format('H:i');
+
+                $now = Carbon::now();
+                $start = Carbon::parse(date('Y-m-d') . ' ' . $item->shift_mulai);
+                $end = Carbon::parse(date('Y-m-d') . ' ' . $item->shift_selesai);
+
+                if ($now->lt($start)) {
+                    $item->status_display = 'Di Jadwalkan';
+                } elseif ($now->between($start, $end)) {
+                    $item->status_display = 'Sedang Berlangsung';
+                } else {
+                    $item->status_display = 'Selesai';
+                }
+
+                $item->nama_gedung = $item->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
+                $item->kode_ruangan = $item->ruangan?->kode_ruangan ?? '-';
+                $item->lantai_display = $item->ruangan?->lantai?->lantai ?? '-';
+
+                return $item;
+            });
+    }
+
     public function getDataKegiatanTerkini(): array
     {
         return KegiatanTerkiniModel::select('pesan')
@@ -123,8 +187,6 @@ class DashboardService
         }
         $keyPeriodeSekarang = "$y - $sem";
 
-
-        // Move pointer 2 semesters forward to include 1 year in the future
         for ($j = 0; $j < 2; $j++) {
             if ($sem === 'Genap') {
                 $sem = 'Ganjil';

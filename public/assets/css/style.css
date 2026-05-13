@@ -564,8 +564,11 @@ video {
 }
 
 select:not([size]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3e %3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3e %3c/svg%3e");
-    osition: right 0.75rem center;
+    background-position: right 0.75rem center;
     background-repeat: no-repeat;
     background-size: 0.75em 0.75em;
     padding-right: 2.5rem;
@@ -573,7 +576,14 @@ select:not([size]) {
     print-color-adjust: exact;
 }
 
+input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
+    -webkit-appearance: none;
     appearance: none;
     opacity: 0 !important;
     display: none !important;
@@ -674,8 +684,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 select:not([size]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3e %3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3e %3c/svg%3e");
-    osition: right 0.75rem center;
+    background-position: right 0.75rem center;
     background-repeat: no-repeat;
     background-size: 0.75em 0.75em;
     padding-right: 2.5rem;

@@ -62,10 +62,6 @@ class DashboardAdmin extends Component
         ];
     }
 
-    public function refreshKegiatanTerkini(): void
-    {
-        $this->dispatch('refresh');
-    }
 
     public function render()
     {

@@ -18,6 +18,7 @@ class HistoryPeminjamanService
         ])
             ->where('user_identifier', $nim)
             ->where('status', 'Finish')
+            ->orWhere('status', 'Canceled')
             ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);

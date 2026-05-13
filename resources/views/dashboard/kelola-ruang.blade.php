@@ -4,7 +4,6 @@
 @endphp
 
 @push('extra_scripts')
-    <script src="{{ asset('assets/js/popup.js') }}" defer></script>
     <script src="{{ asset('assets/js/dynamic-input.js') }}" defer></script>
     <script src="{{ asset('assets/js/tambah-ruang.js') }}" defer></script>
     <script src="{{ asset('assets/js/edit-ruangan.js') }}" defer></script>
