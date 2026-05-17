@@ -1,6 +1,21 @@
 <div class="flex flex-col gap-6">
+    <div wire:loading wire:target="processCancel" class="fixed inset-0 z-[999999] bg-black/40">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div class="flex flex-col items-center">
+                <div class="relative w-12 h-12 mb-4">
+                    <div class="absolute inset-0 border-4 border-white/20 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-white rounded-full border-t-transparent animate-spin">
+                    </div>
+                </div>
+                <p class="text-[10px] font-black text-white uppercase tracking-[0.4em] animate-pulse text-center">
+                    Memproses...
+                </p>
+            </div>
+        </div>
+    </div>
+
     {{-- Style following History Peminjaman --}}
-    <div class="bg-white p-5 rounded-xl shadow-sm mb-5 border border-gray-100 flex flex-col gap-5">
+    <div class="bg-white p-5 rounded-[8px] shadow-sm mb-5 border border-gray-100 flex flex-col gap-5">
         {{-- Row 1: Pencarian (Full Width) --}}
         <div class="flex flex-col gap-1.5 w-full">
             <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
@@ -20,43 +35,55 @@
             {{-- Fakultas --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:buildings-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Fakultas
                 </label>
-                <select wire:model.live="filterFakultas" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Fakultas</option>
-                    @foreach ($fakultas as $f)
-                        <option value="{{ $f->id }}">{{ $f->fakultas }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:buildings-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="filterFakultas"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Fakultas</option>
+                        @foreach ($fakultas as $f)
+                            <option value="{{ $f->id }}">{{ $f->fakultas }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
             
             {{-- Jenis --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:document-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Jenis Peminjaman
                 </label>
-                <select wire:model.live="filterJenis" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Jenis</option>
-                    @foreach($jenis_peminjaman as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:document-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="filterJenis"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Jenis</option>
+                        @foreach($jenis_peminjaman as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
 
             {{-- Hari --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:calendar-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Hari
                 </label>
-                <select wire:model.live="filterHari" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Hari</option>
-                    @foreach($hari_list as $h)
-                        <option value="{{ $h }}">{{ $h }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:calendar-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="filterHari"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Hari</option>
+                        @foreach($hari_list as $h)
+                            <option value="{{ $h }}">{{ $h }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
         </div>
     </div>

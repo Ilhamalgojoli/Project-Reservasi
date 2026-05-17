@@ -51,7 +51,8 @@ class HistoryPeminjamanService
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
             'prodi:id,prodi',
-        ])->where('status', 'Finish');
+        ])->where('status', 'Finish')
+        ->orWhere('status', 'Canceled');
 
         if (!empty($fakultas_id)) {
             $query->where('fakultas_id', $fakultas_id);

@@ -8,7 +8,7 @@
     </div>
 
     {{-- Modern Table --}}
-    <div class="overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm">
+    <div class="overflow-hidden rounded-[8px] border border-gray-100 bg-white shadow-sm">
         <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1 w-full text-black">
             <thead class="bg-gray-50 uppercase text-[12px] font-bold text-gray-700"></thead>
             <tr

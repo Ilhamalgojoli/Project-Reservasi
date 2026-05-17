@@ -18,7 +18,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
         @forelse ($datas as $data)
             <div
-                class="group relative bg-white rounded-[40px] shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500 overflow-hidden flex flex-col border border-gray-100 h-full">
+                class="group relative bg-white rounded-[15px] shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500 overflow-hidden flex flex-col border border-gray-100 h-full">
                 <div class="relative h-64 overflow-hidden">
                     <img src="{{ $data['gambar'] ? asset('storage/' . $data['gambar']) : asset('assets/basila_images/DefaultBuilding.png') }}"
                         alt="{{ $data['nama_gedung'] }}"

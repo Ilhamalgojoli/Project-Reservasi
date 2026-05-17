@@ -28,7 +28,7 @@
             {{-- Action Card: Tambah Ruangan (Moved to Left) --}}
             <div class="col-span-12 lg:col-span-5 xl:col-span-4 animate-slide-up" style="animation-delay: 100ms">
                 <div
-                    class="h-full bg-white p-8 rounded-[32px] shadow-xl shadow-gray-100 relative overflow-hidden group border border-gray-50 flex flex-col">
+                    class="h-full bg-white p-8 rounded-[8px] shadow-xl shadow-gray-100 relative overflow-hidden group border border-gray-50 flex flex-col">
                     {{-- Premium Effects --}}
 
                     <iconify-icon icon="solar:add-circle-bold-duotone"
@@ -38,7 +38,7 @@
                         {{-- Icon & Title Side-by-Side --}}
                         <div class="flex items-center gap-4 mb-6">
                             <div
-                                class="flex-shrink-0 bg-red-50 w-14 h-14 rounded-[20px] flex items-center justify-center shadow-sm">
+                                class="flex-shrink-0 bg-red-50 w-14 h-14 rounded-[8px] flex items-center justify-center shadow-sm">
                                 <iconify-icon icon="solar:home-add-bold-duotone"
                                     class="text-[#e51411] text-3xl"></iconify-icon>
                             </div>
@@ -64,7 +64,7 @@
 
             {{-- Table Section --}}
             <section
-                class="col-span-12 rounded-[40px] bg-white shadow-xl shadow-gray-100/50 border border-gray-50 p-8 md:p-10 animate-slide-up"
+                class="col-span-12 rounded-[8px] bg-white shadow-xl shadow-gray-100/50 border border-gray-50 p-8 md:p-10 animate-slide-up"
                 style="animation-delay: 300ms">
                 <div class="flex items-center justify-between mb-8 px-2">
                     <div class="flex items-center gap-3">
@@ -82,11 +82,11 @@
         <section id="popup-edit"
             class="popup hidden fixed inset-0 bg-gray-900/80 flex items-center justify-center z-[100] p-4 transition-all duration-500">
             <div
-                class="bg-white w-full max-w-2xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up">
+                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up">
                 {{-- Modal Header --}}
                 <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100">
                     <div class="flex items-center gap-4 text-gray-800">
-                        <div class="p-3 bg-red-50 rounded-[20px] shadow-sm italic text-[#e51411]">
+                        <div class="p-3 bg-red-50 rounded-[8px] shadow-sm italic text-[#e51411]">
                             <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-2xl"></iconify-icon>
                         </div>
                         <div>
@@ -205,11 +205,11 @@
         <section id="popup-tambah"
             class="popup hidden fixed inset-0 bg-gray-900/80 flex items-center justify-center z-[100] p-4 transition-all duration-500">
             <div
-                class="bg-white w-full max-w-2xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up">
+                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up">
                 {{-- Modal Header --}}
                 <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100">
                     <div class="flex items-center gap-4 text-gray-800">
-                        <div class="p-3 bg-red-50 rounded-[20px] shadow-sm italic text-[#e51411]">
+                        <div class="p-3 bg-red-50 rounded-[8px] shadow-sm italic text-[#e51411]">
                             <iconify-icon icon="solar:home-add-bold-duotone" class="text-2xl"></iconify-icon>
                         </div>
                         <div>

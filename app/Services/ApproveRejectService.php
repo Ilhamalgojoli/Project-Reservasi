@@ -6,6 +6,7 @@ use App\Models\DataPeminjaman;
 use App\Mail\NotifikasiMail;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Exception;
 
 class ApproveRejectService
 {
@@ -19,7 +20,7 @@ class ApproveRejectService
         try {
             Mail::to($peminjaman->email)->send(new NotifikasiMail($peminjaman, 'approve'));
         } catch (\Exception $e) {
-            throw new \Exception("Gagal menyetujui peminjaman karena email tidak terkirim.");
+            throw new \Exception("Peminjaman berhasil disetujui,tetapi email tidak terkirim.");
         }
 
         return true;
@@ -38,7 +39,7 @@ class ApproveRejectService
         try {
             Mail::to($peminjaman->email)->send(new NotifikasiMail($peminjaman, 'reject'));
         } catch (\Exception $e) {
-            throw new \Exception("Gagal menolak peminjaman karena email tidak terkirim.");
+            throw new \Exception("Peminjaman berhasil ditolak,tetapi email tidak terkirim.");
         }
 
         return true;
@@ -73,9 +74,9 @@ class ApproveRejectService
             $this->prepareEmailData($data);
 
             try {
-                \Illuminate\Support\Facades\Mail::to($data->email)->send(new \App\Mail\NotifikasiMail($data, 'cancel'));
+                Mail::to($data->email)->send(new NotifikasiMail($data, 'cancel'));
             } catch (\Exception $e) {
-                // Email gagal tidak apa-apa, yang penting status terupdate
+                throw new Exception('Peminjaman berhasil dibatalkan,tetapi email tidak terkirim');
             }
         }
 

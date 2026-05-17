@@ -7,9 +7,9 @@
                 Pencarian Data
             </label>
             <div class="relative group">
-                <iconify-icon icon="solar:magnifer-bold-duotone" 
+                <iconify-icon icon="solar:magnifer-bold-duotone"
                     class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 transition-colors group-focus-within:text-red-500"></iconify-icon>
-                <input type="text" wire:model.live.debounce.300ms="search" 
+                <input type="text" wire:model.live.debounce.300ms="search"
                     placeholder="Cari penanggung jawab, gedung, atau ruangan..."
                     class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-3 py-3 shadow-sm transition-colors hover:bg-gray-100 outline-none">
             </div>
@@ -20,43 +20,55 @@
             {{-- Fakultas --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:buildings-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Fakultas
                 </label>
-                <select wire:model.live="filterFakultas" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Fakultas</option>
-                    @foreach ($fakultas as $f)
-                        <option value="{{ $f->id }}">{{ $f->fakultas }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:buildings-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="filterFakultas"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Fakultas</option>
+                        @foreach ($fakultas as $f)
+                            <option value="{{ $f->id }}">{{ $f->fakultas }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
-            
+
             {{-- Jenis --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:document-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Jenis Peminjaman
                 </label>
-                <select wire:model.live="filterJenis" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Jenis</option>
-                    @foreach($jenis_peminjaman as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:document-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="filterJenis"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Jenis</option>
+                        @foreach ($jenis_peminjaman as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
 
             {{-- Hari --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:calendar-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Hari
                 </label>
-                <select wire:model.live="filterHari" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Hari</option>
-                    @foreach($hari_list as $h)
-                        <option value="{{ $h }}">{{ $h }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:calendar-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="filterHari"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Hari</option>
+                        @foreach ($hari_list as $h)
+                            <option value="{{ $h }}">{{ $h }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
         </div>
     </div>
@@ -83,7 +95,8 @@
                         <td class="px-4 py-4 border-black">
                             <div class="flex flex-col gap-0.5 w-max mx-auto">
                                 <div class="flex items-center gap-2">
-                                    <iconify-icon icon="mdi:office-building-marker" class="text-red-500 text-lg"></iconify-icon>
+                                    <iconify-icon icon="mdi:office-building-marker"
+                                        class="text-red-500 text-lg"></iconify-icon>
                                     <span class="font-extrabold text-gray-900">{{ $data->kode_ruangan }}</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-xs text-gray-400 font-semibold ml-1">
@@ -95,19 +108,23 @@
                         <td class="px-4 py-4 text-center border-black">
                             <div class="flex flex-col items-center gap-1">
                                 <span class="font-bold text-gray-700">{{ $data->penanggung_jawab }}</span>
-                                <span class="px-1.5 py-0.5 bg-gray-100 text-[9px] font-bold text-gray-400 rounded uppercase tracking-widest">{{ $data->prodi_name }}</span>
+                                <span
+                                    class="px-1.5 py-0.5 bg-gray-100 text-[9px] font-bold text-gray-400 rounded uppercase tracking-widest">{{ $data->prodi_name }}</span>
                             </div>
                         </td>
                         <td class="px-4 py-4 text-center border-black">
                             <div class="flex flex-col items-center gap-1">
                                 <div class="flex items-center gap-1.5 font-bold text-gray-800">
-                                    <iconify-icon icon="solar:calendar-bold" class="text-[#e51411] text-md"></iconify-icon>
-                                    <span>{{ $data->hari }}, {{ \Carbon\Carbon::parse($data->tanggal_peminjaman)->translatedFormat('d M Y') }}</span>
+                                    <iconify-icon icon="solar:calendar-bold"
+                                        class="text-[#e51411] text-md"></iconify-icon>
+                                    <span>{{ $data->hari }},
+                                        {{ \Carbon\Carbon::parse($data->tanggal_peminjaman)->translatedFormat('d M Y') }}</span>
                                 </div>
                             </div>
                         </td>
                         <td class="px-4 py-4 text-center border-black">
-                            <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[11px] font-black border border-blue-100">
+                            <div
+                                class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[11px] font-black border border-blue-100">
                                 <iconify-icon icon="solar:clock-circle-bold" class="text-sm"></iconify-icon>
                                 {{ $data->jam_mulai }} – {{ $data->jam_selesai }}
                             </div>

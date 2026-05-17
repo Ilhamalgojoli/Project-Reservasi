@@ -28,7 +28,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         @foreach ($datas as $data)
             <div
-                class="group bg-white rounded-[40px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500">
+                class="group bg-white rounded-[15px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500">
                 {{-- Image Container --}}
                 <div class="relative h-64 overflow-hidden">
                     <img src="{{ $data['gambar'] ? asset('storage/' . $data['gambar']) : asset('assets/basila_images/DefaultBuilding.png') }}"

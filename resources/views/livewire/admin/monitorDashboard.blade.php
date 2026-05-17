@@ -21,56 +21,55 @@
 
     {{-- ====== TABEL MATKUL WAJIB ====== --}}
     @if ($tab === 'matkul-wajib')
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <div class="flex flex-wrap items-center gap-3">
+        <div class="flex flex-col gap-4 mb-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {{-- Filter Lantai --}}
-                <div class="flex items-center gap-3 bg-white p-2 px-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="p-2 bg-red-50 rounded-lg text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-                        </svg>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Filter Lantai</span>
-                        <select wire:model.live="selectedLantai" 
-                            class="text-xs font-black text-gray-700 bg-transparent border-none p-0 focus:ring-0 cursor-pointer hover:text-red-600 transition-colors">
-                            <option value="">SEMUA LANTAI</option>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                        Filter Lantai
+                    </label>
+                    <div class="relative group">
+                        <iconify-icon icon="solar:buildings-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                        <select wire:model.live="selectedLantai"
+                            class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                            <option value="">Semua Lantai</option>
                             @foreach($list_lantai as $l)
-                                <option value="{{ $l->lantai }}">LANTAI {{ $l->lantai }}</option>
+                                <option value="{{ $l->lantai }}">Lantai {{ $l->lantai }}</option>
                             @endforeach
                         </select>
+                        <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
                 </div>
 
                 {{-- Filter Status --}}
-                <div class="flex items-center gap-3 bg-white p-2 px-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Status Jadwal</span>
-                        <select wire:model.live="selectedStatus" 
-                            class="text-xs font-black text-gray-700 bg-transparent border-none p-0 focus:ring-0 cursor-pointer hover:text-blue-600 transition-colors">
-                            <option value="">SEMUA STATUS</option>
-                            <option value="Di Jadwalkan">DI JADWALKAN</option>
-                            <option value="Sedang Berlangsung">SEDANG BERLANGSUNG</option>
-                            <option value="Selesai">SELESAI</option>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                        Status Jadwal
+                    </label>
+                    <div class="relative group">
+                        <iconify-icon icon="solar:clock-circle-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                        <select wire:model.live="selectedStatus"
+                            class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                            <option value="">Semua Status</option>
+                            <option value="Di Jadwalkan">Di Jadwalkan</option>
+                            <option value="Sedang Berlangsung">Sedang Berlangsung</option>
+                            <option value="Selesai">Selesai</option>
                         </select>
+                        <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
                 </div>
+                
+                {{-- Reset Button (if active) --}}
+                @if($selectedLantai || $selectedStatus)
+                    <div class="flex items-end pb-1.5">
+                        <button wire:click="$set('selectedLantai', ''); $set('selectedStatus', '');" 
+                            class="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1.5 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg border border-red-100">
+                            <iconify-icon icon="solar:close-circle-bold-duotone" class="text-lg"></iconify-icon>
+                            Reset Filter
+                        </button>
+                    </div>
+                @endif
             </div>
-
-            @if($selectedLantai || $selectedStatus)
-                <button wire:click="$set('selectedLantai', ''); $set('selectedStatus', '');" 
-                    class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:text-red-700 transition-colors flex items-center gap-1 bg-red-50 px-3 py-1.5 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Reset Filter
-                </button>
-            @endif
         </div>
 
         <div class="tableMatkulWajib overflow-x-auto rounded-xl">

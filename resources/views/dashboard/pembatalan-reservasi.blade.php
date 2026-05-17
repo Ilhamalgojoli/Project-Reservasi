@@ -10,7 +10,7 @@
     </div>
 
     <main class="grid grid-cols-1 gap-6">
-        <section class="col-span-12 rounded-[24px] bg-white shadow-sm border border-gray-100 p-8">
+        <section class="col-span-12 rounded-[8px] bg-white shadow-sm border border-gray-100 p-8">
             <livewire:admin.cancel-booking />
         </section>
     </main>

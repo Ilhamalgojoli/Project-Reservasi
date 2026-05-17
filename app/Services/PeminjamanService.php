@@ -10,9 +10,11 @@ use App\Models\KegiatanTerkiniModel;
 use App\Models\Lantai;
 use App\Models\MataKuliah;
 use App\Models\Ruangan;
+use App\Models\JadwalMatkulWajib;
 use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class PeminjamanService
 {
@@ -40,14 +42,22 @@ class PeminjamanService
 
     public function getFakultas()
     {
-        return Fakultas::select('id', 'fakultas')
+        $fakultas = env('URL_FACULTY');
+        $token = env('TOKEN');
+        $response = Http::withToken($token)->get($fakultas);
+
+        return $response->successful() ? $response->json() : Fakultas::select('id', 'fakultas')
             ->get()
             ->toArray();
     }
 
     public function getProdi($fakultasId)
     {
-        return Prodi::select('id', 'prodi')
+        $prodi = env('URL_PRODY');
+        $token = env('TOKEN');
+        $response = Http::withToken($token)->get($prodi . $fakultasId);
+
+        return $response->successful() ? $response->json() : Prodi::select('id', 'prodi')
             ->where('fakultas_id', $fakultasId)
             ->get()
             ->toArray();
@@ -56,16 +66,16 @@ class PeminjamanService
     public function getMataKuliah($prodiId)
     {
         $data = MataKuliah::select('kode_matkul', 'nama_matkul')
-            ->where(function($query) use ($prodiId) {
+            ->where(function ($query) use ($prodiId) {
                 if ($prodiId) {
                     $query->where('prodi_id', $prodiId)
-                          ->orWhereNull('prodi_id');
+                        ->orWhereNull('prodi_id');
                 } else {
                     $query->whereNull('prodi_id');
                 }
             })
             ->get();
-            
+
         return $data->toArray();
     }
 
@@ -96,7 +106,7 @@ class PeminjamanService
             'penanggungJawab'       => 'required|string|min:3',
             'kontakPenanggungJawab' => 'required|numeric|digits_between:10,15',
             'email'                 => 'required|email',
-            'deskripsi'             => 'nullable|string|max:500',
+            'deskripsi'             => 'required|string|max:500',
             'userIdentifier'        => 'required|string',
         ];
 
@@ -129,6 +139,7 @@ class PeminjamanService
             'email.required'                 => 'Email wajib diisi',
             'email.email'                    => 'Format email tidak valid',
             'deskripsi.max'                  => 'Deskripsi maksimal 500 karakter',
+            'deskripsi.required'             => 'Keterangan kegiatan wajib di isi'
         ];
     }
 
@@ -158,6 +169,7 @@ class PeminjamanService
     public function create(array $data, $role = null)
     {
         $this->cekTabrakanJadwal($data);
+        $this->cekTabrakanMatkulWajib($data);
         $this->cekMuatan($data['ruanganID'], $data['muatanKapasitas']);
 
         $jam = array_unique($data['pilihJam']);
@@ -244,6 +256,43 @@ class PeminjamanService
         }
     }
 
+    # Cek apakah jadwal yang dipilih user bentrok dengan jadwal matakuliah wajib
+    private function cekTabrakanMatkulWajib(array $data)
+    {
+        # Ambil nama hari dari tanggal yang dipilih user (dalam bahasa Indonesia)
+        $hari = Carbon::parse($data['tanggal'])->locale('id')->translatedFormat('l');
+
+        # Ambil jadwal matkul wajib di ruangan dan hari yang sama
+        $jadwals = JadwalMatkulWajib::where('ruangan_id', $data['ruanganID'])
+            ->where('hari', $hari)
+            ->get();
+
+        if ($jadwals->isEmpty()) {
+            return;
+        }
+
+        # Konversi pilihJam ke detik untuk perbandingan range
+        foreach ($data['pilihJam'] as $slot) {
+            $slotTime = strtotime($slot);
+
+            foreach ($jadwals as $jadwal) {
+                $mulai    = strtotime($jadwal->shift_mulai);
+                $selesai  = strtotime($jadwal->shift_selesai);
+
+                # Slot bentrok jika berada di dalam range [shift_mulai, shift_selesai)
+                if ($slotTime >= $mulai && $slotTime < $selesai) {
+                    $jamMulai   = Carbon::parse($jadwal->shift_mulai)->format('H:i');
+                    $jamSelesai = Carbon::parse($jadwal->shift_selesai)->format('H:i');
+
+                    throw new \Exception(
+                        "Ruangan sudah dipakai untuk jadwal matkul wajib '{$jadwal->nama_matkul}' "
+                            . "pada hari {$hari}, pukul {$jamMulai}–{$jamSelesai}"
+                    );
+                }
+            }
+        }
+    }
+
     # Cek muatan dari peminjaman apakah melebihi kapasitas ruangan atau tidak
     private function cekMuatan(int $ruanganID, int $kapasitas)
     {
@@ -276,7 +325,7 @@ class PeminjamanService
         if (!$ruanganId) {
             return [
                 'dates' => [],
-                'bookings' => collect([]),
+                'bookings' => [],
                 'timeSlots' => $this->generateJam('06:30', '22:30'),
                 'kodeRuangan' => null
             ];
@@ -322,7 +371,34 @@ class PeminjamanService
                 }
             }
             return $slots;
-        });
+        })->toArray();
+
+        $matkulWajibs = JadwalMatkulWajib::where('ruangan_id', (int) $ruanganId)->get();
+
+        foreach ($dates as $date) {
+            $hari = $date['day'];
+            $fullDate = $date['full'];
+
+            if (!isset($grouped[$fullDate])) {
+                $grouped[$fullDate] = [];
+            }
+
+            foreach ($matkulWajibs as $mw) {
+                if (strtolower($mw->hari) === strtolower($hari)) {
+                    $jamMulai = Carbon::parse($mw->shift_mulai)->format('H:i');
+                    $jamSelesai = Carbon::parse($mw->shift_selesai)->format('H:i');
+                    $slotsMw = $this->generateJam($jamMulai, $jamSelesai);
+                    array_pop($slotsMw);
+
+                    foreach ($slotsMw as $slot) {
+                        $grouped[$fullDate][$slot] = [
+                            'status' => 'MatkulWajib',
+                            'user' => $mw->nama_matkul
+                        ];
+                    }
+                }
+            }
+        }
 
         return [
             'dates' => $dates,

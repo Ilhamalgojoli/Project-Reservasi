@@ -1,7 +1,7 @@
-<div class="bg-white border border-gray-100 shadow-sm p-6 rounded-3xl h-full flex flex-col gap-6">
+<div class="bg-white border border-gray-100 shadow-sm p-6 rounded-[8px] h-full flex flex-col gap-6">
     {{-- Filter Header --}}
     <div class="flex items-center gap-3 pb-4 border-b border-gray-50">
-        <div class="p-2.5 bg-gray-50 rounded-xl">
+        <div class="p-2.5 bg-gray-50 rounded-[8px]">
             <iconify-icon icon="solar:filter-bold-duotone" class="text-gray-400 text-xl"></iconify-icon>
         </div>
         <div class="flex flex-col">

@@ -5,30 +5,36 @@
             <div class="flex flex-col gap-1.5 w-full sm:w-64">
                 <label for="fakultasFilter"
                     class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:buildings-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Fakultas
                 </label>
-                <select wire:model.live="fakultas_id" id="fakultasFilter"
-                    class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Fakultas</option>
-                    @foreach ($this->fakultasList as $fakultas)
-                        <option value="{{ $fakultas->id }}">{{ $fakultas->fakultas }}</option>
-                    @endforeach
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:buildings-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-blue-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="fakultas_id" id="fakultasFilter"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Fakultas</option>
+                        @foreach ($this->fakultasList as $fakultas)
+                            <option value="{{ $fakultas->id }}">{{ $fakultas->fakultas }}</option>
+                        @endforeach
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
 
             <div class="flex flex-col gap-1.5 w-full sm:w-56">
                 <label for="jenisFilter"
                     class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <iconify-icon icon="solar:document-bold-duotone" class="text-lg text-gray-400"></iconify-icon>
                     Jenis Peminjaman
                 </label>
-                <select wire:model.live="jenis_peminjaman" id="jenisFilter"
-                    class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100">
-                    <option value="">Semua Jenis</option>
-                    <option value="akademik">Akademik</option>
-                    <option value="non_akademik">Non Akademik</option>
-                </select>
+                <div class="relative group">
+                    <iconify-icon icon="solar:document-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-blue-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="jenis_peminjaman" id="jenisFilter"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
+                        <option value="">Semua Jenis</option>
+                        <option value="akademik">Akademik</option>
+                        <option value="non_akademik">Non Akademik</option>
+                    </select>
+                    <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
+                </div>
             </div>
         </div>
     </div>

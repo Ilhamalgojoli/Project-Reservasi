@@ -21,6 +21,10 @@
                 <div class="w-2 h-2 rounded-full bg-[#e51411]"></div>
                 <span class="text-[8px] font-bold text-gray-400 uppercase">Used</span>
             </div>
+            <div class="flex items-center gap-1">
+                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                <span class="text-[8px] font-bold text-gray-400 uppercase">Wajib</span>
+            </div>
         </div>
     </div>
 
@@ -57,9 +61,13 @@
                                         $booking = $bookings[$date['full']][$slot] ?? null;
                                         $statusClass = '';
                                         if ($booking) {
-                                            $statusClass = $booking['status'] === 'Approve' 
-                                                ? 'bg-[#e51411]' 
-                                                : ($booking['status'] === 'Waiting' ? 'bg-amber-400' : '');
+                                            if ($booking['status'] === 'Approve') {
+                                                $statusClass = 'bg-[#e51411]';
+                                            } elseif ($booking['status'] === 'Waiting') {
+                                                $statusClass = 'bg-amber-400';
+                                            } elseif ($booking['status'] === 'MatkulWajib') {
+                                                $statusClass = 'bg-blue-500';
+                                            }
                                         }
                                     @endphp
 
