@@ -1,7 +1,7 @@
 <div>
     {{-- Modern Loading Overlay --}}
     <div wire:loading wire:target="cancelReservation"
-        class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[10000] flex flex-col items-center justify-center transition-all duration-500">
+        class="fixed inset-0 bg-gray-900/80 z-[10000] flex flex-col items-center justify-center transition-all duration-500">
         <div class="relative">
             <div class="w-20 h-20 border-4 border-white/10 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-red-500 rounded-full border-t-transparent animate-spin"></div>
@@ -15,10 +15,10 @@
     @if ($isOpen && $peminjamanDetail)
         <section class="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6">
             {{-- Backdrop --}}
-            <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-md transition-opacity duration-500" wire:click="closeDetail"></div>
+            <div class="absolute inset-0 bg-gray-900/80 transition-opacity duration-500" wire:click="closeDetail"></div>
 
             {{-- Main Container --}}
-            <div class="bg-white w-full max-w-2xl rounded-[48px] shadow-[0_40px_80px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up border border-white/40 flex flex-col max-h-[90vh]">
+            <div class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_40px_80px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up border border-white/40 flex flex-col max-h-[90vh]">
                 
                 {{-- Decoration --}}
                 <div class="absolute -top-32 -right-32 w-80 h-80 bg-red-500/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -27,7 +27,7 @@
                 {{-- Header --}}
                 <div class="p-8 pb-6 relative flex items-center justify-between border-b border-gray-50 bg-white/50 backdrop-blur-xl">
                     <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-[24px] flex items-center justify-center shadow-inner group overflow-hidden">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-[8px] flex items-center justify-center shadow-inner group overflow-hidden">
                             <iconify-icon icon="solar:clipboard-list-bold-duotone" class="text-3xl text-red-600 group-hover:scale-110 transition-transform duration-500"></iconify-icon>
                         </div>
                         <div>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <button type="button" wire:click="closeDetail"
-                        class="w-12 h-12 flex items-center justify-center rounded-[18px] bg-gray-50 text-gray-400 border border-gray-100 hover:bg-red-50 hover:text-red-500 transition-all duration-300 group">
+                        class="w-12 h-12 flex items-center justify-center rounded-[8px] bg-gray-50 text-gray-400 border border-gray-100 hover:bg-red-50 hover:text-red-500 transition-all duration-300 group">
                         <iconify-icon icon="solar:close-circle-bold" class="text-2xl group-hover:rotate-90 transition-transform duration-500"></iconify-icon>
                     </button>
                 </div>
@@ -60,9 +60,9 @@
                             default => ['bg' => 'bg-gray-50/50', 'border' => 'border-gray-100', 'text' => 'text-gray-400', 'icon' => 'solar:help-circle-bold-duotone'],
                         };
                     @endphp
-                    <div class="p-6 {{ $statusStyles['bg'] }} {{ $statusStyles['border'] }} border-2 rounded-[32px] flex items-center justify-between gap-4">
+                    <div class="p-6 {{ $statusStyles['bg'] }} {{ $statusStyles['border'] }} border-2 rounded-[8px] flex items-center justify-between gap-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 {{ $statusStyles['bg'] }} rounded-2xl flex items-center justify-center border {{ $statusStyles['border'] }}">
+                            <div class="w-12 h-12 {{ $statusStyles['bg'] }} rounded-[8px] flex items-center justify-center border {{ $statusStyles['border'] }}">
                                 <iconify-icon icon="{{ $statusStyles['icon'] }}" class="text-3xl {{ $statusStyles['text'] }}"></iconify-icon>
                             </div>
                             <div class="flex flex-col">
@@ -70,12 +70,7 @@
                                 <span class="text-xl font-black {{ $statusStyles['text'] }} uppercase tracking-tighter">{{ $peminjamanDetail->status }}</span>
                             </div>
                         </div>
-                        @if ($peminjamanDetail->status === 'Reject' && $peminjamanDetail->alasan_penolakan)
-                            <div class="max-w-[50%] text-right bg-white/40 p-3 rounded-2xl border border-red-100">
-                                <span class="text-[8px] font-black text-red-400 uppercase tracking-widest block mb-1">Catatan Penolakan</span>
-                                <p class="text-xs font-bold text-red-500 italic leading-snug">"{{ $peminjamanDetail->alasan_penolakan }}"</p>
-                            </div>
-                        @endif
+
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -95,7 +90,7 @@
                                     <div class="group">
                                         <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Unit / Fakultas</label>
                                         <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->fakultas_name }}</p>
-                                        <p class="text-[10px] font-semibold text-gray-400 mt-0.5">{{ $peminjamanDetail->prodi_name }}</p>
+                                        <p class="text-[10px] font-semibold text-gray-400 mt-0.5">{{ $peminjamanDetail->fakultas_name === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Prodi' }}: {{ $peminjamanDetail->prodi_name }}</p>
                                     </div>
                                     <div class="group">
                                         <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Jenis Keperluan</label>
@@ -113,7 +108,7 @@
                                     <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Jadwal & Waktu</h3>
                                 </div>
                                 <div class="flex flex-col gap-4 ml-4">
-                                    <div class="flex items-center gap-4 p-4 bg-emerald-50/30 border border-emerald-100/50 rounded-2xl group hover:bg-emerald-50 transition-all">
+                                    <div class="flex items-center gap-4 p-4 bg-emerald-50/30 border border-emerald-100/50 rounded-[8px] group hover:bg-emerald-50 transition-all">
                                         <div class="p-3 bg-white rounded-xl shadow-sm text-emerald-500">
                                             <iconify-icon icon="solar:calendar-bold-duotone" class="text-2xl"></iconify-icon>
                                         </div>
@@ -122,7 +117,7 @@
                                             <span class="text-sm font-black text-gray-800">{{ $peminjamanDetail->hari }}, {{ \Carbon\Carbon::parse($peminjamanDetail->tanggal_peminjaman)->translatedFormat('d F Y') }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-4 p-4 bg-emerald-50/30 border border-emerald-100/50 rounded-2xl group hover:bg-emerald-50 transition-all">
+                                    <div class="flex items-center gap-4 p-4 bg-emerald-50/30 border border-emerald-100/50 rounded-[8px] group hover:bg-emerald-50 transition-all">
                                         <div class="p-3 bg-white rounded-xl shadow-sm text-emerald-500">
                                             <iconify-icon icon="solar:clock-circle-bold-duotone" class="text-2xl"></iconify-icon>
                                         </div>
@@ -145,7 +140,7 @@
                                     <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Lokasi & Ruangan</h3>
                                 </div>
                                 <div class="flex flex-col gap-4 ml-4">
-                                    <div class="flex items-center gap-4 p-4 bg-amber-50/30 border border-amber-100/50 rounded-2xl group hover:bg-amber-50 transition-all">
+                                    <div class="flex items-center gap-4 p-4 bg-amber-50/30 border border-amber-100/50 rounded-[8px] group hover:bg-amber-50 transition-all">
                                         <div class="p-3 bg-white rounded-xl shadow-sm text-amber-500">
                                             <iconify-icon icon="solar:buildings-bold-duotone" class="text-2xl"></iconify-icon>
                                         </div>
@@ -154,7 +149,7 @@
                                             <span class="text-sm font-black text-gray-800">{{ $peminjamanDetail->nama_gedung }} / Lt. {{ $peminjamanDetail->lantai }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-4 p-4 bg-amber-50/30 border border-amber-100/50 rounded-2xl group hover:bg-amber-50 transition-all">
+                                    <div class="flex items-center gap-4 p-4 bg-amber-50/30 border border-amber-100/50 rounded-[8px] group hover:bg-amber-50 transition-all">
                                         <div class="p-3 bg-white rounded-xl shadow-sm text-amber-500">
                                             <iconify-icon icon="mdi:office-building-marker" class="text-2xl"></iconify-icon>
                                         </div>
@@ -163,7 +158,7 @@
                                             <span class="text-sm font-black text-gray-800 tracking-wider">{{ $peminjamanDetail->kode_ruangan }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-4 p-4 bg-amber-50/30 border border-amber-100/50 rounded-2xl group hover:bg-amber-50 transition-all">
+                                    <div class="flex items-center gap-4 p-4 bg-amber-50/30 border border-amber-100/50 rounded-[8px] group hover:bg-amber-50 transition-all">
                                         <div class="p-3 bg-white rounded-xl shadow-sm text-amber-500">
                                             <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-2xl"></iconify-icon>
                                         </div>
@@ -184,7 +179,7 @@
                                     </div>
                                     <div class="flex flex-wrap gap-2 ml-4">
                                         @foreach (explode(',', $peminjamanDetail->ruangan->fasilitas) as $item)
-                                            <span class="px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-xl text-[9px] font-black text-blue-600 uppercase tracking-widest shadow-sm hover:scale-105 transition-transform cursor-default">{{ trim($item) }}</span>
+                                            <span class="px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-[8px] text-[9px] font-black text-blue-600 uppercase tracking-widest shadow-sm hover:scale-105 transition-transform cursor-default">{{ trim($item) }}</span>
                                         @endforeach
                                     </div>
                                 </div>
@@ -198,19 +193,47 @@
                             <div class="w-1.5 h-6 bg-gray-900 rounded-full"></div>
                             <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Catatan / Keperluan</h3>
                         </div>
-                        <div class="p-6 bg-gray-50 rounded-[32px] border border-gray-100 ml-4 relative overflow-hidden group">
+                        <div class="p-6 bg-gray-50 rounded-[8px] border border-gray-100 ml-4 relative overflow-hidden group">
                             <iconify-icon icon="solar:chat-line-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-gray-200/50 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
                             <p class="text-sm font-medium text-gray-600 italic leading-relaxed relative z-10">
                                 "{{ $peminjamanDetail->keterangan_peminjaman }}"
                             </p>
                         </div>
                     </div>
+
+                    @if ($peminjamanDetail->status === 'Reject' && $peminjamanDetail->alasan_penolakan)
+                        <div class="flex flex-col gap-4 mt-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-6 bg-red-500 rounded-full"></div>
+                                <h3 class="text-xs font-black text-red-500 uppercase tracking-[0.2em]">Catatan Penolakan</h3>
+                            </div>
+                            <div class="p-6 bg-red-50/50 rounded-[8px] border border-red-100 ml-4 relative overflow-hidden group">
+                                <iconify-icon icon="solar:shield-warning-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-red-500/10 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
+                                <p class="text-sm font-bold text-red-500 italic leading-relaxed relative z-10">
+                                    "{{ $peminjamanDetail->alasan_penolakan }}"
+                                </p>
+                            </div>
+                        </div>
+                    @elseif ($peminjamanDetail->status === 'Canceled' && $peminjamanDetail->alasan_pembatalan)
+                        <div class="flex flex-col gap-4 mt-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-6 bg-gray-500 rounded-full"></div>
+                                <h3 class="text-xs font-black text-gray-600 uppercase tracking-[0.2em]">Catatan Pembatalan</h3>
+                            </div>
+                            <div class="p-6 bg-gray-100/50 rounded-[8px] border border-gray-200 ml-4 relative overflow-hidden group">
+                                <iconify-icon icon="solar:forbidden-circle-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-gray-400/10 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
+                                <p class="text-sm font-bold text-gray-600 italic leading-relaxed relative z-10">
+                                    "{{ $peminjamanDetail->alasan_pembatalan }}"
+                                </p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Footer --}}
                 <div class="p-8 bg-gray-50/80 border-t border-gray-100 flex items-center justify-between gap-4 backdrop-blur-md">
                     <button type="button" wire:click="closeDetail"
-                        class="px-8 py-4 bg-white border border-gray-200 text-gray-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-100 transition-all shadow-sm">
+                        class="px-8 py-4 bg-white border border-gray-200 text-gray-500 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-100 transition-all shadow-sm">
                         Tutup Panel
                     </button>
 
@@ -230,8 +253,8 @@
                                         buttonsStyling: false,
                                         reverseButtons: true,
                                         customClass: {
-                                            confirmButton: 'inline-flex items-center px-8 py-4 bg-red-600 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl shadow-[0_8px_20px_rgba(220,38,38,0.2)] hover:bg-red-700 transition-all ml-3',
-                                            cancelButton: 'inline-flex items-center px-8 py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-200 transition-all'
+                                            confirmButton: 'inline-flex items-center px-8 py-4 bg-red-600 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-[0_8px_20px_rgba(220,38,38,0.2)] hover:bg-red-700 transition-all ml-3',
+                                            cancelButton: 'inline-flex items-center px-8 py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
                                         }
                                     }).then((result) => {
                                         if (result.isConfirmed) {
@@ -239,14 +262,14 @@
                                         }
                                     });
                                 "
-                                class="px-8 py-4 bg-red-50 border border-red-100 text-red-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-600 hover:text-white transition-all duration-500 shadow-sm flex items-center gap-2 group">
+                                class="px-8 py-4 bg-red-50 border border-red-100 text-red-500 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-600 hover:text-white transition-all duration-500 shadow-sm flex items-center gap-2 group">
                                 <iconify-icon icon="solar:trash-bin-trash-bold-duotone" class="text-lg group-hover:animate-bounce"></iconify-icon>
                                 Batalkan Reservasi
                             </button>
                         @endif
 
                         @if ($peminjamanDetail->status === 'Waiting')
-                            <div class="flex items-center gap-2 px-6 py-4 bg-amber-50 border border-amber-100 rounded-2xl shadow-sm">
+                            <div class="flex items-center gap-2 px-6 py-4 bg-amber-50 border border-amber-100 rounded-[8px] shadow-sm">
                                 <iconify-icon icon="solar:info-circle-bold-duotone" class="text-amber-500 text-lg"></iconify-icon>
                                 <span class="text-[9px] font-black text-amber-600 uppercase tracking-widest">Pending Review</span>
                             </div>
@@ -290,7 +313,7 @@
                 confirmButtonText: 'OK',
                 buttonsStyling: false,
                 customClass: {
-                    confirmButton: 'inline-flex items-center px-8 py-4 bg-gray-900 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl shadow-lg hover:bg-black transition-all'
+                    confirmButton: 'inline-flex items-center px-8 py-4 bg-gray-900 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-lg hover:bg-black transition-all'
                 }
             });
         });

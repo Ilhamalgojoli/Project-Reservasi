@@ -32,6 +32,12 @@ class CancelBooking extends Component
         $this->resetPage();
     }
 
+    public function resetFilter()
+    {
+        $this->reset(['search', 'filterFakultas', 'filterJenis', 'filterHari']);
+        $this->resetPage();
+    }
+
     #[Computed]
     public function datas()
     {
@@ -72,6 +78,7 @@ class CancelBooking extends Component
             $this->closeCancelModal();
             $this->dispatch('success', message: 'Reservasi berhasil dibatalkan');
         } catch (\Exception $e) {
+            $this->closeCancelModal();
             $this->dispatch('error', message: $e->getMessage());
         }
     }

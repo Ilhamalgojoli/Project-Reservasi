@@ -43,7 +43,7 @@ class AuthController extends Controller
             return redirect()->route('role-option');
         } catch (\Exception $e) {
             return redirect()->route('login')
-                ->withErrors(['signIn' => $e->getMessage()])
+                ->withErrors(['signIn' => 'Terjadi kesalahan saat memproses login.'])
                 ->withInput();
         }
     }

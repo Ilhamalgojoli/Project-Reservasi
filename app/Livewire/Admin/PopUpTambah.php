@@ -37,10 +37,10 @@ class PopUpTambah extends Component
         return [
             'nama.required' => 'Nama wajib diisi.',
             'kode.required' => 'Kode Gedung wajib diisi.',
-            'jumlahLantai.required' => 'Kode Gedung wajib diisi.',
-            'status.required' => 'Kode Gedung wajib diisi.',
-            'keterangan.required' => 'Kode Gedung wajib diisi.',
-            'lattitude.required' => 'Silakan pilih lokasi pada map.',
+            'jumlahLantai.required' => 'Jumlah Lantai wajib diisi.',
+            'status.required' => 'Status Operasional wajib diisi.',
+            'keterangan.required' => 'Deskripsi singkat wajib diisi.',
+            'latitude.required' => 'Silakan pilih lokasi pada map.',
             'longitude.required' => 'Silakan pilih lokasi pada map.'
         ];
     }

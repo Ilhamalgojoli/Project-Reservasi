@@ -28,17 +28,18 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         @foreach ($datas as $data)
             <div
-                class="group bg-white rounded-[15px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500">
+                class="group bg-white rounded-[8px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500"
+                style="border-radius: 8px;">
                 {{-- Image Container --}}
-                <div class="relative h-64 overflow-hidden">
+                <div class="relative h-64 overflow-hidden" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
                     <img src="{{ $data['gambar'] ? asset('storage/' . $data['gambar']) : asset('assets/basila_images/DefaultBuilding.png') }}"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 
                     {{-- Overlay Actions --}}
                     <div
-                        class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6">
+                        class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6">
                         <a href="{{ route('kelola-ruang', ['id' => $data['id']]) }}"
-                            class="flex items-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e51411] hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 shadow-lg">
+                            class="flex items-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e51411] hover:text-white transition-all transform translate-y-0 lg:translate-y-4 lg:group-hover:translate-y-0 duration-500 shadow-lg">
                             <iconify-icon icon="solar:home-2-bold" class="text-xl"></iconify-icon>
                             Kelola Ruangan
                         </a>

@@ -11,11 +11,38 @@ class HistoryPeminjamanUser extends Component
 {
     use WithPagination;
 
+    public $search = '';
+    public $filterStatus = '';
+    public $filterJenis = '';
+
+    protected $queryString = [
+        'search'       => ['except' => ''],
+        'filterStatus' => ['except' => ''],
+        'filterJenis'  => ['except' => ''],
+    ];
+
+    public function updating()
+    {
+        $this->resetPage();
+    }
+
+    public function resetFilter()
+    {
+        $this->reset(['search', 'filterStatus', 'filterJenis']);
+        $this->resetPage();
+    }
+
     #[Computed]
     public function peminjaman()
     {
         $service = new HistoryPeminjamanService();
-        return $service->getDataUser(session('user_identifier'), $this->getPage());
+        return $service->getDataUser(
+            session('user_identifier'),
+            $this->getPage(),
+            $this->search,
+            $this->filterStatus,
+            $this->filterJenis
+        );
     }
 
     public function render()

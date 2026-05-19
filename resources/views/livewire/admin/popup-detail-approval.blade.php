@@ -16,9 +16,9 @@
 
     @if ($isOpen && $peminjamanDetail)
         <section
-            class="popup fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center z-[1000] p-4 transition-all duration-500">
+            class="popup fixed inset-0 bg-gray-900/80 flex items-center justify-center z-[1000] p-4 transition-all duration-500">
             <div
-                class="bg-white w-full max-w-2xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden relative animate-slide-up border border-white/20">
+                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden relative animate-slide-up border border-white/20">
 
                 <div
                     class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-50 rounded-full blur-3xl opacity-60 pointer-events-none">
@@ -30,7 +30,7 @@
                 <div
                     class="p-8 relative flex items-center justify-between bg-white/80 backdrop-blur-md border-b border-gray-100">
                     <div class="flex items-center gap-4">
-                        <div class="p-3 bg-emerald-50 rounded-[20px] shadow-sm italic text-emerald-600">
+                        <div class="p-3 bg-emerald-50 rounded-[8px] shadow-sm italic text-emerald-600">
                             <iconify-icon icon="solar:shield-check-bold-duotone" class="text-3xl"></iconify-icon>
                         </div>
                         <div>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <button type="button" wire:click="closeDetail"
-                        class="w-12 h-12 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-400 border border-gray-100 hover:bg-red-50 hover:text-red-500 transition-all duration-300 group">
+                        class="w-12 h-12 flex items-center justify-center rounded-[8px] bg-gray-50 text-gray-400 border border-gray-100 hover:bg-red-50 hover:text-red-500 transition-all duration-300 group">
                         <iconify-icon icon="solar:close-circle-bold"
                             class="text-2xl group-hover:rotate-90 transition-transform duration-300"></iconify-icon>
                     </button>
@@ -81,7 +81,7 @@
                                             class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->fakultas }}</span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-[10px] font-bold text-gray-400 uppercase">Program Studi</span>
+                                        <span class="text-[10px] font-bold text-gray-400 uppercase">{{ $peminjamanDetail->fakultas === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Program Studi' }}</span>
                                         <span
                                             class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->prodi }}</span>
                                     </div>
@@ -150,7 +150,7 @@
                             <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
                             Keperluan Peminjaman
                         </h3>
-                        <div class="p-6 bg-blue-50/30 rounded-[32px] border border-blue-100/50 ml-4">
+                        <div class="p-6 bg-blue-50/30 rounded-[8px] border border-blue-100/50 ml-4">
                             <p class="text-sm font-medium text-gray-700 italic leading-relaxed">
                                 "{{ $peminjamanDetail->keterangan_peminjaman }}"
                             </p>
@@ -160,7 +160,7 @@
 
                 <div class="p-8 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-4">
                     <button type="button" wire:click="closeDetail"
-                        class="px-8 py-4 bg-white border border-gray-200 text-gray-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm">
+                        class="px-8 py-4 bg-white border border-gray-200 text-gray-500 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm">
                         Batal
                     </button>
 
@@ -180,8 +180,8 @@
                                     buttonsStyling: false,
                                     reverseButtons: true,
                                     customClass: {
-                                        confirmButton: 'inline-flex items-center px-8 py-4 bg-red-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl shadow-sm hover:bg-red-600 transition-all ml-3',
-                                        cancelButton: 'inline-flex items-center px-8 py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-200 transition-all'
+                                        confirmButton: 'inline-flex items-center px-8 py-4 bg-red-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-red-600 transition-all ml-3',
+                                        cancelButton: 'inline-flex items-center px-8 py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
                                     },
                                     preConfirm: (alasan) => {
                                         if (!alasan) Swal.showValidationMessage('Alasan wajib diisi');
@@ -193,7 +193,7 @@
                                     }
                                 });
                             "
-                                class="px-8 py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 transition-all duration-300 shadow-sm flex items-center gap-2 group">
+                                class="px-8 py-4 bg-white border border-red-100 text-red-500 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 transition-all duration-300 shadow-sm flex items-center gap-2 group">
                                 <iconify-icon icon="solar:close-circle-bold-duotone"
                                     class="text-lg group-hover:rotate-90 transition-transform duration-300"></iconify-icon>
                                 Tolak
@@ -211,8 +211,8 @@
                                     buttonsStyling: false,
                                     reverseButtons: true,
                                     customClass: {
-                                        confirmButton: 'inline-flex items-center px-8 py-4 bg-emerald-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl shadow-sm hover:bg-emerald-600 transition-all ml-3',
-                                        cancelButton: 'inline-flex items-center px-8 py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-200 transition-all'
+                                        confirmButton: 'inline-flex items-center px-8 py-4 bg-emerald-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-emerald-600 transition-all ml-3',
+                                        cancelButton: 'inline-flex items-center px-8 py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
                                     }
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -220,7 +220,7 @@
                                     }
                                 });
                             "
-                                class="px-8 py-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm flex items-center gap-2 group">
+                                class="px-8 py-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm flex items-center gap-2 group">
                                 <iconify-icon icon="solar:check-circle-bold-duotone"
                                     class="text-lg group-hover:scale-110 transition-transform"></iconify-icon>
                                 Setujui

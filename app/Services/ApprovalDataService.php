@@ -10,18 +10,15 @@ class ApprovalDataService
     public function getData($search, $fakultas_id = null, $jenis_peminjaman = null, $hari = null)
     {
         $query = DataPeminjaman::with([
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'fakultas',
-            'prodi',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman', 'status', 'hari', 'fakultas_id', 'prodi_id');
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman', 'waktu_mulai', 'waktu_selesai', 'status', 'hari', 'fakultas', 'prodi');
 
         $query->where('status', 'Waiting');
 
         if ($fakultas_id) {
-            $query->where('fakultas_id', $fakultas_id);
+            $query->where('fakultas', $fakultas_id);
         }
 
         if ($jenis_peminjaman) {
@@ -50,22 +47,13 @@ class ApprovalDataService
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
             $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
             $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
-            $r->fakultas_name = $r->fakultas?->fakultas ?? '-';
-            $r->prodi_name = $r->prodi?->prodi ?? '-';
+            $r->fakultas_name = $r->fakultas ?? '-';
+            $r->prodi_name = $r->prodi ?? '-';
 
-            if ($r->waktuPeminjaman->isNotEmpty()) {
-                $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-                $start = Carbon::parse($waktu->first()->waktu_peminjaman);
-                $end = Carbon::parse($waktu->last()->waktu_peminjaman);
+            $r->jam_mulai = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
 
-                $r->jam_mulai = $start->format('H:i');
-                $r->jam_selesai = $end->format('H:i');
-            } else {
-                $r->jam_mulai = '-';
-                $r->jam_selesai = '-';
-            }
-
-            unset($r->ruangan, $r->waktuPeminjaman, $r->fakultas, $r->prodi);
+            unset($r->ruangan);
         }
 
         return $data_peminjaman;
@@ -74,18 +62,15 @@ class ApprovalDataService
     public function getApprovedData($search, $fakultas_id = null, $jenis_peminjaman = null, $hari = null)
     {
         $query = DataPeminjaman::with([
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'fakultas',
-            'prodi',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman', 'status', 'hari', 'fakultas_id', 'prodi_id');
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman', 'waktu_mulai', 'waktu_selesai', 'status', 'hari', 'fakultas', 'prodi');
 
         $query->where('status', 'Approve');
 
         if ($fakultas_id) {
-            $query->where('fakultas_id', $fakultas_id);
+            $query->where('fakultas', $fakultas_id);
         }
 
         if ($jenis_peminjaman) {
@@ -114,22 +99,13 @@ class ApprovalDataService
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
             $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
             $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
-            $r->fakultas_name = $r->fakultas?->fakultas ?? '-';
-            $r->prodi_name = $r->prodi?->prodi ?? '-';
+            $r->fakultas_name = $r->fakultas ?? '-';
+            $r->prodi_name = $r->prodi ?? '-';
 
-            if ($r->waktuPeminjaman->isNotEmpty()) {
-                $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-                $start = Carbon::parse($waktu->first()->waktu_peminjaman);
-                $end = Carbon::parse($waktu->last()->waktu_peminjaman);
+            $r->jam_mulai = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
 
-                $r->jam_mulai = $start->format('H:i');
-                $r->jam_selesai = $end->format('H:i');
-            } else {
-                $r->jam_mulai = '-';
-                $r->jam_selesai = '-';
-            }
-
-            unset($r->ruangan, $r->waktuPeminjaman, $r->fakultas, $r->prodi);
+            unset($r->ruangan);
         }
 
         return $data_peminjaman;
@@ -138,29 +114,22 @@ class ApprovalDataService
     public function getDetail($id)
     {
         $peminjaman = DataPeminjaman::with([
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'fakultas',
-            'prodi',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'email', 'kontak_penanggung_jawab', 'fakultas_id', 'prodi_id', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status', 'kode_matkul', 'hari')
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'email', 'kontak_penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status', 'kode_matkul', 'hari', 'alasan_penolakan', 'alasan_pembatalan', 'waktu_mulai', 'waktu_selesai')
             ->findOrFail($id);
 
         $peminjaman->kode_ruangan = $peminjaman->ruangan?->kode_ruangan ?? '-';
         $peminjaman->nama_gedung = $peminjaman->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
         $peminjaman->lantai = $peminjaman->ruangan?->lantai?->lantai ?? '-';
-        $peminjaman->fakultas = $peminjaman->fakultas?->fakultas ?? '-';
-        $peminjaman->prodi = $peminjaman->prodi?->prodi ?? '-';
+        $peminjaman->fakultas = $peminjaman->fakultas ?? '-';
+        $peminjaman->prodi = $peminjaman->prodi ?? '-';
 
-        if ($peminjaman->waktuPeminjaman->isNotEmpty()) {
-            $waktu = $peminjaman->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-            $start = Carbon::parse($waktu->first()->waktu_peminjaman);
-            $end = Carbon::parse($waktu->last()->waktu_peminjaman);
-
-            $peminjaman->jam_mulai = $start->format('H:i');
-            $peminjaman->jam_selesai = $end->format('H:i');
-            $peminjaman->total_menit = $waktu->count() * 30 - 30;
+        if ($peminjaman->waktu_mulai && $peminjaman->waktu_selesai) {
+            $peminjaman->jam_mulai = Carbon::parse($peminjaman->waktu_mulai)->format('H:i');
+            $peminjaman->jam_selesai = Carbon::parse($peminjaman->waktu_selesai)->format('H:i');
+            $peminjaman->total_menit = Carbon::parse($peminjaman->waktu_mulai)->diffInMinutes(Carbon::parse($peminjaman->waktu_selesai));
         } else {
             $peminjaman->jam_mulai = '-';
             $peminjaman->jam_selesai = '-';

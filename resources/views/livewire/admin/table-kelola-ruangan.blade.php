@@ -8,7 +8,7 @@
     </div>
 
     {{-- Modern Table --}}
-    <div class="overflow-hidden rounded-[8px] border border-gray-100 bg-white shadow-sm">
+    <div class="overflow-x-auto rounded-[8px] border border-gray-100 bg-white shadow-sm">
         <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1 w-full text-black">
             <thead class="bg-gray-50 uppercase text-[12px] font-bold text-gray-700"></thead>
             <tr
@@ -125,13 +125,10 @@
         </table>
     </div>
 
-    {{-- Improved Pagination --}}
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 px-2 mt-4">
-        <div class="text-[10px] font-medium uppercase tracking-widest text-gray-400">
-            Halaman {{ $datas->currentPage() }} dari {{ $datas->lastPage() }}
-        </div>
-        <div class="w-full md:w-auto text-black">
-            {{ $datas->links(data: ['scrollTo' => false]) }}
+    {{-- Pagination Card --}}
+    <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3">
+        <div class="text-black">
+            {{ $datas->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
         </div>
     </div>
 </div>

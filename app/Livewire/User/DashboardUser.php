@@ -9,10 +9,10 @@ use Livewire\Component;
 
 class DashboardUser extends Component
 {
-    public function render()
+    public function render(DashboardUserService $userService)
     {
         return view('livewire.user.dashboard-user', 
-            (new DashboardUserService())->getDashboardData(session('user_identifier'))
+            $userService->getDashboardData(session('user_identifier'))
         );
     }
 

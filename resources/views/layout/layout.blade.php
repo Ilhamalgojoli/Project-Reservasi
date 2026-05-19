@@ -13,7 +13,7 @@
     <main class="dashboard-main">
 
         <!-- ..::  navbar start ::.. -->
-        <x-navbar />
+        <x-navbar class="z-50" />
         <!-- ..::  navbar end ::.. -->
         <div class="dashboard-main-body">
 

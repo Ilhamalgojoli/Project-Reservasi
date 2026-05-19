@@ -15,11 +15,11 @@
         <div class="flex items-center gap-2">
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-amber-400"></div>
-                <span class="text-[8px] font-bold text-gray-400 uppercase">Wait</span>
+                <span class="text-[8px] font-bold text-gray-400 uppercase">Menunggu</span>
             </div>
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-[#e51411]"></div>
-                <span class="text-[8px] font-bold text-gray-400 uppercase">Used</span>
+                <span class="text-[8px] font-bold text-gray-400 uppercase">Terpakai</span>
             </div>
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-blue-500"></div>
@@ -60,13 +60,17 @@
                                     @php
                                         $booking = $bookings[$date['full']][$slot] ?? null;
                                         $statusClass = '';
+                                        $statusDisplay = '';
                                         if ($booking) {
                                             if ($booking['status'] === 'Approve') {
                                                 $statusClass = 'bg-[#e51411]';
+                                                $statusDisplay = 'Disetujui';
                                             } elseif ($booking['status'] === 'Waiting') {
                                                 $statusClass = 'bg-amber-400';
+                                                $statusDisplay = 'Menunggu';
                                             } elseif ($booking['status'] === 'MatkulWajib') {
                                                 $statusClass = 'bg-blue-500';
+                                                $statusDisplay = 'Mata Kuliah Wajib';
                                             }
                                         }
                                     @endphp
@@ -74,7 +78,7 @@
                                     <div class="p-0.5 border-r last:border-0 border-gray-50 min-h-[30px]">
                                         @if ($booking)
                                             <div class="w-full h-full rounded-md {{ $statusClass }} shadow-sm cursor-help relative group/box transition-transform hover:scale-105"
-                                                 title="{{ $booking['user'] }} ({{ $booking['status'] }})">
+                                                 title="{{ $booking['user'] }} ({{ $statusDisplay }})">
                                                 <div class="absolute inset-0 bg-white/10 opacity-0 group-hover/box:opacity-100 transition-opacity"></div>
                                             </div>
                                         @else

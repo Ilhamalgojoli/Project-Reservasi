@@ -10,7 +10,7 @@
     </div>
 
     <main class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-6">
-        <section class="col-span-12 rounded-[8px] bg-white shadow-md p-8">
+        <section class="col-span-12">
             @if (session('role_name') === 'BAA')
                 @livewire('admin.history-peminjaman-admin')
             @else

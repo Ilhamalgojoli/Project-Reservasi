@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class="relative overflow-hidden group" wire:ignore>
+    <div class="relative overflow-hidden group z-10" wire:ignore>
         <div id="map"
             class="h-[300px] w-full bg-gray-100 rounded-xl border border-gray-200 shadow-inner group-hover:border-blue-200 transition-colors duration-500">
         </div>

@@ -33,8 +33,17 @@ class RuanganController extends Controller
                 'status' => 'required|string',
                 'muatan_kapasitas' => 'required|integer',
                 'lantai' => 'required|integer',
-                'nama_asset' => 'required|array',
-                'total_asset' => 'required|array',
+                'nama_asset' => 'nullable|array',
+                'total_asset' => 'nullable|array',
+            ], [
+                'kode_ruangan.required' => 'Kode Ruangan wajib diisi.',
+                'kode_ruangan.unique' => 'Kode Ruangan sudah terdaftar.',
+                'status.required' => 'Status wajib dipilih.',
+                'muatan_kapasitas.required' => 'Kapasitas wajib diisi.',
+                'muatan_kapasitas.integer' => 'Kapasitas harus berupa angka.',
+                'lantai.required' => 'Lantai wajib dipilih.',
+                'nama_asset.required' => 'Nama asset wajib diisi.',
+                'total_asset.required' => 'Total asset wajib diisi.',
             ]);
 
             $service = $this->service()->store($validate);
@@ -48,13 +57,14 @@ class RuanganController extends Controller
             if ($e instanceof ValidationException) {
                 return response()->json([
                     'success' => false,
-                    'message' => isset($e->errors()['muatan_kapasitas']) ? 'Isi jumlah kapasitas dengan sebuah angka!' : 'Lengkapi form!',
+                    'message' => 'Terdapat kesalahan pada isian form!',
+                    'errors' => $e->errors(),
                 ], 422);
             }
 
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'Terjadi kesalahan sistem saat menyimpan data.',
             ], 500);
         }
     }
@@ -81,8 +91,15 @@ class RuanganController extends Controller
                 'status' => 'required|string',
                 'kapasitas' => 'required|integer',
                 'asset_id' => 'nullable|array',
-                'nama_asset' => 'required|array',
-                'total_asset' => 'required|array',
+                'nama_asset' => 'nullable|array',
+                'total_asset' => 'nullable|array',
+            ], [
+                'kode_ruangan.required' => 'Kode Ruangan wajib diisi.',
+                'status.required' => 'Status wajib dipilih.',
+                'kapasitas.required' => 'Kapasitas wajib diisi.',
+                'kapasitas.integer' => 'Kapasitas harus berupa angka.',
+                'nama_asset.required' => 'Nama asset wajib diisi.',
+                'total_asset.required' => 'Total asset wajib diisi.',
             ]);
 
             $this->service()->update($validate);
@@ -92,9 +109,17 @@ class RuanganController extends Controller
                 'message' => 'Ruangan berhasil diupdate!',
             ], 200);
         } catch (\Exception $e) {
+            if ($e instanceof ValidationException) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terdapat kesalahan pada isian form!',
+                    'errors' => $e->errors(),
+                ], 422);
+            }
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'Terjadi kesalahan sistem saat menyimpan pembaruan.',
             ], 500);
         }
     }

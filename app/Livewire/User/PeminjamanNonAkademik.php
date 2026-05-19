@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 
 
 class PeminjamanNonAkademik extends Component
@@ -14,7 +15,9 @@ class PeminjamanNonAkademik extends Component
     public $ruanganID = null;
     public $maxKapasitas;
     public $jenisPeminjaman;
+    #[Reactive]
     public $fakultas;
+    #[Reactive]
     public $prodi;
     public $dropdownOpen = false;
     public $jamList = [];
@@ -50,6 +53,7 @@ class PeminjamanNonAkademik extends Component
         $this->jenisPeminjaman = $jenisPeminjaman;
         $this->fakultas = $fakultas;
         $this->prodi = $prodi;
+        $this->penanggungJawab = (string) session('username');
         $this->userIdentifier = (string) session('user_identifier');
     }
 
@@ -70,7 +74,6 @@ class PeminjamanNonAkademik extends Component
             $data = $this->validate();
 
             if ($this->service()->create($data, session('role_name'))) {
-                $this->service()->createKegiatan($this->penanggungJawab, $this->ruanganID);
                 $this->sendSuccessResponse();
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -112,6 +115,29 @@ class PeminjamanNonAkademik extends Component
     public function toggleDropdown()
     {
         $this->dropdownOpen = !$this->dropdownOpen;
+    }
+
+    public function updatedPilihJam($value)
+    {
+        if (count($this->pilihJam) > 2) {
+            $latest = end($this->pilihJam);
+            $this->pilihJam = [$latest];
+        }
+    }
+
+    public function getFormattedRange()
+    {
+        if (empty($this->pilihJam)) {
+            return '';
+        }
+
+        $jam = array_unique($this->pilihJam);
+        sort($jam);
+
+        $start = $jam[0];
+        $end = count($jam) > 1 ? end($jam) : \Carbon\Carbon::parse($start)->addMinutes(30)->format('H:i');
+
+        return $start . ' - ' . $end;
     }
 
     public function render()

@@ -25,7 +25,7 @@
                 <h2 class="text-sm font-bold uppercase tracking-widest text-gray-800">Pemilihan Identitas & Jenis</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-1">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-1" x-data="{ fakultas: @entangle('fakultas') }">
                 <div class="flex flex-col gap-2">
                     <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Fakultas /
                         Direktorat</label>
@@ -34,14 +34,13 @@
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
                         <select wire:model.live="fakultas"
                             @if (session('faculty')) disabled @else selected @endif
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none appearance-none">
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none ">
                             <option value="">Pilih Fakultas / Direktorat</option>
                             @foreach ($faculties as $data)
                                 <option value="{{ $data['id'] }}">{{ $data['fakultas'] }}</option>
                             @endforeach
+                            <option value="DIREKTORAT KHUSUS">LAINNYA</option>
                         </select>
-                        <iconify-icon icon="mdi:chevron-down"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
                     @if ($errorFakultas)
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $errorFakultas }}</p>
@@ -49,21 +48,29 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Program
-                        Studi</label>
+                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1" x-text="fakultas === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Program Studi'">
+                    </label>
                     <div class="relative group">
-                        <iconify-icon icon="mdi:folder-account-outline"
-                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                        <select wire:model.live="prodi" @if (session('studyProgram')) disabled @else selected @endif
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none appearance-none">
-                            <option value="">Pilih Prodi</option>
-                            @foreach ($prodies as $data)
-                                <option value="{{ $data['id'] }}">
-                                    {{ $data['prodi'] }}</option>
-                            @endforeach
-                        </select>
-                        <iconify-icon icon="mdi:chevron-down"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>
+                        <div x-show="fakultas === 'DIREKTORAT KHUSUS'" style="display: none;">
+                            <input wire:model.blur="prodi" type="text"
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl 
+                            text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 
+                            focus:border-[#e51411] transition-all outline-none"
+                                placeholder="Contoh: PuTi" />
+                        </div>
+                        <div x-show="fakultas !== 'DIREKTORAT KHUSUS'" style="display: none;">
+                            <iconify-icon icon="mdi:folder-account-outline"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
+                            <select wire:model.live="prodi"
+                                @if (session('studyProgram')) disabled @else selected @endif
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none ">
+                                <option value="">Pilih Prodi</option>
+                                @foreach ($prodies as $data)
+                                    <option value="{{ $data['id'] }}">
+                                        {{ $data['prodi'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     @if ($errorProdi)
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $errorProdi }}</p>
@@ -104,7 +111,7 @@
             <div class="px-1 animate-in fade-in slide-in-from-bottom-5 duration-700">
                 @if ($jenisPeminjaman === 'akademik')
                     <livewire:user.peminjaman-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
-                        :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman . '-' . $prodi" />
+                        :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman" />
                 @endif
 
                 @if ($jenisPeminjaman === 'non-akademik')

@@ -12,7 +12,7 @@ class ApproveRejectService
 {
     public function approve($id)
     {
-        $peminjaman = DataPeminjaman::with(['waktuPeminjaman', 'ruangan.lantai.gedung'])->findOrFail($id);
+        $peminjaman = DataPeminjaman::with(['ruangan.lantai.gedung'])->findOrFail($id);
         $peminjaman->update(['status' => 'Approve']);
 
         $this->prepareEmailData($peminjaman);
@@ -28,7 +28,7 @@ class ApproveRejectService
 
     public function reject($id, $alasan)
     {
-        $peminjaman = DataPeminjaman::with(['waktuPeminjaman', 'ruangan.lantai.gedung'])->findOrFail($id);
+        $peminjaman = DataPeminjaman::with(['ruangan.lantai.gedung'])->findOrFail($id);
         $peminjaman->update([
             'status' => 'Reject',
             'alasan_penolakan' => $alasan,
@@ -47,7 +47,7 @@ class ApproveRejectService
 
     public function cancel($id, $userIdentifier = null, $reason = '-', $isAdmin = false)
     {
-        $data = DataPeminjaman::with(['waktuPeminjaman', 'ruangan.lantai.gedung'])->find($id);
+        $data = DataPeminjaman::with(['ruangan.lantai.gedung'])->find($id);
 
         if (!$data) {
             throw new \Exception("Data peminjaman tidak ditemukan.");
@@ -83,15 +83,27 @@ class ApproveRejectService
         return true;
     }
 
+    public function autoRejectExpire()
+    {
+        $now = Carbon::now();
+
+        $peminjamanExpire = DataPeminjaman::select('id')
+            ->where('status', 'Waiting')
+            ->where('tanggal_peminjaman', '<', $now->toDateString())
+            ->get();
+
+        if ($peminjamanExpire->isEmpty()) {
+            return;
+        }
+
+        foreach ($peminjamanExpire as $e) {
+            $this->reject($e->id, "Data Peminjaman ini telah expired,dan otomatis tertolak, silahkan mengajukan ulang peminjaman");
+        }
+    }
+
     private function prepareEmailData($peminjaman)
     {
-        if ($peminjaman->waktuPeminjaman->isNotEmpty()) {
-            $waktu = $peminjaman->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-            $peminjaman->jam_mulai = Carbon::parse($waktu->first()->waktu_peminjaman)->format('H:i');
-            $peminjaman->jam_selesai = Carbon::parse($waktu->last()->waktu_peminjaman)->format('H:i');
-        } else {
-            $peminjaman->jam_mulai = '-';
-            $peminjaman->jam_selesai = '-';
-        }
+        $peminjaman->jam_mulai = $peminjaman->waktu_mulai ? Carbon::parse($peminjaman->waktu_mulai)->format('H:i') : '-';
+        $peminjaman->jam_selesai = $peminjaman->waktu_selesai ? Carbon::parse($peminjaman->waktu_selesai)->format('H:i') : '-';
     }
 }

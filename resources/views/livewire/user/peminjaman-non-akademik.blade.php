@@ -4,7 +4,6 @@
         {{-- Section 1: Lokasi & Jadwal --}}
         <div class="space-y-6">
             <div class="flex items-center gap-2 pb-2 border-b border-gray-100">
-                <iconify-icon icon="solar:map-point-bold-duotone" class="text-[#e51411] text-xl"></iconify-icon>
                 <h2 class="text-sm font-bold uppercase tracking-wider text-gray-700">Lokasi & Jadwal Kegiatan</h2>
             </div>
 
@@ -16,14 +15,12 @@
                         <iconify-icon icon="mdi:stairs"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <select wire:model.live="lantaiID"
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all appearance-none outline-none">
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none">
                             <option selected>Pilih Lantai</option>
                             @foreach ($lantai as $data)
                                 <option value="{{ $data['id'] }}">{{ $data['lantai'] }}</option>
                             @endforeach
                         </select>
-                        <iconify-icon icon="mdi:chevron-down"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
                     @error('lantaiID')
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p>
@@ -37,14 +34,12 @@
                         <iconify-icon icon="mdi:office-building-marker"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <select wire:model.live="ruanganID"
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all appearance-none outline-none">
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none">
                             <option selected>Pilih Ruangan</option>
                             @foreach ($ruangan as $data)
                                 <option value="{{ $data['id'] }}">{{ $data['kode_ruangan'] }}</option>
                             @endforeach
                         </select>
-                        <iconify-icon icon="mdi:chevron-down"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></iconify-icon>
                     </div>
                     @error('ruanganID')
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p>
@@ -69,26 +64,27 @@
 
                 {{-- Jam Peminjaman --}}
                 <div class="flex flex-col gap-2 lg:col-span-1">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Jam / Shift</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Waktu Mulai - Waktu Selesai</label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:clock-time-four"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
-                        <input type="text" value="{{ implode(', ', $pilihJam ?? []) }}" readonly
+                        <input type="text" value="{{ $this->getFormattedRange() }}" readonly
                             placeholder="Pilih Jam ..."
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none cursor-pointer"
                             wire:click="toggleDropdown" />
 
                         @if ($dropdownOpen)
                             <div
-                                class="absolute w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-48 overflow-y-auto z-20 p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                                class="absolute w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-48 overflow-y-auto z-10 p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-200">
                                 @foreach ($jamList as $jam)
                                     <label
-                                        class="flex items-center px-3 py-2 hover:bg-red-50 rounded-lg cursor-pointer transition-colors group/item">
+                                        class="flex items-center px-3 py-2 rounded-lg transition-colors group/item z- {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-red-50 cursor-pointer' }}">
                                         <input type="checkbox" value="{{ $jam }}"
-                                            class="w-4 h-4 text-[#e51411] border-gray-300 rounded focus:ring-[#e51411]"
-                                            wire:model.live="pilihJam" />
+                                            class="w-4 h-4 text-[#e51411] border-gray-300 rounded focus:ring-[#e51411] disabled:opacity-50 disabled:cursor-not-allowed"
+                                            wire:model.live="pilihJam"
+                                            {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? 'disabled' : '' }} />
                                         <span
-                                            class="ml-3 text-sm font-bold text-gray-600 group-hover/item:text-[#e51411]">{{ $jam }}</span>
+                                            class="ml-3 text-sm font-bold text-gray-600 {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? '' : 'group-hover/item:text-[#e51411]' }}">{{ $jam }}</span>
                                     </label>
                                 @endforeach
                             </div>
@@ -103,7 +99,6 @@
 
         <div class="space-y-6">
             <div class="flex items-center gap-2 pb-2 border-b border-gray-100">
-                <iconify-icon icon="solar:user-bold-duotone" class="text-[#e51411] text-xl"></iconify-icon>
                 <h2 class="text-sm font-bold uppercase tracking-wider text-gray-700">Kapasitas & Penanggung Jawab</h2>
             </div>
 

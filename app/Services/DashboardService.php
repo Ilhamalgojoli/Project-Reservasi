@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
+    protected ApproveRejectService $approveRejectService;
+
+    public function __construct(ApproveRejectService $approveRejectService)
+    {
+        $this->approveRejectService = $approveRejectService;
+    }
+
     public function updateStatusFinish(): void
     {
         $today = date('Y-m-d');
@@ -24,16 +31,11 @@ class DashboardService
             ->where('tanggal_peminjaman', '<', $today)
             ->pluck('id');
 
-        # ID of today's reservations that have ended (plus 30 min buffer)
+        # ID of today's reservations that have ended
         $idsToday = DataPeminjaman::select('id')
             ->where('status', 'Approve')
             ->where('tanggal_peminjaman', $today)
-            ->whereNotExists(function ($query) use ($nowTime) {
-                $query->select(DB::raw(1))
-                    ->from('waktu_peminjaman')
-                    ->whereColumn('waktu_peminjaman.peminjaman_id', 'data_peminjaman.id')
-                    ->whereRaw("DATE_ADD(waktu_peminjaman.waktu_peminjaman, INTERVAL 30 MINUTE) >= ?", [$nowTime]);
-            })
+            ->where('waktu_selesai', '<', $nowTime)
             ->pluck('id');
 
         $allIds = $idsPast->merge($idsToday);
@@ -41,9 +43,12 @@ class DashboardService
         if ($allIds->isNotEmpty()) {
             DataPeminjaman::whereIn('id', $allIds)->update(['status' => 'Finish']);
         }
+
+        # Jalankan otomatis reject untuk peminjaman yang expired
+        $this->approveRejectService->autoRejectExpire();
     }
 
-    public function ambilData(string $jenis)
+    public function ambilData(string $jenis, ?string $lantai = null, ?string $status = null)
     {
         $this->updateStatusFinish();
 
@@ -51,55 +56,103 @@ class DashboardService
         $today = Carbon::today()->toDateString();
         $limitDate = Carbon::today()->addDays(5)->toDateString();
 
-        return DataPeminjaman::with([
-            'fakultas',
-            'prodi',
+        $query = DataPeminjaman::with([
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,lantai,gedung_id',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'waktuPeminjaman:peminjaman_id,waktu_peminjaman',
             'mataKuliah:kode_matkul,nama_matkul'
         ])
-            ->select('id', 'penanggung_jawab', 'fakultas_id', 'prodi_id', 'ruangan_id', 'tanggal_peminjaman', 'status', 'jenis_peminjaman', 'kode_matkul', 'muatan', 'kontak_penanggung_jawab', 'hari', 'lantai')
+            ->select('id', 'penanggung_jawab', 'fakultas', 'prodi', 'ruangan_id', 'tanggal_peminjaman', 'status', 'jenis_peminjaman', 'kode_matkul', 'muatan', 'kontak_penanggung_jawab', 'hari', 'lantai', 'waktu_mulai', 'waktu_selesai')
             ->where('jenis_peminjaman', $jenis)
             ->whereIn('status', ['Approve', 'Finish'])
-            ->whereBetween('tanggal_peminjaman', [$today, $limitDate])
-            ->orderBy('tanggal_peminjaman', 'asc')
-            ->paginate(10, ['*'], $pageName)
-            ->through(function ($item) {
-                $waktu = $item->waktuPeminjaman->sortBy('waktu_peminjaman');
+            ->whereBetween('tanggal_peminjaman', [$today, $limitDate]);
 
-                if ($waktu->isNotEmpty()) {
-                    $start = Carbon::parse($item->tanggal_peminjaman . ' ' . $waktu->first()->waktu_peminjaman);
-                    $end = Carbon::parse($item->tanggal_peminjaman . ' ' . $waktu->last()->waktu_peminjaman)->addMinutes(30);
-
-                    $item->waktu_mulai = $start->format('H:i');
-                    $item->waktu_selesai = $end->format('H:i');
-
-                    $now = Carbon::now();
-                    if ($now->lt($start)) {
-                        $item->status_display = 'Di Jadwalkan';
-                    } elseif ($now->between($start, $end)) {
-                        $item->status_display = 'Sedang Berlangsung';
-                    } else {
-                        $item->status_display = 'Selesai';
-                    }
-                } else {
-                    $item->waktu_mulai = '-';
-                    $item->waktu_selesai = '-';
-                    $item->status_display = 'Tidak Ada Jadwal';
-                }
-
-                $item->fakultas_name = $item->fakultas?->fakultas ?? '-';
-                $item->prodi_name = $item->prodi?->prodi ?? '-';
-                $item->nama_gedung = $item->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
-                $item->kode_ruangan = $item->ruangan?->kode_ruangan ?? '-';
-                $item->nama_matkul = $item->mataKuliah?->nama_matkul ?? '-';
-
-                unset($item->fakultas, $item->prodi, $item->ruangan, $item->waktuPeminjaman, $item->mataKuliah);
-
-                return $item;
+        if ($lantai) {
+            $query->whereHas('ruangan.lantai', function ($q) use ($lantai) {
+                $q->where('lantai', $lantai);
             });
+        }
+
+        $query = $this->applyStatusFilter($query, $status);
+
+        return $query->orderBy('tanggal_peminjaman', 'asc')
+            ->paginate(10, ['*'], $pageName)
+            ->through(fn ($item) => $this->formatPeminjamanItem($item));
+    }
+
+    # Terapkan filter status peminjaman ke query builder.
+    private function applyStatusFilter($query, ?string $status)
+    {
+        if (!$status) {
+            return $query;
+        }
+
+        $now = Carbon::now();
+        $nowDate = $now->toDateString();
+        $nowTime = $now->format('H:i:s');
+
+        if ($status === 'Di Jadwalkan') {
+            return $query->where(function ($q) use ($nowDate, $nowTime) {
+                $q->where('tanggal_peminjaman', '>', $nowDate)
+                    ->orWhere(function ($q2) use ($nowDate, $nowTime) {
+                        $q2->where('tanggal_peminjaman', '=', $nowDate)
+                            ->where('waktu_mulai', '>', $nowTime);
+                    });
+            });
+        }
+
+        if ($status === 'Sedang Berlangsung') {
+            return $query->where('tanggal_peminjaman', '=', $nowDate)
+                ->where('waktu_mulai', '<=', $nowTime)
+                ->where('waktu_selesai', '>=', $nowTime);
+        }
+
+        if ($status === 'Selesai') {
+            return $query->where(function ($q) use ($nowDate, $nowTime) {
+                $q->where('tanggal_peminjaman', '<', $nowDate)
+                    ->orWhere(function ($q2) use ($nowDate, $nowTime) {
+                        $q2->where('tanggal_peminjaman', '=', $nowDate)
+                            ->where('waktu_selesai', '<', $nowTime);
+                    });
+            });
+        }
+
+        return $query;
+    }
+
+    # Format/transformasikan item peminjaman untuk representasi UI.
+    private function formatPeminjamanItem($item)
+    {
+        if ($item->waktu_mulai && $item->waktu_selesai) {
+            $start = Carbon::parse($item->tanggal_peminjaman . ' ' . $item->waktu_mulai);
+            $end = Carbon::parse($item->tanggal_peminjaman . ' ' . $item->waktu_selesai);
+
+            $item->waktu_mulai = Carbon::parse($item->waktu_mulai)->format('H:i');
+            $item->waktu_selesai = Carbon::parse($item->waktu_selesai)->format('H:i');
+
+            $now = Carbon::now();
+            if ($now->lt($start)) {
+                $item->status_display = 'Di Jadwalkan';
+            } elseif ($now->between($start, $end)) {
+                $item->status_display = 'Sedang Berlangsung';
+            } else {
+                $item->status_display = 'Selesai';
+            }
+        } else {
+            $item->waktu_mulai = '-';
+            $item->waktu_selesai = '-';
+            $item->status_display = 'Tidak Ada Jadwal';
+        }
+
+        $item->fakultas_name = $item->fakultas ?? '-';
+        $item->prodi_name = $item->prodi ?? '-';
+        $item->nama_gedung = $item->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
+        $item->kode_ruangan = $item->ruangan?->kode_ruangan ?? '-';
+        $item->nama_matkul = $item->mataKuliah?->nama_matkul ?? '-';
+
+        unset($item->fakultas, $item->prodi, $item->ruangan, $item->mataKuliah);
+
+        return $item;
     }
 
     public function ambilDataMatkulWajib(?string $lantai = null, ?string $status = null)

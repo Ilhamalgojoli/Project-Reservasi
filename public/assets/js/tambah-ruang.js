@@ -7,18 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const formAsset = document.getElementById('form-asset');
 
     btnSubmit.addEventListener('click', async () => {
-        // Validasi input kosong
-        if (idRuangan.value === "" || status.value === "" || kapasitas.value === "") {
-            Swal.fire({
-                title: 'Gagal!',
-                text: 'Form tidak boleh kosong!',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                buttonsStyling: false,
-                customClass: { confirmButton: 'btn-ok' }
-            });
-            return;
-        }
+        // Hapus pesan error sebelumnya
+        document.querySelectorAll('.error-msg').forEach(el => el.remove());
 
         // Konfirmasi sebelum submit
         Swal.fire({
@@ -58,6 +48,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (!req.ok) {
                         const err = await req.json().catch(() => ({}));
+                        
+                        if (req.status === 422 && err.errors) {
+                            for (const field in err.errors) {
+                                const fieldMap = {
+                                    'lantai': 'lantai',
+                                    'kode_ruangan': 'idRuangan',
+                                    'status': 'status',
+                                    'muatan_kapasitas': 'kapasitas'
+                                };
+                                
+                                const elementId = fieldMap[field] || field;
+                                const inputEl = document.getElementById(elementId);
+                                
+                                if (inputEl) {
+                                    const errorSpan = document.createElement('span');
+                                    errorSpan.className = 'error-msg text-[10px] text-red-500 font-bold uppercase ml-1 block mt-1';
+                                    errorSpan.textContent = err.errors[field][0];
+                                    
+                                    // Append di bawah div container input
+                                    inputEl.closest('div.flex-1.flex.flex-col.gap-2, div.flex.flex-col.gap-2').appendChild(errorSpan);
+                                }
+                            }
+                            throw new Error(err.message || 'Lengkapi form dengan benar!');
+                        }
+
                         throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
                     }
 

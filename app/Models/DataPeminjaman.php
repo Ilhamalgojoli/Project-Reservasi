@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\WaktuPeminjaman;
 use App\Models\Ruangan;
 use App\Models\Monitor;
 use Illuminate\Database\Eloquent\Model;
@@ -14,8 +13,8 @@ class DataPeminjaman extends Model
 
     protected $table = 'data_peminjaman';
     protected $fillable = [
-        'fakultas_id',
-        'prodi_id',
+        'fakultas',
+        'prodi',
         'jenis_peminjaman',
         'kode_matkul',
         'lantai',
@@ -32,27 +31,15 @@ class DataPeminjaman extends Model
         'alasan_pembatalan',
         'cancel_by',
         'alasan_penolakan',
-        'keterangan_peminjaman'
+        'keterangan_peminjaman',
+        'waktu_mulai',
+        'waktu_selesai',
+        'total_waktu'
     ];
 
     public function ruangan()
     {
         return $this->belongsTo(Ruangan::class);
-    }
-
-    public function waktuPeminjaman()
-    {
-        return $this->hasMany(WaktuPeminjaman::class, 'peminjaman_id');
-    }
-
-    public function fakultas()
-    {
-        return $this->belongsTo(Fakultas::class);
-    }
-
-    public function prodi()
-    {
-        return $this->belongsTo(Prodi::class);
     }
 
     public function mataKuliah()

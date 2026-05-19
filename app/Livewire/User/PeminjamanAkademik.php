@@ -20,8 +20,10 @@ class PeminjamanAkademik extends Component
 
     public $jenisPeminjaman;
 
+    #[Reactive]
     public $fakultas;
 
+    #[Reactive]
     public $prodi;
 
     public $dropdownOpen = false;
@@ -69,6 +71,7 @@ class PeminjamanAkademik extends Component
         $this->jenisPeminjaman = $jenisPeminjaman;
         $this->fakultas = $fakultas;
         $this->prodi = $prodi;
+        $this->penanggungJawab = (string) session('username');
         $this->userIdentifier = (string) session('user_identifier');
     }
 
@@ -100,7 +103,6 @@ class PeminjamanAkademik extends Component
             $data = $this->validate();
 
             if ($this->service()->create($data, session('role_name'))) {
-                $this->service()->createKegiatan($this->penanggungJawab, $this->ruanganID);
                 $this->sendSuccessResponse();
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -147,6 +149,29 @@ class PeminjamanAkademik extends Component
         $this->jenisPeminjaman = $jenisPeminjaman;
         $this->fakultas = $fakultas;
         $this->prodi = $prodi;
+    }
+
+    public function updatedPilihJam($value)
+    {
+        if (count($this->pilihJam) > 2) {
+            $latest = end($this->pilihJam);
+            $this->pilihJam = [$latest];
+        }
+    }
+
+    public function getFormattedRange()
+    {
+        if (empty($this->pilihJam)) {
+            return '';
+        }
+
+        $jam = array_unique($this->pilihJam);
+        sort($jam);
+
+        $start = $jam[0];
+        $end = count($jam) > 1 ? end($jam) : \Carbon\Carbon::parse($start)->addMinutes(30)->format('H:i');
+
+        return $start . ' - ' . $end;
     }
 
     public function render()

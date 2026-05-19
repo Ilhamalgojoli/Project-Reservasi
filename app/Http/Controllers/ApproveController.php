@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\DataPeminjaman;
 use App\Models\Monitor;
 use App\Models\Ruangan;
-use App\Models\WaktuPeminjaman;
 use Carbon\Carbon;
 
 class ApproveController extends Controller
@@ -17,6 +16,6 @@ class ApproveController extends Controller
 
     public function pembatalan()
     {
-        return view('dashboard.pembatalan-reservasi');
+        return view('dashboard.peminjaman-aktif');
     }
 }

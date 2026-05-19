@@ -50,11 +50,11 @@ class MonitorDashboard extends Component
                 : collect(),
 
             'akademik' => $this->tab === 'akademik'
-                ? $dashboard->ambilData('akademik')
+                ? $dashboard->ambilData('akademik', $this->selectedLantai, $this->selectedStatus)
                 : collect(),
 
             'non_akademik' => $this->tab === 'non-akademik'
-                ? $dashboard->ambilData('non-akademik')
+                ? $dashboard->ambilData('non-akademik', $this->selectedLantai, $this->selectedStatus)
                 : collect(),
 
             'list_lantai' => Lantai::select('lantai')->distinct()->orderBy('lantai')->get(),

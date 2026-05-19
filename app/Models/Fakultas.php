@@ -24,6 +24,6 @@ class Fakultas extends Model
 
     public function peminjaman()
     {
-        return $this->hasMany(DataPeminjaman::class, 'fakultas_id');
+        return $this->hasMany(DataPeminjaman::class, 'fakultas', 'fakultas');
     }
 }

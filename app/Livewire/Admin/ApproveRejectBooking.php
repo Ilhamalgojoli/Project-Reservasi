@@ -28,6 +28,12 @@ class ApproveRejectBooking extends Component
         $this->resetPage();
     }
 
+    public function resetFilter()
+    {
+        $this->reset(['search', 'filterFakultas', 'filterJenis', 'filterHari']);
+        $this->resetPage();
+    }
+
     public function mount()
     {
         if (session('role_name') !== 'BAA') {

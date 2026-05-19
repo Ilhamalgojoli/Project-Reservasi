@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnSubmit.addEventListener('click', async () => {
+        document.querySelectorAll('.error-msg-edit').forEach(el => el.remove());
+
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Apakah Anda yakin ingin menyimpan perubahan?",
@@ -92,9 +94,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (!req.ok) {
                         const err = await req.json().catch(() => ({}));
+                        
+                        if (req.status === 422 && err.errors) {
+                            for (const field in err.errors) {
+                                const fieldMap = {
+                                    'kode_ruangan': 'idRuangan-edit',
+                                    'status': 'status-edit',
+                                    'kapasitas': 'kapasitas-edit'
+                                };
+                                
+                                const elementId = fieldMap[field] || field;
+                                const inputEl = document.getElementById(elementId);
+                                
+                                if (inputEl) {
+                                    const errorSpan = document.createElement('span');
+                                    errorSpan.className = 'error-msg-edit text-[10px] text-red-500 font-bold uppercase ml-1 block mt-1';
+                                    errorSpan.textContent = err.errors[field][0];
+                                    
+                                    inputEl.closest('div.flex-1.flex.flex-col.gap-2, div.flex.flex-col.gap-2').appendChild(errorSpan);
+                                }
+                            }
+                            throw new Error(err.message || 'Lengkapi form dengan benar!');
+                        }
                         throw new Error(err.message || `Terjadi kesalahan server (${req.status})`);
                     }
-
                     const data = await req.json();
 
                     Swal.fire({

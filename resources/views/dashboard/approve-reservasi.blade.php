@@ -3,10 +3,6 @@
     $title = 'Kelola Persetujuan Peminjaman';
 @endphp
 
-@push('extra_scripts')
-    <script src="{{ asset('assets/js/popup.js') }}" defer></script>
-@endpush
-
 @section('content')
     <div class="mb-5 flex flex-col gap-2">
         <h1 class="font-extrabold text-3xl text-gray-800 tracking-tight">{{ $title }}</h1>
@@ -20,7 +16,7 @@
                 <div class="w-50 border"></div>
             </div>
         </section> --}}
-        <section class="col-span-12 rounded-[8px] bg-white shadow-md p-8">
+        <section class="col-span-12">
             @livewire('admin.approve-reject-booking')
         </section>
     </main>

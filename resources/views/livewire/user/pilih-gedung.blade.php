@@ -18,19 +18,18 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
         @forelse ($datas as $data)
             <div
-                class="group relative bg-white rounded-[15px] shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500 overflow-hidden flex flex-col border border-gray-100 h-full">
-                <div class="relative h-64 overflow-hidden">
+                class="group relative bg-white rounded-[8px] shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500 overflow-hidden flex flex-col border border-gray-100 h-full"
+                style="border-radius: 8px;">
+                <div class="relative h-64 overflow-hidden" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
                     <img src="{{ $data['gambar'] ? asset('storage/' . $data['gambar']) : asset('assets/basila_images/DefaultBuilding.png') }}"
                         alt="{{ $data['nama_gedung'] }}"
                         class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
+                    
+                    {{-- Overlay Actions with Gradient --}}
                     <div
-                        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
-                    </div>
-
-                    <div
-                        class="absolute inset-0 flex items-center justify-center translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-20">
+                        class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6 z-10">
                         <a href="{{ route('pilih-ruang', ['id' => $data['id']]) }}"
-                            class="flex items-center gap-3 bg-white text-gray-900 px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e51411] hover:text-white transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-red-500/40">
+                            class="flex items-center gap-3 bg-white text-gray-900 px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e51411] hover:text-white transition-all transform translate-y-0 lg:translate-y-4 lg:group-hover:translate-y-0 duration-500 shadow-lg">
                             <iconify-icon icon="solar:home-2-bold" class="text-xl"></iconify-icon>
                             <span>Pilih Gedung</span>
                         </a>

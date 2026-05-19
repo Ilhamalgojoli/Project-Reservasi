@@ -7,6 +7,13 @@ use Carbon\Carbon;
 
 class DashboardUserService
 {
+    protected DashboardService $dashboardService;
+
+    public function __construct(DashboardService $dashboardService)
+    {
+        $this->dashboardService = $dashboardService;
+    }
+
     public function getTotal(string $nim)
     {
         return DataPeminjaman::where('user_identifier', $nim)->count();
@@ -38,10 +45,9 @@ class DashboardUserService
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
         ])
             ->where('user_identifier', $nim)
-            ->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'status', 'created_at')
+            ->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'status', 'waktu_mulai', 'waktu_selesai', 'created_at')
             ->latest()
             ->limit(5)
             ->get();
@@ -50,15 +56,8 @@ class DashboardUserService
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
             $r->nama_gedung  = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
             $r->lantai       = $r->ruangan?->lantai?->lantai ?? '-';
-
-            if ($r->waktuPeminjaman->isNotEmpty()) {
-                $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-                $r->jam_mulai   = Carbon::parse($waktu->first()->waktu_peminjaman)->format('H:i');
-                $r->jam_selesai = Carbon::parse($waktu->last()->waktu_peminjaman)->format('H:i');
-            } else {
-                $r->jam_mulai   = '-';
-                $r->jam_selesai = '-';
-            }
+            $r->jam_mulai   = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
         }
 
         return $data;
@@ -66,6 +65,9 @@ class DashboardUserService
 
     public function getDashboardData(string $nim): array
     {
+        // Jalankan sinkronisasi database (Finish & Auto-Reject) agar statistik selalu akurat
+        $this->dashboardService->updateStatusFinish();
+
         return [
             'total'    => $this->getTotal($nim),
             'waiting'  => $this->getWaiting($nim),

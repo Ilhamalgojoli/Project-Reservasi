@@ -74,23 +74,20 @@
                 </div>
 
                 <div class="border-t border-gray-100 pt-4" x-data="cardDashboardChart(@js($gedung))"
-                    wire:key="chart-gedung-{{ md5(json_encode($gedung)) }}">
+                    wire:key="chart-gedung-{{ $periode_semester }}-{{ md5(json_encode($gedung)) }}">
                     <h2 class="text-lg font-bold text-gray-700 text-center mb-2">Penggunaan Ruang Gedung Telkom
                         University</h2>
                     <div class="overflow-x-auto text-black">
-                        @if (count($gedung) > 0)
-                            <div x-ref="chart" class="overflow-x-auto min-w-[800px]"></div>
-                        @else
-                            <div
-                                class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3 bg-gray-50/50 rounded-xl">
-                                <iconify-icon icon="solar:buildings-bold-duotone"
-                                    class="text-6xl opacity-20"></iconify-icon>
-                                <div class="text-center">
-                                    <p class="text-lg font-bold text-gray-500">Tidak ada data gedung</p>
-                                    <p class="text-sm italic">Data penggunaan ruang belum tersedia</p>
-                                </div>
+                        <div x-ref="chart" wire:ignore class="overflow-x-auto min-w-[800px] {{ count($gedung) === 0 ? 'hidden' : '' }}"></div>
+                        
+                        <div class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3 bg-gray-50/50 rounded-xl {{ count($gedung) > 0 ? 'hidden' : '' }}">
+                            <iconify-icon icon="solar:buildings-bold-duotone"
+                                class="text-6xl opacity-20"></iconify-icon>
+                            <div class="text-center">
+                                <p class="text-lg font-bold text-gray-500">Tidak ada data gedung</p>
+                                <p class="text-sm italic">Data penggunaan ruang belum tersedia</p>
                             </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,10 +120,10 @@
                     <h1 class="font-bold text-2xl">Kegiatan Terkini</h1>
                     <ul class="flex flex-col gap-3 text-black w-full">
                         @forelse ($kegiatanTerkini as $data)
-                            <li class="flex flex-row items-center gap-5">
-                                <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A]"
+                            <li class="flex flex-row items-start gap-3">
+                                <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A] mt-0.5 flex-shrink-0"
                                     style="font-size: 20px;"></iconify-icon>
-                                <span>{{ $data['pesan'] }}</span>
+                                <span class="text-sm text-gray-700 leading-snug">{{ $data['pesan'] }}</span>
                             </li>
                         @empty
                             <li class="flex flex-col items-center justify-center py-8 text-gray-400 gap-2">
@@ -140,19 +137,17 @@
 
                 {{-- Aktif/Tidak Aktif Ruangan Section --}}
                 <div class="bg-white p-5 rounded-[8px] shadow-md justify-center flex flex-col gap-5 sm:items-center"
-                    x-data="aktifChart(@js($dataAktif))" wire:key="chart-aktif-{{ md5(json_encode($dataAktif)) }}">
+                    x-data="aktifChart(@js($dataAktif))" wire:key="chart-aktif-{{ $periode_semester }}-{{ md5(json_encode($dataAktif)) }}">
                     <h1 class="text-2xl font-bold flex justify-end">Ruangan Aktif / Tidak Aktif</h1>
-                    @if ($dataAktif['ruanganAktif'] + $dataAktif['ruanganTidakAktif'] > 0)
-                        <div id="userOverviewDonutChart" class="apexcharts-tooltip-z-none w-fit"></div>
-                    @else
-                        <div class="flex flex-col items-center justify-center py-10 text-gray-400 gap-3">
-                            <iconify-icon icon="solar:home-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
-                            <div class="text-center">
-                                <p class="text-base font-bold text-gray-500">Tidak ada data ruangan</p>
-                                <p class="text-xs italic">Belum ada data ruangan yang terdaftar</p>
-                            </div>
+                    <div id="userOverviewDonutChart" wire:ignore class="apexcharts-tooltip-z-none w-fit {{ ($dataAktif['ruanganAktif'] + $dataAktif['ruanganTidakAktif']) == 0 ? 'hidden' : '' }}"></div>
+                    
+                    <div class="flex flex-col items-center justify-center py-10 text-gray-400 gap-3 {{ ($dataAktif['ruanganAktif'] + $dataAktif['ruanganTidakAktif']) > 0 ? 'hidden' : '' }}">
+                        <iconify-icon icon="solar:home-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
+                        <div class="text-center">
+                            <p class="text-base font-bold text-gray-500">Tidak ada data ruangan</p>
+                            <p class="text-xs italic">Belum ada data ruangan yang terdaftar</p>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </section>
@@ -160,10 +155,10 @@
         {{-- Peminjaman Per Fakultas Section --}}
         <section class="grid grid-cols-12">
             <div class="col-span-12" x-data="peminjamanChart(@js($peminjamanPerFakultas))"
-                wire:key="chart-fakultas-{{ md5(json_encode($peminjamanPerFakultas)) }}">
+                wire:key="chart-fakultas-{{ $periode_semester }}-{{ md5(json_encode($peminjamanPerFakultas)) }}">
                 <div
                     class="bg-white p-5 rounded-[12px] flex flex-col shadow-lg gap-6 w-full border border-gray-50 transition-all duration-300 hover:shadow-xl">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="bg-red-600 p-3 rounded-xl shadow-inner flex items-center gap-3">
                             <iconify-icon icon="solar:ranking-bold-duotone"
                                 style="font-size: 24px; color: white;"></iconify-icon>
@@ -173,18 +168,19 @@
                         </div>
                     </div>
                     <div class="w-full bg-gray-50/50 rounded-2xl p-4">
-                        @if (count($peminjamanPerFakultas) > 0 && collect($peminjamanPerFakultas)->sum('total') > 0)
-                            <div id="chart-peminjaman-fakultas" class="w-full"></div>
-                        @else
-                            <div class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3">
-                                <iconify-icon icon="solar:chart-square-bold-duotone"
-                                    class="text-6xl opacity-20"></iconify-icon>
-                                <div class="text-center">
-                                    <p class="text-lg font-bold text-gray-500">Tidak ada data peminjaman</p>
-                                    <p class="text-sm italic">Belum ada aktivitas peminjaman antar fakultas</p>
-                                </div>
+                        @php
+                            $hasFakultasData = count($peminjamanPerFakultas) > 0 && collect($peminjamanPerFakultas)->sum('total') > 0;
+                        @endphp
+                        <div id="chart-peminjaman-fakultas" wire:ignore class="w-full {{ !$hasFakultasData ? 'hidden' : '' }}"></div>
+                        
+                        <div class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3 {{ $hasFakultasData ? 'hidden' : '' }}">
+                            <iconify-icon icon="solar:chart-square-bold-duotone"
+                                class="text-6xl opacity-20"></iconify-icon>
+                            <div class="text-center">
+                                <p class="text-lg font-bold text-gray-500">Tidak ada data peminjaman</p>
+                                <p class="text-sm italic">Belum ada aktivitas peminjaman antar fakultas</p>
                             </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,22 +189,20 @@
         {{-- Okkupansi Ruangan Section --}}
         <section class="grid grid-cols-12">
             <div class="col-span-12" x-data="okkupansiChart(@js($okkupansi))"
-                wire:key="chart-okkupansi-{{ md5(json_encode($okkupansi)) }}">
+                wire:key="chart-okkupansi-{{ $periode_semester }}-{{ md5(json_encode($okkupansi)) }}">
                 <div class="bg-white p-5 rounded-[8px] flex flex-col shadow-md gap-5 w-full">
                     <div class="bg-[#e51411] p-2 rounded-lg w-fit">
                         <p class="text-white font-bold">Okkupansi</p>
                     </div>
-                    @if (count($okkupansi) > 0)
-                        <div id="chart-okkupansi" class="w-full flex flex-nowrap gap-5 overflow-x-auto pb-5"></div>
-                    @else
-                        <div class="flex flex-col items-center justify-center py-12 text-gray-400 gap-3">
-                            <iconify-icon icon="solar:globus-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
-                            <div class="text-center">
-                                <p class="text-base font-bold text-gray-500">Tidak ada data gedung</p>
-                                <p class="text-xs italic">Data okupansi belum tersedia untuk ditampilkan</p>
-                            </div>
+                    <div id="chart-okkupansi" wire:ignore class="w-full flex flex-nowrap gap-5 overflow-x-auto pb-5 {{ count($okkupansi) === 0 ? 'hidden' : '' }}"></div>
+                    
+                    <div class="flex flex-col items-center justify-center py-12 text-gray-400 gap-3 {{ count($okkupansi) > 0 ? 'hidden' : '' }}">
+                        <iconify-icon icon="solar:globus-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
+                        <div class="text-center">
+                            <p class="text-base font-bold text-gray-500">Tidak ada data gedung</p>
+                            <p class="text-xs italic">Data okupansi belum tersedia untuk ditampilkan</p>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </section>

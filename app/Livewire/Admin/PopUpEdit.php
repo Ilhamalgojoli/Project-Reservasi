@@ -40,6 +40,19 @@ class PopUpEdit extends Component
         ];
     }
 
+    protected function messages()
+    {
+        return [
+            'nama.required' => 'Nama wajib diisi.',
+            'kode.required' => 'Kode Gedung wajib diisi.',
+            'jumlahLantai.required' => 'Jumlah Lantai wajib diisi.',
+            'status.required' => 'Status Operasional wajib diisi.',
+            'keterangan.required' => 'Deskripsi singkat wajib diisi.',
+            'latitude.required' => 'Silakan pilih lokasi pada map.',
+            'longitude.required' => 'Silakan pilih lokasi pada map.'
+        ];
+    }
+
     protected $listeners = [
         'deleteGedung' => 'deleteGedung'
     ];

@@ -48,7 +48,7 @@ class RuanganService
         ]);
 
         DB::transaction(function () use ($ruangan, $data) {
-            $asset_map = array_map(null, $data['nama_asset'], $data['total_asset']);
+            $asset_map = array_map(null, $data['nama_asset'] ?? [], $data['total_asset'] ?? []);
             foreach ($asset_map as [$nama, $total]) {
                 if (! $nama || ! $total) {
                     continue;
@@ -88,7 +88,7 @@ class RuanganService
 
             DB::transaction(function () use ($data) {
                 $asset_id = $data['asset_id'] ?? [];
-                $asset_map = array_map(null, $asset_id, $data['nama_asset'], $data['total_asset']);
+                $asset_map = array_map(null, $asset_id, $data['nama_asset'] ?? [], $data['total_asset'] ?? []);
                 foreach ($asset_map as [$id, $nama, $jumlah]) {
                     if (! $nama || ! $jumlah) {
                         continue;
@@ -118,7 +118,7 @@ class RuanganService
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'Terjadi kesalahan internal saat memproses data.',
             ];
         }
     }

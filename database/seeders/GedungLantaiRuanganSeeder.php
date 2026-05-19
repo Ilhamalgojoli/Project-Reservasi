@@ -27,6 +27,7 @@ class GedungLantaiRuanganSeeder extends Seeder
                 'status' => 'Aktif',
                 'latitude' => -6.9731883607533,
                 'longitude' => 107.62945443391801,
+                'gambar' => 'gambar_gedung/gku_tokong_nanas.jpg',
             ]);
 
             $floorsCreated = [];

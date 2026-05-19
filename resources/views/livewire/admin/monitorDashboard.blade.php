@@ -1,77 +1,75 @@
 <div class="flex flex-col gap-5">
-
     {{-- Tab Navigation --}}
-    <div class="flex gap-6 mb-4 border-b border-gray-200">
+    <div class="flex gap-6 mb-4 border-b border-gray-200 overflow-x-auto whitespace-nowrap pb-1 hide-scrollbar">
         <button wire:click="setTab('matkul-wajib')" wire:navigate.scroll="false"
-            class="pb-3 text-sm font-semibold transition-colors
+            class="pb-2 text-sm font-semibold transition-colors
             {{ $tab === 'matkul-wajib' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-400 hover:text-gray-700' }}">
             Matkul Wajib
         </button>
         <button wire:click="setTab('akademik')" wire:navigate.scroll="false"
-            class="pb-3 text-sm font-semibold transition-colors
+            class="pb-2 text-sm font-semibold transition-colors
             {{ $tab === 'akademik' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-400 hover:text-gray-700' }}">
             Peminjaman Akademik
         </button>
         <button wire:click="setTab('non-akademik')" wire:navigate.scroll="false"
-            class="pb-3 text-sm font-semibold transition-colors
+            class="pb-2 text-sm font-semibold transition-colors
             {{ $tab === 'non-akademik' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-400 hover:text-gray-700' }}">
             Peminjaman Non Akademik
         </button>
     </div>
 
+    {{-- Filter Section (Global for all tabs) --}}
+    <div class="flex flex-col gap-4 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {{-- Filter Lantai --}}
+            <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                    Filter Lantai
+                </label>
+                <div class="relative group">
+                    <iconify-icon icon="solar:buildings-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="selectedLantai"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 outline-none">
+                        <option value="">Semua Lantai</option>
+                        @foreach($list_lantai as $l)
+                            <option value="{{ $l->lantai }}">Lantai {{ $l->lantai }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            {{-- Filter Status --}}
+            <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                    Status Jadwal
+                </label>
+                <div class="relative group">
+                    <iconify-icon icon="solar:clock-circle-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
+                    <select wire:model.live="selectedStatus"
+                        class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 outline-none">
+                        <option value="">Semua Status</option>
+                        <option value="Di Jadwalkan">Di Jadwalkan</option>
+                        <option value="Sedang Berlangsung">Sedang Berlangsung</option>
+                        <option value="Selesai">Selesai</option>
+                    </select>
+                </div>
+            </div>
+            
+            {{-- Reset Button (if active) --}}
+            @if($selectedLantai || $selectedStatus)
+                <div class="flex items-end pb-1.5">
+                    <button wire:click="$set('selectedLantai', ''); $set('selectedStatus', '');" 
+                        class="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1.5 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg border border-red-100">
+                        <iconify-icon icon="solar:close-circle-bold-duotone" class="text-lg"></iconify-icon>
+                        Reset Filter
+                    </button>
+                </div>
+            @endif
+        </div>
+    </div>
+
     {{-- ====== TABEL MATKUL WAJIB ====== --}}
     @if ($tab === 'matkul-wajib')
-        <div class="flex flex-col gap-4 mb-5">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {{-- Filter Lantai --}}
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                        Filter Lantai
-                    </label>
-                    <div class="relative group">
-                        <iconify-icon icon="solar:buildings-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
-                        <select wire:model.live="selectedLantai"
-                            class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
-                            <option value="">Semua Lantai</option>
-                            @foreach($list_lantai as $l)
-                                <option value="{{ $l->lantai }}">Lantai {{ $l->lantai }}</option>
-                            @endforeach
-                        </select>
-                        <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
-                    </div>
-                </div>
-
-                {{-- Filter Status --}}
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                        Status Jadwal
-                    </label>
-                    <div class="relative group">
-                        <iconify-icon icon="solar:clock-circle-bold-duotone" class="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400 group-focus-within:text-red-500 transition-colors"></iconify-icon>
-                        <select wire:model.live="selectedStatus"
-                            class="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg focus:ring-red-500 focus:border-red-500 block w-full pl-10 pr-10 py-2.5 shadow-sm transition-colors cursor-pointer hover:bg-gray-100 appearance-none outline-none">
-                            <option value="">Semua Status</option>
-                            <option value="Di Jadwalkan">Di Jadwalkan</option>
-                            <option value="Sedang Berlangsung">Sedang Berlangsung</option>
-                            <option value="Selesai">Selesai</option>
-                        </select>
-                        <iconify-icon icon="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-xl text-gray-400 pointer-events-none"></iconify-icon>
-                    </div>
-                </div>
-                
-                {{-- Reset Button (if active) --}}
-                @if($selectedLantai || $selectedStatus)
-                    <div class="flex items-end pb-1.5">
-                        <button wire:click="$set('selectedLantai', ''); $set('selectedStatus', '');" 
-                            class="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1.5 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg border border-red-100">
-                            <iconify-icon icon="solar:close-circle-bold-duotone" class="text-lg"></iconify-icon>
-                            Reset Filter
-                        </button>
-                    </div>
-                @endif
-            </div>
-        </div>
-
         <div class="tableMatkulWajib overflow-x-auto rounded-xl">
             <div class="inline-block min-w-full align-middle">
                 <table class="text-sm table bordered-table sm-table mb-0 table-auto border-black p-1 w-full text-black">
@@ -131,11 +129,12 @@
                         @endforelse
                     </tbody>
                 </table>
-                <div class="flex justify-center items-center px-4 mt-6">
-                    <div class="text-black w-full">
-                        {{ $matkul_wajib->links(data: ['scrollTo' => false]) }}
-                    </div>
-                </div>
+            </div>
+        </div>
+        {{-- Pagination Card --}}
+        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
+            <div class="text-black">
+                {{ $matkul_wajib->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     @endif
@@ -220,11 +219,12 @@
                         @endforelse
                     </tbody>
                 </table>
-                <div class="flex justify-center items-center px-4 mt-6">
-                    <div class="text-black w-full">
-                        {{ $akademik->links(data: ['scrollTo' => false]) }}
-                    </div>
-                </div>
+            </div>
+        </div>
+        {{-- Pagination Card --}}
+        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
+            <div class="text-black">
+                {{ $akademik->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     @endif
@@ -303,11 +303,12 @@
                         @endforelse
                     </tbody>
                 </table>
-                <div class="flex justify-center items-center px-4 mt-6">
-                    <div class="text-black w-full">
-                        {{ $non_akademik->links(data: ['scrollTo' => false]) }}
-                    </div>
-                </div>
+            </div>
+        </div>
+        {{-- Pagination Card --}}
+        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
+            <div class="text-black">
+                {{ $non_akademik->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     @endif

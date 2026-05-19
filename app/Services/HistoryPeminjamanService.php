@@ -8,18 +8,34 @@ use Carbon\Carbon;
 
 class HistoryPeminjamanService
 {
-    public function getDataUser($nim, $page = 1)
+    public function getDataUser($nim, $page = 1, $search = '', $filterStatus = '', $filterJenis = '')
     {
-        $data_peminjaman = DataPeminjaman::with([
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
+        $query = DataPeminjaman::with([
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
         ])
             ->where('user_identifier', $nim)
-            ->where('status', 'Finish')
-            ->orWhere('status', 'Canceled')
-            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari')
+            ->whereIn('status', ['Finish', 'Canceled']);
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('penanggung_jawab', 'like', "%{$search}%")
+                  ->orWhereHas('ruangan', fn($r) => $r->where('kode_ruangan', 'like', "%{$search}%"))
+                  ->orWhereHas('ruangan.lantai.gedung', fn($r) => $r->where('nama_gedung', 'like', "%{$search}%"));
+            });
+        }
+
+        if (!empty($filterStatus)) {
+            $query->where('status', $filterStatus);
+        }
+
+        if (!empty($filterJenis)) {
+            $query->where('jenis_peminjaman', $filterJenis);
+        }
+
+        $data_peminjaman = $query
+            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari', 'jenis_peminjaman', 'penanggung_jawab', 'waktu_mulai', 'waktu_selesai')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);
 
@@ -28,41 +44,45 @@ class HistoryPeminjamanService
             $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
             $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
 
-            if ($r->waktuPeminjaman->isNotEmpty()) {
-                $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-                $r->jam_mulai = Carbon::parse($waktu->first()->waktu_peminjaman)->format('H:i');
-                $r->jam_selesai = Carbon::parse($waktu->last()->waktu_peminjaman)->format('H:i');
-            } else {
-                $r->jam_mulai = '-';
-                $r->jam_selesai = '-';
-            }
+            $r->jam_mulai = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
 
-            unset($r->ruangan, $r->waktuPeminjaman);
+            unset($r->ruangan);
         }
 
         return $data_peminjaman;
     }
 
-    public function getDataAdmin($page = 1, $fakultas_id = '', $jenis_peminjaman = '')
+    public function getDataAdmin($page = 1, $fakultas_id = '', $jenis_peminjaman = '', $search = '', $filterStatus = '')
     {
         $query = DataPeminjaman::with([
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'prodi:id,prodi',
-        ])->where('status', 'Finish')
-        ->orWhere('status', 'Canceled');
+        ])->whereIn('status', ['Finish', 'Canceled', 'Reject']);
 
         if (!empty($fakultas_id)) {
-            $query->where('fakultas_id', $fakultas_id);
+            $query->where('fakultas', $fakultas_id);
         }
 
         if (!empty($jenis_peminjaman)) {
             $query->where('jenis_peminjaman', $jenis_peminjaman);
         }
 
-        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi_id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'fakultas_id', 'jenis_peminjaman', 'hari')
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('penanggung_jawab', 'like', "%{$search}%")
+                  ->orWhereHas('ruangan', fn($r) => $r->where('kode_ruangan', 'like', "%{$search}%"))
+                  ->orWhereHas('ruangan.lantai.gedung', fn($r) => $r->where('nama_gedung', 'like', "%{$search}%"));
+            });
+        }
+
+        if (!empty($filterStatus)) {
+            # Override the whereIn above with specific status
+            $query->where('status', $filterStatus);
+        }
+
+        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi', 'ruangan_id', 'status', 'tanggal_peminjaman', 'fakultas', 'jenis_peminjaman', 'hari', 'waktu_mulai', 'waktu_selesai')
             ->latest()
             ->paginate(10, ['*'], 'page', $page);
 
@@ -70,18 +90,13 @@ class HistoryPeminjamanService
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
             $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
             $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
-            $r->prodi = $r->prodi?->prodi ?? '-';
+            $r->fakultas_name = $r->fakultas ?? '-';
+            $r->prodi_name = $r->prodi ?? '-';
 
-            if ($r->waktuPeminjaman->isNotEmpty()) {
-                $waktu = $r->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-                $r->jam_mulai = Carbon::parse($waktu->first()->waktu_peminjaman)->format('H:i');
-                $r->jam_selesai = Carbon::parse($waktu->last()->waktu_peminjaman)->format('H:i');
-            } else {
-                $r->jam_mulai = '-';
-                $r->jam_selesai = '-';
-            }
+            $r->jam_mulai = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
 
-            unset($r->ruangan, $r->waktuPeminjaman, $r->prodi);
+            unset($r->ruangan, $r->prodi);
         }
 
         return $data_peminjaman;
@@ -90,12 +105,9 @@ class HistoryPeminjamanService
     public function getDetail($id)
     {
         $data = DataPeminjaman::with([
-            'waktuPeminjaman:waktu_peminjaman,peminjaman_id',
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-            'fakultas',
-            'prodi',
         ])
             ->find($id);
 
@@ -104,17 +116,13 @@ class HistoryPeminjamanService
         $data->kode_ruangan = $data->ruangan?->kode_ruangan ?? '-';
         $data->nama_gedung = $data->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
         $data->lantai = $data->ruangan?->lantai?->lantai ?? '-';
-        $data->fakultas_name = $data->fakultas?->fakultas ?? '-';
-        $data->prodi_name = $data->prodi?->prodi ?? '-';
+        $data->fakultas_name = $data->fakultas ?? '-';
+        $data->prodi_name = $data->prodi ?? '-';
 
-        if ($data->waktuPeminjaman->isNotEmpty()) {
-            $waktu = $data->waktuPeminjaman->sortBy('waktu_peminjaman')->values();
-            $start = Carbon::parse($waktu->first()->waktu_peminjaman);
-            $end = Carbon::parse($waktu->last()->waktu_peminjaman);
-
-            $data->jam_mulai = $start->format('H:i');
-            $data->jam_selesai = $end->format('H:i');
-            $data->total_menit = $waktu->count() * 30 - 30;
+        if ($data->waktu_mulai && $data->waktu_selesai) {
+            $data->jam_mulai = Carbon::parse($data->waktu_mulai)->format('H:i');
+            $data->jam_selesai = Carbon::parse($data->waktu_selesai)->format('H:i');
+            $data->total_menit = Carbon::parse($data->waktu_mulai)->diffInMinutes(Carbon::parse($data->waktu_selesai));
         } else {
             $data->jam_mulai = '-';
             $data->jam_selesai = '-';
