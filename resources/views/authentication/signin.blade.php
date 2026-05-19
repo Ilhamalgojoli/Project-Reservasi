@@ -102,17 +102,41 @@
         </div>
     </section>
 
+    <x-script />
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Alert Auto Dismiss
             const alert = document.querySelector('.alert');
+            if (alert) {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = 0;
 
-            setTimeout(() => {
-                alert.style.transition = 'opacity 0.5s';
-                alert.style.opacity = 0;
+                    setTimeout(() =>
+                        alert.remove(), 500);
+                }, 2000);
+            }
 
-                setTimeout(() =>
-                    alert.remove(), 500);
-            }, 2000);
+            // Password Show/Hide Toggle
+            const togglePassword = document.querySelector('.toggle-password');
+            if (togglePassword) {
+                togglePassword.addEventListener('click', function() {
+                    const targetSelector = this.getAttribute('data-toggle');
+                    const passwordInput = document.querySelector(targetSelector);
+                    const icon = this.querySelector('iconify-icon');
+                    
+                    if (passwordInput && icon) {
+                        if (passwordInput.type === 'password') {
+                            passwordInput.type = 'text';
+                            icon.setAttribute('icon', 'solar:eye-closed-bold');
+                        } else {
+                            passwordInput.type = 'password';
+                            icon.setAttribute('icon', 'solar:eye-bold');
+                        }
+                    }
+                });
+            }
         });
     </script>
 </body>

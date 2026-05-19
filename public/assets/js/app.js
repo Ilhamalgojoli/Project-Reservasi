@@ -17,9 +17,15 @@ document.querySelectorAll(".sidebar-menu .dropdown").forEach(function (dropdown)
 
     // Toggle the current dropdown
     var submenu = item.querySelector(".sidebar-submenu");
-    submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
-
-    item.classList.toggle("dropdown-open");
+    var isOpen = item.classList.contains("open") || item.classList.contains("dropdown-open");
+    
+    if (isOpen) {
+      submenu.style.display = 'none';
+      item.classList.remove("dropdown-open", "open");
+    } else {
+      submenu.style.display = 'block';
+      item.classList.add("dropdown-open", "open");
+    }
   });
 });
 
@@ -122,9 +128,64 @@ document.addEventListener("DOMContentLoaded", function () {
 //             document.documentElement.classList.remove('light');
 //             localStorage.setItem('color-theme', 'light');
 //         } else {
-//             document.documentElement.classList.add('light');
-//             localStorage.setItem('color-theme', 'light');
-//         }
-//     }
+// }
 // });
 // }
+// }
+
+// Universal Popup Scroll Locker
+function initPopupScrollLocker() {
+  const checkPopups = () => {
+    const popups = document.querySelectorAll('.popup');
+    const hasOpenPopup = Array.from(popups).some(popup => {
+      return !popup.classList.contains('hidden') && (popup.style.display !== 'none');
+    });
+    
+    const currentlyActive = document.body.classList.contains('popup-active');
+    if (hasOpenPopup !== currentlyActive) {
+      if (hasOpenPopup) {
+        document.body.classList.add('popup-active');
+        document.documentElement.classList.add('popup-active');
+      } else {
+        document.body.classList.remove('popup-active');
+        document.documentElement.classList.remove('popup-active');
+      }
+    }
+  };
+
+  if (window.popupObserver) {
+    window.popupObserver.disconnect();
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    let shouldCheck = false;
+    for (let mutation of mutations) {
+      if (mutation.type === 'childList') {
+        shouldCheck = true;
+        break;
+      }
+      if (mutation.type === 'attributes' && mutation.target !== document.body) {
+        shouldCheck = true;
+        break;
+      }
+    }
+    if (shouldCheck) {
+      checkPopups();
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class', 'style']
+  });
+
+  window.popupObserver = observer;
+
+  // Run initial check
+  checkPopups();
+}
+
+document.addEventListener('DOMContentLoaded', initPopupScrollLocker);
+document.addEventListener('livewire:navigated', initPopupScrollLocker);

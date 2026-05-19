@@ -34,5 +34,6 @@
             </div>
         </div>
     </section>
+    <x-script />
 </body>
 </html>
