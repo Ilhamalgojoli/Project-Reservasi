@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-6">
     {{-- Filter Card --}}
     <div class="bg-white rounded-[8px] shadow-md border border-gray-100 p-4">
-        <div class="flex flex-row sm:flex-col items-center sm:items-stretch justify-between gap-3 w-full">
+        <div class="flex flex-row sm:flex-col items-center sm:items-stretch md:items-stretch justify-between gap-3 w-full">
 
             {{-- Search Input --}}
             <div class="relative flex-grow max-w-md sm:max-w-none w-full">
@@ -9,11 +9,11 @@
                     class="absolute left-3.5 top-1/2 -translate-y-1/2 text-base text-gray-400 pointer-events-none"></iconify-icon>
                 <input type="text" wire:model.live.debounce.300ms="search"
                     placeholder="Cari penanggung jawab, gedung, atau ruangan..."
-                    class="w-full pl-10 pr-4 py-2.5 text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg outline-none placeholder:text-gray-400 font-medium focus:border-gray-300 focus:bg-white transition-colors shadow-sm">
+                    class="lg:w-full md:w-80 sm:w-full pl-10 pr-4 py-2.5 text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg outline-none placeholder:text-gray-400 font-medium focus:border-gray-300 focus:bg-white transition-colors shadow-sm">
             </div>
 
             {{-- Filters & Reset Group --}}
-            <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-4 sm:w-full">
+            <div class="grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:w-full sm:gap-2">
                 {{-- Dropdown Jenis --}}
                 <select wire:model.live="filterJenis"
                     class="appearance-none w-full pl-4 flex-1 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">

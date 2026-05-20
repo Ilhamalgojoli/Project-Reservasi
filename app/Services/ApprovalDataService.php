@@ -61,30 +61,45 @@ class ApprovalDataService
 
     public function getApprovedData($search, $fakultas_id = null, $jenis_peminjaman = null, $hari = null)
     {
-        $query = DataPeminjaman::with([
-            'ruangan:id,kode_ruangan,lantai_id',
-            'ruangan.lantai:id,gedung_id,lantai',
-            'ruangan.lantai.gedung:id,nama_gedung',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman', 'waktu_mulai', 'waktu_selesai', 'status', 'hari', 'fakultas', 'prodi');
+        $query = DataPeminjaman::leftJoin('pembatalan_peminjaman', 'data_peminjaman.id', '=', 'pembatalan_peminjaman.data_peminjaman_id')
+            ->with([
+                'ruangan:id,kode_ruangan,lantai_id',
+                'ruangan.lantai:id,gedung_id,lantai',
+                'ruangan.lantai.gedung:id,nama_gedung',
+                'pembatalan'
+            ])
+            ->select(
+                'data_peminjaman.id',
+                'data_peminjaman.jenis_peminjaman',
+                'data_peminjaman.penanggung_jawab',
+                'data_peminjaman.ruangan_id',
+                'data_peminjaman.tanggal_peminjaman',
+                'data_peminjaman.waktu_mulai',
+                'data_peminjaman.waktu_selesai',
+                'data_peminjaman.status',
+                'data_peminjaman.hari',
+                'data_peminjaman.fakultas',
+                'data_peminjaman.prodi'
+            );
 
-        $query->where('status', 'Approve');
+        $query->where('data_peminjaman.status', 'Approve');
 
         if ($fakultas_id) {
-            $query->where('fakultas', $fakultas_id);
+            $query->where('data_peminjaman.fakultas', $fakultas_id);
         }
 
         if ($jenis_peminjaman) {
-            $query->where('jenis_peminjaman', $jenis_peminjaman);
+            $query->where('data_peminjaman.jenis_peminjaman', $jenis_peminjaman);
         }
 
         if ($hari) {
-            $query->where('hari', $hari);
+            $query->where('data_peminjaman.hari', $hari);
         }
 
         $data_peminjaman = $query->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('jenis_peminjaman', 'like', "%{$search}%")
-                        ->orWhere('penanggung_jawab', 'like', "%{$search}%");
+                    $q->where('data_peminjaman.jenis_peminjaman', 'like', "%{$search}%")
+                        ->orWhere('data_peminjaman.penanggung_jawab', 'like', "%{$search}%");
 
                     $q->orWhereHas('ruangan', function ($q2) use ($search) {
                         $q2->where('kode_ruangan', 'like', "%{$search}%")
@@ -93,7 +108,39 @@ class ApprovalDataService
                             });
                     });
                 });
-            })->latest()->paginate(10);
+            })
+            ->orderBy('pembatalan_peminjaman.cancel_requested', 'desc')
+            ->orderBy('data_peminjaman.created_at', 'desc')
+            ->paginate(10);
+
+        foreach ($data_peminjaman as $r) {
+            $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
+            $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
+            $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
+            $r->fakultas_name = $r->fakultas ?? '-';
+            $r->prodi_name = $r->prodi ?? '-';
+
+            $r->jam_mulai = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
+
+            unset($r->ruangan);
+        }
+
+        return $data_peminjaman;
+    }
+
+    public function getApprovedDataById($id)
+    {
+        $query = DataPeminjaman::with([
+            'ruangan:id,kode_ruangan,lantai_id',
+            'ruangan.lantai:id,gedung_id,lantai',
+            'ruangan.lantai.gedung:id,nama_gedung',
+            'pembatalan'
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman', 'waktu_mulai', 'waktu_selesai', 'status', 'hari', 'fakultas', 'prodi')
+            ->where('status', 'Approve')
+            ->where('id', $id);
+
+        $data_peminjaman = $query->latest()->paginate(10);
 
         foreach ($data_peminjaman as $r) {
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
@@ -117,7 +164,8 @@ class ApprovalDataService
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'email', 'kontak_penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status', 'kode_matkul', 'hari', 'alasan_penolakan', 'alasan_pembatalan', 'waktu_mulai', 'waktu_selesai')
+            'pembatalan'
+        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'email', 'kontak_penanggung_jawab', 'fakultas', 'prodi', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status', 'kode_matkul', 'hari', 'waktu_mulai', 'waktu_selesai', 'alasan_penolakan')
             ->findOrFail($id);
 
         $peminjaman->kode_ruangan = $peminjaman->ruangan?->kode_ruangan ?? '-';

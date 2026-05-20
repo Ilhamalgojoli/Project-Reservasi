@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Http;
 
 class PeminjamanService
 {
+    private $notif;
+    public function __construct()
+    {
+        $this->notif = new NotificationService();
+    }
+
     public function getBuilding(int $id)
     {
         return Gedung::select('id', 'nama_gedung')
@@ -234,7 +240,7 @@ class PeminjamanService
                 ]);
 
                 # Mencatat log kegiatan setelah transaksi sukses
-                $this->createKegiatan($data['penanggungJawab'], $data['ruanganID']);
+                $this->notif->pushKegiatanTerkini($data['penanggungJawab'], $data['ruanganID']);
 
                 return $record;
             });
@@ -346,22 +352,6 @@ class PeminjamanService
             'waktu_selesai' => $end,
             'total_waktu' => $durationText
         ];
-    }
-
-    # Membuat log request peminjaman dari user
-    private function createKegiatan($penanggungJawab, $ruanganID)
-    {
-        if (!$ruanganID) {
-            throw new \Exception('Ruangan tidak ditemukan');
-        }
-
-        $ruangan = Ruangan::select('kode_ruangan')
-            ->where('id', $ruanganID)
-            ->first();
-
-        KegiatanTerkiniModel::create([
-            'pesan' => "$penanggungJawab melakukan peminjaman pada ruangan $ruangan->kode_ruangan",
-        ]);
     }
 
     public function getDataWaktuPeminjaman($ruanganId)

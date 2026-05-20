@@ -125,14 +125,38 @@ class RuanganService
 
     public function deleteRuangan(int $id)
     {
-        $ruangan = Ruangan::findOrFail($id);
-        return $ruangan->delete();
+        try {
+            $ruangan = Ruangan::findOrFail($id);
+            $ruangan->delete();
+
+            return [
+                'success' => true,
+                'message' => 'Data berhasil dihapus',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan internal',
+            ];
+        }
     }
 
     public function deleteAsset(int $id)
     {
-        $asset = Asset::findOrFail($id);
-        return $asset->delete();
+        try{
+            $asset = Asset::findOrFail($id);
+            $asset->delete();
+
+            return [
+                'success' => true,
+                'message' => 'Data berhasil dihapus',
+            ];
+        } catch(\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan internal',
+            ];
+        }
     }
 
     public function destroyRuangan($id)

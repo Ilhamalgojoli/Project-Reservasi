@@ -28,7 +28,7 @@
             </div>
 
             {{-- Filters & Reset Group --}}
-            <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-4 sm:w-full">
+            <div class="grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-2 sm:w-full">
                 {{-- Dropdown Jenis --}}
                 <select wire:model.live="filterJenis"
                     class="appearance-none w-full pl-4 flex-1 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
@@ -73,7 +73,7 @@
             </thead>
             <tbody class="border-black">
                 @forelse ($datas as $data)
-                    <tr class="text-black hover:bg-gray-50/50 transition-colors border-black">
+                    <tr class="text-black hover:bg-gray-50/50 transition-colors border-black {{ $data->cancel_requested ? 'bg-red-50/40 border-l-4 border-l-red-500' : '' }}">
                         <td class="px-4 text-center border-black font-semibold text-gray-500">
                             {{ ($datas->currentPage() - 1) * $datas->perPage() + $loop->iteration }}
                         </td>
@@ -110,11 +110,16 @@
                             </div>
                         </td>
                         <td class="px-4 text-center border-black">
-                            <div class="flex items-center justify-center">
-                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-extrabold border bg-emerald-50 text-emerald-600 border-emerald-100">
+                            <div class="flex flex-col items-center justify-center gap-1.5">
+                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-extrabold border bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm">
                                     <iconify-icon icon="mdi:check-circle" class="text-sm"></iconify-icon>
                                     APPROVE
                                 </span>
+                                @if($data->cancel_requested)
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[8px] font-black bg-red-100 text-red-600 border border-red-200 animate-pulse uppercase tracking-wider shadow-sm">
+                                        MINTA BATAL
+                                    </span>
+                                @endif
                             </div>
                         </td>
                         <td class="px-4 text-center border-black">

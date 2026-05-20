@@ -10,10 +10,21 @@ use Exception;
 
 class ApproveRejectService
 {
+    private $notif;
+    
+    public function __construct()
+    {
+        $this->notif = app(NotificationService::class);
+    }
+
     public function approve($id)
     {
         $peminjaman = DataPeminjaman::with(['ruangan.lantai.gedung'])->findOrFail($id);
         $peminjaman->update(['status' => 'Approve']);
+
+        # Pemicu Notifikasi dan Kegiatan Terkini
+        $this->notif->pushNotification($peminjaman, 'Approve');
+        $this->notif->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'approve');
 
         $this->prepareEmailData($peminjaman);
 
@@ -33,6 +44,10 @@ class ApproveRejectService
             'status' => 'Reject',
             'alasan_penolakan' => $alasan,
         ]);
+
+        # Pemicu Notifikasi dan Kegiatan Terkini
+        $this->notif->pushNotification($peminjaman, 'Reject');
+        $this->notif->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'reject');
 
         $this->prepareEmailData($peminjaman);
 
@@ -65,9 +80,25 @@ class ApproveRejectService
 
         $data->update([
             'status' => 'Canceled',
-            'alasan_pembatalan' => $reason,
-            'cancel_by' => $userIdentifier ?? 'Admin/BAA'
         ]);
+        $cancelBy = $userIdentifier ?? 'Admin/BAA';
+        if (!$isAdmin && $userIdentifier === session('user_identifier') && session('username')) {
+            $cancelBy = session('username') . ' (' . session('user_identifier') . ')';
+        }
+
+        $data->pembatalan()->updateOrCreate(
+            ['data_peminjaman_id' => $data->id],
+            [
+                'alasan_pembatalan' => $reason,
+                'cancel_by' => $cancelBy,
+                'cancel_requested' => false,
+                'cancel_request_reason' => null
+            ]
+        );
+
+        # Pemicu Notifikasi dan Kegiatan Terkini
+        $this->notif->pushNotification($data, 'Canceled');
+        $this->notif->pushKegiatanTerkini($data->penanggung_jawab, $data->ruangan_id, 'cancel');
 
         # Kirim email jika dibatalkan oleh Admin (userIdentifier null atau isAdmin true)
         if ($userIdentifier === null || $isAdmin) {
@@ -103,7 +134,14 @@ class ApproveRejectService
 
     private function prepareEmailData($peminjaman)
     {
-        $peminjaman->jam_mulai = $peminjaman->waktu_mulai ? Carbon::parse($peminjaman->waktu_mulai)->format('H:i') : '-';
-        $peminjaman->jam_selesai = $peminjaman->waktu_selesai ? Carbon::parse($peminjaman->waktu_selesai)->format('H:i') : '-';
+        if ($peminjaman->ruangan && $peminjaman->ruangan->lantai && $peminjaman->ruangan->lantai->gedung) {
+            $peminjaman->nama_gedung = $peminjaman->ruangan->lantai->gedung->nama_gedung;
+            $peminjaman->lantas = $peminjaman->ruangan->lantai->nama_lantai;
+            $peminjaman->nama_ruangan = $peminjaman->ruangan->nama_ruangan;
+        } else {
+            $peminjaman->nama_gedung = '-';
+            $peminjaman->lantas = '-';
+            $peminjaman->nama_ruangan = '-';
+        }
     }
 }

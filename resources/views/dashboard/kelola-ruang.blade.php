@@ -72,9 +72,9 @@
         <section id="popup-edit"
             class="popup hidden fixed inset-0 bg-gray-900/80 flex items-center justify-center z-[100] p-4 transition-all duration-500">
             <div
-                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up">
+                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up border border-white/20 flex flex-col max-h-[90vh]">
                 {{-- Modal Header --}}
-                <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100">
+                <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100 shrink-0">
                     <div class="flex items-center gap-4 text-gray-800">
                         <div class="p-3 bg-red-50 rounded-[8px] shadow-sm italic text-[#e51411]">
                             <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-2xl"></iconify-icon>
@@ -91,7 +91,7 @@
                     </button>
                 </div>
 
-                <div class="p-8 flex flex-col gap-8 max-h-[65vh] overflow-y-auto custom-scrollbar">
+                <div class="p-8 flex flex-col gap-8 flex-1 overflow-y-auto custom-scrollbar">
                     {{-- Section 1: Detail Unit --}}
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-1">
@@ -100,8 +100,8 @@
                         </div>
 
                         {{-- Layout Awal: Row-based inputs --}}
-                        <div class="flex flex-col gap-5">
-                            <div class="flex flex-row gap-5">
+                        <div class="grid grid-cols-1 gap-5">
+                            <div class="flex lg:flex-row sm:flex-col gap-5">
                                 <div class="flex-1 flex flex-col gap-2">
                                     <label
                                         class="text-[11px] font-medium uppercase tracking-widest text-gray-400 ml-1">Identitas
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <div class="flex flex-col gap-2">
+                            <div class="flex lg:flex-row sm:flex-col gap-2">
                                 <label
                                     class="text-[11px] font-medium uppercase tracking-widest text-gray-400 ml-1">Ketersediaan
                                     / Status</label>
@@ -176,12 +176,12 @@
                 <div class="p-8 bg-gray-50/50 border-t border-gray-100">
                     <div class="flex flex-row gap-4">
                         <button type="button" id="btn-hapus"
-                            class="flex items-center justify-center gap-2 px-8 py-5 bg-gray-100 text-gray-400 rounded-[8px] font-black text-xs uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-500 transition-all border border-gray-200">
+                            class="flex items-center justify-center gap-2 px-4 py-3.5 sm:px-8 sm:py-5 bg-gray-100 text-gray-400 rounded-[8px] font-black text-xs uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-500 transition-all border border-gray-200">
                             <iconify-icon icon="solar:trash-bin-trash-bold" class="text-xl"></iconify-icon>
                             Hapus
                         </button>
                         <button type="button" id="btn-submit"
-                            class="flex-1 flex items-center justify-center gap-3 px-12 py-5 bg-[#e51411] text-white rounded-[8px] font-black text-xs uppercase tracking-[0.25em] hover:bg-red-700 hover:-translate-y-1 transition-all shadow-xl">
+                            class="flex-1 flex items-center justify-center gap-3 px-6 py-3.5 sm:px-12 sm:py-5 bg-[#e51411] text-white rounded-[8px] font-black text-xs uppercase tracking-[0.25em] hover:bg-red-700 hover:-translate-y-1 transition-all shadow-xl">
                             <iconify-icon icon="solar:diskette-bold" class="text-xl"></iconify-icon>
                             UPDATE DATA
                         </button>
@@ -194,9 +194,9 @@
         <section id="popup-tambah"
             class="popup hidden fixed inset-0 bg-gray-900/80 flex items-center justify-center z-[100] p-4 transition-all duration-500">
             <div
-                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up">
+                class="bg-white w-full max-w-2xl rounded-[8px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden relative animate-slide-up border border-white/20 flex flex-col max-h-[90vh]">
                 {{-- Modal Header --}}
-                <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100">
+                <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100 shrink-0">
                     <div class="flex items-center gap-4 text-gray-800">
                         <div class="p-3 bg-red-50 rounded-[8px] shadow-sm italic text-[#e51411]">
                             <iconify-icon icon="solar:home-add-bold-duotone" class="text-2xl"></iconify-icon>
@@ -214,7 +214,7 @@
                     </button>
                 </div>
 
-                <div class="p-8 flex flex-col gap-8 max-h-[65vh] overflow-y-auto custom-scrollbar">
+                <div class="p-8 flex flex-col gap-8 flex-1 overflow-y-auto custom-scrollbar">
                     {{-- Section 1: Parameter Ruangan --}}
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-1">
@@ -222,8 +222,8 @@
                             <div class="w-full border-b border-dashed border-gray-200 mt-2"></div>
                         </div>
 
-                        <div class="flex flex-col gap-5">
-                            <div class="flex flex-row gap-5">
+                        <div class="grid lg:grid-cols-1 gap-5">
+                            <div class="flex lg:flex-row sm:flex-col gap-5">
                                 <div class="flex-1 flex flex-col gap-2">
                                     <label
                                         class="text-[11px] font-medium uppercase tracking-widest text-gray-400 ml-1">Penempatan
@@ -254,7 +254,7 @@
                                 </div>
                             </div>
 
-                            <div class="flex flex-row gap-5">
+                            <div class="flex lg:flex-row sm:flex-col gap-5">
                                 <div class="flex-1 flex flex-col gap-2">
                                     <label
                                         class="text-[11px] font-medium uppercase tracking-widest text-gray-400 ml-1">Ketersediaan</label>
@@ -293,7 +293,7 @@
 
                         <form id="form-asset" class="flex flex-col gap-5">
                             <div id="wrapper-input-tambah" class="flex flex-col gap-4">
-                                <div class="flex flex-row gap-5">
+                                <div class="flex flex-row sm:flex-col gap-5">
                                     <div class="flex-[1.5] relative group">
                                         <iconify-icon icon="solar:box-minimalistic-bold"
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
@@ -301,9 +301,9 @@
                                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                                     </div>
                                     <div class="flex-1 relative group">
-                                        <iconify-icon icon="mdi:numeric-count-2"
+                                        <iconify-icon icon="solar:database-bold-duotone"
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                                        <input type="number" name="total_asset[]" placeholder="Qty"
+                                        <input type="number" name="total_asset[]" placeholder="Jumlah Asset"
                                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                                     </div>
                                 </div>
@@ -325,7 +325,7 @@
                 </div>
 
                 {{-- Action Footer --}}
-                <div class="p-8 bg-gray-50/50 border-t border-gray-100">
+                <div class="p-8 bg-gray-50/50 border-t border-gray-100 shrink-0">
                     <button type="button" id="btn-submit-tambah"
                         class="w-full flex items-center justify-center gap-3 px-12 py-5 bg-[#e51411] text-white rounded-[8px] font-black text-xs uppercase tracking-[0.25em] hover:bg-red-700 hover:-translate-y-1 transition-all shadow-xl">
                         <iconify-icon icon="solar:check-circle-bold" class="text-xl"></iconify-icon>

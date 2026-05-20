@@ -12,46 +12,49 @@
                 </button>
             </div>
         </div>
-        <div class="col-auto">
-            <div class="flex flex-wrap items-center gap-3"></div>
+        <div class="flex flex-row items-center gap-3 relative">
+            @if (session()->has('user_identifier') && session('role_name') !== 'BAA')
+                @livewire('notification-bell')
+            @endif
+
             <button data-dropdown-toggle="dropdownProfile" class="flex justify-center items-center rounded-full"
                 type="button">
                 <img src="{{ session('profilephoto') ? session('profilephoto') : asset('assets/basila_images/favicon.png') }}"
                     alt="image" class="w-10 h-10 object-cover rounded-full object-top">
             </button>
-            <div id="dropdownProfile" class="z-10 hidden bg-white  rounded-lg shadow-lg dropdown-menu-sm p-3">
-                <div
-                    class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 mb-4 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-3">
-                        {{-- <img src="{{ session('profilephoto') }}" alt="image"
-                                class="w-10 h-10 rounded-full"> --}}
-                        <div class="flex flex-col">
-                            <h6 class="text-lg text-neutral-900 font-semibold mb-0 normal-case">
-                                {{ session('username') }}</h6>
-                            <span class="text-neutral-500">{{ session('role_name') }}</span>
-                        </div>
-                    </div>
-                    <button type="button" class="text-red-400 hover:text-danger-600 ">
-                        <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
-                    </button>
-                </div>
+        </div>
 
-                <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
-                    <ul class="flex flex-col">
-                        <li class="z-50">
-                            <form action="{{ route('logout') }}" method="POST" class="w-full">
-                                @csrf
-                                <button type="submit"
-                                    class="text-black px-0 py-2 hover:text-danger-600 flex items-center gap-4 w-full text-left">
-                                    <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>
-                                    Log Out
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+        <div id="dropdownProfile" class="z-10 hidden bg-white  rounded-lg shadow-lg dropdown-menu-sm p-3">
+            <div
+                class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 mb-4 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-3">
+                    {{-- <img src="{{ session('profilephoto') }}" alt="image"
+                                class="w-10 h-10 rounded-full"> --}}
+                    <div class="flex flex-col">
+                        <h6 class="text-lg text-neutral-900 font-semibold mb-0 normal-case">
+                            {{ session('username') }}</h6>
+                        <span class="text-neutral-500">{{ session('role_name') }}</span>
+                    </div>
                 </div>
+                <button type="button" class="text-red-400 hover:text-danger-600 ">
+                    <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
+                </button>
+            </div>
+
+            <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
+                <ul class="flex flex-col">
+                    <li class="z-50">
+                        <form action="{{ route('logout') }}" method="POST" class="w-full">
+                            @csrf
+                            <button type="submit"
+                                class="text-black px-0 py-2 hover:text-danger-600 flex items-center gap-4 w-full text-left">
+                                <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>
+                                Log Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-</div>
 </div>

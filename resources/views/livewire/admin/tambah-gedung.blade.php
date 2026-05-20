@@ -1,4 +1,32 @@
-<div>
+<div class="mb-5">
+    <style>
+        /* Desktop/Tablet (min-width: 768px) */
+        @media (min-width: 768px) {
+            .custom-overlay {
+                opacity: 0 !important;
+                transition: opacity 0.3s ease-in-out !important;
+            }
+            .custom-overlay-btn {
+                transform: translateY(1rem) !important;
+                transition: transform 0.5s ease-in-out !important;
+            }
+            .group:hover .custom-overlay {
+                opacity: 1 !important;
+            }
+            .group:hover .custom-overlay-btn {
+                transform: translateY(0) !important;
+            }
+        }
+        /* Mobile (max-width: 767px) */
+        @media (max-width: 767px) {
+            .custom-overlay {
+                opacity: 1 !important;
+            }
+            .custom-overlay-btn {
+                transform: translateY(0) !important;
+            }
+        }
+    </style>
     <div class="flex flex-col md:flex-row mb-10 justify-between items-start md:items-end gap-6">
         <div class="space-y-1">
             <h1 class="text-3xl font-black text-gray-900 tracking-tight">Kelola Gedung</h1>
@@ -11,8 +39,7 @@
             <div class="relative w-full md:w-80 group">
                 <iconify-icon icon="solar:magnifer-bold-duotone"
                     class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
-                <input type="text" wire:model.live.debounce.300ms="search"
-                    placeholder="Cari Nama Gedung..."
+                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari Nama Gedung..."
                     class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none shadow-sm">
             </div>
 
@@ -27,19 +54,19 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         @foreach ($datas as $data)
-            <div
-                class="group bg-white rounded-[8px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500"
+            <div class="group bg-white rounded-[8px] overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100 flex flex-col hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-500"
                 style="border-radius: 8px;">
                 {{-- Image Container --}}
-                <div class="relative h-64 overflow-hidden" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                <div class="relative h-64 overflow-hidden"
+                    style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
                     <img src="{{ $data['gambar'] ? asset('storage/' . $data['gambar']) : asset('assets/basila_images/DefaultBuilding.png') }}"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 
                     {{-- Overlay Actions --}}
                     <div
-                        class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6">
+                        class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent flex items-center justify-center p-6 custom-overlay">
                         <a href="{{ route('kelola-ruang', ['id' => $data['id']]) }}"
-                            class="flex items-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e51411] hover:text-white transition-all transform translate-y-0 lg:translate-y-4 lg:group-hover:translate-y-0 duration-500 shadow-lg">
+                            class="flex items-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e51411] hover:text-white transition-all shadow-lg custom-overlay-btn">
                             <iconify-icon icon="solar:home-2-bold" class="text-xl"></iconify-icon>
                             Kelola Ruangan
                         </a>

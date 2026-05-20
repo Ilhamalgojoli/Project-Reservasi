@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             data.data.asset.forEach(asset => {
                 const row = document.createElement('div');
-                row.className = 'wrapper flex flex-row gap-5';
+                row.className = 'wrapper flex flex-row sm:flex-col gap-5';
 
                 row.innerHTML = `
                     <input type="hidden" name="asset_id[]" value="${asset.id}">
@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                     </div>
                     <div class="flex-1 relative group">
-                        <iconify-icon icon="mdi:numeric-count-2" 
+                        <iconify-icon icon="solar:database-bold-duotone" 
                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                        <input type="number" name="total_asset[]" value="${asset.jumlah_asset}" placeholder="Qty" 
+                        <input type="number" name="total_asset[]" value="${asset.jumlah_asset}" placeholder="Jumlah Asset" 
                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                     </div>
                     <button type="button" onclick="window.destroyAsset(${asset.id})"
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnHapus.addEventListener('click', () => {
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Apakah Anda yakin ingin menyimpan data ini?",
+            text: "Apakah Anda yakin ingin menghapus unit ruangan ini beserta seluruh asetnya?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Konfirmasi',
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 Swal.fire({
                     title: 'Dibatalkan',
-                    text: 'Perubahan dibatalkan.',
+                    text: 'Hapus ruangan dibatalkan.',
                     icon: 'info',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.destroyAsset = async function (id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Apakah Anda yakin ingin menyimpan data ini?",
+            text: "Apakah Anda yakin ingin menghapus aset ini dari ruangan?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Konfirmasi',
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (res.success) {
                         Swal.fire({
                             title: 'Berhasil!',
-                            text: res.message || 'Gedung berhasil ditambahkan!.',
+                            text: res.message || 'Asset berhasil dihapus!.',
                             icon: 'success',
                             confirmButtonText: 'OK',
                             buttonsStyling: false,
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 Swal.fire({
                     title: 'Dibatalkan',
-                    text: 'Perubahan dibatalkan.',
+                    text: 'Hapus aset dibatalkan.',
                     icon: 'info',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,

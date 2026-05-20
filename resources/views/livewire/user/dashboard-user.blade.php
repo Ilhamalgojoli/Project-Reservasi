@@ -1,10 +1,17 @@
-<div class="w-full space-y-6">
+<div class="w-full space-y-6 sm:pb-4">
+    <style>
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 
     <div
         class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#e51411] via-[#c7110f] to-[#8b0c0a] p-6 shadow-lg">
-        <div class="absolute -right-8 -top-8 w-48 h-48 rounded-full bg-white/5"></div>
-        <div class="absolute right-24 -bottom-10 w-32 h-32 rounded-full bg-white/5"></div>
-        <div class="absolute right-0 bottom-0 w-20 h-20 rounded-full bg-white/10"></div>
         <div class="relative z-10 flex flex-col gap-5">
             <div class="space-y-2">
                 <p class="text-white/70 text-xs font-bold tracking-[0.2em] uppercase mb-1">Selamat datang kembali 👋</p>
@@ -38,77 +45,79 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-2 gap-4">
 
         <div
-            class="group relative overflow-hidden rounded-xl p-8 flex flex-row items-center justify-center gap-6 cursor-default
+            class="group relative overflow-hidden rounded-xl p-4 sm:p-8 flex flex-col lg:flex-row items-center lg:justify-center gap-3 sm:gap-6 cursor-default
             bg-gradient-to-br from-[#6c63ff] to-[#4f46e5]
             shadow-lg hover:shadow-xl
             transition-all duration-300 hover:-translate-y-0.5">
-            <div class="absolute -right-4 -bottom-4 w-32 h-32 rounded-full bg-white/10"></div>
-            <div class="absolute -right-1 -top-6 w-20 h-20 rounded-full bg-white/5"></div>
-            <div class="bg-[#3730a3] rounded-full p-5 flex flex-shrink-0 shadow-inner">
-                <iconify-icon icon="mdi:calendar-multiple" style="font-size:40px; color:white;"></iconify-icon>
+            <div class="bg-[#3730a3] rounded-full p-2.5 sm:p-5 flex flex-shrink-0 shadow-inner">
+                <iconify-icon icon="mdi:calendar-multiple" class="text-2xl sm:text-[40px]"
+                    style="color:white;"></iconify-icon>
             </div>
-            <div class="text-center flex flex-col gap-1 relative z-10">
-                <h1 class="text-5xl font-bold text-white drop-shadow-sm">{{ $total }}</h1>
-                <p class="text-white font-semibold text-sm tracking-wide">Total Peminjaman</p>
+            <div class="text-center lg:text-left flex flex-col gap-0.5 sm:gap-1 relative z-10">
+                <h1 class="text-3xl sm:text-6xl font-bold text-white drop-shadow-sm leading-none">{{ $total }}
+                </h1>
+                <p class="text-white/90 font-semibold text-xs sm:text-base tracking-wide leading-tight">Total Peminjaman
+                </p>
             </div>
         </div>
 
         <div
-            class="group relative overflow-hidden rounded-xl p-8 flex flex-row items-center justify-center gap-6 cursor-default
+            class="group relative overflow-hidden rounded-xl p-4 sm:p-8 flex flex-col lg:flex-row items-center lg:justify-center gap-3 sm:gap-6 cursor-default
             bg-gradient-to-br from-[#ffca28] to-[#ffb800]
             shadow-lg hover:shadow-xl
             transition-all duration-300 hover:-translate-y-0.5">
-            <div class="absolute -right-4 -bottom-4 w-32 h-32 rounded-full bg-white/10"></div>
-            <div class="absolute -right-1 -top-6 w-20 h-20 rounded-full bg-white/5"></div>
-            <div class="bg-[#d19c00] rounded-full p-5 flex flex-shrink-0 shadow-inner">
-                <iconify-icon icon="mdi:clock-outline" style="font-size:40px; color:white;"></iconify-icon>
+            <div class="bg-[#d19c00] rounded-full p-2.5 sm:p-5 flex flex-shrink-0 shadow-inner">
+                <iconify-icon icon="mdi:clock-outline" class="text-2xl sm:text-[40px]"
+                    style="color:white;"></iconify-icon>
             </div>
-            <div class="text-center flex flex-col gap-1 relative z-10">
-                <h1 class="text-5xl font-bold text-white drop-shadow-sm">{{ $waiting }}</h1>
-                <p class="text-white font-semibold text-sm tracking-wide">Menunggu Approval</p>
+            <div class="text-center lg:text-left flex flex-col gap-0.5 sm:gap-1 relative z-10">
+                <h1 class="text-3xl sm:text-6xl font-bold text-white drop-shadow-sm leading-none">{{ $waiting }}
+                </h1>
+                <p class="text-white/90 font-semibold text-xs sm:text-base tracking-wide leading-tight">Menunggu
+                    Approval</p>
             </div>
         </div>
 
         <div
-            class="group relative overflow-hidden rounded-xl p-8 flex flex-row items-center justify-center gap-6 cursor-default
+            class="group relative overflow-hidden rounded-xl p-4 sm:p-8 flex flex-col lg:flex-row items-center lg:justify-center gap-3 sm:gap-6 cursor-default
             bg-gradient-to-br from-[#4fc451] to-[#3ea83f]
             shadow-lg hover:shadow-xl
             transition-all duration-300 hover:-translate-y-0.5">
-            <div class="absolute -right-4 -bottom-4 w-32 h-32 rounded-full bg-white/10"></div>
-            <div class="absolute -right-1 -top-6 w-20 h-20 rounded-full bg-white/5"></div>
-            <div class="bg-[#2f812f] rounded-full p-5 flex flex-shrink-0 shadow-inner">
-                <iconify-icon icon="mdi:check-circle-outline" style="font-size:40px; color:white;"></iconify-icon>
+            <div class="bg-[#2f812f] rounded-full p-2.5 sm:p-5 flex flex-shrink-0 shadow-inner">
+                <iconify-icon icon="mdi:check-circle-outline" class="text-2xl sm:text-[40px]"
+                    style="color:white;"></iconify-icon>
             </div>
-            <div class="text-center flex flex-col gap-1 relative z-10">
-                <h1 class="text-5xl font-bold text-white drop-shadow-sm">{{ $approve }}</h1>
-                <p class="text-white font-semibold text-sm tracking-wide">Disetujui</p>
+            <div class="text-center lg:text-left flex flex-col gap-0.5 sm:gap-1 relative z-10">
+                <h1 class="text-3xl sm:text-6xl font-bold text-white drop-shadow-sm leading-none">{{ $approve }}
+                </h1>
+                <p class="text-white/90 font-semibold text-xs sm:text-base tracking-wide leading-tight">Disetujui</p>
             </div>
         </div>
 
         <div
-            class="group relative overflow-hidden rounded-xl p-8 flex flex-row items-center justify-center gap-6 cursor-default
+            class="group relative overflow-hidden rounded-xl p-4 sm:p-8 flex flex-col lg:flex-row items-center lg:justify-center gap-3 sm:gap-6 cursor-default
             bg-gradient-to-br from-[#ff3b38] to-[#e51411]
             shadow-lg hover:shadow-xl
             transition-all duration-300 hover:-translate-y-0.5">
-            <div class="absolute -right-4 -bottom-4 w-32 h-32 rounded-full bg-white/10"></div>
-            <div class="absolute -right-1 -top-6 w-20 h-20 rounded-full bg-white/5"></div>
-            <div class="bg-[#c7110f] rounded-full p-5 flex flex-shrink-0 shadow-inner">
-                <iconify-icon icon="mdi:close-circle-outline" style="font-size:40px; color:white;"></iconify-icon>
+            <div class="bg-[#c7110f] rounded-full p-2.5 sm:p-5 flex flex-shrink-0 shadow-inner">
+                <iconify-icon icon="mdi:close-circle-outline" class="text-2xl sm:text-[40px]"
+                    style="color:white;"></iconify-icon>
             </div>
-            <div class="text-center flex flex-col gap-1 relative z-10">
-                <h1 class="text-5xl font-bold text-white drop-shadow-sm">{{ $reject }}</h1>
-                <p class="text-white font-semibold text-sm tracking-wide">Ditolak</p>
+            <div class="text-center lg:text-left flex flex-col gap-0.5 sm:gap-1 relative z-10">
+                <h1 class="text-3xl sm:text-6xl font-bold text-white drop-shadow-sm leading-none">{{ $reject }}
+                </h1>
+                <p class="text-white/90 font-semibold text-xs sm:text-base tracking-wide leading-tight">Ditolak</p>
             </div>
         </div>
 
     </div>
 
-    <div class="grid lg:grid-cols-12 gap-5">
+    <div class="grid grid-cols-12 gap-5">
 
-        <div class="lg:col-span-3 flex flex-col gap-4">
+        <div class="col-span-12 xl:col-span-3 flex flex-col gap-4">
 
             <div class="bg-white rounded-xl p-5 shadow-md space-y-3">
                 <h2 class="font-bold text-gray-700 text-sm">Ringkasan Status</h2>
@@ -173,20 +182,21 @@
 
                                 <div class="flex items-center gap-0">
 
-                                    <div class="flex flex-col items-center">
+                                    <div class="flex flex-col items-center w-12 shrink-0">
                                         <div
                                             class="w-5 h-5 rounded-full flex items-center justify-center bg-emerald-500">
                                             <iconify-icon icon="mdi:check"
                                                 style="font-size:11px; color:white;"></iconify-icon>
                                         </div>
-                                        <p class="text-[9px] text-emerald-600 font-semibold mt-0.5 whitespace-nowrap">
+                                        <p
+                                            class="text-[9px] text-emerald-600 font-semibold mt-0.5 text-center leading-none">
                                             Diajukan</p>
                                     </div>
 
                                     <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $s2 ? 'bg-amber-400' : 'bg-gray-200' }}">
                                     </div>
 
-                                    <div class="flex flex-col items-center">
+                                    <div class="flex flex-col items-center w-12 shrink-0">
                                         <div
                                             class="w-5 h-5 rounded-full flex items-center justify-center
                                             {{ $s2 ? ($s3 || $s3Reject ? ($s3Reject ? 'bg-red-400' : 'bg-amber-400') : 'bg-amber-400 ring-2 ring-amber-200') : 'bg-gray-200' }}">
@@ -202,14 +212,14 @@
                                             @endif
                                         </div>
                                         <p
-                                            class="text-[9px] font-semibold mt-0.5 whitespace-nowrap {{ $s2 ? 'text-amber-600' : 'text-gray-300' }}">
+                                            class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $s2 ? 'text-amber-600' : 'text-gray-300' }}">
                                             Waiting</p>
                                     </div>
 
                                     <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $s3 ? 'bg-emerald-400' : 'bg-gray-200' }}">
                                     </div>
 
-                                    <div class="flex flex-col items-center">
+                                    <div class="flex flex-col items-center w-12 shrink-0">
                                         <div
                                             class="w-5 h-5 rounded-full flex items-center justify-center {{ $s3 ? 'bg-emerald-500' : 'bg-gray-200' }}">
                                             <iconify-icon
@@ -217,7 +227,7 @@
                                                 style="font-size:11px; color:{{ $s3 ? 'white' : '#d1d5db' }};"></iconify-icon>
                                         </div>
                                         <p
-                                            class="text-[9px] font-semibold mt-0.5 whitespace-nowrap {{ $s3 ? 'text-emerald-600' : 'text-gray-300' }}">
+                                            class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $s3 ? 'text-emerald-600' : 'text-gray-300' }}">
                                             Approve</p>
                                     </div>
 
@@ -230,7 +240,7 @@
 
         </div>
 
-        <div class="lg:col-span-9 bg-white rounded-xl p-5 shadow-md flex flex-col gap-4">
+        <div class="col-span-12 xl:col-span-9 bg-white rounded-xl p-5 shadow-md flex flex-col gap-4">
             <div>
                 <h2 class="font-bold text-gray-700 text-xl">Peminjaman Terbaru</h2>
                 <p class="text-xs text-gray-400 mt-0.5">5 aktivitas peminjaman terakhirmu</p>
@@ -292,49 +302,64 @@
                             };
                         @endphp
                         <div
-                            class="flex items-center gap-4 p-4 rounded-xl border-l-4 {{ $statusConfig['border'] }} {{ $statusConfig['bg'] }} hover:brightness-95 transition-all duration-150">
-                            <div
-                                class="w-10 h-10 rounded-xl {{ $statusConfig['icon_bg'] }} flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <iconify-icon icon="mdi:door-open"
-                                    style="font-size:20px; color:white;"></iconify-icon>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <p class="font-bold text-gray-800 text-sm">{{ $item->kode_ruangan }}</p>
-                                    <span class="text-gray-300">•</span>
-                                    <p class="text-sm text-gray-600 truncate">{{ $item->nama_gedung }}, Lantai
-                                        {{ $item->lantai }}</p>
+                            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border-l-4 {{ $statusConfig['border'] }} {{ $statusConfig['bg'] }} hover:brightness-95 transition-all duration-150">
+                            <div class="flex items-start gap-4 min-w-0">
+                                <div
+                                    class="w-10 h-10 rounded-xl {{ $statusConfig['icon_bg'] }} flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <iconify-icon icon="mdi:door-open"
+                                        style="font-size:20px; color:white;"></iconify-icon>
                                 </div>
-                                <div class="flex items-center gap-3 mt-1 flex-wrap">
-                                    <span
-                                        class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
-                                        {{ $item->jenis_peminjaman === 'akademik' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600' }}">
-                                        <iconify-icon
-                                            icon="{{ $item->jenis_peminjaman === 'akademik' ? 'mdi:school' : 'mdi:account-group' }}"
-                                            style="font-size:11px;"></iconify-icon>
-                                        {{ ucfirst($item->jenis_peminjaman) }}
-                                    </span>
-                                    @if ($item->jam_mulai !== '-')
-                                        <span class="inline-flex items-center gap-1 text-xs text-gray-500">
-                                            <iconify-icon icon="mdi:clock-time-four-outline"
-                                                style="font-size:12px;"></iconify-icon>
-                                            {{ $item->jam_mulai }} – {{ $item->jam_selesai }}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <p class="font-bold text-gray-800 text-sm">{{ $item->kode_ruangan }}</p>
+                                        <span class="text-gray-300">•</span>
+                                        <p class="text-sm text-gray-600 truncate">{{ $item->nama_gedung }}, Lantai
+                                            {{ $item->lantai }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-3 mt-1 flex-wrap">
+                                        <span
+                                            class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
+                                            {{ $item->jenis_peminjaman === 'akademik' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600' }}">
+                                            <iconify-icon
+                                                icon="{{ $item->jenis_peminjaman === 'akademik' ? 'mdi:school' : 'mdi:account-group' }}"
+                                                style="font-size:11px;"></iconify-icon>
+                                            {{ ucfirst($item->jenis_peminjaman) }}
                                         </span>
-                                    @endif
-                                    <span class="inline-flex items-center gap-1 text-xs text-gray-400">
-                                        <iconify-icon icon="mdi:account-outline"
-                                            style="font-size:12px;"></iconify-icon>
-                                        {{ $item->penanggung_jawab ?? '-' }}
-                                    </span>
+                                        @if ($item->jam_mulai !== '-')
+                                            <span class="inline-flex items-center gap-1 text-xs text-gray-500">
+                                                <iconify-icon icon="mdi:clock-time-four-outline"
+                                                    style="font-size:12px;"></iconify-icon>
+                                                {{ $item->jam_mulai }} – {{ $item->jam_selesai }}
+                                            </span>
+                                        @endif
+                                        <span class="inline-flex items-center gap-1 text-xs text-gray-400">
+                                            <iconify-icon icon="mdi:account-outline"
+                                                style="font-size:12px;"></iconify-icon>
+                                            {{ $item->penanggung_jawab ?? '-' }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2 flex-shrink-0">
+                            <div class="flex items-center gap-2 sm:justify-end mt-2 sm:mt-0 pl-14 sm:pl-0">
                                 @if ($item->status === 'Waiting')
                                     <button wire:click="confirmCancel({{ $item->id }})"
                                         class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-600 transition-colors duration-150">
                                         <iconify-icon icon="mdi:cancel" style="font-size:13px;"></iconify-icon>
                                         Batalkan
                                     </button>
+                                @elseif ($item->status === 'Approve')
+                                    @if ($item->cancel_requested)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-amber-50 text-amber-600 border border-amber-200 shadow-sm animate-pulse">
+                                            <iconify-icon icon="solar:clock-circle-bold" class="text-sm"></iconify-icon>
+                                            Menunggu Pembatalan
+                                        </span>
+                                    @else
+                                        <button wire:click="confirmRequestCancel({{ $item->id }})"
+                                            class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-600 transition-colors duration-150">
+                                            <iconify-icon icon="mdi:cancel" style="font-size:13px;"></iconify-icon>
+                                            Ajukan Pembatalan Peminjaman
+                                        </button>
+                                    @endif
                                 @endif
                                 <span
                                     class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold
@@ -359,22 +384,47 @@
         Livewire.on('open-cancel-modal', (event) => {
             Swal.fire({
                 title: 'Batalkan Peminjaman?',
-                text: 'Masukkan alasan pembatalan',
+                text: 'Silakan tuliskan alasan singkat pembatalan peminjaman Anda.',
                 input: 'text',
-                inputPlaceholder: 'Alasan pembatalan...',
+                inputPlaceholder: 'Contoh: Salah pilih ruangan / jam...',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Batalkan',
-                cancelButtonText: 'Tidak',
+                cancelButtonText: 'Kembali',
                 confirmButtonColor: '#e51411',
+                cancelButtonColor: '#6b7280',
                 preConfirm: (value) => {
-                    if (!value) {
-                        Swal.showValidationMessage('Alasan batalkan wajib diisi');
+                    if (!value || value.trim().length < 5) {
+                        Swal.showValidationMessage('Alasan pembatalan minimal 5 karakter!');
                     }
                     return value;
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
                     $wire.cancelBooking(event.id, result.value);
+                }
+            });
+        });
+
+        Livewire.on('confirmRequestCancel', (event) => {
+            Swal.fire({
+                title: 'Ajukan Pembatalan?',
+                text: 'Silakan tulis alasan Anda membatalkan peminjaman ini. Permintaan akan dikirimkan ke Admin/BAA untuk diverifikasi.',
+                input: 'text',
+                inputPlaceholder: 'Contoh: Kegiatan dipindahkan ke hari lain...',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Ajukan',
+                cancelButtonText: 'Kembali',
+                confirmButtonColor: '#e51411',
+                cancelButtonColor: '#6b7280',
+                preConfirm: (value) => {
+                    if (!value || value.trim().length < 5) {
+                        Swal.showValidationMessage('Alasan pembatalan minimal 5 karakter!');
+                    }
+                    return value;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $wire.requestCancelBooking(event.id, result.value);
                 }
             });
         });

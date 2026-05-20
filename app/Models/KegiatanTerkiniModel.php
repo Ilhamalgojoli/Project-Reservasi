@@ -12,5 +12,6 @@ class KegiatanTerkiniModel extends Model
     protected $table = 'kegiatan_terkinis';
     protected $fillable = [
         'pesan',
+        'target_id',
     ];
 }

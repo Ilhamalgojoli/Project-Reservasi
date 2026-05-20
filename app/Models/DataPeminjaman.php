@@ -23,13 +23,10 @@ class DataPeminjaman extends Model
         'user_identifier',
         'tanggal_peminjaman',
         'hari',
-        'jadwal_peminjaman',
         'muatan',
         'penanggung_jawab',
         'kontak_penanggung_jawab',
         'email',
-        'alasan_pembatalan',
-        'cancel_by',
         'alasan_penolakan',
         'keterangan_peminjaman',
         'waktu_mulai',
@@ -45,5 +42,30 @@ class DataPeminjaman extends Model
     public function mataKuliah()
     {
         return $this->belongsTo(MataKuliah::class, 'kode_matkul', 'kode_matkul');
+    }
+
+    public function pembatalan()
+    {
+        return $this->hasOne(PembatalanPeminjaman::class, 'data_peminjaman_id');
+    }
+
+    public function getAlasanPembatalanAttribute()
+    {
+        return $this->pembatalan?->alasan_pembatalan;
+    }
+
+    public function getCancelByAttribute()
+    {
+        return $this->pembatalan?->cancel_by;
+    }
+
+    public function getCancelRequestedAttribute()
+    {
+        return (bool) ($this->pembatalan?->cancel_requested ?? false);
+    }
+
+    public function getCancelRequestReasonAttribute()
+    {
+        return $this->pembatalan?->cancel_request_reason;
     }
 }

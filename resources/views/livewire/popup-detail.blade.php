@@ -214,17 +214,24 @@
                                 </p>
                             </div>
                         </div>
-                    @elseif ($peminjamanDetail->status === 'Canceled' && $peminjamanDetail->alasan_pembatalan)
+                    @elseif ($peminjamanDetail->status === 'Canceled')
                         <div class="flex flex-col gap-4 mt-2">
                             <div class="flex items-center gap-2">
-                                <div class="w-1.5 h-6 bg-gray-500 rounded-full"></div>
+                                <div class="w-1.5 h-6 bg-red-500 rounded-full"></div>
                                 <h3 class="text-xs font-black text-gray-600 uppercase tracking-[0.2em]">Catatan Pembatalan</h3>
                             </div>
-                            <div class="p-6 bg-gray-100/50 rounded-[8px] border border-gray-200 ml-4 relative overflow-hidden group">
-                                <iconify-icon icon="solar:forbidden-circle-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-gray-400/10 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
-                                <p class="text-sm font-bold text-gray-600 italic leading-relaxed relative z-10">
-                                    "{{ $peminjamanDetail->alasan_pembatalan }}"
-                                </p>
+                            <div class="p-6 bg-red-50/30 rounded-[8px] border border-red-100/50 ml-4 relative overflow-hidden group space-y-3">
+                                <iconify-icon icon="solar:forbidden-circle-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-red-500/5 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
+                                <div class="flex flex-col relative z-10">
+                                    <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Dibatalkan Oleh</span>
+                                    <span class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->cancel_by ?? '-' }}</span>
+                                </div>
+                                <div class="flex flex-col relative z-10">
+                                    <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Alasan Pembatalan</span>
+                                    <p class="text-sm font-medium text-gray-600 italic leading-relaxed">
+                                        "{{ $peminjamanDetail->alasan_pembatalan ?? '-' }}"
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     @endif

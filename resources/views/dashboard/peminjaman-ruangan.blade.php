@@ -19,14 +19,14 @@
         </p>
     </div>
 
-    <main class="grid lg:grid-cols-12 md:grid-cols-1 sm:grid-cols-1 gap-8">
+    <main class="grid lg:grid-cols-12 md:grid-cols-1 sm:grid-cols-1 gap-4">
         {{-- Main Form Selection --}}
         <div class="lg:col-span-7">
             @livewire('user.peminjaman', ['id' => request()->route('id')])
         </div>
 
         {{-- Sidebar Widgets --}}
-        <section class="lg:col-span-5 flex flex-col gap-6">
+        <section class="lg:col-span-5 flex flex-col gap-4">
             {{-- Room Assets --}}
             <div class="transition-all duration-500">
                 @livewire('user.view-asset')

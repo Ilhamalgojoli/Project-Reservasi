@@ -1,6 +1,6 @@
 /* === sidebar css start === */
 .sidebar {
-  @apply fixed start-[-105%] xl:start-0 top-0 w-[250px] xl:w-[220px] 2xl:w-[275px] 3xl:w-[312px] h-screen bg-white z-30 dark:bg-dark-2;
+  @apply fixed start-[-105%] xl:start-0 top-0 w-[250px] md:w-[320px] xl:w-[220px] 2xl:w-[275px] 3xl:w-[312px] h-screen bg-white z-30 dark:bg-dark-2;
 }
 
 .sidebar-close-btn {

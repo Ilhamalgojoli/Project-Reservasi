@@ -45,6 +45,7 @@ class DashboardUserService
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
+            'pembatalan'
         ])
             ->where('user_identifier', $nim)
             ->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'status', 'waktu_mulai', 'waktu_selesai', 'created_at')
@@ -65,7 +66,7 @@ class DashboardUserService
 
     public function getDashboardData(string $nim): array
     {
-        // Jalankan sinkronisasi database (Finish & Auto-Reject) agar statistik selalu akurat
+        # Jalankan sinkronisasi database (Finish & Auto-Reject) agar statistik selalu akurat
         $this->dashboardService->updateStatusFinish();
 
         return [

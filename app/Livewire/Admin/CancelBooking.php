@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Fakultas;
-use App\Models\DataPeminjaman;
+
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,6 +12,7 @@ class CancelBooking extends Component
 {
     use WithPagination;
 
+    public ?int $detailId = null;
     public $search = '';
     public $filterFakultas = '';
     public $filterJenis = '';
@@ -21,11 +22,17 @@ class CancelBooking extends Component
     public $cancelReason = '';
 
     protected $queryString = [
+        'detailId' => ['except' => null],
         'search' => ['except' => ''],
         'filterFakultas' => ['except' => ''],
         'filterJenis' => ['except' => ''],
         'filterHari' => ['except' => ''],
     ];
+
+    public function mount($detailId = null)
+    {
+        $this->detailId = $detailId ? (int) $detailId : null;
+    }
 
     public function updating()
     {
@@ -42,6 +49,11 @@ class CancelBooking extends Component
     public function datas()
     {
         $service = app(\App\Services\ApprovalDataService::class);
+
+        if ($this->detailId) {
+            return $service->getApprovedDataById($this->detailId);
+        }
+
         return $service->getApprovedData(
             $this->search,
             $this->filterFakultas,
@@ -53,6 +65,12 @@ class CancelBooking extends Component
     public function confirmCancel($id)
     {
         $this->cancelId = $id;
+        $peminjaman = \App\Models\DataPeminjaman::find($id);
+        if ($peminjaman && $peminjaman->cancel_requested) {
+            $this->cancelReason = $peminjaman->cancel_request_reason;
+        } else {
+            $this->cancelReason = '';
+        }
         $this->showCancelModal = true;
     }
 

@@ -16,6 +16,8 @@ class ApproveController extends Controller
 
     public function pembatalan()
     {
-        return view('dashboard.peminjaman-aktif');
+        return view('dashboard.peminjaman-aktif', [
+            'detailId' => request()->query('detailId'),
+        ]);
     }
 }

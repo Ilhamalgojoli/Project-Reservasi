@@ -218,14 +218,6 @@ class DashboardService
             });
     }
 
-    public function getDataKegiatanTerkini(): array
-    {
-        return KegiatanTerkiniModel::select('pesan')
-            ->orderBy('id', 'desc')
-            ->limit(10)
-            ->get()->toArray();
-    }
-
     public function getPeriodeOptions(): array
     {
         $currentMonth = (int) date('n');

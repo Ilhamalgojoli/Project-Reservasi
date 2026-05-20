@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (count < limit) {
                 const wrapper = document.createElement('div');
-                wrapper.className = 'flex flex-row gap-5';
+                wrapper.className = 'flex flex-row sm:flex-col gap-5';
 
                 const wrapperNama = document.createElement('div');
                 wrapperNama.className = 'flex-[1.5] relative group';
@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const wrapperTotal = document.createElement('div');
                 wrapperTotal.className = 'flex-1 relative group';
                 wrapperTotal.innerHTML = `
-                    <iconify-icon icon="mdi:numeric-count-2" 
+                    <iconify-icon icon="solar:database-bold-duotone" 
                         class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                    <input type="number" name="total_asset[]" placeholder="Qty" 
+                    <input type="number" name="total_asset[]" placeholder="Jumlah Asset" 
                         class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                 `;
 

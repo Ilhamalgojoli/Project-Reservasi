@@ -3,13 +3,16 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Ruangan;
+use App\Models\Gedung;
 use App\Services\DashboardService;
+use App\Services\NotificationService;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class DashboardAdmin extends Component
 {
     public $periode_semester = '';
+    public $aktif_gedung_id = '';
 
     protected $listeners = [
         'refresh' => '$refresh'
@@ -49,16 +52,29 @@ class DashboardAdmin extends Component
             'dataAktif' => $this->getAktifTidakAktif(),
             'peminjamanPerFakultas' => $dashboard->getDataPeminjamanPerFakultas($this->periode_semester),
             'okkupansi' => $dashboard->getDataOkkupansi($this->periode_semester),
-            'kegiatanTerkini' => $dashboard->getDataKegiatanTerkini(),
+            'kegiatanTerkini' => app(NotificationService::class)->getDataKegiatanTerkini(),
             'periodeOptions' => $dashboard->getPeriodeOptions()['options'],
+            'listGedung' => Gedung::all(),
         ];
     }
 
     protected function getAktifTidakAktif(): array
     {
+        $queryAktif = Ruangan::where('status', 'Aktif');
+        $queryTidakAktif = Ruangan::where('status', 'Tidak Aktif');
+
+        if ($this->aktif_gedung_id) {
+            $queryAktif->whereHas('lantai', function ($q) {
+                $q->where('gedung_id', $this->aktif_gedung_id);
+            });
+            $queryTidakAktif->whereHas('lantai', function ($q) {
+                $q->where('gedung_id', $this->aktif_gedung_id);
+            });
+        }
+
         return [
-            'ruanganAktif' => Ruangan::where('status', 'Aktif')->count(),
-            'ruanganTidakAktif' => Ruangan::where('status', 'Tidak Aktif')->count()
+            'ruanganAktif' => $queryAktif->count(),
+            'ruanganTidakAktif' => $queryTidakAktif->count()
         ];
     }
 
@@ -77,6 +93,7 @@ class DashboardAdmin extends Component
             'okkupansi' => $s['okkupansi'],
             'kegiatanTerkini' => $s['kegiatanTerkini'],
             'periodeOptions' => $s['periodeOptions'],
+            'listGedung' => $s['listGedung'],
         ]);
     }
 }

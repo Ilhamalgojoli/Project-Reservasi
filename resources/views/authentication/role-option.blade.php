@@ -3,8 +3,8 @@
 
 <x-head />
 
-<body class="bg-[#F8FAFC] min-h-screen flex items-center justify-center p-4">
-    <section class="w-full max-w-4xl">
+<body class="bg-[#F8FAFC] min-h-screen flex items-center justify-center p-4" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; width: 100%;">
+    <section class="w-full max-w-4xl mx-auto">
         <div class="bg-white shadow-2xl rounded-3xl overflow-hidden">
             <div class="p-8 md:p-12">
                 <!-- Header -->
@@ -20,7 +20,7 @@
                 @if (session('roles'))
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[50vh] overflow-y-auto px-2 custom-scrollbar">
                         @foreach (session('roles') as $data)
-                            <form method="POST" action="{{ route('chooseRole') }}" class="h-full">
+                            <form method="POST" action="{{ route('chooseRole') }}" class="w-full h-full min-w-0">
                                 @csrf
                                 <input type="hidden" name="role_name" value="{{ $data['role'] }}">
                                 <input type="hidden" name="role_id" value="{{ $data['id'] }}">
@@ -30,7 +30,7 @@
                                     <div class="w-12 h-12 flex-shrink-0 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500 group-hover:bg-red-600 group-hover:text-white transition-colors mr-4">
                                         <iconify-icon icon="solar:user-id-bold-duotone" width="28"></iconify-icon>
                                     </div>
-                                    <div class="overflow-hidden">
+                                    <div class="min-w-0 flex-1">
                                         <span class="block font-bold text-gray-800 truncate">{{ $data['role'] }}</span>
                                         <span class="block text-xs text-gray-400 truncate">Akses {{ $data['role'] }}</span>
                                     </div>

@@ -15,19 +15,26 @@
         .apexcharts-tooltip-series-group {
             background-color: #ffffff !important;
         }
+
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
     <main class="w-full h-auto space-y-5 mb-5">
-        <section class="grid lg:grid-cols-12 sm:grid-cols-1 md:grid-cols-2 gap-5">
+        <section class="grid grid-cols-12 gap-5">
             {{-- Card Dashboard Section --}}
-            <div class="lg:col-span-8 md:col-span-12 sm:col-span-12 bg-white p-4 rounded-[8px] space-y-6 shadow-md">
-                <div class="grid lg:grid-cols-3 gap-4 md:grid-cols-2 sm:grid-cols-1">
+            <div class="col-span-12 xl:col-span-8 bg-white p-4 rounded-[8px] space-y-6 shadow-md">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {{-- Waiting Card --}}
                     <div
                         class="group relative overflow-hidden rounded-xl p-5 flex flex-row items-center justify-center gap-4 cursor-default
                         bg-gradient-to-br from-[#ffca28] to-[#ffb800]
                         shadow-lg hover:shadow-xl
                         transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/10"></div>
                         <div class="bg-[#d19c00] rounded-full p-4 flex flex-shrink-0 shadow-inner">
                             <iconify-icon icon="clarity:building-solid"
                                 style="font-size: 30px; color: white;"></iconify-icon>
@@ -44,7 +51,6 @@
                         bg-gradient-to-br from-[#ff3b38] to-[#e51411]
                         shadow-lg hover:shadow-xl
                         transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/10"></div>
                         <div class="bg-[#c7110f] rounded-full p-4 flex justify-center flex-shrink-0 shadow-inner">
                             <iconify-icon icon="clarity:building-solid"
                                 style="font-size: 30px; color: white;"></iconify-icon>
@@ -61,7 +67,6 @@
                         bg-gradient-to-br from-[#4fc451] to-[#3ea83f]
                         shadow-lg hover:shadow-xl
                         transition-all duration-300 hover:-translate-y-0.5">
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/10"></div>
                         <div class="bg-[#2f812f] rounded-full p-4 flex justify-center flex-shrink-0 shadow-inner">
                             <iconify-icon icon="clarity:building-solid"
                                 style="font-size: 30px; color: white;"></iconify-icon>
@@ -73,16 +78,16 @@
                     </div>
                 </div>
 
-                <div class="border-t border-gray-100 pt-4" x-data="cardDashboardChart(@js($gedung))"
-                    wire:key="chart-gedung-{{ $periode_semester }}-{{ md5(json_encode($gedung)) }}">
-                    <h2 class="text-lg font-bold text-gray-700 text-center mb-2">Penggunaan Ruang Gedung Telkom
+                <div class="border-t border-gray-100 pt-16 mt-16" x-data="cardDashboardChart(@js($gedung))"
+                     wire:key="chart-gedung-{{ $periode_semester }}-{{ md5(json_encode($gedung)) }}">
+                    <h2 class="text-xl font-bold text-gray-800 text-center mb-8">Penggunaan Ruang Gedung Telkom
                         University</h2>
                     <div class="overflow-x-auto text-black">
-                        <div x-ref="chart" wire:ignore class="overflow-x-auto min-w-[800px] {{ count($gedung) === 0 ? 'hidden' : '' }}"></div>
-                        
+                        <div x-ref="chart" wire:ignore class="min-w-[800px] lg:min-w-0 {{ count($gedung) === 0 ? 'hidden' : '' }}"></div>
+
                         <div class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3 bg-gray-50/50 rounded-xl {{ count($gedung) > 0 ? 'hidden' : '' }}">
                             <iconify-icon icon="solar:buildings-bold-duotone"
-                                class="text-6xl opacity-20"></iconify-icon>
+                                          class="text-6xl opacity-20"></iconify-icon>
                             <div class="text-center">
                                 <p class="text-lg font-bold text-gray-500">Tidak ada data gedung</p>
                                 <p class="text-sm italic">Data penggunaan ruang belum tersedia</p>
@@ -92,7 +97,7 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-4 md:col-span-12 sm:col-span-12 space-y-5">
+            <div class="col-span-12 xl:col-span-4 space-y-5">
                 {{-- Filter Semester Section --}}
                 <div class="bg-white p-5 rounded-[8px] shadow-md flex flex-col gap-3">
                     <label for="periodeFilter" class="text-sm font-semibold text-gray-600">
@@ -116,30 +121,97 @@
                 </div>
 
                 {{-- Kegiatan Terkini Section --}}
-                <div class="bg-white p-5 rounded-[8px] shadow-md flex flex-col justify-between space-y-5">
-                    <h1 class="font-bold text-2xl">Kegiatan Terkini</h1>
-                    <ul class="flex flex-col gap-3 text-black w-full">
+                <div class="bg-white p-6 rounded-[12px] shadow-lg flex flex-col gap-6 border border-gray-100/50">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2 bg-rose-50 text-[#e51411] rounded-[8px] flex items-center justify-center">
+                                <iconify-icon icon="solar:history-bold-duotone" class="text-2xl"></iconify-icon>
+                            </div>
+                            <h2 class="font-black text-xl text-gray-900 tracking-tight">Kegiatan Terkini</h2>
+                        </div>
+                        <span class="px-2.5 py-1 bg-gray-100 text-[10px] font-black uppercase tracking-wider text-gray-400 rounded-full">
+                            Live Update
+                        </span>
+                    </div>
+
+                    <div class="relative pl-6 border-l-2 border-gray-100 flex flex-col gap-6 ml-2">
                         @forelse ($kegiatanTerkini as $data)
-                            <li class="flex flex-row items-start gap-3">
-                                <iconify-icon icon="icon-park-outline:dot" class="text-[#1BBA9A] mt-0.5 flex-shrink-0"
-                                    style="font-size: 20px;"></iconify-icon>
-                                <span class="text-sm text-gray-700 leading-snug">{{ $data['pesan'] }}</span>
-                            </li>
+                            @php
+                                $isCancel = isset($data['pesan_clickable']) && $data['pesan_clickable'];
+                                $link = isset($data['target_id']) ? route('pembatalan-reservasi', ['detailId' => $data['target_id']]) : null;
+                            @endphp
+                            <div class="relative flex flex-col gap-2 p-4 rounded-[8px] transition-all duration-300 border
+                                {{ $isCancel ? 'bg-red-50/30 border-red-100/50 hover:bg-red-50/50 shadow-sm' : 'bg-gray-50/30 border-gray-100/50 hover:bg-gray-50/60' }}">
+                                
+                                {{-- Timeline Bullet Icon --}}
+                                <div class="absolute -left-[35px] top-4 w-6 h-6 rounded-full flex items-center justify-center border border-white shadow-sm z-10
+                                    {{ $isCancel ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white' }}">
+                                    <iconify-icon icon="{{ $isCancel ? 'solar:shield-warning-bold' : 'solar:calendar-add-bold' }}" class="text-xs"></iconify-icon>
+                                </div>
+
+                                {{-- Header & Time --}}
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest
+                                        {{ $isCancel ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600' }}">
+                                        {{ $isCancel ? 'BATAL REQUEST' : 'PEMINJAMAN BARU' }}
+                                    </span>
+                                    @if(isset($data['waktu']))
+                                        <span class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
+                                            <iconify-icon icon="solar:clock-circle-linear" class="text-xs"></iconify-icon>
+                                            {{ $data['waktu'] }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                {{-- Message Body --}}
+                                <div class="text-xs font-semibold text-gray-700 leading-relaxed">
+                                    @if($isCancel)
+                                        <p class="inline">{{ $data['pesan'] }}</p>
+                                        @if($link)
+                                            <a href="{{ $link }}" class="inline-flex items-center gap-0.5 text-blue-600 hover:text-blue-800 font-extrabold hover:underline ml-1 group/btn">
+                                                {{ $data['pesan_clickable'] }}
+                                                <iconify-icon icon="solar:alt-arrow-right-bold" class="text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></iconify-icon>
+                                            </a>
+                                        @else
+                                            <span class="ml-1 text-gray-400">{{ $data['pesan_clickable'] }}</span>
+                                        @endif
+                                    @else
+                                        @if($link)
+                                            <a href="{{ $link }}" class="hover:underline text-gray-700 font-bold">
+                                                {{ $data['pesan'] }}
+                                            </a>
+                                        @else
+                                            <span>{{ $data['pesan'] }}</span>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
                         @empty
-                            <li class="flex flex-col items-center justify-center py-8 text-gray-400 gap-2">
-                                <iconify-icon icon="solar:notes-minimalistic-bold-duotone"
-                                    class="text-4xl opacity-20"></iconify-icon>
-                                <span class="text-sm font-medium italic">Tidak ada kegiatan terbaru</span>
-                            </li>
+                            <div class="flex flex-col items-center justify-center py-12 text-gray-400 gap-3">
+                                <iconify-icon icon="solar:notes-minimalistic-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
+                                <div class="text-center">
+                                    <p class="text-sm font-bold text-gray-500">Tidak ada kegiatan terbaru</p>
+                                    <p class="text-xs italic">Semua aktivitas akan tampil di sini secara real-time</p>
+                                </div>
+                            </div>
                         @endforelse
-                    </ul>
+                    </div>
                 </div>
 
                 {{-- Aktif/Tidak Aktif Ruangan Section --}}
-                <div class="bg-white p-5 rounded-[8px] shadow-md justify-center flex flex-col gap-5 sm:items-center"
-                    x-data="aktifChart(@js($dataAktif))" wire:key="chart-aktif-{{ $periode_semester }}-{{ md5(json_encode($dataAktif)) }}">
-                    <h1 class="text-2xl font-bold flex justify-end">Ruangan Aktif / Tidak Aktif</h1>
-                    <div id="userOverviewDonutChart" wire:ignore class="apexcharts-tooltip-z-none w-fit {{ ($dataAktif['ruanganAktif'] + $dataAktif['ruanganTidakAktif']) == 0 ? 'hidden' : '' }}"></div>
+                <div class="bg-white p-5 rounded-[8px] shadow-md justify-center flex flex-col gap-5 items-center sm:items-center"
+                    x-data="aktifChart(@js($dataAktif))" wire:key="chart-aktif-{{ $periode_semester }}-{{ $aktif_gedung_id }}-{{ md5(json_encode($dataAktif)) }}">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-3">
+                        <h1 class="text-lg font-bold text-gray-800 text-left">Ruangan Aktif / Tidak Aktif</h1>
+                        <select wire:model.live="aktif_gedung_id"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5 cursor-pointer shadow-sm min-w-[140px] w-full sm:w-auto">
+                            <option value="">Semua Gedung</option>
+                            @foreach ($listGedung as $g)
+                                <option value="{{ $g->id }}">{{ $g->nama_gedung }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div id="userOverviewDonutChart" x-ref="chart" wire:ignore class="apexcharts-tooltip-z-none w-full flex justify-center {{ ($dataAktif['ruanganAktif'] + $dataAktif['ruanganTidakAktif']) == 0 ? 'hidden' : '' }}"></div>
                     
                     <div class="flex flex-col items-center justify-center py-10 text-gray-400 gap-3 {{ ($dataAktif['ruanganAktif'] + $dataAktif['ruanganTidakAktif']) > 0 ? 'hidden' : '' }}">
                         <iconify-icon icon="solar:home-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
@@ -167,11 +239,11 @@
                         <div class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Global Statistics
                         </div>
                     </div>
-                    <div class="w-full bg-gray-50/50 rounded-2xl p-4">
+                    <div class="overflow-x-auto text-black bg-gray-50/50 rounded-2xl p-4">
                         @php
                             $hasFakultasData = count($peminjamanPerFakultas) > 0 && collect($peminjamanPerFakultas)->sum('total') > 0;
                         @endphp
-                        <div id="chart-peminjaman-fakultas" wire:ignore class="w-full {{ !$hasFakultasData ? 'hidden' : '' }}"></div>
+                        <div id="chart-peminjaman-fakultas" x-ref="chart" wire:ignore class="overflow-x-auto min-w-[800px] {{ !$hasFakultasData ? 'hidden' : '' }}"></div>
                         
                         <div class="flex flex-col items-center justify-center py-20 text-gray-400 gap-3 {{ $hasFakultasData ? 'hidden' : '' }}">
                             <iconify-icon icon="solar:chart-square-bold-duotone"
@@ -194,7 +266,7 @@
                     <div class="bg-[#e51411] p-2 rounded-lg w-fit">
                         <p class="text-white font-bold">Okkupansi</p>
                     </div>
-                    <div id="chart-okkupansi" wire:ignore class="w-full flex flex-nowrap gap-5 overflow-x-auto pb-5 {{ count($okkupansi) === 0 ? 'hidden' : '' }}"></div>
+                    <div id="chart-okkupansi" x-ref="chart" wire:ignore class="w-full flex flex-nowrap gap-5 overflow-x-auto pb-5 {{ count($okkupansi) === 0 ? 'hidden' : '' }}"></div>
                     
                     <div class="flex flex-col items-center justify-center py-12 text-gray-400 gap-3 {{ count($okkupansi) > 0 ? 'hidden' : '' }}">
                         <iconify-icon icon="solar:globus-bold-duotone" class="text-5xl opacity-20"></iconify-icon>
@@ -294,9 +366,11 @@
                             }
                         };
 
+                        if (this.checkInterval) clearInterval(this.checkInterval);
                         this.checkInterval = setInterval(() => {
                             if (typeof ApexCharts !== 'undefined' && this.$refs.chart) {
                                 clearInterval(this.checkInterval);
+                                this.$refs.chart.innerHTML = '';
                                 this.chart = new ApexCharts(this.$refs.chart, options);
                                 this.chart.render();
                             }
@@ -328,7 +402,7 @@
                             colors: ['#e51411', '#6175C1'],
                             chart: {
                                 type: 'donut',
-                                width: 450,
+                                width: 380,
                                 height: 270,
                                 fontFamily: 'Inter, sans-serif'
                             },
@@ -341,13 +415,26 @@
                             tooltip: {
                                 theme: 'light',
                                 fillSeriesColor: false
-                            }
+                            },
+                            responsive: [{
+                                breakpoint: 640,
+                                options: {
+                                    chart: {
+                                        width: 280,
+                                        height: 240
+                                    },
+                                    legend: {
+                                        position: 'bottom'
+                                    }
+                                }
+                            }]
                         };
+                        if (this.checkInterval) clearInterval(this.checkInterval);
                         this.checkInterval = setInterval(() => {
-                            const chartEl = document.querySelector("#userOverviewDonutChart");
-                            if (typeof ApexCharts !== 'undefined' && chartEl) {
+                            if (typeof ApexCharts !== 'undefined' && this.$refs.chart) {
                                 clearInterval(this.checkInterval);
-                                this.chart = new ApexCharts(chartEl, options);
+                                this.$refs.chart.innerHTML = '';
+                                this.chart = new ApexCharts(this.$refs.chart, options);
                                 this.chart.render();
                             }
                         }, 50);
@@ -463,11 +550,12 @@
                             }
                         };
 
+                        if (this.checkInterval) clearInterval(this.checkInterval);
                         this.checkInterval = setInterval(() => {
-                            const chartEl = document.querySelector("#chart-peminjaman-fakultas");
-                            if (typeof ApexCharts !== 'undefined' && chartEl) {
+                            if (typeof ApexCharts !== 'undefined' && this.$refs.chart) {
                                 clearInterval(this.checkInterval);
-                                this.chart = new ApexCharts(chartEl, options);
+                                this.$refs.chart.innerHTML = '';
+                                this.chart = new ApexCharts(this.$refs.chart, options);
                                 this.chart.render();
                             }
                         }, 50);
@@ -491,17 +579,16 @@
 
                         this.navListener = () => this.destroy();
                         document.addEventListener('livewire:navigating', this.navListener);
-                        let container = document.getElementById('chart-okkupansi');
-                        if (!container) return;
-                        container.innerHTML = "";
+                        if (this.checkInterval) clearInterval(this.checkInterval);
                         this.checkInterval = setInterval(() => {
-                            if (typeof ApexCharts !== 'undefined') {
+                            if (typeof ApexCharts !== 'undefined' && this.$refs.chart) {
                                 clearInterval(this.checkInterval);
+                                this.$refs.chart.innerHTML = "";
                                 data.forEach((item) => {
                                     let chartDiv = document.createElement('div');
                                     chartDiv.classList.add('min-w-[250px]', 'flex',
                                         'justify-center');
-                                    container.appendChild(chartDiv);
+                                    this.$refs.chart.appendChild(chartDiv);
                                     var options = {
                                         series: [item.terpakai, item.tidakTerpakai],
                                         chart: {
