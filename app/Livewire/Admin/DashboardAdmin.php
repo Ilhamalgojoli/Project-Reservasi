@@ -52,7 +52,8 @@ class DashboardAdmin extends Component
             'dataAktif' => $this->getAktifTidakAktif(),
             'peminjamanPerFakultas' => $dashboard->getDataPeminjamanPerFakultas($this->periode_semester),
             'okkupansi' => $dashboard->getDataOkkupansi($this->periode_semester),
-            'kegiatanTerkini' => app(NotificationService::class)->getDataKegiatanTerkini(),
+            'kegiatanTerkini'    => app(NotificationService::class)->getDataKegiatanTerkini(3),
+            'kegiatanTerkiniAll' => app(NotificationService::class)->getDataKegiatanTerkiniAll(),
             'periodeOptions' => $dashboard->getPeriodeOptions()['options'],
             'listGedung' => Gedung::all(),
         ];
@@ -91,7 +92,8 @@ class DashboardAdmin extends Component
             'dataAktif' => $s['dataAktif'],
             'peminjamanPerFakultas' => $s['peminjamanPerFakultas'],
             'okkupansi' => $s['okkupansi'],
-            'kegiatanTerkini' => $s['kegiatanTerkini'],
+            'kegiatanTerkini'    => $s['kegiatanTerkini'],
+            'kegiatanTerkiniAll' => $s['kegiatanTerkiniAll'],
             'periodeOptions' => $s['periodeOptions'],
             'listGedung' => $s['listGedung'],
         ]);

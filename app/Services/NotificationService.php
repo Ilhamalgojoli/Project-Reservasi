@@ -74,11 +74,21 @@ class NotificationService
         }
     }
 
-    public function getDataKegiatanTerkini(): array
+    public function getDataKegiatanTerkini(int $limit = 3): array
+    {
+        return $this->buildKegiatanTerkini($limit);
+    }
+
+    public function getDataKegiatanTerkiniAll(): array
+    {
+        return $this->buildKegiatanTerkini(50);
+    }
+
+    private function buildKegiatanTerkini(int $limit): array
     {
         return KegiatanTerkiniModel::select('pesan', 'target_id', 'created_at')
             ->orderBy('id', 'desc')
-            ->limit(10)
+            ->limit($limit)
             ->get()
             ->map(function ($item) {
                 $pesan = $item->pesan;
@@ -91,10 +101,10 @@ class NotificationService
                 }
                 
                 return [
-                    'pesan' => $pesan,
-                    'pesan_clickable' => $pesan_clickable,
-                    'target_id' => $item->target_id,
-                    'waktu' => Carbon::parse($item->created_at)->locale('id')->diffForHumans(),
+                    'pesan'          => $pesan,
+                    'pesan_clickable'=> $pesan_clickable,
+                    'target_id'      => $item->target_id,
+                    'waktu'          => Carbon::parse($item->created_at)->locale('id')->diffForHumans(),
                 ];
             })
             ->toArray();

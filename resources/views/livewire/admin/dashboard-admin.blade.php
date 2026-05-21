@@ -121,7 +121,8 @@
                 </div>
 
                 {{-- Kegiatan Terkini Section --}}
-                <div class="bg-white p-6 rounded-[12px] shadow-lg flex flex-col gap-6 border border-gray-100/50">
+                <div class="bg-white p-6 rounded-[12px] shadow-lg flex flex-col gap-6 border border-gray-100/50"
+                     x-data="{ showKegiatanPopup: false }">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-4">
                         <div class="flex items-center gap-2.5">
                             <div class="p-2 bg-rose-50 text-[#e51411] rounded-[8px] flex items-center justify-center">
@@ -129,9 +130,18 @@
                             </div>
                             <h2 class="font-black text-xl text-gray-900 tracking-tight">Kegiatan Terkini</h2>
                         </div>
-                        <span class="px-2.5 py-1 bg-gray-100 text-[10px] font-black uppercase tracking-wider text-gray-400 rounded-full">
-                            Live Update
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 bg-gray-100 text-[10px] font-black uppercase tracking-wider text-gray-400 rounded-full">
+                                Live Update
+                            </span>
+                            @if(count($kegiatanTerkini) > 0 || count($kegiatanTerkiniAll) > 3)
+                            <button @click="showKegiatanPopup = true"
+                                class="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#e51411] bg-rose-50 hover:bg-rose-100 rounded-full transition-all duration-200 border border-rose-100/50 hover:border-rose-200">
+                                <iconify-icon icon="solar:list-bold" class="text-sm"></iconify-icon>
+                                Lihat Semua
+                            </button>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="relative pl-6 border-l-2 border-gray-100 flex flex-col gap-6 ml-2">
@@ -196,6 +206,151 @@
                             </div>
                         @endforelse
                     </div>
+
+                    {{-- POPUP MODAL: Semua Kegiatan Terkini --}}
+                    <div x-show="showKegiatanPopup"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
+                         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                         @click.self="showKegiatanPopup = false; kegPage = 1"
+                         style="display: none;"
+                         x-data="{
+                            kegPage: 1,
+                            perPage: 5,
+                            allItems: @js($kegiatanTerkiniAll),
+                            get totalPages() { return Math.ceil(this.allItems.length / this.perPage) },
+                            get paginatedItems() {
+                                let start = (this.kegPage - 1) * this.perPage;
+                                return this.allItems.slice(start, start + this.perPage);
+                            },
+                            prevPage() { if (this.kegPage > 1) this.kegPage-- },
+                            nextPage() { if (this.kegPage < this.totalPages) this.kegPage++ }
+                         }">
+
+                        <div x-show="showKegiatanPopup"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+                             class="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[85vh] flex flex-col overflow-hidden">
+
+                            {{-- Modal Header --}}
+                            <div class="flex items-center justify-between p-6 border-b border-gray-100 flex-shrink-0">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-rose-50 text-[#e51411] rounded-xl">
+                                        <iconify-icon icon="solar:history-bold-duotone" class="text-2xl"></iconify-icon>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-black text-lg text-gray-900">Semua Kegiatan Terkini</h3>
+                                        <p class="text-xs text-gray-400 font-medium">
+                                            <span x-text="allItems.length"></span> aktivitas tercatat
+                                        </p>
+                                    </div>
+                                </div>
+                                <button @click="showKegiatanPopup = false; kegPage = 1"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-all">
+                                    <iconify-icon icon="solar:close-bold" class="text-base"></iconify-icon>
+                                </button>
+                            </div>
+
+                            {{-- Modal Body --}}
+                            <div class="flex-1 overflow-y-auto p-6">
+                                <template x-if="allItems.length === 0">
+                                    <div class="flex flex-col items-center justify-center py-16 text-gray-400 gap-3">
+                                        <iconify-icon icon="solar:notes-minimalistic-bold-duotone" class="text-6xl opacity-20"></iconify-icon>
+                                        <p class="text-sm font-bold text-gray-500">Belum ada aktivitas tercatat</p>
+                                    </div>
+                                </template>
+
+                                <template x-if="allItems.length > 0">
+                                    <div class="relative pl-6 border-l-2 border-gray-100 flex flex-col gap-5 ml-2">
+                                        <template x-for="(item, idx) in paginatedItems" :key="idx">
+                                            <div class="relative flex flex-col gap-2 p-4 rounded-xl border transition-all duration-200"
+                                                 :class="item.pesan_clickable
+                                                    ? 'bg-red-50/40 border-red-100 hover:bg-red-50/70'
+                                                    : 'bg-gray-50/50 border-gray-100 hover:bg-gray-50/80'">
+
+                                                {{-- Bullet --}}
+                                                <div class="absolute -left-[35px] top-4 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow z-10"
+                                                     :class="item.pesan_clickable ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white'">
+                                                    <iconify-icon :icon="item.pesan_clickable ? 'solar:shield-warning-bold' : 'solar:calendar-add-bold'" class="text-xs"></iconify-icon>
+                                                </div>
+
+                                                {{-- Badge + Waktu --}}
+                                                <div class="flex items-center justify-between gap-2">
+                                                    <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest"
+                                                          :class="item.pesan_clickable ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600'"
+                                                          x-text="item.pesan_clickable ? 'Batal Request' : 'Peminjaman Baru'">
+                                                    </span>
+                                                    <span class="text-[10px] text-gray-400 font-bold flex items-center gap-1" x-show="item.waktu">
+                                                        <iconify-icon icon="solar:clock-circle-linear" class="text-xs"></iconify-icon>
+                                                        <span x-text="item.waktu"></span>
+                                                    </span>
+                                                </div>
+
+                                                {{-- Pesan --}}
+                                                <div class="text-xs font-semibold text-gray-700 leading-relaxed">
+                                                    <span x-text="item.pesan"></span>
+                                                    <template x-if="item.pesan_clickable">
+                                                        <a :href="item.target_id ? '{{ url('/pembatalan') }}?detailId=' + item.target_id : '#'"
+                                                           class="inline-flex items-center gap-0.5 text-blue-600 hover:text-blue-800 font-extrabold hover:underline ml-1">
+                                                            <span x-text="item.pesan_clickable"></span>
+                                                            <iconify-icon icon="solar:alt-arrow-right-bold" class="text-[10px]"></iconify-icon>
+                                                        </a>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                            {{-- Pagination Footer --}}
+                            <template x-if="totalPages > 1">
+                                <div class="flex-shrink-0 border-t border-gray-100 px-6 py-4 flex items-center justify-between gap-3">
+                                    <span class="text-xs text-gray-400 font-semibold">
+                                        Halaman <span class="text-gray-700 font-black" x-text="kegPage"></span>
+                                        dari <span class="text-gray-700 font-black" x-text="totalPages"></span>
+                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="prevPage"
+                                            :disabled="kegPage === 1"
+                                            :class="kegPage === 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-200 cursor-pointer'"
+                                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-all">
+                                            <iconify-icon icon="solar:alt-arrow-left-bold" class="text-sm"></iconify-icon>
+                                        </button>
+
+                                        {{-- Page Numbers --}}
+                                        <div class="flex items-center gap-1">
+                                            <template x-for="page in totalPages" :key="page">
+                                                <button @click="kegPage = page"
+                                                    :class="kegPage === page
+                                                        ? 'bg-[#e51411] text-white shadow-sm shadow-red-200'
+                                                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200'"
+                                                    class="w-7 h-7 flex items-center justify-center rounded-lg text-xs font-black transition-all">
+                                                    <span x-text="page"></span>
+                                                </button>
+                                            </template>
+                                        </div>
+
+                                        <button @click="nextPage"
+                                            :disabled="kegPage === totalPages"
+                                            :class="kegPage === totalPages ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-200 cursor-pointer'"
+                                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-all">
+                                            <iconify-icon icon="solar:alt-arrow-right-bold" class="text-sm"></iconify-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
                 </div>
 
                 {{-- Aktif/Tidak Aktif Ruangan Section --}}
