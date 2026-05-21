@@ -127,9 +127,7 @@ class PeminjamanAkademik extends Component
             'penanggungJawab',
             'kontakPenanggungJawab',
             'email',
-            'maxKapasitas',
-            'fakultas',
-            'prodi'
+            'maxKapasitas'
         ]);
         $this->dispatch('resetSelect');
     }
