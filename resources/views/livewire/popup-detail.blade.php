@@ -247,7 +247,7 @@
                     <div class="flex items-center gap-3">
                         @if (session('role_name') === 'BAA' &&
                                 $peminjamanDetail->status !== 'Canceled' &&
-                                $peminjamanDetail->status !== 'Finish')
+                                $peminjamanDetail->status !== 'Finish' && $peminjamanDetail->status !== 'Reject')
                             <button type="button"
                                 @click="
                                     Swal.fire({
