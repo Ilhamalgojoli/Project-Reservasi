@@ -16,7 +16,7 @@ class HistoryPeminjamanService
             'ruangan.lantai.gedung:id,nama_gedung',
         ])
             ->where('user_identifier', $nim)
-            ->whereIn('status', ['Finish', 'Canceled']);
+            ->whereIn('status', ['Finish', 'Canceled', 'Reject']);
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {

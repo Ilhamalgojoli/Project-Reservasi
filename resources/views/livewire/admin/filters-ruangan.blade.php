@@ -12,7 +12,7 @@
         <div class="flex-1 relative group">
             <iconify-icon icon="mdi:stairs" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
             <select wire:model.live="lantai"
-                class="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none cursor-pointer">
+                class="w-[400px] sm:w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none cursor-pointer">
                 <option value="">Semua Lantai</option>
                 @foreach ($dataLantai as $data)
                     <option value="{{ $data['id'] }}">Lantai {{ $data['lantai'] }}</option>    

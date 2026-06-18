@@ -4,8 +4,9 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Services\GedungService;
 
-class PopUpTambah extends Component
+class PopUpTambahGedung extends Component
 {
     use WithFileUploads;
 
@@ -47,7 +48,7 @@ class PopUpTambah extends Component
 
     protected function service()
     {
-        return new \App\Services\GedungService;
+        return app(GedungService::class);
     }
 
     public function closeButton()
@@ -67,13 +68,13 @@ class PopUpTambah extends Component
             }
         } catch (\Exception $e) {
             $this->dispatch('errorCreated', [
-                'text' => $e->getMessage()
+                'text' => 'Error saat menyimpan data, coba lagi nanti.'
             ]);
         }
     }
 
     public function render()
     {
-        return view('livewire.admin.pop-up-tambah');
+        return view('livewire.admin.pop-up-tambah-gedung');
     }
 }

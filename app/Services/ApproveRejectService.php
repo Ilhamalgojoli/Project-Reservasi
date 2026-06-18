@@ -114,21 +114,43 @@ class ApproveRejectService
         return true;
     }
 
-    public function autoRejectExpire()
+    public function autoRejectExpire(?string $userIdentifier = null)
     {
         $now = Carbon::now();
+        $today = $now->toDateString();
+        $nowTime = $now->toTimeString();
 
-        $peminjamanExpire = DataPeminjaman::select('id')
+        # Ambil ID peminjaman yang expired sebelum hari ini
+        $queryPast = DataPeminjaman::select('id')
             ->where('status', 'Waiting')
-            ->where('tanggal_peminjaman', '<', $now->toDateString())
-            ->get();
+            ->where('tanggal_peminjaman', '<', $today);
 
-        if ($peminjamanExpire->isEmpty()) {
+        # Ambil ID peminjaman yang expired hari ini (waktu_selesai sudah lewat)
+        $queryToday = DataPeminjaman::select('id')
+            ->where('status', 'Waiting')
+            ->where('tanggal_peminjaman', $today)
+            ->where('waktu_selesai', '<', $nowTime);
+
+        if ($userIdentifier) {
+            $queryPast->where('user_identifier', $userIdentifier);
+            $queryToday->where('user_identifier', $userIdentifier);
+        }
+
+        $peminjamanExpirePast = $queryPast->pluck('id');
+        $peminjamanExpireToday = $queryToday->pluck('id');
+
+        $allIds = $peminjamanExpirePast->merge($peminjamanExpireToday);
+
+        if ($allIds->isEmpty()) {
             return;
         }
 
-        foreach ($peminjamanExpire as $e) {
-            $this->reject($e->id, "Data Peminjaman ini telah expired,dan otomatis tertolak, silahkan mengajukan ulang peminjaman");
+        foreach ($allIds as $id) {
+            try {
+                $this->reject($id, "Data Peminjaman ini telah expired, dan otomatis tertolak, silahkan mengajukan ulang peminjaman");
+            } catch (\Exception $e) {
+                continue;
+            }
         }
     }
 

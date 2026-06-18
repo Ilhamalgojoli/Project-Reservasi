@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Services\ApproveRejectService;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use App\Services\ApprovalDataService;
 
 class PopupDetailApproval extends Component
 {
@@ -14,14 +15,14 @@ class PopupDetailApproval extends Component
 
     protected function service()
     {
-        return new ApproveRejectService();
+        return app(ApproveRejectService::class);
     }
 
     #[On('showApprovalDetail')]
     public function showDetail($id)
     {
         $this->peminjamanId = $id;
-        $this->peminjamanDetail = (new \App\Services\ApprovalDataService())->getDetail($id);
+        $this->peminjamanDetail = app(ApprovalDataService::class)->getDetail($id);
         $this->isOpen = true;
     }
 

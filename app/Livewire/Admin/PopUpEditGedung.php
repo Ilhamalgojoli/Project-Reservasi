@@ -5,8 +5,9 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
+use App\Services\GedungService;
 
-class PopUpEdit extends Component
+class PopUpEditGedung extends Component
 {
     use WithFileUploads;
 
@@ -59,7 +60,7 @@ class PopUpEdit extends Component
 
     protected function service()
     {
-        return new \App\Services\GedungService;
+        return app(GedungService::class);
     }
 
     public function mount($id)
@@ -88,7 +89,7 @@ class PopUpEdit extends Component
                 $this->dispatch('closePopUpEdit');
             }
         } catch(\Exception $e){
-            $this->dispatch('errorUpdate', $e->getMessage());
+            $this->dispatch('errorUpdate', 'Gagal mengubah data gedung. Pastikan data yang dimasukkan valid.');
         }
     }
 
@@ -110,6 +111,6 @@ class PopUpEdit extends Component
 
     public function render()
     {
-        return view('livewire.admin.pop-up-edit');
+        return view('livewire.admin.pop-up-edit-gedung');
     }
 }

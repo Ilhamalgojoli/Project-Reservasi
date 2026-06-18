@@ -35,8 +35,7 @@ class HistoryPeminjamanUser extends Component
     #[Computed]
     public function peminjaman()
     {
-        $service = new HistoryPeminjamanService();
-        return $service->getDataUser(
+        return app(HistoryPeminjamanService::class)->getDataUser(
             session('user_identifier'),
             $this->getPage(),
             $this->search,

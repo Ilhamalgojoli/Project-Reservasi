@@ -128,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <div class="flex lg:flex-row sm:flex-col gap-2">
+                            <div class="flex flex-col gap-2">
                                 <label
                                     class="text-[11px] font-medium uppercase tracking-widest text-gray-400 ml-1">Ketersediaan
                                     / Status</label>

@@ -66,8 +66,11 @@ class DashboardUserService
 
     public function getDashboardData(string $nim): array
     {
-        # Jalankan sinkronisasi database (Finish & Auto-Reject) agar statistik selalu akurat
-        $this->dashboardService->updateStatusFinish();
+        # Jalankan sinkronisasi database (Finish) khusus untuk NIM user ini agar statistik selalu akurat
+        $this->dashboardService->updateStatusFinish($nim);
+
+        # Jalankan sinkronisasi database (Auto-Reject) khusus untuk NIM user ini agar statistik selalu akurat
+        app(ApproveRejectService::class)->autoRejectExpire($nim);
 
         return [
             'total'    => $this->getTotal($nim),

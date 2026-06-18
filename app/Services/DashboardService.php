@@ -13,44 +13,43 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
-    protected ApproveRejectService $approveRejectService;
-
-    public function __construct(ApproveRejectService $approveRejectService)
-    {
-        $this->approveRejectService = $approveRejectService;
-    }
-
-    public function updateStatusFinish(): void
+    public function updateStatusFinish(?string $userIdentifier = null): void
     {
         $today = date('Y-m-d');
         $nowTime = date('H:i:s');
 
         # ID of past reservations still marked as 'Approve'
-        $idsPast = DataPeminjaman::select('id')
+        $queryPast = DataPeminjaman::select('id')
             ->where('status', 'Approve')
-            ->where('tanggal_peminjaman', '<', $today)
-            ->pluck('id');
+            ->where('tanggal_peminjaman', '<', $today);
 
         # ID of today's reservations that have ended
-        $idsToday = DataPeminjaman::select('id')
+        $queryToday = DataPeminjaman::select('id')
             ->where('status', 'Approve')
             ->where('tanggal_peminjaman', $today)
-            ->where('waktu_selesai', '<', $nowTime)
-            ->pluck('id');
+            ->where('waktu_selesai', '<', $nowTime);
+
+        if ($userIdentifier) {
+            $queryPast->where('user_identifier', $userIdentifier);
+            $queryToday->where('user_identifier', $userIdentifier);
+        }
+
+        $idsPast = $queryPast->pluck('id');
+        $idsToday = $queryToday->pluck('id');
 
         $allIds = $idsPast->merge($idsToday);
 
         if ($allIds->isNotEmpty()) {
             DataPeminjaman::whereIn('id', $allIds)->update(['status' => 'Finish']);
         }
-
-        # Jalankan otomatis reject untuk peminjaman yang expired
-        $this->approveRejectService->autoRejectExpire();
     }
 
     public function ambilData(string $jenis, ?string $lantai = null, ?string $status = null)
     {
         $this->updateStatusFinish();
+
+        # Jalankan otomatis reject untuk peminjaman yang expired
+        app(ApproveRejectService::class)->autoRejectExpire();
 
         $pageName = $jenis === 'akademik' ? 'pageAkademik' : 'pageNonAkademik';
         $today = Carbon::today()->toDateString();
@@ -293,6 +292,20 @@ class DashboardService
         return $query->whereBetween('tanggal_peminjaman', [$start, $end]);
     }
 
+    private function getCurrentDay(): string
+    {
+        $dayMapping = [
+            'Monday' => 'SENIN',
+            'Tuesday' => 'SELASA',
+            'Wednesday' => 'RABU',
+            'Thursday' => 'KAMIS',
+            'Friday' => 'JUMAT',
+            'Saturday' => 'SABTU',
+            'Sunday' => 'MINGGU',
+        ];
+        return $dayMapping[Carbon::now()->format('l')];
+    }
+
     public function getRuanganWaiting(?string $periode = null): int
     {
         $query = DataPeminjaman::where('status', 'Waiting');
@@ -301,10 +314,17 @@ class DashboardService
 
     public function getRuanganTerpakai(?string $periode = null): int
     {
-        return Ruangan::whereHas('dataPeminjaman', function ($q) use ($periode) {
-            $q->whereIn('status', ['Approve', 'Finish']);
+        $peminjamanRoomIds = Ruangan::whereHas('dataPeminjaman', function ($q) use ($periode) {
+            $q->whereIn('status', ['Approve']);
             $this->applyPeriodeFilter($q, $periode);
-        })->count();
+        })->pluck('id')->toArray();
+
+        $currentDay = $this->getCurrentDay();
+        $matkulRoomIds = JadwalMatkulWajib::where('hari', $currentDay)->pluck('ruangan_id')->toArray();
+
+        $allOccupiedRoomIds = array_unique(array_merge($peminjamanRoomIds, $matkulRoomIds));
+
+        return count($allOccupiedRoomIds);
     }
 
     public function getRuanganTersedia(int $occupiedCount): int
@@ -323,9 +343,16 @@ class DashboardService
                     });
                 },
                 'ruangan as totalTerpakai' => function ($q) use ($periode) {
-                    $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
-                        $q->whereIn('status', ['Approve', 'Finish']);
-                        $this->applyPeriodeFilter($q, $periode);
+                    $currentDay = $this->getCurrentDay();
+                    $q->where(function ($sub) use ($periode, $currentDay) {
+                        $sub->whereHas('dataPeminjaman', function ($q2) use ($periode) {
+                            $q2->whereIn('status', ['Approve', 'Finish']);
+                            $this->applyPeriodeFilter($q2, $periode);
+                        })->orWhereIn('ruangans.id', function ($q3) use ($currentDay) {
+                            $q3->select('ruangan_id')
+                               ->from('jadwal_matkul_wajib')
+                               ->where('hari', $currentDay);
+                        });
                     });
                 },
                 'ruangan as totalRuangan',
@@ -342,15 +369,35 @@ class DashboardService
             })->toArray();
     }
 
-    public function getDataOkkupansi(?string $periode = null): array
+    public function getDataOkkupansi(?string $periode = null, string $filter = 'semua'): array
     {
+        $currentDay = $this->getCurrentDay();
+
         return Gedung::select('id', 'nama_gedung')
             ->withCount([
-                'ruangan as totalRuanganTerpakai' => function ($q) use ($periode) {
-                    $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
-                        $q->whereIn('status', ['Approve', 'Finish']);
-                        $this->applyPeriodeFilter($q, $periode);
-                    });
+                'ruangan as totalRuanganTerpakai' => function ($q) use ($periode, $filter, $currentDay) {
+                    if ($filter === 'peminjaman') {
+                        $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
+                            $q->whereIn('status', ['Approve', 'Finish']);
+                            $this->applyPeriodeFilter($q, $periode);
+                        });
+                    } elseif ($filter === 'perkuliahan') {
+                        $q->whereIn('ruangans.id', function ($qSub) use ($currentDay) {
+                            $qSub->select('ruangan_id')
+                                ->from('jadwal_matkul_wajib')
+                                ->where('hari', $currentDay);
+                        });
+                    } else { // 'semua'
+                        $q->where(function ($sub) use ($periode, $currentDay) {
+                            $sub->whereHas('dataPeminjaman', function ($q2) use ($periode) {
+                                $q2->whereIn('status', ['Approve', 'Finish']);
+                                $this->applyPeriodeFilter($q2, $periode);
+                            })->orWhereIn('ruangans.id', function ($q3) use ($currentDay) {
+                                $q3->select('ruangan_id')
+                                    ->from('jadwal_matkul_wajib');
+                            });
+                        });
+                    }
                 },
                 'ruangan as totalRuangan',
             ])
@@ -361,17 +408,59 @@ class DashboardService
                     'id' => $i->id,
                     'nama_gedung' => $i->nama_gedung,
                     'terpakai' => $terpakai,
-                    'tidakTerpakai' => 100 - $terpakai,
+                    'tidakTerpakai' => round(100 - $terpakai, 2),
                 ];
             })->toArray();
     }
 
-    public function getDataPeminjamanPerFakultas(?string $periode = null): array
+    public function getDataPeminjamanPerFakultas(?string $periode = null, string $filter = 'semua'): array
     {
-        return Fakultas::select('id', 'fakultas')
-            ->withCount(['peminjaman as total' => function ($q) use ($periode) {
-                $q->whereIn('status', ['Approve', 'Finish']);
-                $this->applyPeriodeFilter($q, $periode);
-            }])->get()->toArray();
+        $fakultasData = Fakultas::select('id', 'fakultas')->get()->keyBy('id')->map(function ($f) {
+            return [
+                'id' => $f->id,
+                'fakultas' => $f->fakultas,
+                'total' => 0
+            ];
+        })->toArray();
+
+        // 1. Peminjaman
+        if ($filter === 'semua' || $filter === 'peminjaman') {
+            $peminjamanCounts = Fakultas::select('id')
+                ->withCount(['peminjaman as total' => function ($q) use ($periode) {
+                    $q->whereIn('status', ['Approve', 'Finish']);
+                    $this->applyPeriodeFilter($q, $periode);
+                }])
+                ->get();
+
+            foreach ($peminjamanCounts as $pc) {
+                if (isset($fakultasData[$pc->id])) {
+                    $fakultasData[$pc->id]['total'] += $pc->total;
+                }
+            }
+        }
+
+        // 2. Perkuliahan
+        if ($filter === 'semua' || $filter === 'perkuliahan') {
+            $query = DB::table('jadwal_matkul_wajib as j')
+                ->join('mata_kuliah as m', 'j.nama_matkul', '=', 'm.nama_matkul')
+                ->join('prodi as p', 'm.prodi_id', '=', 'p.id')
+                ->select('p.fakultas_id', DB::raw('count(distinct j.id) as total_count'));
+
+            if ($filter === 'perkuliahan') {
+                $currentDay = $this->getCurrentDay();
+                $query->where('j.hari', $currentDay);
+            }
+
+            $perkuliahanCounts = $query->groupBy('p.fakultas_id')->get();
+
+            foreach ($perkuliahanCounts as $row) {
+                $fakId = $row->fakultas_id;
+                if (isset($fakultasData[$fakId])) {
+                    $fakultasData[$fakId]['total'] += $row->total_count;
+                }
+            }
+        }
+
+        return array_values($fakultasData);
     }
 }

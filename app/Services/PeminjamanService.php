@@ -89,6 +89,7 @@ class PeminjamanService
                     ->toArray();
             }
         } catch (ConnectionException $e) {
+            
         }
     }
 
@@ -407,6 +408,7 @@ class PeminjamanService
             if ($booking->waktu_mulai && $booking->waktu_selesai) {
                 $slots = $this->expandRangeToSlots($booking->waktu_mulai, $booking->waktu_selesai);
             }
+            
             return [
                 'date' => Carbon::parse($booking->tanggal_peminjaman)->toDateString(),
                 'status' => $booking->status,

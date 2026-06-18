@@ -35,7 +35,7 @@ class DashboardUser extends Component
         try {
             $userIdentifier = session('user_identifier');
 
-            (new ApproveRejectService())->cancel($id, $userIdentifier, $alasan);
+            App(new ApproveRejectService())->cancel($id, $userIdentifier, $alasan);
 
             $this->dispatch('successCancel', text: 'Peminjaman berhasil dibatalkan.');
         } catch (\Exception $e) {

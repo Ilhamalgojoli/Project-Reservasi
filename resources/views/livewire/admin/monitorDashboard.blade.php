@@ -4,7 +4,7 @@
         <button wire:click="setTab('matkul-wajib')" wire:navigate.scroll="false"
             class="pb-2 text-sm font-semibold transition-colors
             {{ $tab === 'matkul-wajib' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-400 hover:text-gray-700' }}">
-            Matkul Wajib
+            Jadwal Matakuliah umum
         </button>
         <button wire:click="setTab('akademik')" wire:navigate.scroll="false"
             class="pb-2 text-sm font-semibold transition-colors
@@ -222,7 +222,7 @@
             </div>
         </div>
         {{-- Pagination Card --}}
-        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
+        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6 {{ $akademik->hasPages() ? 'block' : 'hidden' }}">
             <div class="text-black">
                 {{ $akademik->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>

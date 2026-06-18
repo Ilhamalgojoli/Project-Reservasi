@@ -1,5 +1,5 @@
 <!-- Iconify Font js -->
-<script src="{{ asset('assets/js/lib/iconify-icon.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2/dist/iconify-icon.min.js"></script>
 <!-- jQuery UI js -->
 <script src="{{ asset('assets/js/flowbite.min.js') }}"></script>
 <!-- main js -->

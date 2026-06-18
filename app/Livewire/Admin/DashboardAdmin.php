@@ -13,6 +13,8 @@ class DashboardAdmin extends Component
 {
     public $periode_semester = '';
     public $aktif_gedung_id = '';
+    public $fakultas_filter = 'semua';
+    public $okkupansi_filter = 'semua';
 
     protected $listeners = [
         'refresh' => '$refresh'
@@ -50,8 +52,8 @@ class DashboardAdmin extends Component
             'tersedia' => $dashboard->getRuanganTersedia($approve),
             'gedung' => $dashboard->chartGedung($this->periode_semester),
             'dataAktif' => $this->getAktifTidakAktif(),
-            'peminjamanPerFakultas' => $dashboard->getDataPeminjamanPerFakultas($this->periode_semester),
-            'okkupansi' => $dashboard->getDataOkkupansi($this->periode_semester),
+            'peminjamanPerFakultas' => $dashboard->getDataPeminjamanPerFakultas($this->periode_semester, $this->fakultas_filter),
+            'okkupansi' => $dashboard->getDataOkkupansi($this->periode_semester, $this->okkupansi_filter),
             'kegiatanTerkini'    => app(NotificationService::class)->getDataKegiatanTerkini(3),
             'kegiatanTerkiniAll' => app(NotificationService::class)->getDataKegiatanTerkiniAll(),
             'periodeOptions' => $dashboard->getPeriodeOptions()['options'],

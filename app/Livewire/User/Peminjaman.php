@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use App\Services\PeminjamanService;
 
 class Peminjaman extends Component
 {
@@ -25,7 +26,7 @@ class Peminjaman extends Component
 
     protected function service()
     {
-        return new \App\Services\PeminjamanService;
+        return app(PeminjamanService::class);
     }
 
     public function mount()

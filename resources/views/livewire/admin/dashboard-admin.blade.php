@@ -100,18 +100,24 @@
             <div class="col-span-12 xl:col-span-4 space-y-5">
                 {{-- Filter Semester Section --}}
                 <div class="bg-white p-5 rounded-[8px] shadow-md flex flex-col gap-3">
-                    <label for="periodeFilter" class="text-sm font-semibold text-gray-600">
-                        <iconify-icon icon="solar:calendar-bold-duotone"
-                            class="inline text-lg align-text-bottom mr-1"></iconify-icon>
+                    <label for="periodeFilter" class="text-sm font-semibold text-gray-600 flex items-center gap-1.5">
                         Filter Berdasarkan Semester
                     </label>
                     <div class="flex items-center gap-2 w-full">
-                        <select wire:model="periode_semester" id="periodeFilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-pointer shadow-sm">
-                            @foreach ($periodeOptions as $value => $label)
-                                <option value="{{ $value }}">{{ $label }}</option>
-                            @endforeach
-                        </select>
+                        <div class="relative w-full">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <iconify-icon icon="solar:calendar-bold-duotone" style="font-size: 16px; color: #6b7280;"></iconify-icon>
+                            </div>
+                            <select wire:model="periode_semester" id="periodeFilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-9 pr-3 py-2 cursor-pointer shadow-sm appearance-none">
+                                @foreach ($periodeOptions as $value => $label)
+                                    <option value="{{ $value }}">{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <iconify-icon icon="solar:alt-arrow-down-bold" style="font-size: 14px; color: #6b7280;"></iconify-icon>
+                            </div>
+                        </div>
                         <button wire:click="applyFilter"
                             class="bg-[#e51411] hover:bg-[#c7110f] text-white font-medium text-sm px-4 py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
                             <iconify-icon icon="solar:filter-bold-duotone" class="text-lg"></iconify-icon>
@@ -125,15 +131,9 @@
                      x-data="{ showKegiatanPopup: false }">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-4">
                         <div class="flex items-center gap-2.5">
-                            <div class="p-2 bg-rose-50 text-[#e51411] rounded-[8px] flex items-center justify-center">
-                                <iconify-icon icon="solar:history-bold-duotone" class="text-2xl"></iconify-icon>
-                            </div>
                             <h2 class="font-black text-xl text-gray-900 tracking-tight">Kegiatan Terkini</h2>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="px-2.5 py-1 bg-gray-100 text-[10px] font-black uppercase tracking-wider text-gray-400 rounded-full">
-                                Live Update
-                            </span>
                             @if(count($kegiatanTerkini) > 0 || count($kegiatanTerkiniAll) > 3)
                             <button @click="showKegiatanPopup = true"
                                 class="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#e51411] bg-rose-50 hover:bg-rose-100 rounded-full transition-all duration-200 border border-rose-100/50 hover:border-rose-200">
@@ -207,7 +207,6 @@
                         @endforelse
                     </div>
 
-                    {{-- POPUP MODAL: Semua Kegiatan Terkini --}}
                     <div x-show="showKegiatanPopup"
                          x-transition:enter="transition ease-out duration-300"
                          x-transition:enter-start="opacity-0"
@@ -255,7 +254,7 @@
                                 </div>
                                 <button @click="showKegiatanPopup = false; kegPage = 1"
                                     class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-all">
-                                    <iconify-icon icon="solar:close-bold" class="text-base"></iconify-icon>
+                                    <iconify-icon icon="solar:close-circle-bold" class="text-2xl group-hover:rotate-90 transition-transform duration-500"></iconify-icon>
                                 </button>
                             </div>
 
@@ -350,7 +349,6 @@
                             </template>
                         </div>
                     </div>
-
                 </div>
 
                 {{-- Aktif/Tidak Aktif Ruangan Section --}}
@@ -382,7 +380,7 @@
         {{-- Peminjaman Per Fakultas Section --}}
         <section class="grid grid-cols-12">
             <div class="col-span-12" x-data="peminjamanChart(@js($peminjamanPerFakultas))"
-                wire:key="chart-fakultas-{{ $periode_semester }}-{{ md5(json_encode($peminjamanPerFakultas)) }}">
+                wire:key="chart-fakultas-{{ $periode_semester }}-{{ $fakultas_filter }}-{{ md5(json_encode($peminjamanPerFakultas)) }}">
                 <div
                     class="bg-white p-5 rounded-[12px] flex flex-col shadow-lg gap-6 w-full border border-gray-50 transition-all duration-300 hover:shadow-xl">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -391,7 +389,19 @@
                                 style="font-size: 24px; color: white;"></iconify-icon>
                             <p class="text-white font-bold tracking-wide">Data Peminjaman Berdasarkan Fakultas</p>
                         </div>
-                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Global Statistics
+                        <div class="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl border border-gray-200/20">
+                            <button wire:click="$set('fakultas_filter', 'semua')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 {{ $fakultas_filter === 'semua' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-800' }}">
+                                Semua
+                            </button>
+                            <button wire:click="$set('fakultas_filter', 'peminjaman')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 {{ $fakultas_filter === 'peminjaman' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-800' }}">
+                                Peminjaman
+                            </button>
+                            <button wire:click="$set('fakultas_filter', 'perkuliahan')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 {{ $fakultas_filter === 'perkuliahan' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-800' }}">
+                                Perkuliahan
+                            </button>
                         </div>
                     </div>
                     <div class="overflow-x-auto text-black bg-gray-50/50 rounded-2xl p-4">
@@ -416,10 +426,26 @@
         {{-- Okkupansi Ruangan Section --}}
         <section class="grid grid-cols-12">
             <div class="col-span-12" x-data="okkupansiChart(@js($okkupansi))"
-                wire:key="chart-okkupansi-{{ $periode_semester }}-{{ md5(json_encode($okkupansi)) }}">
+                wire:key="chart-okkupansi-{{ $periode_semester }}-{{ $okkupansi_filter }}-{{ md5(json_encode($okkupansi)) }}">
                 <div class="bg-white p-5 rounded-[8px] flex flex-col shadow-md gap-5 w-full">
-                    <div class="bg-[#e51411] p-2 rounded-lg w-fit">
-                        <p class="text-white font-bold">Okkupansi</p>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="bg-[#e51411] p-2 rounded-lg w-fit">
+                            <p class="text-white font-bold">Okkupansi</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl border border-gray-200/20">
+                            <button wire:click="$set('okkupansi_filter', 'semua')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 {{ $okkupansi_filter === 'semua' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-800' }}">
+                                Semua
+                            </button>
+                            <button wire:click="$set('okkupansi_filter', 'peminjaman')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 {{ $okkupansi_filter === 'peminjaman' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-800' }}">
+                                Peminjaman
+                            </button>
+                            <button wire:click="$set('okkupansi_filter', 'perkuliahan')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 {{ $okkupansi_filter === 'perkuliahan' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-800' }}">
+                                Perkuliahan
+                            </button>
+                        </div>
                     </div>
                     <div id="chart-okkupansi" x-ref="chart" wire:ignore class="w-full flex flex-nowrap gap-5 overflow-x-auto pb-5 {{ count($okkupansi) === 0 ? 'hidden' : '' }}"></div>
                     
@@ -449,7 +475,6 @@
 
         <script data-navigate-once>
             document.addEventListener('alpine:init', () => {
-                // Chart Gedung
                 Alpine.data('cardDashboardChart', (data) => ({
                     chart: null,
                     navListener: null,

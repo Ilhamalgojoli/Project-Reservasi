@@ -7,7 +7,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class TambahGedung extends Component
+class KelolaGedung extends Component
 {
     public $popUpTambah = false;
     public $popUpEdit = false;
@@ -62,7 +62,7 @@ class TambahGedung extends Component
 
     public function render()
     {
-        return view('livewire.admin.tambah-gedung', [
+        return view('livewire.admin.kelola-gedung', [
             'datas' => $this->datas
         ]);
     }

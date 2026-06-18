@@ -132,12 +132,12 @@
 
     <!-- Pop Up Tambah-->
     @if ($popUpTambah)
-        <livewire:admin.pop-up-tambah />
+        <livewire:admin.pop-up-tambah-gedung />
     @endif
 
     <!-- Pop Up Edit -->
     @if ($popUpEdit)
-        <livewire:admin.pop-up-edit :id="$gedungId" />
+        <livewire:admin.pop-up-edit-gedung :id="$gedungId" />
     @endif
 
 

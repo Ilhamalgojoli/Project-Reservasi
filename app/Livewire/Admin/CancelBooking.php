@@ -7,6 +7,7 @@ use App\Models\Fakultas;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\DataPeminjaman;
 
 class CancelBooking extends Component
 {
@@ -65,7 +66,7 @@ class CancelBooking extends Component
     public function confirmCancel($id)
     {
         $this->cancelId = $id;
-        $peminjaman = \App\Models\DataPeminjaman::find($id);
+        $peminjaman = DataPeminjaman::find($id);
         if ($peminjaman && $peminjaman->cancel_requested) {
             $this->cancelReason = $peminjaman->cancel_request_reason;
         } else {

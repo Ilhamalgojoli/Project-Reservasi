@@ -5,6 +5,7 @@ namespace App\Livewire\User;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
+use App\Services\PeminjamanService;
 
 class PeminjamanAkademik extends Component
 {
@@ -60,7 +61,7 @@ class PeminjamanAkademik extends Component
 
     protected function service()
     {
-        return new \App\Services\PeminjamanService;
+        return app(PeminjamanService::class);
     }
 
     public function mount($id, $jenisPeminjaman, $fakultas, $prodi)

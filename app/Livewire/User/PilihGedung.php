@@ -20,8 +20,7 @@ class PilihGedung extends Component
             ->where(function($query) {
                 $query->where('nama_gedung', 'like', '%' . $this->search . '%')
                       ->orWhere('kode_gedung', 'like', '%' . $this->search . '%');
-            })
-            ->get();
+            })->get();
     }
 
     public function render()

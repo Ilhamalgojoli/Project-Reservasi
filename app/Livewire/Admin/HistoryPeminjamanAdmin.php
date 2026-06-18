@@ -49,8 +49,7 @@ class HistoryPeminjamanAdmin extends Component
     #[Computed]
     public function peminjaman()
     {
-        $service = app(HistoryPeminjamanService::class);
-        return $service->getDataAdmin(
+        return app(HistoryPeminjamanService::class)->getDataAdmin(
             $this->getPage(),
             $this->fakultas_id,
             $this->jenis_peminjaman,

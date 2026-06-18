@@ -5,7 +5,7 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
-
+use App\Services\PeminjamanService;
 
 class PeminjamanNonAkademik extends Component
 {
@@ -32,7 +32,7 @@ class PeminjamanNonAkademik extends Component
 
     protected function service()
     {
-        return new \App\Services\PeminjamanService;
+        return app(PeminjamanService::class);
     }
 
     protected function rules()
