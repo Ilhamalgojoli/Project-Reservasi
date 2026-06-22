@@ -5,11 +5,12 @@
         <div class="p-8 flex items-center justify-between bg-white border-b border-gray-100 shrink-0">
             <div class="flex items-center gap-4 text-gray-800">
                 <div class="p-3 bg-red-50 rounded-[8px] shadow-sm italic text-[#e51411]">
-                    <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-2xl"></iconify-icon>
+                    <iconify-icon icon="solar:home-add-bold-duotone" class="text-2xl"></iconify-icon>
                 </div>
-                <div class="max-w-[160px] xs:max-w-[220px] sm:max-w-none pr-2">
-                    <h2 class="text-2xl font-black tracking-tight leading-tight sm:leading-none">Edit Data Gedung</h2>
-                    <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Sinkronisasi & pembaruan aset gedung</p>
+                <div>
+                    <h2 class="text-2xl font-black tracking-tight leading-none">Edit Data Gedung
+                    </h2>
+                    <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Sinkronisasi & Pembaruan Data Gedung</p>
                 </div>
             </div>
             <button type="button" wire:click="closeButton" class="w-12 h-12 shrink-0 flex items-center justify-center rounded-[8px] bg-gray-50 text-gray-400 border border-gray-100 hover:bg-red-50 hover:text-red-500 transition-all duration-300">
