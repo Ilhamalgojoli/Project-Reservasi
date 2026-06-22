@@ -1,7 +1,8 @@
 <div class="flex flex-col gap-6">
     {{-- Filter Card --}}
     <div class="bg-white rounded-[8px] shadow-md border border-gray-100 p-4">
-        <div class="flex flex-row sm:flex-col items-center sm:items-stretch md:items-stretch justify-between gap-3 w-full">
+        <div
+            class="flex flex-row sm:flex-col items-center sm:items-stretch md:items-stretch justify-between gap-3 w-full">
 
             {{-- Search Input --}}
             <div class="relative flex-grow max-w-md sm:max-w-none w-full">
@@ -52,6 +53,7 @@
                         <th class="px-4 py-2.5 text-center border-black">Penanggung Jawab</th>
                         <th class="px-4 py-2.5 text-center border-black">Hari & Tanggal</th>
                         <th class="px-4 py-2.5 text-center border-black">Waktu</th>
+                        <th class="px-4 py-2.5 text-center border-black">Status</th>
                         <th class="px-4 py-2.5 text-center border-black w-24">Aksi</th>
                     </tr>
                 </thead>
@@ -99,6 +101,12 @@
                                 </div>
                             </td>
                             <td class="px-4 py-2.5 text-center border-black">
+                                <div
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-50 text-yellow-600 rounded-lg text-[11px] font-black border border-yellow-100">
+                                    {{ $data->status }}
+                                </div>
+                            </td>
+                            <td class="px-4 py-2.5 text-center border-black">
                                 <button type="button"
                                     wire:click="$dispatch('showApprovalDetail', { id: {{ $data->id }} })"
                                     class="p-2.5 bg-gray-50 text-gray-400 border border-gray-100 rounded-xl hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all duration-300 group shadow-sm flex items-center justify-center mx-auto"
@@ -110,7 +118,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-20 text-center">
+                            <td colspan="6" class="px-6 py-20 text-center">
                                 <div class="flex flex-col items-center justify-center opacity-20 grayscale">
                                     <iconify-icon icon="solar:box-minimalistic-linear" class="text-7xl"></iconify-icon>
                                     <p class="text-xs font-black uppercase mt-4 tracking-widest leading-none">Tidak ada
@@ -125,7 +133,7 @@
     </div>
 
     {{-- Pagination Card --}}
-    <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3">
+    <div class="{{ !$peminjaman->hasPages() ? 'hidden' : 'block' }} bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
         <div class="text-black">
             {{ $peminjaman->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
         </div>
