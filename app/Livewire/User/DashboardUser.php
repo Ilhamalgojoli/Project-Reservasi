@@ -35,7 +35,7 @@ class DashboardUser extends Component
         try {
             $userIdentifier = session('user_identifier');
 
-            App(new ApproveRejectService())->cancel($id, $userIdentifier, $alasan);
+            app(ApproveRejectService::class)->cancel($id, $userIdentifier, $alasan);
 
             $this->dispatch('successCancel', text: 'Peminjaman berhasil dibatalkan.');
         } catch (\Exception $e) {
@@ -56,7 +56,7 @@ class DashboardUser extends Component
                 ]
             );
 
-            (new NotificationService())->pushKegiatanTerkini(
+            app(NotificationService::class)->pushKegiatanTerkini(
                 $peminjaman->penanggung_jawab,
                 $peminjaman->ruangan_id,
                 'CancelRequest',
