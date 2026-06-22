@@ -92,27 +92,29 @@
                         <td class="px-4 py-2.5 text-center border-black">
                             @php
                                 $badgeColor = match ($data->status) {
-                                    'Approve' => 'bg-emerald-50 text-emerald-600 border-emerald-100',
                                     'Reject' => 'bg-red-50 text-red-600 border-red-100',
-                                    'Waiting' => 'bg-amber-50 text-amber-600 border-amber-100',
                                     'Canceled' => 'bg-gray-100 text-gray-500 border-gray-200',
                                     'Finish' => 'bg-blue-50 text-blue-600 border-blue-100',
                                     default => 'bg-gray-100 text-gray-400 border-gray-200',
                                 };
                                 $statusIcon = match ($data->status) {
-                                    'Approve' => 'mdi:check-circle',
                                     'Reject' => 'mdi:close-circle',
-                                    'Waiting' => 'mdi:clock-outline',
                                     'Canceled' => 'mdi:cancel',
                                     'Finish' => 'mdi:check-all',
                                     default => 'mdi:help-circle',
+                                };
+                                $statusLabel = match ($data->status) {
+                                    'Reject' => 'Ditolak',
+                                    'Canceled' => 'Dibatalkan',
+                                    'Finish' => 'Selesai',
+                                    default => $data->status,
                                 };
                              @endphp
                              <div class="flex items-center justify-center">
                                  <span
                                      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-extrabold border {{ $badgeColor }}">
                                      <iconify-icon icon="{{ $statusIcon }}" class="text-sm"></iconify-icon>
-                                     {{ strtoupper($data->status) }}
+                                     {{ strtoupper($statusLabel) }}
                                  </span>
                              </div>
                         </td>
@@ -142,7 +144,7 @@
     </div>
 
     {{-- Pagination Card --}}
-    <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3">
+    <div class="{{ !$peminjaman->hasPages() ? 'hidden' : 'block' }} bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3">
         <div class="text-black">
             {{ $peminjaman->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
         </div>
