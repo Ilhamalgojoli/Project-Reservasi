@@ -1,6 +1,6 @@
 @extends('layout.layout')
 @php
-    $title = 'History peminjaman';
+    $title = 'Riwayat peminjaman';
 @endphp
 
 @section('content')
