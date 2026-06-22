@@ -1,6 +1,6 @@
 @extends('layout.layout')
 @php
-    $title = 'Reservasi Ruangan';
+    $title = 'Peminjaman Ruangan';
 @endphp
 
 @section('content')
