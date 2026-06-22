@@ -80,7 +80,7 @@
                             <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-2xl"></iconify-icon>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-black tracking-tight leading-none">Edit Ruangan & Assets</h2>
+                            <h2 class="text-2xl font-black tracking-tight leading-none">Edit Ruangan & Aset</h2>
                             <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Sinkronisasi
                                 data & inventaris aset ruang</p>
                         </div>
@@ -148,7 +148,7 @@
                     {{-- Section 2: Fasilitas --}}
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-1">
-                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Assets Ruangan</h3>
+                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Aset Ruangan</h3>
                             <div class="w-full border-b border-dashed border-gray-200 mt-2"></div>
                         </div>
 
@@ -202,7 +202,7 @@
                             <iconify-icon icon="solar:home-add-bold-duotone" class="text-2xl"></iconify-icon>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-black tracking-tight leading-none">Tambah Ruangan & Assets ruangan
+                            <h2 class="text-2xl font-black tracking-tight leading-none">Tambah Ruangan & Aset ruangan
                             </h2>
                             <p class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.2em] mt-2">Daftarkan unit
                                 ruangan baru</p>
@@ -287,7 +287,7 @@
                     {{-- Section 2: Fasilitas --}}
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-1">
-                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Assets Ruangan</h3>
+                            <h3 class="text-xl font-black text-gray-800 tracking-tight">Aset Ruangan</h3>
                             <div class="w-full border-b border-dashed border-gray-200 mt-2"></div>
                         </div>
 
