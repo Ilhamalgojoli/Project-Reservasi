@@ -33,8 +33,9 @@
                         <div class="p-3 bg-emerald-50 rounded-[8px] shadow-sm italic text-emerald-600">
                             <iconify-icon icon="solar:shield-check-bold-duotone" class="text-3xl"></iconify-icon>
                         </div>
-                        <div class="max-w-[160px] xs:max-w-[220px] sm:max-w-none pr-2">
-                            <h2 class="text-2xl font-black tracking-tight leading-tight sm:leading-none text-gray-900">Konfirmasi Peminjaman</h2>
+                        <div>
+                            <h2 class="text-2xl font-black tracking-tight leading-tight sm:leading-none text-gray-900">
+                                Konfirmasi Peminjaman</h2>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">ID Reservasi:
                                 #{{ str_pad($peminjamanDetail->id, 5, '0', STR_PAD_LEFT) }}</p>
                         </div>
@@ -48,16 +49,23 @@
 
                 <div class="p-8 relative flex flex-col gap-8 flex-1 overflow-y-auto custom-scrollbar">
                     @if ($peminjamanDetail->cancel_requested)
-                        <div class="p-5 bg-red-50 border border-red-100 rounded-[8px] flex items-start gap-4 shadow-sm animate-pulse">
-                            <div class="w-10 h-10 rounded-[8px] bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 border border-red-200">
+                        <div
+                            class="p-5 bg-red-50 border border-red-100 rounded-[8px] flex items-start gap-4 shadow-sm animate-pulse">
+                            <div
+                                class="w-10 h-10 rounded-[8px] bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 border border-red-200">
                                 <iconify-icon icon="solar:danger-bold" class="text-xl"></iconify-icon>
                             </div>
                             <div class="flex-1">
-                                <h4 class="text-sm font-black text-red-600 uppercase tracking-wider mb-1">Permintaan Pembatalan Diajukan</h4>
-                                <p class="text-xs font-semibold text-gray-500 mb-2">Pemohon telah mengajukan pembatalan untuk peminjaman ini.</p>
+                                <h4 class="text-sm font-black text-red-600 uppercase tracking-wider mb-1">Permintaan
+                                    Pembatalan Diajukan</h4>
+                                <p class="text-xs font-semibold text-gray-500 mb-2">Pemohon telah mengajukan pembatalan
+                                    untuk peminjaman ini.</p>
                                 <div class="bg-white/80 p-3 rounded border border-red-100">
-                                    <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Alasan Pembatalan</span>
-                                    <p class="text-sm font-bold text-gray-800 italic">"{{ $peminjamanDetail->cancel_request_reason ?? '-' }}"</p>
+                                    <span
+                                        class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Alasan
+                                        Pembatalan</span>
+                                    <p class="text-sm font-bold text-gray-800 italic">
+                                        "{{ $peminjamanDetail->cancel_request_reason ?? '-' }}"</p>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +103,14 @@
                                             class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->fakultas }}</span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-[10px] font-bold text-gray-400 uppercase">{{ $peminjamanDetail->fakultas === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Program Studi' }}</span>
+                                        <span class="text-[10px] font-bold text-gray-400 uppercase">E-mail
+                                            Peminjaman</span>
+                                        <span
+                                            class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->email }}</span>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span
+                                            class="text-[10px] font-bold text-gray-400 uppercase">{{ $peminjamanDetail->fakultas === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Program Studi' }}</span>
                                         <span
                                             class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->prodi }}</span>
                                     </div>
@@ -147,7 +162,8 @@
                                             class="text-xl text-amber-500"></iconify-icon>
                                         <div class="flex flex-col">
                                             <span
-                                                class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->hari }}, {{ \Carbon\Carbon::parse($peminjamanDetail->tanggal_peminjaman)->translatedFormat('d F Y') }}</span>
+                                                class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->hari }},
+                                                {{ \Carbon\Carbon::parse($peminjamanDetail->tanggal_peminjaman)->translatedFormat('d F Y') }}</span>
                                             <span
                                                 class="text-[10px] font-bold text-gray-400 uppercase">{{ $peminjamanDetail->jam_mulai }}
                                                 – {{ $peminjamanDetail->jam_selesai }} <span
@@ -172,7 +188,8 @@
                     </div>
                 </div>
 
-                <div class="p-8 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-4 shrink-0">
+                <div
+                    class="p-8 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-4 shrink-0">
                     <button type="button" wire:click="closeDetail"
                         class="px-4 py-2.5 sm:px-8 sm:py-4 bg-white border border-gray-200 text-gray-500 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm">
                         Batal
@@ -240,7 +257,8 @@
                                 Setujui
                             </button>
                         @else
-                            <div class="px-4 py-2 sm:px-6 sm:py-3 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-emerald-100 flex items-center gap-2">
+                            <div
+                                class="px-4 py-2 sm:px-6 sm:py-3 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-emerald-100 flex items-center gap-2">
                                 <iconify-icon icon="solar:check-circle-bold" class="text-lg"></iconify-icon>
                                 Approve
                             </div>
