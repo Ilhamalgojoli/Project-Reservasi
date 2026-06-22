@@ -28,7 +28,7 @@
             </div>
 
             {{-- Filters & Reset Group --}}
-            <div class="grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-2 sm:w-full">
+            <div class="grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-2">
                 {{-- Dropdown Jenis --}}
                 <select wire:model.live="filterJenis"
                     class="appearance-none w-full pl-4 flex-1 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
@@ -158,7 +158,7 @@
     </div>
 
     {{-- Pagination Card --}}
-    <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3">
+    <div class="{{ !$datas->hasPages() ? 'hidden' : 'block' }} bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3">
         <div class="text-black">
             {{ $datas->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
         </div>
