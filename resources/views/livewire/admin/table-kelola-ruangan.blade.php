@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="flex flex-col gap-1">
                                     <p class="text-sm font-black uppercase text-gray-400 tracking-widest mt-4">Ruangan
-                                        tidak ditemukan</p>
+                                        tidak ada</p>
                                     <p class="text-xs font-bold text-gray-300 italic">Coba sesuaikan kata kunci atau
                                         filter lantai Anda</p>
                                 </div>

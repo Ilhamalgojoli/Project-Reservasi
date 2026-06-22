@@ -77,7 +77,7 @@
                 <h1 class="text-3xl sm:text-6xl font-bold text-white drop-shadow-sm leading-none">{{ $waiting }}
                 </h1>
                 <p class="text-white/90 font-semibold text-xs sm:text-base tracking-wide leading-tight">Menunggu
-                    Approval</p>
+                    Persetujuan</p>
             </div>
         </div>
 
@@ -112,7 +112,6 @@
                 <p class="text-white/90 font-semibold text-xs sm:text-base tracking-wide leading-tight">Ditolak</p>
             </div>
         </div>
-
     </div>
 
     <div class="grid grid-cols-12 gap-5">
@@ -124,7 +123,10 @@
 
                 @php $safeTotal = $total > 0 ? $total : 1; @endphp
 
-                @foreach ([['label' => 'Waiting', 'value' => $waiting, 'color' => 'bg-amber-400', 'text' => 'text-amber-500'], ['label' => 'Approved', 'value' => $approve, 'color' => 'bg-emerald-400', 'text' => 'text-emerald-500'], ['label' => 'Rejected', 'value' => $reject, 'color' => 'bg-red-400', 'text' => 'text-red-500'], ['label' => 'Dibatalkan', 'value' => $canceled, 'color' => 'bg-gray-400', 'text' => 'text-gray-400']] as $bar)
+                @foreach ([[
+                    'label' => 'Menunggu Persetujuan', 'value' => $waiting, 'color' => 'bg-amber-400', 'text' => 'text-amber-500'], 
+                    ['label' => 'Disetujui', 'value' => $approve, 'color' => 'bg-emerald-400', 'text' => 'text-emerald-500'], 
+                    ['label' => 'Ditolak', 'value' => $reject, 'color' => 'bg-red-400', 'text' => 'text-red-500']] as $bar)
                     <div>
                         <div class="flex justify-between text-xs text-gray-500 mb-1">
                             <span>{{ $bar['label'] }}</span>
@@ -156,9 +158,9 @@
                             @php
                                 $st = $item->status;
                                 $s1 = true;
-                                $s2 = in_array($st, ['Waiting', 'Approve', 'Reject']);
-                                $s3 = $st === 'Approve';
-                                $s3Reject = $st === 'Reject';
+                                $s2 = in_array($st, ['Menunggu Persetujuan', 'Disetujui', 'Ditolak']);
+                                $s3 = $st === 'Disetujui';
+                                $s3Reject = $st === 'Ditolak';
                             @endphp
                             <div class="py-2.5 first:pt-0 last:pb-0">
                                 <div class="flex items-center justify-between mb-2">
@@ -174,7 +176,7 @@
                                             @endif
                                         </p>
                                     </div>
-                                    @if ($st === 'Reject')
+                                    @if ($st === 'Ditolak')
                                         <span
                                             class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-red-100 text-red-600 flex-shrink-0 ml-1">Ditolak</span>
                                     @endif
@@ -213,7 +215,7 @@
                                         </div>
                                         <p
                                             class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $s2 ? 'text-amber-600' : 'text-gray-300' }}">
-                                            Waiting</p>
+                                            Menunggu</p>
                                     </div>
 
                                     <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $s3 ? 'bg-emerald-400' : 'bg-gray-200' }}">
@@ -228,7 +230,7 @@
                                         </div>
                                         <p
                                             class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $s3 ? 'text-emerald-600' : 'text-gray-300' }}">
-                                            Approve</p>
+                                            Disetujui</p>
                                     </div>
 
                                 </div>

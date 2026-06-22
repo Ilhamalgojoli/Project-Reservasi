@@ -108,7 +108,7 @@
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-group"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
-                        <input type="number" wire:model="muatanKapasitas" inputmode="numeric"
+                        <input wire:model="muatanKapasitas"
                             class="w-full pl-10 pr-20 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm 
                                 font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 
                                 focus:border-[#e51411] transition-all outline-none"
@@ -144,11 +144,11 @@
                     <div class="relative group">
                         <iconify-icon icon="mdi:phone-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
-                        <input wire:model="kontakPenanggungJawab" type="number" maxlength="15"
+                        <input wire:model="kontakPenanggungJawab" maxlength="15"
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm 
                             font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 
                             focus:border-[#e51411] transition-all outline-none"
-                            placeholder="08123xxx" />
+                            placeholder="0812xxxxxxxx" />
                     </div>
                     @error('kontakPenanggungJawab')
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p>
