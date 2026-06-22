@@ -4,7 +4,7 @@
         <button wire:click="setTab('matkul-wajib')" wire:navigate.scroll="false"
             class="pb-2 text-sm font-semibold transition-colors
             {{ $tab === 'matkul-wajib' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-400 hover:text-gray-700' }}">
-            Jadwal Matakuliah umum
+            Jadwal Matakuliah
         </button>
         <button wire:click="setTab('akademik')" wire:navigate.scroll="false"
             class="pb-2 text-sm font-semibold transition-colors
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    {{-- ====== TABEL MATKUL WAJIB ====== --}}
+    {{-- ====== TABEL MATKUL ====== --}}
     @if ($tab === 'matkul-wajib')
         <div class="tableMatkulWajib overflow-x-auto rounded-xl">
             <div class="inline-block min-w-full align-middle">
@@ -132,7 +132,7 @@
             </div>
         </div>
         {{-- Pagination Card --}}
-        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
+        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6 {{ !$matkul_wajib->hasPages() ? 'hidden' : 'block' }}">
             <div class="text-black">
                 {{ $matkul_wajib->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>
@@ -222,13 +222,12 @@
             </div>
         </div>
         {{-- Pagination Card --}}
-        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6 {{ $akademik->hasPages() ? 'block' : 'hidden' }}">
+        <div class="{{ !$akademik->hasPages() ? 'hidden' : 'block' }} bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
             <div class="text-black">
                 {{ $akademik->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     @endif
-
 
     {{-- ====== TABEL NON AKADEMIK ====== --}}
     @if ($tab === 'non-akademik')
@@ -306,7 +305,7 @@
             </div>
         </div>
         {{-- Pagination Card --}}
-        <div class="bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
+        <div class="{{ !$non_akademik->hasPages() ? 'hidden' : 'block' }} bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
             <div class="text-black">
                 {{ $non_akademik->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
             </div>
