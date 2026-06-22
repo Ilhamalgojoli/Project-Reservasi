@@ -34,11 +34,6 @@ class DashboardUserService
         return DataPeminjaman::where('user_identifier', $nim)->where('status', 'Reject')->count();
     }
 
-    public function getCanceled(string $nim)
-    {
-        return DataPeminjaman::where('user_identifier', $nim)->where('status', 'Canceled')->count();
-    }
-
     public function getRecentBookings(string $nim)
     {
         $data = DataPeminjaman::with([
@@ -77,7 +72,6 @@ class DashboardUserService
             'waiting'  => $this->getWaiting($nim),
             'approve'  => $this->getApprove($nim),
             'reject'   => $this->getReject($nim),
-            'canceled' => $this->getCanceled($nim),
             'recent'   => $this->getRecentBookings($nim),
         ];
     }
