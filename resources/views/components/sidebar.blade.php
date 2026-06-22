@@ -39,7 +39,7 @@
                     <li>
                         <a href="{{ route('index') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            Home
+                            Dashboard
                         </a>
                     </li>
                     @if (session('role_name') === 'BAA')
@@ -72,7 +72,7 @@
                     <li>
                         <a href="{{ route('history-peminjaman') }}">
                             <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            History Peminjaman
+                            Riwayat Peminjaman
                         </a>
                     </li>
                 </ul>

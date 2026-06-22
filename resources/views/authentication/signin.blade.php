@@ -51,7 +51,7 @@
                 <form action="{{ route('login') }}" method="POST" class="form flex flex-col gap-5">
                     @csrf
                     <div class="space-y-2">
-                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Username SSO</label>
+                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Username</label>
                         <div class="relative group">
                             <span class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none text-gray-400 group-focus-within:text-red-600 transition-colors">
                                 <iconify-icon icon="solar:user-bold" class="text-xl"></iconify-icon>
