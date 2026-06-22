@@ -52,12 +52,10 @@
                     {{-- Status Banner --}}
                     @php
                         $statusStyles = match ($peminjamanDetail->status) {
-                            'Approve' => ['bg' => 'bg-emerald-50/50', 'border' => 'border-emerald-100', 'text' => 'text-emerald-600', 'icon' => 'solar:check-circle-bold-duotone'],
-                            'Reject' => ['bg' => 'bg-red-50/50', 'border' => 'border-red-100', 'text' => 'text-red-600', 'icon' => 'solar:close-circle-bold-duotone'],
-                            'Waiting' => ['bg' => 'bg-amber-50/50', 'border' => 'border-amber-100', 'text' => 'text-amber-600', 'icon' => 'solar:clock-circle-bold-duotone'],
-                            'Canceled' => ['bg' => 'bg-gray-50/50', 'border' => 'border-gray-100', 'text' => 'text-gray-500', 'icon' => 'solar:forbidden-circle-bold-duotone'],
-                            'Finish' => ['bg' => 'bg-blue-50/50', 'border' => 'border-blue-100', 'text' => 'text-blue-600', 'icon' => 'solar:check-read-bold-duotone'],
-                            default => ['bg' => 'bg-gray-50/50', 'border' => 'border-gray-100', 'text' => 'text-gray-400', 'icon' => 'solar:help-circle-bold-duotone'],
+                            'Reject' => ['bg' => 'bg-red-50/50', 'border' => 'border-red-100', 'text' => 'text-red-600', 'icon' => 'solar:close-circle-bold-duotone', 'label' => 'Ditolak'],
+                            'Canceled' => ['bg' => 'bg-gray-50/50', 'border' => 'border-gray-100', 'text' => 'text-gray-500', 'icon' => 'solar:forbidden-circle-bold-duotone', 'label' => 'Dibatalkan'],
+                            'Finish' => ['bg' => 'bg-blue-50/50', 'border' => 'border-blue-100', 'text' => 'text-blue-600', 'icon' => 'solar:check-read-bold-duotone', 'label' => 'Selesai'],
+                            default => ['bg' => 'bg-gray-50/50', 'border' => 'border-gray-100', 'text' => 'text-gray-400', 'icon' => 'solar:help-circle-bold-duotone', 'label' => $peminjamanDetail->status],
                         };
                     @endphp
                     <div class="p-6 {{ $statusStyles['bg'] }} {{ $statusStyles['border'] }} border-2 rounded-[8px] flex items-center justify-between gap-4">
@@ -66,8 +64,8 @@
                                 <iconify-icon icon="{{ $statusStyles['icon'] }}" class="text-3xl {{ $statusStyles['text'] }}"></iconify-icon>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-[10px] font-black {{ $statusStyles['text'] }} uppercase tracking-[0.2em] opacity-70">Status Reservasi</span>
-                                <span class="text-xl font-black {{ $statusStyles['text'] }} uppercase tracking-tighter">{{ $peminjamanDetail->status }}</span>
+                                <span class="text-[10px] font-black {{ $statusStyles['text'] }} uppercase tracking-[0.2em] opacity-70">Status Peminjaman</span>
+                                <span class="text-xl font-black {{ $statusStyles['text'] }} uppercase tracking-tighter">{{ $statusStyles['label'] }}</span>
                             </div>
                         </div>
 
@@ -88,12 +86,27 @@
                                         <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->penanggung_jawab }}</p>
                                     </div>
                                     <div class="group">
-                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Unit / Fakultas</label>
-                                        <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->fakultas_name }}</p>
-                                        <p class="text-[10px] font-semibold text-gray-400 mt-0.5">{{ $peminjamanDetail->fakultas_name === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Prodi' }}: {{ $peminjamanDetail->prodi_name }}</p>
+                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Nip / Nim</label>
+                                        <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->user_identifier }}</p>
                                     </div>
                                     <div class="group">
-                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Jenis Keperluan</label>
+                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">E-mail</label>
+                                        <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->email ?? '-' }}</p>
+                                    </div>
+                                    <div class="group">
+                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Kontak Penanggung Jawab</label>
+                                        <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->kontak_penanggung_jawab ?? '-' }}</p>
+                                    </div>
+                                    <div class="group">
+                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Unit / Fakultas</label>
+                                        <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->fakultas_name }}</p>
+                                    </div>
+                                    <div class="group">
+                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">{{ $peminjamanDetail->fakultas_name === 'DIREKTORAT KHUSUS' ? 'Direktorat' : 'Program Studi' }}</label>
+                                        <p class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->prodi_name }}</p>
+                                    </div>
+                                    <div class="group">
+                                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400 transition-colors">Jenis Peminjaman</label>
                                         <div class="inline-flex items-center px-2.5 py-1 bg-gray-50 border border-gray-100 rounded-lg mt-1">
                                             <span class="text-[10px] font-black text-gray-700 uppercase tracking-wider">{{ $peminjamanDetail->jenis_peminjaman }}</span>
                                         </div>
@@ -163,7 +176,7 @@
                                             <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-2xl"></iconify-icon>
                                         </div>
                                         <div class="flex flex-col">
-                                            <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest">Estimasi Muatan</span>
+                                            <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest">Jumlah Peminjam</span>
                                             <span class="text-sm font-black text-gray-800">{{ $peminjamanDetail->muatan ?? $peminjamanDetail->ruangan?->kapasitas }} Orang</span>
                                         </div>
                                     </div>
