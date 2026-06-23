@@ -14,34 +14,35 @@
         <ul class="sidebar-menu" id="sidebar-menu">
             <li class="w-full !pl-0">
                 <div class="identitas w-full flex flex-col items-center justify-center gap-4 my-10">
-                    <img src="{{ session('profilephoto') ?? asset('assets/basila_images/favicon.png') }}" 
+                    <img src="{{ session('profilephoto') ?? asset('assets/basila_images/favicon.png') }}"
                         class="w-28 h-28 rounded-full aspect-square object-cover object-top border-2 border-red-100 shadow-sm flex-shrink-0"
                         alt="profile photo" id="logo">
                     <div class="flex flex-col items-center w-full gap-1 px-4 text-center">
                         <h1 class="uppercase text-lg font-bold text-gray-800 tracking-tight truncate w-full"
                             id="sidebar-name">{{ session('username') }}</h1>
-                        <h5 class="text-[11px] font-medium text-gray-400 uppercase tracking-widest leading-none mt-1" id="sidebar-nim">{{ session('nim') }}</h5>
+                        <h5 class="text-[11px] font-medium text-gray-400 uppercase tracking-widest leading-none mt-1"
+                            id="sidebar-nim">{{ session('nim') }}</h5>
                     </div>
                 </div>
             </li>
             <li class="mb-4">
                 <a href="https://basila.telkomuniversity.ac.id/basilav2/">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="mb-4">
+                <a href="{{ route('index') }}">
+                    <iconify-icon icon="material-symbols:monitor-rounded" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="dropdown mb-4">
                 <a href="javascript:void(0)">
                     <iconify-icon icon="mdi:office-building" class="menu-icon"></iconify-icon>
-                    <span>Building Management</span>
+                    <span>{{ session('role_name') === 'BAA' ? 'Building Management' : 'Layanan Ruangan' }}</span>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li>
-                        <a href="{{ route('index') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            Dashboard
-                        </a>
-                    </li>
                     @if (session('role_name') === 'BAA')
                         <li>
                             <a href="{{ route('pengelolaan-gedung') }}" class="">
@@ -66,7 +67,7 @@
                         <li>
                             <a href="{{ route('pembatalan-reservasi') }}">
                                 <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                                Peminjaman Aktif                            </a>
+                                Peminjaman Aktif </a>
                         </li>
                     @endif
                     <li>
