@@ -164,7 +164,7 @@ class DashboardService
             'Saturday' => 'SABTU',
             'Sunday' => 'MINGGU',
         ];
-        
+
         $currentDay = $dayMapping[Carbon::now()->format('l')];
         $nowTime = Carbon::now()->format('H:i:s');
 
@@ -282,6 +282,9 @@ class DashboardService
         $year = trim($parts[0]);
         $semester = strtolower(trim($parts[1]));
 
+        $start = "";
+        $end = "";
+
         if ($semester === 'genap') {
             $start = $year . '-02-01';
             $end = $year . '-07-31';
@@ -290,8 +293,17 @@ class DashboardService
             $end = ($year + 1) . '-01-31';
         }
 
-        if ($query->getModel() instanceof DataPeminjaman) {
-            return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
+        # Cek apakah hasil query setiap pengolahan data pada setiap fungsi,itu adalaha eloquent BUILDER atau RAW SQL BUILDER
+        if ($query instanceof \Illuminate\Database\Eloquent\Builder) {
+            # Ambil model yang terikat dengan query yang dilakukan sebelum nya
+            $model = $query->getModel();
+
+            # Cek apakah model tersebut adalah data peminjaman atau tidak
+            if ($model instanceof DataPeminjaman) {
+
+                # Jika iya maka akan mengembalikan data peminjaman dengan rentang 
+                return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
+            }
         }
 
         return $query->whereBetween('tanggal_peminjaman', [$start, $end]);
@@ -319,23 +331,29 @@ class DashboardService
 
     public function getRuanganTerpakai(?string $periode = null): int
     {
-        $peminjamanRoomIds = Ruangan::whereHas('dataPeminjaman', function ($q) use ($periode) {
-            $q->whereIn('status', ['Approve']);
-            $this->applyPeriodeFilter($q, $periode);
-        })->pluck('id')->toArray();
-
         $currentDay = $this->getCurrentDay();
-        $nowTime = Carbon::now()->format('H:i:s');
-        $matkulRoomIds = JadwalMatkulWajib::where('hari', $currentDay)
-            ->where([
-                ['shift_mulai', '<=', $nowTime],
-                ['shift_selesai', '>=', $nowTime]
-            ])->pluck('ruangan_id')
+        $nowTime    = Carbon::now()->format('H:i:s');
+
+        # Ruangan unik yang Approve (lewat peminjaman)
+        $approveIds = Ruangan::join('data_peminjaman', 'ruangans.id', '=', 'data_peminjaman.ruangan_id')
+            ->where('data_peminjaman.status', 'Approve')
+            ->when($periode, function ($q) use ($periode) {
+                $this->applyPeriodeFilter($q, $periode);
+            })
+            ->distinct('ruangans.id')
+            ->pluck('ruangans.id')
             ->toArray();
 
-        $allOccupiedRoomIds = array_unique(array_merge($peminjamanRoomIds, $matkulRoomIds));
+        # Ruangan unik yang sedang ada jadwal matkul sekarang
+        $matkulIds = Ruangan::join('jadwal_matkul_wajib', 'ruangans.id', '=', 'jadwal_matkul_wajib.ruangan_id')
+            ->where('jadwal_matkul_wajib.hari', $currentDay)
+            ->where('jadwal_matkul_wajib.shift_mulai', '<=', $nowTime)
+            ->where('jadwal_matkul_wajib.shift_selesai', '>=', $nowTime)
+            ->distinct('ruangans.id')
+            ->pluck('ruangans.id')
+            ->toArray();
 
-        return count($allOccupiedRoomIds);
+        return count(array_unique(array_merge($approveIds, $matkulIds)));
     }
 
     public function getRuanganTersedia(int $occupiedCount): int
@@ -348,25 +366,35 @@ class DashboardService
         return Gedung::select('id', 'nama_gedung')
             ->withCount([
                 'ruangan as totalWaiting' => function ($q) use ($periode) {
-                    $q->whereHas('dataPeminjaman', function ($q) use ($periode) {
-                        $q->where('status', 'Waiting');
-                        $this->applyPeriodeFilter($q, $periode);
-                    });
+                    $q->join('data_peminjaman', 'ruangans.id', '=', 'data_peminjaman.ruangan_id')
+                        ->where('data_peminjaman.status', 'Waiting')
+                        ->when($periode, function ($q2) use ($periode) {
+                            $this->applyPeriodeFilter($q2, $periode);
+                        });
                 },
                 'ruangan as totalTerpakai' => function ($q) use ($periode) {
                     $currentDay = $this->getCurrentDay();
-                    $nowTime = Carbon::now()->format('H:i:s');
+                    $nowTime    = Carbon::now()->format('H:i:s');
                     $q->where(function ($sub) use ($periode, $currentDay, $nowTime) {
-                        $sub->whereHas('dataPeminjaman', function ($q2) use ($periode) {
-                            $q2->whereIn('status', ['Approve']);
-                            $this->applyPeriodeFilter($q2, $periode);
-                        })->orWhereIn('ruangans.id', function ($q3) use ($currentDay, $nowTime) {
-                            $q3->select('ruangan_id')
-                                ->from('jadwal_matkul_wajib')
-                                ->where('hari', $currentDay)
-                                ->where('shift_mulai', '<=', $nowTime)
-                                ->where('shift_selesai', '>=', $nowTime);
-                        });
+                        # Approve via join data_peminjaman
+                        $sub->whereExists(function ($q2) use ($periode) {
+                            $q2->select(DB::raw(1))
+                                ->from('data_peminjaman')
+                                ->whereColumn('data_peminjaman.ruangan_id', 'ruangans.id')
+                                ->where('data_peminjaman.status', 'Approve')
+                                ->when($periode, function ($q3) use ($periode) {
+                                    $this->applyPeriodeFilter($q3, $periode);
+                                });
+                        })
+                            # ATAU sedang ada jadwal matkul sekarang via join jadwal_matkul_wajib
+                            ->orWhereExists(function ($q3) use ($currentDay, $nowTime) {
+                                $q3->select(DB::raw(1))
+                                    ->from('jadwal_matkul_wajib')
+                                    ->whereColumn('jadwal_matkul_wajib.ruangan_id', 'ruangans.id')
+                                    ->where('jadwal_matkul_wajib.hari', $currentDay)
+                                    ->where('jadwal_matkul_wajib.shift_mulai', '<=', $nowTime)
+                                    ->where('jadwal_matkul_wajib.shift_selesai', '>=', $nowTime);
+                            });
                     });
                 },
                 'ruangan as totalRuangan',
@@ -407,7 +435,7 @@ class DashboardService
                                 ->where('shift_mulai', '<=', $nowTime)
                                 ->where('shift_selesai', '>=', $nowTime);
                         });
-                    } else { 
+                    } else {
                         # Filter semua data ruang gedung yang terpakai berdasarkan waktu jadwal peminjaman dan jadwal perkuliahan
                         $q->where(function ($sub) use ($periode, $currentDay, $nowTime) {
                             $sub->whereHas('dataPeminjaman', function ($q2) use ($periode) {
@@ -447,7 +475,7 @@ class DashboardService
             ];
         })->toArray();
 
-        // 1. Peminjaman
+        # Untuk data jadwal Peminjaman
         if ($filter === 'semua' || $filter === 'peminjaman') {
             $peminjamanCounts = Fakultas::select('id')
                 ->withCount([
@@ -465,7 +493,7 @@ class DashboardService
             }
         }
 
-        // 2. Perkuliahan
+        # Untuk data jadwal Perkuliahan
         if ($filter === 'semua' || $filter === 'perkuliahan') {
             $query = DB::table('jadwal_matkul_wajib as j')
                 ->join('mata_kuliah as m', 'j.nama_matkul', '=', 'm.nama_matkul')
