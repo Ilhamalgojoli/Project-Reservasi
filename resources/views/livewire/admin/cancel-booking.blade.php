@@ -63,7 +63,7 @@
             <thead class="bg-gray-50 uppercase text-[12px] font-bold text-gray-700">
                 <tr>
                     <th class="px-4 text-center border-black">No</th>
-                    <th class="px-4 text-center border-black w-1/4">Ruangan & Lokasi</th>
+                    <th class="px-4 text-center border-black">Ruangan & Lokasi</th>
                     <th class="px-4 text-center border-black">Penanggung Jawab</th>
                     <th class="px-4 text-center border-black">Hari & Tanggal</th>
                     <th class="px-4 text-center border-black">Waktu</th>
@@ -78,13 +78,11 @@
                             {{ ($datas->currentPage() - 1) * $datas->perPage() + $loop->iteration }}
                         </td>
                         <td class="px-4 border-black">
-                            <div class="flex flex-col gap-0.5 w-max mx-auto">
+                            <div class="flex flex-col gap-0.5 items-center justify-start">
                                 <div class="flex items-center gap-2">
-                                    <iconify-icon icon="mdi:office-building-marker" class="text-red-500 text-lg"></iconify-icon>
                                     <span class="font-extrabold text-gray-900">{{ $data->kode_ruangan }}</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-xs text-gray-400 font-semibold ml-1">
-                                    <iconify-icon icon="clarity:building-line" class="text-lg"></iconify-icon>
                                     <span>{{ $data->nama_gedung ?? '-' }} / Lt. {{ $data->lantai ?? '-' }}</span>
                                 </div>
                             </div>
@@ -98,7 +96,6 @@
                         <td class="px-4 text-center border-black">
                             <div class="flex flex-col items-center gap-1">
                                 <div class="flex items-center gap-1.5 font-bold text-gray-800">
-                                    <iconify-icon icon="solar:calendar-bold" class="text-[#e51411] text-md"></iconify-icon>
                                     <span>{{ $data->hari }}, {{ \Carbon\Carbon::parse($data->tanggal_peminjaman)->translatedFormat('d M Y') }}</span>
                                 </div>
                             </div>
@@ -109,11 +106,16 @@
                                 {{ $data->jam_mulai }} – {{ $data->jam_selesai }}
                             </div>
                         </td>
+                        @php
+                            $labelStatus = match($data->status){
+                                'Approve' => 'Disetujui'
+                            };
+                        @endphp
                         <td class="px-4 text-center border-black">
                             <div class="flex flex-col items-center justify-center gap-1.5">
                                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-extrabold border bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm">
                                     <iconify-icon icon="mdi:check-circle" class="text-sm"></iconify-icon>
-                                    APPROVE
+                                    {{ $labelStatus }}
                                 </span>
                                 @if($data->cancel_requested)
                                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[8px] font-black bg-red-100 text-red-600 border border-red-200 animate-pulse uppercase tracking-wider shadow-sm">

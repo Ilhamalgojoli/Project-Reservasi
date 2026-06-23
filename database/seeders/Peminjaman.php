@@ -28,18 +28,18 @@ class Peminjaman extends Seeder
             $randomProdi = $prodis->random();
             $r = $ruangan->random();
             $jenis = $jenisPeminjaman[array_rand($jenisPeminjaman)];
-            
+
             $tanggal = Carbon::today()->addDays(rand(0, 7));
             $hariIndo = $tanggal->locale('id')->translatedFormat('l'); // 'Senin', 'Selasa', 'Rabu', dll.
 
             $fakultasName = Fakultas::where('id', $randomProdi->fakultas_id)->value('fakultas');
 
             $jumlahWaktu = rand(2, 4);
-            $startTime = Carbon::createFromTime(rand(7, 16), 30, 0); 
+            $startTime = Carbon::createFromTime(rand(7, 16), 30, 0);
             $startStr = $startTime->format('H:i');
             $endTime = $startTime->copy()->addMinutes(30 * $jumlahWaktu);
             $endStr = $endTime->format('H:i');
-            
+
             $diffMinutes = $startTime->diffInMinutes($endTime);
             $durationText = '';
             if ($diffMinutes >= 60) {

@@ -19,7 +19,7 @@ class GedungLantaiRuanganSeeder extends Seeder
         $jsonPath = base_path('Jadwal_Terstruktur.json');
         if (\Illuminate\Support\Facades\File::exists($jsonPath)) {
             $data = json_decode(\Illuminate\Support\Facades\File::get($jsonPath), true);
-            
+
             $gku = Gedung::create([
                 'nama_gedung' => 'Gedung Tokong Nanas',
                 'kode_gedung' => 'GKU',
@@ -32,10 +32,10 @@ class GedungLantaiRuanganSeeder extends Seeder
 
             $floorsCreated = [];
             $senin = $data['SENIN'] ?? [];
-            
+
             foreach ($senin as $floorName => $roomList) {
                 $floorNum = (int) str_replace('Lantai_', '', $floorName);
-                
+
                 if (!isset($floorsCreated[$floorNum])) {
                     $lantai = Lantai::create([
                         'lantai' => $floorNum,

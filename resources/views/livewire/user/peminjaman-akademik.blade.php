@@ -10,7 +10,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {{-- Kode Mata Kuliah --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Mata Kuliah</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Mata Kuliah 
+                        <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:book-open-page-variant"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -19,7 +21,8 @@
                             <option value="" selected>Pilih Mata Kuliah</option>
                             @foreach ($mataKuliahList as $mk)
                                 <option value="{{ $mk['kode_matkul'] }}">{{ $mk['kode_matkul'] }} -
-                                    {{ $mk['nama_matkul'] }}</option>
+                                    {{ $mk['nama_matkul'] }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -30,7 +33,8 @@
 
                 {{-- Lantai --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Lantai</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Lantai <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:stairs"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -49,7 +53,8 @@
 
                 {{-- Ruangan --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Ruangan</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Ruangan <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:office-building-marker"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -78,7 +83,9 @@
 
                 {{-- Tanggal --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Tanggal Peminjaman</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Tanggal Peminjaman 
+                        <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="solar:calendar-bold"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl cursor-pointer"
@@ -93,12 +100,12 @@
 
                 {{-- Jam Peminjaman --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Waktu Mulai - Waktu Selesai</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Waktu Mulai - Waktu Selesai <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:clock-time-four"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
-                        <input type="text" value="{{ $this->getFormattedRange() }}" readonly
-                            placeholder="Pilih Jam ..."
+                        <input type="text" value="{{ $this->getFormattedRange() }}" readonly placeholder="Pilih Jam ..."
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none cursor-pointer"
                             wire:click="toggleDropdown" />
 
@@ -110,8 +117,7 @@
                                         class="flex items-center px-3 py-2 rounded-lg transition-colors group/item {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-red-50 cursor-pointer' }}">
                                         <input type="checkbox" value="{{ $jam }}"
                                             class="w-4 h-4 text-[#e51411] border-gray-300 rounded focus:ring-[#e51411] disabled:opacity-50 disabled:cursor-not-allowed"
-                                            wire:model.live="pilihJam"
-                                            {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? 'disabled' : '' }} />
+                                            wire:model.live="pilihJam" {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? 'disabled' : '' }} />
                                         <span
                                             class="ml-3 text-sm font-bold text-gray-600 {{ count($pilihJam) >= 2 && !in_array($jam, $pilihJam) ? '' : 'group-hover/item:text-[#e51411]' }}">{{ $jam }}</span>
                                     </label>
@@ -125,7 +131,8 @@
                 </div>
                 {{-- Kapasitas --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-group"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -153,7 +160,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {{-- Penanggung Jawab --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Nama Lengkap</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Nama Lengkap <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -168,7 +176,8 @@
 
                 {{-- Kontak --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Nomor WhatsApp / HP</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Nomor WhatsApp / HP <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:phone-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -183,7 +192,8 @@
 
                 {{-- Email --}}
                 <div class="flex flex-col gap-2 md:col-span-2 lg:col-span-1">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Email Aktif</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Email Aktif <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:email-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -198,7 +208,8 @@
 
                 {{-- Deskripsi --}}
                 <div class="flex flex-col gap-2 md:col-span-2 lg:col-span-3">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Keperluan / Deskripsi Kegiatan</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Keperluan / Deskripsi Kegiatan <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:text-box-outline"
                             class="absolute left-3 top-3 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -215,8 +226,7 @@
 
         {{-- Submit Button --}}
         <div class="flex justify-center pt-4">
-            <button type="button"
-                @click="
+            <button type="button" @click="
                     Swal.fire({
                         ...swalConfig,
                         title: 'Konfirmasi Peminjaman?',

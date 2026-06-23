@@ -33,10 +33,8 @@
                         <div>
                             <h2 class="text-2xl font-black tracking-tight text-gray-900">Detail Reservasi</h2>
                             <div class="flex items-center gap-2 mt-1.5">
-                                <span class="px-2.5 py-0.5 bg-gray-900 text-white text-[8px] font-black rounded-full uppercase tracking-widest shadow-sm">
-                                    #{{ str_pad($peminjamanDetail->id, 5, '0', STR_PAD_LEFT) }}
-                                </span>
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider italic">ID Digital Token</span>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">ID Reservasi:
+                                #{{ str_pad($peminjamanDetail->id, 5, '0', STR_PAD_LEFT) }}</p>
                             </div>
                         </div>
                     </div>

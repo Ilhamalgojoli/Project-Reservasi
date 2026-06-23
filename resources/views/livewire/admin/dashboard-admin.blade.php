@@ -41,7 +41,7 @@
                         </div>
                         <div class="text-center flex flex-col gap-1 relative z-10">
                             <h1 class="text-4xl font-bold text-white drop-shadow-sm">{{ $waiting }}</h1>
-                            <p class="text-white font-semibold text-sm tracking-wide">Total Waiting</p>
+                            <p class="text-white font-semibold text-sm tracking-wide">Total Peminjaman Menunggu</p>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@
                         </div>
                         <div class="text-center flex flex-col gap-1 relative z-10">
                             <h1 class="text-4xl font-bold text-white drop-shadow-sm">{{ $approve }}</h1>
-                            <p class="text-white font-semibold text-sm tracking-wide">Total Terpakai</p>
+                            <p class="text-white font-semibold text-sm tracking-wide">Total Ruangan Terpakai</p>
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
                         </div>
                         <div class="text-center flex flex-col gap-1 relative z-10">
                             <h1 class="text-4xl font-bold text-white drop-shadow-sm">{{ $tersedia }}</h1>
-                            <p class="text-white font-semibold text-sm tracking-wide">Total Tersedia</p>
+                            <p class="text-white font-semibold text-sm tracking-wide">Total Ruangan Tersedia</p>
                         </div>
                     </div>
                 </div>
@@ -385,8 +385,6 @@
                     class="bg-white p-5 rounded-[12px] flex flex-col shadow-lg gap-6 w-full border border-gray-50 transition-all duration-300 hover:shadow-xl">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="bg-red-600 p-3 rounded-xl shadow-inner flex items-center gap-3">
-                            <iconify-icon icon="solar:ranking-bold-duotone"
-                                style="font-size: 24px; color: white;"></iconify-icon>
                             <p class="text-white font-bold tracking-wide">Data Peminjaman Berdasarkan Fakultas</p>
                         </div>
                         <div class="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl border border-gray-200/20">
@@ -430,7 +428,7 @@
                 <div class="bg-white p-5 rounded-[8px] flex flex-col shadow-md gap-5 w-full">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="bg-[#e51411] p-2 rounded-lg w-fit">
-                            <p class="text-white font-bold">Okkupansi</p>
+                            <p class="text-white font-bold">Okupansi</p>
                         </div>
                         <div class="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl border border-gray-200/20">
                             <button wire:click="$set('okkupansi_filter', 'semua')" 
@@ -679,7 +677,7 @@
                             dataLabels: {
                                 enabled: true,
                                 style: {
-                                    colors: ['#ffffff'], // Kembali ke putih sesuai request
+                                    colors: ['#ffffff'],
                                     fontWeight: 'bold'
                                 },
                                 formatter: function(val) {
