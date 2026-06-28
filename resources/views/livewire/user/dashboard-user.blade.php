@@ -46,7 +46,6 @@
     </div>
 
     <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-2 gap-4">
-
         <div
             class="group relative overflow-hidden rounded-xl p-4 sm:p-8 flex flex-col lg:flex-row items-center lg:justify-center gap-3 sm:gap-6 cursor-default
             bg-gradient-to-br from-[#6c63ff] to-[#4f46e5]
@@ -376,9 +375,7 @@
                 </div>
             @endif
         </div>
-
     </div>
-
 </div>
 
 @script

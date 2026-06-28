@@ -1,6 +1,6 @@
 <div>
     <style>
-        /* Desktop/Tablet (min-width: 768px) */
+        
         @media (min-width: 768px) {
             .custom-overlay {
                 opacity: 0 !important;
@@ -17,7 +17,7 @@
                 transform: translateY(0) !important;
             }
         }
-        /* Mobile (max-width: 767px) */
+
         @media (max-width: 767px) {
             .custom-overlay {
                 opacity: 1 !important;
@@ -52,7 +52,7 @@
                         alt="{{ $data['nama_gedung'] }}"
                         class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
 
-                    {{-- Overlay Actions with Gradient --}}
+                    {{-- Overlay --}}
                     <div
                         class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent flex items-center justify-center p-6 z-10 custom-overlay">
                         <a href="{{ route('pilih-ruang', ['id' => $data['id']]) }}"

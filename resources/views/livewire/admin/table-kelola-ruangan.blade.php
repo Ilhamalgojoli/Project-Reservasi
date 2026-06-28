@@ -57,8 +57,7 @@
                                         {{ $asset->jumlah_asset }}
                                     </div>
                                 @empty
-                                    <span class="text-gray-300 italic text-[11px] font-medium tracking-wide">Fasilitas
-                                        belum diatur</span>
+                                    <span class="text-gray-300 italic text-[11px] font-medium tracking-wide">Aset Tidak Ada</span>
                                 @endforelse
                             </div>
                         </td>

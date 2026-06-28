@@ -17,7 +17,7 @@
     </main>
 
     @if (!empty($detailId))
-        @push('extra_scripts')
+        @push('scripts')
             <script>
                 document.addEventListener('livewire:load', function () {
                     window.dispatchEvent(new CustomEvent('showApprovalDetail', {

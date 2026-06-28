@@ -39,9 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 wrappers.push(wrapper);
 
                 count++;
-                console.log(count);
-                console.log(limit);
-
                 if (wrappers.length != 0) {
                     const lessBtn = btn.parentElement.querySelector('.button-less');
                     lessBtn.classList.remove('hidden');
@@ -49,12 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 console.log('Sudah mencapai limit');
             }
-
-            console.log('click');
         });
 
         if (!btn) {
             console.log(btn, 'not found');
+            return;
         }
     });
 
@@ -98,8 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const lessBtn = btn.closest('.popup').querySelector('.button-less');
                 lessBtn.classList.add('hidden');
             }
-
-            console.log(window.wrappers);
         });
     });
 });

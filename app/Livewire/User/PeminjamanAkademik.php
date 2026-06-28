@@ -59,19 +59,12 @@ class PeminjamanAkademik extends Component
         return $this->service()->getMessages();
     }
 
-    protected function service()
-    {
-        return app(PeminjamanService::class);
-    }
-
     public function mount($id, $jenisPeminjaman, $fakultas, $prodi)
     {
-        $this->lantai = $this->service()->getLantai($id);
-        $this->jamList = $this->service()->generateJam('06:30', '22:30');
+        $this->lantai = app(PeminjamanService::class)->getLantai($id);
+        $this->jamList = app(PeminjamanService::class)->generateJam('06:30', '22:30');
 
         $this->jenisPeminjaman = $jenisPeminjaman;
-        $this->fakultas = $fakultas;
-        $this->prodi = $prodi;
         $this->penanggungJawab = (string) session('username');
         $this->userIdentifier = (string) session('user_identifier');
     }
@@ -83,12 +76,12 @@ class PeminjamanAkademik extends Component
 
     public function updatedLantaiID($value)
     {
-        $this->ruangan = $this->service()->getRuangan($value);
+        $this->ruangan = app(PeminjamanService::class)->getRuangan($value);
     }
 
     public function updatedRuanganID($value)
     {
-        $this->maxKapasitas = $this->service()->getMaxKapasitas($value);
+        $this->maxKapasitas = app(PeminjamanService::class)->getMaxKapasitas($value);
         $this->dispatch('getRuanganID', ruanganID: $value);
     }
 
@@ -103,7 +96,7 @@ class PeminjamanAkademik extends Component
         try {
             $data = $this->validate();
 
-            if ($this->service()->create($data, session('role_name'))) {
+            if (app(PeminjamanService::class)->create($data, session('role_name'))) {
                 $this->sendSuccessResponse();
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -175,7 +168,7 @@ class PeminjamanAkademik extends Component
 
     public function render()
     {
-        $mataKuliahList = $this->service()->getMataKuliah($this->prodi);
+        $mataKuliahList = app(PeminjamanService::class)->getMataKuliah($this->prodi);
         return view('livewire.user.peminjaman-akademik', compact('mataKuliahList'));
     }
 }

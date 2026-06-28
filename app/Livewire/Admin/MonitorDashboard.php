@@ -42,19 +42,19 @@ class MonitorDashboard extends Component
         $this->resetPage('pageMatkulWajib');
     }
 
-    public function render(DashboardService $dashboard)
+    public function render()
     {
         return view('livewire.admin.monitorDashboard', [
             'matkul_wajib' => $this->tab === 'matkul-wajib'
-                ? $dashboard->ambilDataMatkulWajib($this->selectedLantai, $this->selectedStatus)
+                ? app(DashboardService::class)->ambilDataMatkulWajib($this->selectedLantai, $this->selectedStatus)
                 : collect(),
 
             'akademik' => $this->tab === 'akademik'
-                ? $dashboard->ambilData('akademik', $this->selectedLantai, $this->selectedStatus)
+                ? app(DashboardService::class)->ambilData('akademik', $this->selectedLantai, $this->selectedStatus)
                 : collect(),
 
             'non_akademik' => $this->tab === 'non-akademik'
-                ? $dashboard->ambilData('non-akademik', $this->selectedLantai, $this->selectedStatus)
+                ? app(DashboardService::class)->ambilData('non-akademik', $this->selectedLantai, $this->selectedStatus)
                 : collect(),
 
             'list_lantai' => Lantai::select('lantai')->distinct()->orderBy('lantai')->get(),

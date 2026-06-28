@@ -90,10 +90,6 @@ class GedungService
         if (!empty($data['gambar'])) {
             $gambar = $data['gambar'];
 
-            if (!Storage::disk('public')->exists('gambar_gedung')) {
-                Storage::disk('public')->makeDirectory('gambar_gedung');
-            }
-
             $path = $gambar->store('gambar_gedung', 'public');
         }
 

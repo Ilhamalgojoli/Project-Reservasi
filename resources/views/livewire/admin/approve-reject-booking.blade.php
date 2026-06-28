@@ -18,7 +18,7 @@
                 {{-- Dropdown Jenis --}}
                 <select wire:model.live="filterJenis"
                     class="appearance-none w-full pl-4 flex-1 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
-                    <option value="">SEMUA JENIS</option>
+                    <option value="">JENIS PEMINJAMAN</option>
                     @foreach ($jenis_peminjaman as $value => $label)
                         <option value="{{ $value }}">{{ strtoupper($label) }}</option>
                     @endforeach
@@ -27,7 +27,7 @@
                 {{-- Dropdown Hari --}}
                 <select wire:model.live="filterHari"
                     class="appearance-none w-full pl-4 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
-                    <option value="">SEMUA HARI</option>
+                    <option value="">HARI PEMINJAMAN</option>
                     @foreach ($hari_list as $h)
                         <option value="{{ $h }}">{{ strtoupper($h) }}</option>
                     @endforeach

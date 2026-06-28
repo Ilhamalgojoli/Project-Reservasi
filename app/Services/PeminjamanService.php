@@ -6,13 +6,11 @@ use App\Models\DataPeminjaman;
 use App\Models\Fakultas;
 use App\Models\Prodi;
 use App\Models\Gedung;
-use App\Models\KegiatanTerkiniModel;
 use App\Models\Lantai;
 use App\Models\MataKuliah;
 use App\Models\Ruangan;
 use App\Models\JadwalMatkulWajib;
 use Carbon\Carbon;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -69,27 +67,23 @@ class PeminjamanService
 
     public function getProdi($fakultasId)
     {
-        try {
-            $prodi = env('URL_PRODY');
-            $token = env('TOKEN');
-            $response = Http::withToken($token)->get($prodi . $fakultasId);
+        $prodi = env('URL_PRODY');
+        $token = env('TOKEN');
+        $response = Http::withToken($token)->get($prodi . $fakultasId);
 
-            if ($response->successful()) {
-                $data = $response->json();
-                return collect($data)->map(function ($item) {
-                    return [
-                        'id' => $item['studyprogramid'],
-                        'prodi' => $item['studyprogramname'],
-                    ];
-                })->toArray();
-            } else {
-                return Prodi::select('id', 'prodi')
-                    ->where('fakultas_id', $fakultasId)
-                    ->get()
-                    ->toArray();
-            }
-        } catch (ConnectionException $e) {
-            
+        if ($response->successful()) {
+            $data = $response->json();
+            return collect($data)->map(function ($item) {
+                return [
+                    'id' => $item['studyprogramid'],
+                    'prodi' => $item['studyprogramname'],
+                ];
+            })->toArray();
+        } else {
+            return Prodi::select('id', 'prodi')
+                ->where('fakultas_id', $fakultasId)
+                ->get()
+                ->toArray();
         }
     }
 
@@ -125,19 +119,19 @@ class PeminjamanService
     public function getRules(string $type): array
     {
         $baseRules = [
-            'fakultas'              => 'required',
-            'prodi'                 => 'required',
-            'tanggal'               => 'required|date|after_or_equal:today',
-            'lantaiID'              => 'required|integer',
-            'ruanganID'             => 'required|integer',
-            'pilihJam'              => 'required|array|min:1',
-            'muatanKapasitas'       => 'required|integer|min:1',
-            'jenisPeminjaman'       => 'required|string',
-            'penanggungJawab'       => 'required|string|min:3',
+            'fakultas' => 'required',
+            'prodi' => 'required',
+            'tanggal' => 'required|date|after_or_equal:today',
+            'lantaiID' => 'required|integer',
+            'ruanganID' => 'required|integer',
+            'pilihJam' => 'required|array|min:1',
+            'muatanKapasitas' => 'required|integer|min:1',
+            'jenisPeminjaman' => 'required|string',
+            'penanggungJawab' => 'required|string|min:3',
             'kontakPenanggungJawab' => 'required|numeric|digits_between:10,15',
-            'email'                 => 'required|email',
-            'deskripsi'             => 'required|string|max:500',
-            'userIdentifier'        => 'required|string',
+            'email' => 'required|email',
+            'deskripsi' => 'required|string|max:500',
+            'userIdentifier' => 'required|string',
         ];
 
         if ($type === 'akademik') {
@@ -150,26 +144,26 @@ class PeminjamanService
     public function getMessages(): array
     {
         return [
-            'fakultas.required'              => 'Fakultas wajib diisi',
-            'prodi.required'                 => 'Program studi wajib diisi',
-            'kodeMatkul.required'            => 'Kode mata kuliah wajib dipilih',
-            'tanggal.required'               => 'Tanggal wajib diisi',
-            'lantaiID.required'              => 'Lantai wajib dipilih',
-            'ruanganID.required'             => 'Ruangan wajib dipilih',
-            'pilihJam.required'              => 'Minimal pilih satu jam',
-            'pilihJam.min'                   => 'Minimal pilih satu jam',
-            'muatanKapasitas.required'       => 'Kapasitas wajib diisi',
-            'muatanKapasitas.integer'        => 'Kapasitas harus berupa angka',
-            'muatanKapasitas.min'            => 'Kapasitas minimal 1',
-            'penanggungJawab.required'       => 'Penanggung jawab wajib diisi',
-            'penanggungJawab.min'            => 'Minimal 3 karakter',
+            'fakultas.required' => 'Fakultas wajib diisi',
+            'prodi.required' => 'Program studi wajib diisi',
+            'kodeMatkul.required' => 'Kode mata kuliah wajib dipilih',
+            'tanggal.required' => 'Tanggal wajib diisi',
+            'lantaiID.required' => 'Lantai wajib dipilih',
+            'ruanganID.required' => 'Ruangan wajib dipilih',
+            'pilihJam.required' => 'Minimal pilih satu jam',
+            'pilihJam.min' => 'Minimal pilih satu jam',
+            'muatanKapasitas.required' => 'Kapasitas wajib diisi',
+            'muatanKapasitas.integer' => 'Kapasitas harus berupa angka',
+            'muatanKapasitas.min' => 'Kapasitas minimal 1',
+            'penanggungJawab.required' => 'Penanggung jawab wajib diisi',
+            'penanggungJawab.min' => 'Minimal 3 karakter',
             'kontakPenanggungJawab.required' => 'Kontak wajib diisi',
-            'kontakPenanggungJawab.numeric'  => 'Kontak tidak boleh mengandung huruf atau simbol',
+            'kontakPenanggungJawab.numeric' => 'Kontak tidak boleh mengandung huruf atau simbol',
             'kontakPenanggungJawab.digits_between' => 'Kontak minimal 10 dan maksimal 15 digit',
-            'email.required'                 => 'Email wajib diisi',
-            'email.email'                    => 'Format email tidak valid',
-            'deskripsi.max'                  => 'Deskripsi maksimal 500 karakter',
-            'deskripsi.required'             => 'Keterangan kegiatan wajib di isi'
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'deskripsi.max' => 'Deskripsi maksimal 500 karakter',
+            'deskripsi.required' => 'Keterangan kegiatan wajib di isi'
         ];
     }
 
@@ -198,6 +192,7 @@ class PeminjamanService
 
     public function create(array $data, $role = null)
     {
+        $this->cekWaktuTerlewat($data);
         $this->cekTabrakanJadwal($data);
         $this->cekTabrakanMatkulWajib($data);
         $this->cekMuatan($data['ruanganID'], $data['muatanKapasitas']);
@@ -206,12 +201,12 @@ class PeminjamanService
         sort($jam);
 
         # Hitung waktu_mulai, waktu_selesai, dan total_waktu
-        $range = $this->hitungRangeWaktu($jam);
+        $range = $this->hitungWaktu($jam);
         $start = $range['waktu_mulai'];
         $end = $range['waktu_selesai'];
         $durationText = $range['total_waktu'];
 
-        # Mengambil nama fakultas dan prodi dari ID (kecuali jika Direktorat Khusus)
+        # Spesial case, jika Direktorat Khusus
         $isDirektorat = ($data['fakultas'] === 'DIREKTORAT KHUSUS');
         $namaFakultas = $isDirektorat ? 'DIREKTORAT KHUSUS' : (Fakultas::find($data['fakultas'])?->fakultas ?? $data['fakultas']);
         $namaProdi = $isDirektorat ? $data['prodi'] : (Prodi::find($data['prodi'])?->prodi ?? $data['prodi']);
@@ -256,10 +251,14 @@ class PeminjamanService
     private function cekTabrakanJadwal(array $data)
     {
         sort($data['pilihJam']);
+        \Log::info('jam yg di pilih: ' . json_encode($data['pilihJam']));
         $startBaru = $data['pilihJam'][0];
+        # Cek apakah pilih jam hanya 1 atau lebih dari 1
         $endBaru = count($data['pilihJam']) > 1 ? end($data['pilihJam']) : Carbon::parse($startBaru)->addMinutes(30)->format('H:i');
 
-        $overlap = DataPeminjaman::where('ruangan_id', $data['ruanganID'])
+        \Log::info('' . $startBaru . ' ' . $endBaru);
+
+        $tabrakan = DataPeminjaman::where('ruangan_id', $data['ruanganID'])
             ->where('tanggal_peminjaman', $data['tanggal'])
             ->whereIn('status', ['Approve', 'Waiting'])
             ->where(function ($q) use ($startBaru, $endBaru) {
@@ -268,17 +267,17 @@ class PeminjamanService
             })
             ->first();
 
-        if ($overlap) {
-            $formattedStart = Carbon::parse($overlap->waktu_mulai)->format('H:i');
-            $formattedEnd = Carbon::parse($overlap->waktu_selesai)->format('H:i');
-            throw new \Exception("Ruangan sudah dipakai pada jam {$formattedStart} sampai {$formattedEnd} oleh {$overlap->penanggung_jawab}");
+        if ($tabrakan) {
+            $formattedStart = Carbon::parse($tabrakan->waktu_mulai)->format('H:i');
+            $formattedEnd = Carbon::parse($tabrakan->waktu_selesai)->format('H:i');
+            throw new \Exception("Ruangan sudah dipakai pada jam {$formattedStart} sampai {$formattedEnd} oleh {$tabrakan->penanggung_jawab}");
         }
     }
 
     # Cek apakah jadwal yang dipilih user bentrok dengan jadwal matakuliah wajib
     private function cekTabrakanMatkulWajib(array $data)
     {
-        # Ambil nama hari dari tanggal yang dipilih user (dalam bahasa Indonesia)
+        # Ambil nama hari dari tanggal yang dipilih user
         $hari = Carbon::parse($data['tanggal'])->locale('id')->translatedFormat('l');
 
         # Ambil jadwal matkul wajib di ruangan dan hari yang sama
@@ -286,7 +285,7 @@ class PeminjamanService
             ->where('hari', $hari)
             ->get();
 
-        # Jika tidak ada jadwal wajib pada hari tersebut, langsung return
+        # Jika tidak ada jadwal matakuliah pada hari tersebut, langsung return
         if ($jadwals->isEmpty()) {
             return;
         }
@@ -294,21 +293,22 @@ class PeminjamanService
         # Urutkan jam pilihan user lalu tentukan jam mulai dan jam selesai
         sort($data['pilihJam']);
         $startBaru = $data['pilihJam'][0];
-        
+
         # Memakai fungsi addMinute untuk mendapatkan nilai waktu dengan interval 30 menit dari waktu mulai sampai akhir
-        $endBaru = count($data['pilihJam']) > 1 ? end($data['pilihJam']) : Carbon::parse($startBaru)->addMinutes(30)->format('H:i');
+        $endBaru = count($data['pilihJam']) > 1 ? end($data['pilihJam']) :
+            Carbon::parse($startBaru)->addMinutes(30)->format('H:i');
 
         # Cocokkan pilihan user dengan setiap jadwal wajib yang ada
         foreach ($jadwals as $jadwal) {
             # Ambil jam mulai dan jam selesai jadwal wajib
-            $mulai    = Carbon::parse($jadwal->shift_mulai)->format('H:i');
-            $selesai  = Carbon::parse($jadwal->shift_selesai)->format('H:i');
+            $mulai = Carbon::parse($jadwal->shift_mulai)->format('H:i');
+            $selesai = Carbon::parse($jadwal->shift_selesai)->format('H:i');
 
             # Cek apakah waktu pilihan user bertabrakan dengan jadwal wajib
             if ($startBaru < $selesai && $endBaru > $mulai) {
                 throw new \Exception(
-                    "Ruangan sudah dipakai untuk jadwal matkul wajib '{$jadwal->nama_matkul}' "
-                        . "pada hari {$hari}, pukul {$mulai}–{$selesai}"
+                    "Ruangan sudah dipakai untuk jadwal matakuliah '{$jadwal->nama_matkul}' "
+                    . "pada hari {$hari}, pukul {$mulai}–{$selesai}"
                 );
             }
         }
@@ -325,7 +325,30 @@ class PeminjamanService
         }
     }
 
-    private function hitungRangeWaktu(array $jam): array
+    # Cek waktu peminjaman nya apakah sudah terlewat jam dihari user meminjam
+    private function cekWaktuTerlewat(array $data)
+    {
+        $tanggalPeminjaman = Carbon::parse($data['tanggal'])->toDateString();
+
+        $currentDay = Carbon::today()->toDateString();
+
+        # Jika tanggal peminjaman hari ini 
+        if ($tanggalPeminjaman === $currentDay) {
+            sort($data['pilihJam']);
+
+            # Jam mulai yang dipilih oleh user
+            $jamMulai = $data['pilihJam'][0];
+            $waktuPeminjaman = Carbon::parse($tanggalPeminjaman . ' ' . $jamMulai);
+
+            # Jika jam yang dipilih sudah terlewat
+            if ($waktuPeminjaman->isPast()) {
+                throw new \Exception('Waktu peminjaman yang dipilih sudah terlewat.');
+            }
+        }
+    }
+
+    # Fungsi untuk menghitung total waktu meminjam dan 
+    private function hitungWaktu(array $jam): array
     {
         $start = $jam[0];
         $end = count($jam) > 1 ? end($jam) : Carbon::parse($start)->addMinutes(30)->format('H:i');
@@ -333,12 +356,7 @@ class PeminjamanService
         $startTime = Carbon::parse($start);
         $endTime = Carbon::parse($end);
 
-        if ($endTime->lte($startTime)) {
-            throw new \Exception('Format waktu peminjaman tidak sesuai');
-        }
-
         $diffMinutes = $startTime->diffInMinutes($endTime);
-
         $durationText = '';
         if ($diffMinutes >= 60) {
             $hours = floor($diffMinutes / 60);
@@ -378,7 +396,7 @@ class PeminjamanService
             ];
         }
 
-        # 1. Mengambil peminjaman insidental (Waiting & Approve)
+        # 1. Mengambil peminjaman (Waiting & Approve)
         $grouped = $this->getBookings((int) $ruanganId, $dates);
 
         # 2. Menyisipkan jadwal mata kuliah wajib ke dalam kalender
@@ -392,7 +410,7 @@ class PeminjamanService
         ];
     }
 
-    # Mengambil dan mengelompokkan peminjaman insidental (Waiting & Approve). 
+    # Mengambil dan mengelompokkan peminjaman (Waiting & Approve). 
     private function getBookings(int $ruanganId, array $dates): array
     {
         $fullDates = array_column($dates, 'full');
@@ -408,13 +426,14 @@ class PeminjamanService
             if ($booking->waktu_mulai && $booking->waktu_selesai) {
                 $slots = $this->expandRangeToSlots($booking->waktu_mulai, $booking->waktu_selesai);
             }
-            
+
             return [
                 'date' => Carbon::parse($booking->tanggal_peminjaman)->toDateString(),
                 'status' => $booking->status,
                 'user' => $booking->penanggung_jawab,
                 'waktu' => $slots
             ];
+            # Untuk group data waktu peminjaman yang sudah dimapping waktu per interval 30 menit nya berdasarkan tanggal peminjaman
         })->groupBy('date')->map(function ($dayBookings) {
             $slots = [];
             foreach ($dayBookings as $booking) {
@@ -425,6 +444,7 @@ class PeminjamanService
                     ];
                 }
             }
+
             return $slots;
         })->toArray();
     }
@@ -432,13 +452,18 @@ class PeminjamanService
     private function expandRangeToSlots($start, $end): array
     {
         $slots = [];
-        $current = Carbon::parse($start);
+        $startTime = Carbon::parse($start);
         $endTime = Carbon::parse($end);
 
-        while ($current->lt($endTime)) {
-            $slots[] = $current->format('H:i');
-            $current->addMinutes(30);
+        # Selama waktu mulai kurang dari waktu selesai nya, maka lakukan loop secara terus menerut dengan rentang interval 30M.
+        while ($startTime->lt($endTime)) {
+            # Lalu simpan, waktu mulai ke dalam slot dengan format jam dan menit
+            $slots[] = $startTime->format('H:i');
+            # Lalu tambah kan waktu mulai 30m, Contoh misal startTime 08:00, maka tambah kan 30m, jadi 08:30,
+            # Begitu seterus nya sampai while diluar kondisi dari waktu terakhir nya.
+            $startTime->addMinutes(30);
         }
+
         return $slots;
     }
 
@@ -448,18 +473,18 @@ class PeminjamanService
         $matkulWajibs = JadwalMatkulWajib::where('ruangan_id', $ruanganId)->get();
 
         $dayMapping = [
-            'monday'    => 'senin',
-            'tuesday'   => 'selasa',
+            'monday' => 'senin',
+            'tuesday' => 'selasa',
             'wednesday' => 'rabu',
-            'thursday'  => 'kamis',
-            'friday'    => 'jumat',
-            'saturday'  => 'sabtu',
-            'sunday'    => 'minggu',
+            'thursday' => 'kamis',
+            'friday' => 'jumat',
+            'saturday' => 'sabtu',
+            'sunday' => 'minggu',
         ];
 
         foreach ($dates as $date) {
-            $hariEnglish = strtolower($date['day']);
-            $hariIndo = $dayMapping[$hariEnglish] ?? $hariEnglish;
+            $hariEng = strtolower($date['day']);
+            $hariIndo = $dayMapping[$hariEng] ?? $hariEng;
             $fullDate = $date['full'];
 
             if (!isset($grouped[$fullDate])) {

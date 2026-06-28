@@ -27,7 +27,7 @@ class Gedung extends Model
     }
 
     public function ruangan(){
-        return $this->hasOneThrough(
+        return $this->hasManyThrough(
             Ruangan::class,
             Lantai::class,
             'gedung_id',

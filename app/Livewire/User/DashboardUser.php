@@ -14,8 +14,7 @@ class DashboardUser extends Component
     public function render(DashboardUserService $userService)
     {
         return view(
-            'livewire.user.dashboard-user',
-            $userService->getDashboardData(session('user_identifier'))
+            'livewire.user.dashboard-user', $userService->getDashboardData(session('user_identifier'))
         );
     }
 

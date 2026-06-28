@@ -17,40 +17,44 @@ class DashboardService
         $today = date('Y-m-d');
         $nowTime = date('H:i:s');
 
-        # ID of past reservations still marked as 'Approve'
-        $queryPast = DataPeminjaman::select('id')
+        # Ambil data peminjaman beberapa hari yang lalu
+        $bookingPast = DataPeminjaman::select('id')
             ->where('status', 'Approve')
             ->where('tanggal_peminjaman', '<', $today);
 
-        # ID of today's reservations that have ended
-        $queryToday = DataPeminjaman::select('id')
+        # Ambil data peminjaman untuk hari ini dan di jam yang sudah lewat
+        $bookingNow = DataPeminjaman::select('id')
             ->where('status', 'Approve')
             ->where('tanggal_peminjaman', $today)
             ->where('waktu_selesai', '<', $nowTime);
 
+        # Cek nim/nip pemilik kalau pemanggilan dari dashboard user  
         if ($userIdentifier) {
-            $queryPast->where('user_identifier', $userIdentifier);
-            $queryToday->where('user_identifier', $userIdentifier);
+            $bookingPast->where('user_identifier', $userIdentifier);
+            $bookingNow->where('user_identifier', $userIdentifier);
         }
 
-        $idsPast = $queryPast->pluck('id');
-        $idsToday = $queryToday->pluck('id');
+        # Ambil id untuk sebelum dan sekarang
+        $idPast = $bookingPast->pluck('id');
+        $idToday = $bookingNow->pluck('id');
 
-        $allIds = $idsPast->merge($idsToday);
+        # Gabung ke 2 data
+        $allIds = $idPast->merge($idToday);
 
+        # Cek var kosong atau tidak, kalau tidak kosong baru dan ada data nya, update data itu ke status finish
         if ($allIds->isNotEmpty()) {
             DataPeminjaman::whereIn('id', $allIds)->update(['status' => 'Finish']);
         }
     }
 
+    # Ambil data peminjaman
     public function ambilData(string $jenis, ?string $lantai = null, ?string $status = null)
     {
-        $this->updateStatusFinish();
 
         # Jalankan otomatis reject untuk peminjaman yang expired
         app(ApproveRejectService::class)->autoRejectExpire();
 
-        $pageName = $jenis === 'akademik' ? 'pageAkademik' : 'pageNonAkademik';
+        $cardPage = $jenis === 'akademik' ? 'pageAkademik' : 'pageNonAkademik';
         $today = Carbon::today()->toDateString();
         $limitDate = Carbon::today()->addDays(5)->toDateString();
 
@@ -60,7 +64,23 @@ class DashboardService
             'ruangan.lantai.gedung:id,nama_gedung',
             'mataKuliah:kode_matkul,nama_matkul'
         ])
-            ->select('id', 'penanggung_jawab', 'fakultas', 'prodi', 'ruangan_id', 'tanggal_peminjaman', 'status', 'jenis_peminjaman', 'kode_matkul', 'muatan', 'kontak_penanggung_jawab', 'hari', 'lantai', 'waktu_mulai', 'waktu_selesai')
+            ->select(
+                'id',
+                'penanggung_jawab',
+                'fakultas',
+                'prodi',
+                'ruangan_id',
+                'tanggal_peminjaman',
+                'status',
+                'jenis_peminjaman',
+                'kode_matkul',
+                'muatan',
+                'kontak_penanggung_jawab',
+                'hari',
+                'lantai',
+                'waktu_mulai',
+                'waktu_selesai'
+            )
             ->where('jenis_peminjaman', $jenis)
             ->whereIn('status', ['Approve', 'Finish'])
             ->whereBetween('tanggal_peminjaman', [$today, $limitDate]);
@@ -74,11 +94,11 @@ class DashboardService
         $query = $this->applyStatusFilter($query, $status);
 
         return $query->orderBy('tanggal_peminjaman', 'asc')
-            ->paginate(10, ['*'], $pageName)
+            ->paginate(10, ['*'], $cardPage)
             ->through(fn($item) => $this->formatPeminjamanItem($item));
     }
 
-    # Terapkan filter status peminjaman ke query builder.
+    # Untuk filter status peminjaman di table monitor
     private function applyStatusFilter($query, ?string $status)
     {
         if (!$status) {
@@ -128,14 +148,7 @@ class DashboardService
             $item->waktu_mulai = Carbon::parse($item->waktu_mulai)->format('H:i');
             $item->waktu_selesai = Carbon::parse($item->waktu_selesai)->format('H:i');
 
-            $now = Carbon::now();
-            if ($now->lt($start)) {
-                $item->status_display = 'Di Jadwalkan';
-            } elseif ($now->between($start, $end)) {
-                $item->status_display = 'Sedang Berlangsung';
-            } else {
-                $item->status_display = 'Selesai';
-            }
+            $this->formatStatus($start, $end, $item);
         } else {
             $item->waktu_mulai = '-';
             $item->waktu_selesai = '-';
@@ -153,6 +166,7 @@ class DashboardService
         return $item;
     }
 
+    # Mengambil data pemakaian ruang gedung untuk jadwal mata kuliah
     public function ambilDataMatkulWajib(?string $lantai = null, ?string $status = null)
     {
         $dayMapping = [
@@ -181,6 +195,7 @@ class DashboardService
             });
         }
 
+        # Filter jadwal mata kuliah 
         if ($status) {
             if ($status === 'Di Jadwalkan') {
                 $query->where('shift_mulai', '>', $nowTime);
@@ -197,17 +212,10 @@ class DashboardService
                 $item->waktu_mulai = Carbon::parse($item->shift_mulai)->format('H:i');
                 $item->waktu_selesai = Carbon::parse($item->shift_selesai)->format('H:i');
 
-                $now = Carbon::now();
                 $start = Carbon::parse(date('Y-m-d') . ' ' . $item->shift_mulai);
                 $end = Carbon::parse(date('Y-m-d') . ' ' . $item->shift_selesai);
 
-                if ($now->lt($start)) {
-                    $item->status_display = 'Di Jadwalkan';
-                } elseif ($now->between($start, $end)) {
-                    $item->status_display = 'Sedang Berlangsung';
-                } else {
-                    $item->status_display = 'Selesai';
-                }
+                $this->formatStatus($start, $end, $item);
 
                 $item->nama_gedung = $item->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
                 $item->kode_ruangan = $item->ruangan?->kode_ruangan ?? '-';
@@ -215,6 +223,19 @@ class DashboardService
 
                 return $item;
             });
+    }
+
+    private function formatStatus($start, $end, $item)
+    {
+        $now = Carbon::now();
+
+        if ($now->lt($start)) {
+            return $item->status_display = 'Di Jadwalkan';
+        } elseif ($now->between($start, $end)) {
+            return $item->status_display = 'Sedang Berlangsung';
+        } else {
+            return $item->status_display = 'Selesai';
+        }
     }
 
     public function getPeriodeOptions(): array
@@ -233,7 +254,7 @@ class DashboardService
         }
 
         $keyPeriodeSekarang = "$y - $sem";
-
+        # Handle 1 tahun ke depan jika tahun 
         for ($j = 0; $j < 2; $j++) {
             if ($sem === 'Genap') {
                 $sem = 'Ganjil';
@@ -300,7 +321,6 @@ class DashboardService
 
             # Cek apakah model tersebut adalah data peminjaman atau tidak
             if ($model instanceof DataPeminjaman) {
-
                 # Jika iya maka akan mengembalikan data peminjaman dengan rentang 
                 return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
             }
@@ -320,6 +340,7 @@ class DashboardService
             'Saturday' => 'SABTU',
             'Sunday' => 'MINGGU',
         ];
+
         return $dayMapping[Carbon::now()->format('l')];
     }
 
@@ -331,11 +352,11 @@ class DashboardService
 
     public function getRuanganTerpakai(?string $periode = null): int
     {
-        $currentDay = $this->getCurrentDay();
-        $nowTime    = Carbon::now()->format('H:i:s');
+        $hariIni = $this->getCurrentDay();
+        $waktuSekarang = Carbon::now()->format('H:i:s');
 
-        # Ruangan unik yang Approve (lewat peminjaman)
-        $approveIds = Ruangan::join('data_peminjaman', 'ruangans.id', '=', 'data_peminjaman.ruangan_id')
+        # Ambil semua ruangan yang sudah pernah dipakai
+        $peminjamanId = Ruangan::join('data_peminjaman', 'ruangans.id', '=', 'data_peminjaman.ruangan_id')
             ->where('data_peminjaman.status', 'Approve')
             ->when($periode, function ($q) use ($periode) {
                 $this->applyPeriodeFilter($q, $periode);
@@ -344,16 +365,16 @@ class DashboardService
             ->pluck('ruangans.id')
             ->toArray();
 
-        # Ruangan unik yang sedang ada jadwal matkul sekarang
-        $matkulIds = Ruangan::join('jadwal_matkul_wajib', 'ruangans.id', '=', 'jadwal_matkul_wajib.ruangan_id')
-            ->where('jadwal_matkul_wajib.hari', $currentDay)
-            ->where('jadwal_matkul_wajib.shift_mulai', '<=', $nowTime)
-            ->where('jadwal_matkul_wajib.shift_selesai', '>=', $nowTime)
+        # Ambil ruangan yang sedang dipakai dalam perkuliahan
+        $matkulId = Ruangan::join('jadwal_matkul_wajib', 'ruangans.id', '=', 'jadwal_matkul_wajib.ruangan_id')
+            ->where('jadwal_matkul_wajib.hari', $hariIni)
+            ->where('jadwal_matkul_wajib.shift_mulai', '<=', $waktuSekarang)
+            ->where('jadwal_matkul_wajib.shift_selesai', '>=', $waktuSekarang)
             ->distinct('ruangans.id')
             ->pluck('ruangans.id')
             ->toArray();
 
-        return count(array_unique(array_merge($approveIds, $matkulIds)));
+        return count(array_unique(array_merge($peminjamanId, $matkulId)));
     }
 
     public function getRuanganTersedia(int $occupiedCount): int
@@ -374,9 +395,9 @@ class DashboardService
                 },
                 'ruangan as totalTerpakai' => function ($q) use ($periode) {
                     $currentDay = $this->getCurrentDay();
-                    $nowTime    = Carbon::now()->format('H:i:s');
+                    $nowTime = Carbon::now()->format('H:i:s');
                     $q->where(function ($sub) use ($periode, $currentDay, $nowTime) {
-                        # Approve via join data_peminjaman
+                        # Ambil data ruangan per gedung yang terpakai berapa, dari data peminjaman
                         $sub->whereExists(function ($q2) use ($periode) {
                             $q2->select(DB::raw(1))
                                 ->from('data_peminjaman')
@@ -386,15 +407,15 @@ class DashboardService
                                     $this->applyPeriodeFilter($q3, $periode);
                                 });
                         })
-                            # ATAU sedang ada jadwal matkul sekarang via join jadwal_matkul_wajib
+                            # Ambil data ruangan per gedung yang terpakai berapa, dari data jadwal matakuliah
                             ->orWhereExists(function ($q3) use ($currentDay, $nowTime) {
-                                $q3->select(DB::raw(1))
-                                    ->from('jadwal_matkul_wajib')
-                                    ->whereColumn('jadwal_matkul_wajib.ruangan_id', 'ruangans.id')
-                                    ->where('jadwal_matkul_wajib.hari', $currentDay)
-                                    ->where('jadwal_matkul_wajib.shift_mulai', '<=', $nowTime)
-                                    ->where('jadwal_matkul_wajib.shift_selesai', '>=', $nowTime);
-                            });
+                            $q3->select(DB::raw(1))
+                                ->from('jadwal_matkul_wajib')
+                                ->whereColumn('jadwal_matkul_wajib.ruangan_id', 'ruangans.id')
+                                ->where('jadwal_matkul_wajib.hari', $currentDay)
+                                ->where('jadwal_matkul_wajib.shift_mulai', '<=', $nowTime)
+                                ->where('jadwal_matkul_wajib.shift_selesai', '>=', $nowTime);
+                        });
                     });
                 },
                 'ruangan as totalRuangan',
@@ -475,7 +496,7 @@ class DashboardService
             ];
         })->toArray();
 
-        # Untuk data jadwal Peminjaman
+        # Untuk data Peminjaman
         if ($filter === 'semua' || $filter === 'peminjaman') {
             $peminjamanCounts = Fakultas::select('id')
                 ->withCount([
@@ -493,7 +514,7 @@ class DashboardService
             }
         }
 
-        # Untuk data jadwal Perkuliahan
+        # Untuk data Perkuliahan
         if ($filter === 'semua' || $filter === 'perkuliahan') {
             $query = DB::table('jadwal_matkul_wajib as j')
                 ->join('mata_kuliah as m', 'j.nama_matkul', '=', 'm.nama_matkul')

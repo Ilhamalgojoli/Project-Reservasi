@@ -299,6 +299,7 @@
     @endif
 </div>
 
+@push('styles')
 <style>
     @keyframes slide-up {
         from { transform: translateY(30px); opacity: 0; }
@@ -320,7 +321,9 @@
         background: #e5141120;
     }
 </style>
+@endpush
 
+@push('script')
 <script data-navigate-once>
     document.addEventListener('livewire:initialized', () => {
         Livewire.on('swal:success', (e) => {
@@ -337,3 +340,4 @@
         });
     });
 </script>
+@endpush

@@ -4,5 +4,5 @@
 @endphp
 
 @section('content')
-    @livewire('user.pilih-gedung', [], key('pilih-gedung-' . url()->current()))
+    @livewire('user.pilih-gedung')
 @endsection

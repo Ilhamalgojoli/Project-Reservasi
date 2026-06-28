@@ -48,28 +48,6 @@
                 </div>
 
                 <div class="p-8 relative flex flex-col gap-8 flex-1 overflow-y-auto custom-scrollbar">
-                    @if ($peminjamanDetail->cancel_requested)
-                        <div
-                            class="p-5 bg-red-50 border border-red-100 rounded-[8px] flex items-start gap-4 shadow-sm animate-pulse">
-                            <div
-                                class="w-10 h-10 rounded-[8px] bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 border border-red-200">
-                                <iconify-icon icon="solar:danger-bold" class="text-xl"></iconify-icon>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="text-sm font-black text-red-600 uppercase tracking-wider mb-1">Permintaan
-                                    Pembatalan Diajukan</h4>
-                                <p class="text-xs font-semibold text-gray-500 mb-2">Pemohon telah mengajukan pembatalan
-                                    untuk peminjaman ini.</p>
-                                <div class="bg-white/80 p-3 rounded border border-red-100">
-                                    <span
-                                        class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Alasan
-                                        Pembatalan</span>
-                                    <p class="text-sm font-bold text-gray-800 italic">
-                                        "{{ $peminjamanDetail->cancel_request_reason ?? '-' }}"</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-6">
                             <div class="flex flex-col gap-4">
@@ -200,31 +178,31 @@
                     <div class="flex items-center gap-3">
                         @if ($peminjamanDetail->status === 'Waiting')
                             <button type="button" @click="
-                                        Swal.fire({
-                                            title: 'Tolak Peminjaman?',
-                                            text: 'Berikan alasan singkat penolakan reservasi ini:',
-                                            icon: 'warning',
-                                            input: 'text',
-                                            inputPlaceholder: 'Contoh: Ruangan akan digunakan untuk pemeliharaan...',
-                                            showCancelButton: true,
-                                            confirmButtonText: 'Tolak Sekarang',
-                                            cancelButtonText: 'Batal',
-                                            buttonsStyling: false,
-                                            reverseButtons: true,
-                                            customClass: {
-                                                confirmButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-red-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-red-600 transition-all ml-3',
-                                                cancelButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
-                                            },
-                                            preConfirm: (alasan) => {
-                                                if (!alasan) Swal.showValidationMessage('Alasan wajib diisi');
-                                                return alasan;
-                                            }
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                $wire.reject(result.value)
-                                            }
-                                        });
-                                    "
+                                                Swal.fire({
+                                                    title: 'Tolak Peminjaman?',
+                                                    text: 'Berikan alasan singkat penolakan reservasi ini:',
+                                                    icon: 'warning',
+                                                    input: 'text',
+                                                    inputPlaceholder: 'Contoh: Ruangan akan digunakan untuk pemeliharaan...',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Tolak Sekarang',
+                                                    cancelButtonText: 'Batal',
+                                                    buttonsStyling: false,
+                                                    reverseButtons: true,
+                                                    customClass: {
+                                                        confirmButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-red-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-red-600 transition-all ml-3',
+                                                        cancelButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
+                                                    },
+                                                    preConfirm: (alasan) => {
+                                                        if (!alasan) Swal.showValidationMessage('Alasan wajib diisi');
+                                                        return alasan;
+                                                    }
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        $wire.reject(result.value)
+                                                    }
+                                                });
+                                            "
                                 class="px-4 py-2.5 sm:px-8 sm:py-4 bg-white border border-red-100 text-red-500 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 transition-all duration-300 shadow-sm flex items-center gap-2 group">
                                 <iconify-icon icon="solar:close-circle-bold-duotone"
                                     class="text-lg group-hover:rotate-90 transition-transform duration-300"></iconify-icon>
@@ -232,25 +210,25 @@
                             </button>
 
                             <button type="button" @click="
-                                        Swal.fire({
-                                            title: 'Setujui Peminjaman?',
-                                            text: 'Reservasi ini akan segera dijadwalkan secara resmi.',
-                                            icon: 'question',
-                                            showCancelButton: true,
-                                            confirmButtonText: 'Ya, Setujui',
-                                            cancelButtonText: 'Batal',
-                                            buttonsStyling: false,
-                                            reverseButtons: true,
-                                            customClass: {
-                                                confirmButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-emerald-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-emerald-600 transition-all ml-3',
-                                                cancelButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
-                                            }
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                $wire.approve()
-                                            }
-                                        });
-                                    "
+                                                Swal.fire({
+                                                    title: 'Setujui Peminjaman?',
+                                                    text: 'Reservasi ini akan segera dijadwalkan secara resmi.',
+                                                    icon: 'question',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Ya, Setujui',
+                                                    cancelButtonText: 'Batal',
+                                                    buttonsStyling: false,
+                                                    reverseButtons: true,
+                                                    customClass: {
+                                                        confirmButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-emerald-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-emerald-600 transition-all ml-3',
+                                                        cancelButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
+                                                    }
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        $wire.approve()
+                                                    }
+                                                });
+                                            "
                                 class="px-4 py-2.5 sm:px-8 sm:py-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-[8px] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm flex items-center gap-2 group">
                                 <iconify-icon icon="solar:check-circle-bold-duotone"
                                     class="text-lg group-hover:scale-110 transition-transform"></iconify-icon>
@@ -258,7 +236,7 @@
                             </button>
                         @else
                             @php
-                                $labelStatus = match ($peminjamanDetail->status) {
+                                $labelStatus = match ($peminjamanDetail->status){
                                     'Approve' => 'Disetujui'
                                 };
                             @endphp

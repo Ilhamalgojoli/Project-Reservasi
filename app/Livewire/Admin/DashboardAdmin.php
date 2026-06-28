@@ -8,6 +8,7 @@ use App\Services\DashboardService;
 use App\Services\NotificationService;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class DashboardAdmin extends Component
 {
@@ -15,22 +16,18 @@ class DashboardAdmin extends Component
     public $aktif_gedung_id = '';
     public $fakultas_filter = 'semua';
     public $okkupansi_filter = 'semua';
+    public $showDetailKegiatan = false;
 
-    protected $listeners = [
-        'refresh' => '$refresh'
-    ];
-
-    public function mount(DashboardService $dashboard)
+    public function mount()
     {
         if (session('role_name') !== 'BAA') {
             abort(403);
         }
 
-        # Update status sekali di awal
-        $dashboard->updateStatusFinish();
+        app(DashboardService::class)->updateStatusFinish();
 
         # Set default periode ke yang sekarang
-        $data = $dashboard->getPeriodeOptions();
+        $data = app(DashboardService::class)->getPeriodeOptions();
         $this->periode_semester = $data['current'] ?? '';
     }
 
@@ -61,6 +58,15 @@ class DashboardAdmin extends Component
         ];
     }
 
+    public function showDetail(){
+        $this->showDetailKegiatan = true;
+    }
+
+    #[On('closeKegiatan')]
+    public function close(){
+        $this->showDetailKegiatan = false;
+    }
+
     protected function getAktifTidakAktif(): array
     {
         $queryAktif = Ruangan::where('status', 'Aktif');
@@ -80,7 +86,6 @@ class DashboardAdmin extends Component
             'ruanganTidakAktif' => $queryTidakAktif->count()
         ];
     }
-
 
     public function render()
     {

@@ -16,7 +16,7 @@ class HistoryPeminjamanAdmin extends Component
     public $fakultas_id = '';
     public $jenis_peminjaman = '';
     public $filterStatus = '';
-
+    
     protected $queryString = [
         'search'           => ['except' => ''],
         'fakultas_id'      => ['except' => ''],
@@ -54,7 +54,6 @@ class HistoryPeminjamanAdmin extends Component
             $this->fakultas_id,
             $this->jenis_peminjaman,
             $this->search,
-            $this->filterStatus
         );
     }
 
@@ -67,7 +66,16 @@ class HistoryPeminjamanAdmin extends Component
     public function render()
     {
         return view('livewire.admin.history-peminjaman-admin', [
-            'peminjaman' => $this->peminjaman
+            'peminjaman' => $this->peminjaman,
+            'jenisPeminjaman' => [
+                'akademik' => 'akademik',
+                'non-akademik' => 'non-akademik'
+            ],
+            'status' => [
+                'Reject' => 'ditolak',
+                'Canceled' => 'dibatalkan',
+                'Finish' => 'selesai'
+            ]
         ]);
     }
 }

@@ -24,22 +24,17 @@ class Peminjaman extends Component
         'prodiError' => 'errorHandle',
     ];
 
-    protected function service()
-    {
-        return app(PeminjamanService::class);
-    }
-
     public function mount()
     {
         $this->routeId = request()->route('id');
 
-        $this->jenisPeminjaman = session('role_name') === 'DOSEN' || session('role_name') === 'BAA' 
+        $this->jenisPeminjaman = session('role_name') === 'DOSEN' || session('role_name') === 'BAA'
             ? 'akademik'
             : 'non-akademik';
 
-        $this->faculties = $this->service()->getFakultas();
+        $this->faculties = app(PeminjamanService::class)->getFakultas();
 
-        # Simpen value ke variable server
+        # Kalau nilai fakultas nya ada hasil dari session ambil dan simpan di properti fakultas
         if (session('faculty')) {
             $this->fakultas = (int) session('faculty');
         }
@@ -48,7 +43,7 @@ class Peminjaman extends Component
             $this->updatedFakultas();
         }
 
-        $building = $this->service()->getBuilding((int) $this->routeId);
+        $building = app(PeminjamanService::class)->getBuilding((int) $this->routeId);
         if ($building) {
             $this->buildingName = $building->nama_gedung;
             $this->buildingDesc = $building->keterangan;
@@ -81,16 +76,12 @@ class Peminjaman extends Component
 
     public function updatedFakultas()
     {
-        $this->prodies = $this->service()->getProdi($this->fakultas);
+        $this->prodies = app(PeminjamanService::class)->getProdi($this->fakultas);
 
+        # Kalau nilai prodi nya ada hasil dari session ambil dan simpan di properti prodi
         if (session('studyProgram')) {
             $this->prodi = (int) session('studyProgram');
-        } else {
-            $this->prodi = null;
         }
-
-        $this->errorFakultas = null;
-        $this->errorProdi = null;
     }
 
     public function render()

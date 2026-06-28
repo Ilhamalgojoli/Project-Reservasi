@@ -7,6 +7,7 @@ use App\Services\GedungService;
 use App\Services\PeminjamanService;
 use App\Services\ApproveRejectService;
 use App\Services\HistoryPeminjamanService;
+use App\Services\ApprovalDataService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(PeminjamanService::class);
         $this->app->singleton(ApproveRejectService::class);
         $this->app->singleton(HistoryPeminjamanService::class);
+        $this->app->singleton(ApprovalDataService::class);
     }
 
     public function boot(): void

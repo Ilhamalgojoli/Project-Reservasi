@@ -12,23 +12,24 @@
                     class="w-full pl-10 pr-4 py-2.5 text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg outline-none placeholder:text-gray-400 font-medium focus:border-gray-300 focus:bg-white transition-colors shadow-sm">
             </div>
 
-            {{-- Filters & Reset Group --}}
+            {{-- Filter & Reset --}}
             <div class="grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-2 sm:w-full">
                 {{-- Dropdown Jenis --}}
                 <select wire:model.live="jenis_peminjaman"
                     class="appearance-none w-full pl-4 flex-1 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
-                    <option value="">SEMUA JENIS</option>
-                    <option value="akademik">AKADEMIK</option>
-                    <option value="non_akademik">NON AKADEMIK</option>
+                    <option value="">JENIS PEMINJAMAN</option>
+                    @foreach ($jenisPeminjaman as $jp => $l)
+                        <option value="{{ $jp }}">{{ strtoupper($l) }}</option>
+                    @endforeach
                 </select>
 
                 {{-- Dropdown Status --}}
                 <select wire:model.live="filterStatus"
                     class="appearance-none w-full pl-4 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
-                    <option value="">SEMUA DATA</option>
-                    <option value="Finish">SELESAI</option>
-                    <option value="Canceled">DIBATALKAN</option>
-                    <option value="Reject">DITOLAK</option>
+                    <option value="">STATUS PEMINJAMAN</option>
+                    @foreach ($status as $s => $l)
+                        <option value="{{ $s }}">{{ strtoupper($l) }}</option>
+                    @endforeach
                 </select>
 
                 {{-- Reset Button --}}

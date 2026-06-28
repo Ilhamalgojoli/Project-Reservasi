@@ -53,17 +53,13 @@ class HistoryPeminjamanService
         return $data_peminjaman;
     }
 
-    public function getDataAdmin($page = 1, $fakultas_id = '', $jenis_peminjaman = '', $search = '', $filterStatus = '')
+    public function getDataAdmin($page = 1, $jenis_peminjaman = '', $search = '', $filterStatus = '')
     {
         $query = DataPeminjaman::with([
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
         ])->whereIn('status', ['Finish', 'Canceled', 'Reject']);
-
-        if (!empty($fakultas_id)) {
-            $query->where('fakultas', $fakultas_id);
-        }
 
         if (!empty($jenis_peminjaman)) {
             $query->where('jenis_peminjaman', $jenis_peminjaman);
@@ -111,7 +107,8 @@ class HistoryPeminjamanService
         ])
             ->find($id);
 
-        if (!$data) return null;
+        if (!$data) 
+            return null;
 
         $data->kode_ruangan = $data->ruangan?->kode_ruangan ?? '-';
         $data->nama_gedung = $data->ruangan?->lantai?->gedung?->nama_gedung ?? '-';

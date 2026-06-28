@@ -3,7 +3,7 @@
 namespace App\Livewire\User;
 
 use Livewire\Component;
-use Livewire\Attributes\On;
+use Carbon\Carbon;
 use Livewire\Attributes\Reactive;
 use App\Services\PeminjamanService;
 
@@ -14,7 +14,7 @@ class PeminjamanNonAkademik extends Component
     public $lantaiID = null;
     public $ruanganID = null;
     public $maxKapasitas;
-    public $jenisPeminjaman;
+    public $jenisPeminjaman; 
     #[Reactive]
     public $fakultas;
     #[Reactive]
@@ -30,54 +30,49 @@ class PeminjamanNonAkademik extends Component
     public $email;
     public $userIdentifier;
 
-    protected function service()
-    {
-        return app(PeminjamanService::class);
-    }
-
     protected function rules()
     {
-        return $this->service()->getRules('non-akademik');
+        return app(PeminjamanService::class)->getRules('non-akademik');
     }
 
     protected function messages()
     {
-        return $this->service()->getMessages();
+        return app(PeminjamanService::class)->getMessages();
     }
 
     public function mount($id, $jenisPeminjaman, $fakultas, $prodi)
     {
-        $this->lantai = $this->service()->getLantai($id);
-        $this->jamList = $this->service()->generateJam('06:30', '22:30');
+        $this->lantai = app(PeminjamanService::class)->getLantai($id);
+        $this->jamList = app(PeminjamanService::class)->generateJam('06:30', '22:30');
 
         $this->jenisPeminjaman = $jenisPeminjaman;
-        $this->fakultas = $fakultas;
-        $this->prodi = $prodi;
         $this->penanggungJawab = (string) session('username');
         $this->userIdentifier = (string) session('user_identifier');
     }
 
     public function updatedLantaiID($value)
     {
-        $this->ruangan = $this->service()->getRuangan($value);
+        $this->ruangan = app(PeminjamanService::class)->getRuangan($value);
     }
 
     public function updatedRuanganID($value)
     {
-        $this->maxKapasitas = $this->service()->getMaxKapasitas($value);
+        $this->maxKapasitas = app(PeminjamanService::class)->getMaxKapasitas($value);
         $this->dispatch('getRuanganID', ruanganID: $value);
     }
 
+    # Event submit peminjaman
     public function submitForm()
     {
         try {
             $data = $this->validate();
 
-            if ($this->service()->create($data, session('role_name'))) {
+            # cek siapa actor siapa yg melakukan submit
+            if (app(PeminjamanService::class)->create($data, session('role_name'))) {
                 $this->sendSuccessResponse();
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
-            $this->dispatchValidationErrors($e->validator->errors());
+            $this->validationError($e->validator->errors());
             throw $e;
         } catch (\Exception $e) {
             $this->dispatch('errorNonAkademik', $e->getMessage());
@@ -101,7 +96,7 @@ class PeminjamanNonAkademik extends Component
         ]);
     }
 
-    private function dispatchValidationErrors($errors)
+    private function validationError($errors)
     {
         if ($errors->has('fakultas')) {
             $this->dispatch('fakultasError', ['error' => $errors->first('fakultas'), 'source' => 'fakultas']);
@@ -117,14 +112,7 @@ class PeminjamanNonAkademik extends Component
         $this->dropdownOpen = !$this->dropdownOpen;
     }
 
-    public function updatedPilihJam($value)
-    {
-        if (count($this->pilihJam) > 2) {
-            $latest = end($this->pilihJam);
-            $this->pilihJam = [$latest];
-        }
-    }
-
+    # Untuk menampilkan rentang waktu yang dipilih user
     public function getFormattedRange()
     {
         if (empty($this->pilihJam)) {
@@ -135,7 +123,7 @@ class PeminjamanNonAkademik extends Component
         sort($jam);
 
         $start = $jam[0];
-        $end = count($jam) > 1 ? end($jam) : \Carbon\Carbon::parse($start)->addMinutes(30)->format('H:i');
+        $end = count($jam) > 1 ? end($jam) : Carbon::parse($start)->addMinutes(30)->format('H:i');
 
         return $start . ' - ' . $end;
     }

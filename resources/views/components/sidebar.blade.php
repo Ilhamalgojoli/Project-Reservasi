@@ -6,8 +6,7 @@
         <a href="{{ route('index') }}" class="sidebar-logo background-primary flex items-center justify-center">
             <img src="{{ asset('assets/basila_images/basila_white.png') }}" alt="site logo" class="light-logo"
                 width="120">
-            <img src="{{ asset('assets/basila_images/logo_basila.png') }}" alt="site logo" class="logo-icon"
-                width="30">
+            <img src="{{ asset('assets/basila_images/logo_basila.png') }}" alt="site logo" class="logo-icon" width="30">
         </a>
     </div>
     <div class="sidebar-menu-area">
@@ -37,27 +36,33 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="dropdown mb-4">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:office-building" class="menu-icon"></iconify-icon>
-                    <span>{{ session('role_name') === 'BAA' ? 'Building Management' : 'Layanan Ruangan' }}</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    @if (session('role_name') === 'BAA')
+            @if (session('role_name') === 'BAA')
+                <li class="dropdown mb-4 cursor-pointer">
+                    <a>
+                        <iconify-icon icon="mdi:office-building" class="menu-icon"></iconify-icon>
+                        <span>Manajemen Gedung</span>
+                    </a>
+                    <ul class="sidebar-submenu">
                         <li>
                             <a href="{{ route('pengelolaan-gedung') }}" class="">
                                 <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                                 Pengelolaan Ruangan
                             </a>
                         </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('index2') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            Peminjaman Ruangan
-                        </a>
-                    </li>
-                    @if (session('role_name') === 'BAA')
+                    </ul>
+                </li>
+                <li class="dropdown mb-4 cursor-pointer">
+                    <a>
+                        <iconify-icon icon="fluent-mdl2:reservation-orders" class="menu-icon"></iconify-icon>
+                        <span>Manajemen Peminjaman</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('index2') }}">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Peminjaman Ruangan
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ route('approve-reservasi') }}">
                                 <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
@@ -69,15 +74,36 @@
                                 <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
                                 Peminjaman Aktif </a>
                         </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('history-peminjaman') }}">
-                            <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
-                            Riwayat Peminjaman
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                        <li>
+                            <a href="{{ route('history-peminjaman') }}">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Riwayat Peminjaman
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @else
+                <li class="dropdown mb-4">
+                    <a>
+                        <iconify-icon icon="mdi:office-building" class="menu-icon"></iconify-icon>
+                        <span>Peminjaman Ruangan</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('index2') }}">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Peminjaman Ruangan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('history-peminjaman') }}">
+                                <iconify-icon icon="mdi:dot" class="" style="font-size: 50px;"></iconify-icon>
+                                Riwayat Peminjaman
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
         </ul>
     </div>
 </aside>

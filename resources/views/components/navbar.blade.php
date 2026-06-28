@@ -14,7 +14,7 @@
         </div>
         <div class="flex flex-row items-center gap-3 relative">
             @if (session()->has('user_identifier') && session('role_name') !== 'BAA')
-                @livewire('notification-bell')
+                @livewire('user.notification-bell')
             @endif
 
             <button data-dropdown-toggle="dropdownProfile" class="flex justify-center items-center rounded-full"

@@ -54,6 +54,7 @@
                             $iconName = 'solar:clock-circle-bold-duotone';
                         }
                     @endphp
+                    
                     <div class="p-3 rounded-xl flex items-start gap-3 transition-colors {{ $cardStyle }}">
                         <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 {{ $badgeStyle }}">
                             <iconify-icon icon="{{ $iconName }}" class="text-lg"></iconify-icon>

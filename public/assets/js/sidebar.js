@@ -18,6 +18,7 @@ toggleButton.addEventListener('click', () => {
         nim.classList.remove('hidden');
     }
 });
+
 sidebar.addEventListener('mouseenter', () => {
     if (isSidebarCollapsed) {
         logo.classList.remove('hidden');

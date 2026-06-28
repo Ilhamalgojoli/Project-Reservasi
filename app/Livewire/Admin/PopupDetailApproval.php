@@ -13,11 +13,7 @@ class PopupDetailApproval extends Component
     public $peminjamanId = null;
     public $peminjamanDetail = null;
 
-    protected function service()
-    {
-        return app(ApproveRejectService::class);
-    }
-
+    # Ini untuk detail approval kalau data masih ber status waiting
     #[On('showApprovalDetail')]
     public function showDetail($id)
     {
@@ -37,9 +33,9 @@ class PopupDetailApproval extends Component
     {
         if ($this->peminjamanId) {
             try {
-                $this->service()->approve($this->peminjamanId);
+                app(ApproveRejectService::class)->approve($this->peminjamanId);
                 $this->closeDetail();
-                $this->dispatch('refreshHistory');
+                $this->dispatch('refreshApprove');
 
                 $this->dispatch('successApprove', text: 'Peminjaman berhasil diterima');
             } catch (\Exception $e) {
@@ -53,9 +49,9 @@ class PopupDetailApproval extends Component
     {
         if ($this->peminjamanId && $alasan) {
             try {
-                $this->service()->reject($this->peminjamanId, $alasan);
+                app(ApproveRejectService::class)->reject($this->peminjamanId, $alasan);
                 $this->closeDetail();
-                $this->dispatch('refreshHistory');
+                $this->dispatch('refreshReject');
 
                 $this->dispatch('successReject', text: 'Peminjaman berhasil ditolak');
             } catch (\Exception $e) {

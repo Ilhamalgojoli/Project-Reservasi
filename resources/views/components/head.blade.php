@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Project-Basila</title>
 
-    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js', 'resources/js/leaflet.js'])
+    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js'])
 
     <link rel="icon" type="image/png" href="{{ asset('assets/basila_images/favicon.png') }}" sizes="16x16">
     <!-- google fonts -->

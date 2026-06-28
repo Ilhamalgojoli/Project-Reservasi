@@ -16,6 +16,10 @@ class ApproveRejectBooking extends Component
     public $filterJenis = '';
     public $filterHari = '';
 
+    protected $listeners = [
+        'refreshHistory' => 'render'
+    ];
+
     protected $queryString = [
         'search' => ['except' => ''],
         'filterFakultas' => ['except' => ''],
@@ -41,9 +45,9 @@ class ApproveRejectBooking extends Component
         }
     }
 
-    public function render(ApprovalDataService $service)
+    public function render()
     {
-        $data = $service->getData(
+        $data = app(ApprovalDataService::class)->getData(
             $this->search,
             $this->filterFakultas,
             $this->filterJenis,

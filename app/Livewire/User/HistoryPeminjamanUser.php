@@ -48,6 +48,15 @@ class HistoryPeminjamanUser extends Component
     {
         return view('livewire.user.history-peminjaman-user', [
             'peminjaman' => $this->peminjaman,
+            'jenisPeminjaman' => [
+                'akademik' => 'akademik',
+                'non-akademik' => 'non-akademik'
+            ],
+            'status' => [
+                'Reject' => 'ditolak',
+                'Canceled' => 'dibatalkan',
+                'Finish' => 'selesai'
+            ]
         ]);
     }
 }

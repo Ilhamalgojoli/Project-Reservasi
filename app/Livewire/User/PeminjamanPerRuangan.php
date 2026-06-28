@@ -16,9 +16,9 @@ class PeminjamanPerRuangan extends Component
         $this->ruanganID = $ruanganID;
     }
 
-    public function render(PeminjamanService $service)
+    public function render()
     {
-        $data = $service->getDataWaktuPeminjaman($this->ruanganID);
+        $data = app(PeminjamanService::class)->getDataWaktuPeminjaman($this->ruanganID);
 
         return view('livewire.user.peminjaman-per-ruangan', [
             'dates' => $data['dates'],

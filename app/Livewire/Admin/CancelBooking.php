@@ -8,6 +8,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\DataPeminjaman;
+use \App\Services\ApprovalDataService;
 
 class CancelBooking extends Component
 {
@@ -49,7 +50,7 @@ class CancelBooking extends Component
     #[Computed]
     public function datas()
     {
-        $service = app(\App\Services\ApprovalDataService::class);
+        $service = app(ApprovalDataService::class);
 
         if ($this->detailId) {
             return $service->getApprovedDataById($this->detailId);
