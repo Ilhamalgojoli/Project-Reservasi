@@ -6,6 +6,7 @@ use App\Models\DataPeminjaman;
 use App\Models\Fakultas;
 use App\Models\Gedung;
 use App\Models\JadwalMatkulWajib;
+use App\Models\MataKuliah;
 use App\Models\Ruangan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -488,6 +489,7 @@ class DashboardService
 
     public function getDataPeminjamanPerFakultas(?string $periode = null, string $filter = 'semua'): array
     {
+        # Ambil semua data fakultas dan jadikan sebagai key berdasarkan id fakultasnya
         $fakultasData = Fakultas::select('id', 'fakultas')->get()->keyBy('id')->map(function ($f) {
             return [
                 'id' => $f->id,
@@ -498,40 +500,57 @@ class DashboardService
 
         # Untuk data Peminjaman
         if ($filter === 'semua' || $filter === 'peminjaman') {
-            $peminjamanCounts = Fakultas::select('id')
-                ->withCount([
-                    'peminjaman as total' => function ($q) use ($periode) {
-                        $q->whereIn('status', ['Approve', 'Finish']);
-                        $this->applyPeriodeFilter($q, $periode);
-                    }
-                ])
-                ->get();
+            # Hitung total data peminjaman berdasarkan fakultas, dengan status approve dan finish
+            $totalPeminjaman = DataPeminjaman::select('fakultas', DB::raw('count(*) as total'))
+                ->whereIn('status', ['Approve', 'Finish'])
+                ->groupBy('fakultas');
+            
+            # Terapkan filter periode pada hasil query
+            $this->applyPeriodeFilter($totalPeminjaman, $periode);
+            
+            $peminjamanCounts = $totalPeminjaman->get();
 
+            # Loop hasil total peminjaman berdasarkan nama fakultas
             foreach ($peminjamanCounts as $pc) {
-                if (isset($fakultasData[$pc->id])) {
-                    $fakultasData[$pc->id]['total'] += $pc->total;
+                foreach ($fakultasData as &$fd) {
+                    if ($fd['fakultas'] === $pc->fakultas) {
+                        $fd['total'] += $pc->total;
+                        break;
+                    }
                 }
+                unset($fd);
             }
         }
 
         # Untuk data Perkuliahan
         if ($filter === 'semua' || $filter === 'perkuliahan') {
-            $query = DB::table('jadwal_matkul_wajib as j')
-                ->join('mata_kuliah as m', 'j.nama_matkul', '=', 'm.nama_matkul')
-                ->join('prodi as p', 'm.prodi_id', '=', 'p.id')
-                ->select('p.fakultas_id', DB::raw('count(distinct j.id) as total_count'));
+            $query = JadwalMatkulWajib::select('nama_matkul', DB::raw('count(id) as total_count'))
+                ->groupBy('nama_matkul');
 
             if ($filter === 'perkuliahan') {
                 $currentDay = $this->getCurrentDay();
-                $query->where('j.hari', $currentDay);
+                $query->where('hari', $currentDay);
             }
 
-            $perkuliahanCounts = $query->groupBy('p.fakultas_id')->get();
+            $jadwals = $query->get();
+            
+            # Ambil semua data Mata Kuliah beserta relasi Prodinya.
+            # Kemudian jadikan 'nama_matkul' sebagai kunci (key) dari array agar pencarian lebih cepat (sebagai peta/kamus).
+            $mataKuliahMap = MataKuliah::with('prodi')->get()->keyBy('nama_matkul');
 
-            foreach ($perkuliahanCounts as $row) {
-                $fakId = $row->fakultas_id;
-                if (isset($fakultasData[$fakId])) {
-                    $fakultasData[$fakId]['total'] += $row->total_count;
+            # Mapping manual untuk mencari fakultas_id dari setiap jadwal
+            foreach ($jadwals as $jadwal) {
+                # Cari mata kuliah berdasarkan nama_matkul-nya
+                $mk = $mataKuliahMap->get($jadwal->nama_matkul);
+                
+                # Jika data mata kuliah dan prodinya ditemukan, ambil ID fakultasnya
+                if ($mk && $mk->prodi) {
+                    $fakId = $mk->prodi->fakultas_id;
+                    
+                    # Tambahkan total jadwal ke array data fakultas yang sesuai
+                    if (isset($fakultasData[$fakId])) {
+                        $fakultasData[$fakId]['total'] += $jadwal->total_count;
+                    }
                 }
             }
         }

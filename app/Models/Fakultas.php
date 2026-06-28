@@ -21,9 +21,4 @@ class Fakultas extends Model
     {
         return $this->hasMany(Prodi::class, 'fakultas_id');
     }
-
-    public function peminjaman()
-    {
-        return $this->hasMany(DataPeminjaman::class, 'fakultas', 'fakultas');
-    }
 }
