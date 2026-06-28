@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-
-=======
-Project Reservasi
->>>>>>> 73608b3 (Update minor)
+Project kelola dan booking ruang gedung telkom university merupakan sebuah app yang digunakan untuk peminjaman ruang gedung yang ada ditelkom university (yang dikelola BSLA), dan juga app untuk mengelola dan memanajemen penggunaan ruang gedung,serta data aset seperti gedung,ruangan dan fasilitas yang tersedia pada ruangan.
