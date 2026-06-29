@@ -99,20 +99,20 @@ class NotificationService
             ->map(function ($item) {
                 # Untuk mengelompokkan bagian mana yang punya pesan Klik untuk lanjutkan pada data coloumn pesan
                 $pesan = $item->pesan;
-                $pesan_clickable = null;
-                
+                $tautan = null;
+
                 # Cek apakah didalam pesan yang diambil dari database memiliki kalimat seperti kondisi dibawah
                 if (strpos($pesan, 'Klik untuk lanjutkan pembatalan.') !== false) {
                     $parts = explode('. Klik untuk lanjutkan pembatalan.', $pesan);
                     $pesan = $parts[0] . '.';
-                    $pesan_clickable = 'Klik untuk lanjutkan pembatalan.';
+                    $tautan = 'Klik untuk lanjutkan pembatalan.';
                 }
-                
+
                 return [
-                    'pesan'          => $pesan,
-                    'pesan_clickable'=> $pesan_clickable,
-                    'target_id'      => $item->target_id,
-                    'waktu'          => Carbon::parse($item->created_at)->locale('id')->diffForHumans(),
+                    'pesan'     => $pesan,
+                    'tautan'    => $tautan,
+                    'target_id' => $item->target_id,
+                    'waktu'     => Carbon::parse($item->created_at)->locale('id')->diffForHumans(),
                 ];
             })
             ->toArray();

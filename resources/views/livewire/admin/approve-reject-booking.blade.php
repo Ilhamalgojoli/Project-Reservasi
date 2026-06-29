@@ -132,7 +132,6 @@
         </div>
     </div>
 
-    {{-- Pagination Card --}}
     <div class="{{ !$peminjaman->hasPages() ? 'hidden' : 'block' }} bg-white rounded-[8px] shadow-md border border-gray-100 px-5 py-3 mt-6">
         <div class="text-black">
             {{ $peminjaman->links('vendor.pagination.tailwind', data: ['scrollTo' => false]) }}
@@ -150,6 +149,8 @@
                 text: event.text,
                 icon: 'success',
                 confirmButtonText: 'OK'
+            }).then(() => {
+                Livewire.dispatch('refreshTableKelolaApprove');
             });
         });
 
@@ -159,7 +160,28 @@
                 text: event.text,
                 icon: 'success',
                 confirmButtonText: 'OK'
+            }).then(() => {
+                Livewire.dispatch('refreshTableKelolaApprove');
             });
+        });
+
+        // Error handler
+        Livewire.on('emptyStr', (event) => {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: event.text,
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        });
+
+        Livewire.on('notValidId', (event) => {
+            Swal.fire({
+                title: 'Gagal!',
+                text: event.text,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
         });
 
         Livewire.on('errorApproval', (event) => {
@@ -168,6 +190,8 @@
                 text: event.text,
                 icon: 'error',
                 confirmButtonText: 'OK'
+            }).then(() => {
+                Livewire.dispatch('refreshTableKelolaReject');
             });
         });
     });

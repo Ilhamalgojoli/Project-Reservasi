@@ -9,7 +9,7 @@ class JadwalMatkulWajib extends Model
 {
     use HasFactory;
 
-    protected $table = 'jadwal_matkul_wajib';
+    protected $table = 'jadwal_matkul';
 
     protected $fillable = [
         'hari',

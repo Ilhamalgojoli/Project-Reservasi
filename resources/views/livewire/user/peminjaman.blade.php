@@ -22,7 +22,7 @@
                 <div
                     class="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-black shadow-lg">
                     1</div>
-                <h2 class="text-sm font-bold uppercase tracking-widest text-gray-800">Pemilihan Identitas & Jenis</h2>
+                <h2 class="text-sm font-bold uppercase tracking-widest text-gray-800">Fakultas/Prodi</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-1" x-data="{ fakultas: @entangle('fakultas') }">

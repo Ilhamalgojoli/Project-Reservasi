@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\NotificationService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\GedungService;
 use App\Services\PeminjamanService;
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ApproveRejectService::class);
         $this->app->singleton(HistoryPeminjamanService::class);
         $this->app->singleton(ApprovalDataService::class);
+        $this->app->singleton(NotificationService::class);
     }
 
     public function boot(): void

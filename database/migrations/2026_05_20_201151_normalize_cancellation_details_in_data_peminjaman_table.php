@@ -8,12 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // 1. Drop columns from data_peminjaman
         Schema::table('data_peminjaman', function (Blueprint $table) {
             $table->dropColumn(['alasan_penolakan', 'alasan_pembatalan', 'cancel_by']);
         });
 
-        // 2. Create the 1:1 pembatalan_peminjaman table
         Schema::create('pembatalan_peminjaman', function (Blueprint $table) {
             $table->id();
             $table->foreignId('data_peminjaman_id')
@@ -32,10 +30,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        // 1. Drop the table
         Schema::dropIfExists('pembatalan_peminjaman');
 
-        // 2. Restore columns in data_peminjaman
         Schema::table('data_peminjaman', function (Blueprint $table) {
             $table->string('alasan_penolakan')->nullable()->after('keterangan_peminjaman');
             $table->string('alasan_pembatalan')->nullable()->after('alasan_penolakan');

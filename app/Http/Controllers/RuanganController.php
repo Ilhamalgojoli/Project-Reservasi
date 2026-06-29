@@ -58,7 +58,6 @@ class RuanganController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Terdapat kesalahan pada isian form!',
-                    'errors' => $e->errors(),
                 ], 422);
             }
 
@@ -113,7 +112,6 @@ class RuanganController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Terdapat kesalahan pada isian form!',
-                    'errors' => $e->errors(),
                 ], 422);
             }
 

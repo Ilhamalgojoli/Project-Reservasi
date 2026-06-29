@@ -51,12 +51,12 @@ class PeminjamanAkademik extends Component
 
     protected function rules()
     {
-        return $this->service()->getRules('akademik');
+        return app(PeminjamanService::class)->getRules('akademik');
     }
 
     protected function messages()
     {
-        return $this->service()->getMessages();
+        return app(PeminjamanService::class)->getMessages();
     }
 
     public function mount($id, $jenisPeminjaman, $fakultas, $prodi)

@@ -17,7 +17,8 @@ class ApproveRejectBooking extends Component
     public $filterHari = '';
 
     protected $listeners = [
-        'refreshHistory' => 'render'
+        'refreshTableKelolaApprove' => 'render',
+        'refreshTableKelolaReject' => 'render'
     ];
 
     protected $queryString = [
@@ -34,7 +35,7 @@ class ApproveRejectBooking extends Component
 
     public function resetFilter()
     {
-        $this->reset(['search', 'filterFakultas', 'filterJenis', 'filterHari']);
+        $this->reset(['search', 'filterJenis', 'filterHari']);
         $this->resetPage();
     }
 
@@ -49,14 +50,12 @@ class ApproveRejectBooking extends Component
     {
         $data = app(ApprovalDataService::class)->getData(
             $this->search,
-            $this->filterFakultas,
             $this->filterJenis,
             $this->filterHari
         );
 
         return view('livewire.admin.approve-reject-booking', [
             'peminjaman' => $data,
-            'fakultas' => Fakultas::all(),
             'jenis_peminjaman' => [
                 'akademik' => 'Akademik',
                 'non-akademik' => 'Non Akademik'

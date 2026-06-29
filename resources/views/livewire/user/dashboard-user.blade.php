@@ -118,27 +118,37 @@
         <div class="col-span-12 xl:col-span-3 flex flex-col gap-4">
 
             <div class="bg-white rounded-xl p-5 shadow-md space-y-3">
-                <h2 class="font-bold text-gray-700 text-sm">Ringkasan Status</h2>
+                <h2 class="font-bold text-gray-700 text-sm">Ringkasan Status Ruangan</h2>
+                @foreach ($roomInfo as $item => $val)
+                    @php
+                        if ($item === 'total') {
+                            continue;
+                        }
 
-                @php $safeTotal = $total > 0 ? $total : 1; @endphp
+                        $info = match ($item) {
+                            'used' => [
+                                'color' => 'bg-red-500',
+                                'label' => 'Ruangan Terpakai',
+                            ],
+                            'available' => [
+                                'color' => 'bg-emerald-500',
+                                'label' => 'Ruangan Tersedia',
+                            ],
+                        };
+                    @endphp
 
-                @foreach ([[
-                    'label' => 'Menunggu Persetujuan', 'value' => $waiting, 'color' => 'bg-amber-400', 'text' => 'text-amber-500'], 
-                    ['label' => 'Disetujui', 'value' => $approve, 'color' => 'bg-emerald-400', 'text' => 'text-emerald-500'], 
-                    ['label' => 'Ditolak', 'value' => $reject, 'color' => 'bg-red-400', 'text' => 'text-red-500']] as $bar)
                     <div>
                         <div class="flex justify-between text-xs text-gray-500 mb-1">
-                            <span>{{ $bar['label'] }}</span>
-                            <span class="font-medium {{ $bar['text'] }}">{{ $bar['value'] }}</span>
+                            <span>{{ $info['label'] }}</span>
+                            <span class="font-medium">{{ $val }}</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2">
-                            <div class="{{ $bar['color'] }} h-2 rounded-full transition-all duration-500"
-                                style="width: {{ round(($bar['value'] / $safeTotal) * 100) }}%"></div>
+                            <div class="h-2 rounded-full {{ $info['color'] }} transition-all duration-500"
+                                style="width: {{ round($val == 0 ? 0 : ($val / $roomInfo['total']) * 100) }}%"></div>
                         </div>
                     </div>
                 @endforeach
             </div>
-
             <div class="bg-white rounded-xl p-4 shadow-md space-y-3">
                 <div class="flex items-center justify-between">
                     <h2 class="font-bold text-gray-700 text-sm">Proses Peminjaman</h2>
@@ -155,11 +165,10 @@
                     <div class="flex flex-col divide-y divide-gray-100">
                         @foreach ($recent as $item)
                             @php
-                                $st = $item->status;
-                                $s1 = true;
-                                $s2 = in_array($st, ['Menunggu Persetujuan', 'Disetujui', 'Ditolak']);
-                                $s3 = $st === 'Disetujui';
-                                $s3Reject = $st === 'Ditolak';
+                                $status = $item->status;
+                                $isMenunggu = in_array($status, ['Waiting', 'Approve', 'Reject']);
+                                $isDisetujui = $status === 'Approve';
+                                $isDitolak = $status === 'Reject';
                             @endphp
                             <div class="py-2.5 first:pt-0 last:pb-0">
                                 <div class="flex items-center justify-between mb-2">
@@ -175,7 +184,7 @@
                                             @endif
                                         </p>
                                     </div>
-                                    @if ($st === 'Ditolak')
+                                    @if ($isDitolak)
                                         <span
                                             class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-red-100 text-red-600 flex-shrink-0 ml-1">Ditolak</span>
                                     @endif
@@ -194,18 +203,18 @@
                                             Diajukan</p>
                                     </div>
 
-                                    <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $s2 ? 'bg-amber-400' : 'bg-gray-200' }}">
+                                    <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $isMenunggu ? 'bg-amber-400' : 'bg-gray-200' }}">
                                     </div>
 
                                     <div class="flex flex-col items-center w-12 shrink-0">
                                         <div
                                             class="w-5 h-5 rounded-full flex items-center justify-center
-                                            {{ $s2 ? ($s3 || $s3Reject ? ($s3Reject ? 'bg-red-400' : 'bg-amber-400') : 'bg-amber-400 ring-2 ring-amber-200') : 'bg-gray-200' }}">
-                                            @if ($s3Reject)
+                                            {{ $isMenunggu ? ($isDisetujui || $isDitolak ? ($isDitolak ? 'bg-red-400' : 'bg-amber-400') : 'bg-amber-400 ring-2 ring-amber-200') : 'bg-gray-200' }}">
+                                            @if ($isDitolak)
                                                 <iconify-icon icon="mdi:close"
                                                     style="font-size:11px; color:white;"></iconify-icon>
-                                            @elseif($s2)
-                                                <iconify-icon icon="{{ $s3 ? 'mdi:check' : 'mdi:clock-outline' }}"
+                                            @elseif($isMenunggu)
+                                                <iconify-icon icon="{{ $isDisetujui ? 'mdi:check' : 'mdi:clock-outline' }}"
                                                     style="font-size:11px; color:white;"></iconify-icon>
                                             @else
                                                 <iconify-icon icon="mdi:clock-outline"
@@ -213,22 +222,22 @@
                                             @endif
                                         </div>
                                         <p
-                                            class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $s2 ? 'text-amber-600' : 'text-gray-300' }}">
+                                            class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $isMenunggu ? 'text-amber-600' : 'text-gray-300' }}">
                                             Menunggu</p>
                                     </div>
 
-                                    <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $s3 ? 'bg-emerald-400' : 'bg-gray-200' }}">
+                                    <div class="flex-1 h-0.5 mb-3 mx-0.5 {{ $isDisetujui ? 'bg-emerald-400' : 'bg-gray-200' }}">
                                     </div>
 
                                     <div class="flex flex-col items-center w-12 shrink-0">
                                         <div
-                                            class="w-5 h-5 rounded-full flex items-center justify-center {{ $s3 ? 'bg-emerald-500' : 'bg-gray-200' }}">
+                                            class="w-5 h-5 rounded-full flex items-center justify-center {{ $isDisetujui ? 'bg-emerald-500' : 'bg-gray-200' }}">
                                             <iconify-icon
-                                                icon="{{ $s3 ? 'mdi:check-circle' : 'mdi:check-circle-outline' }}"
-                                                style="font-size:11px; color:{{ $s3 ? 'white' : '#d1d5db' }};"></iconify-icon>
+                                                icon="{{ $isDisetujui ? 'mdi:check-circle' : 'mdi:check-circle-outline' }}"
+                                                style="font-size:11px; color:{{ $isDisetujui ? 'white' : '#d1d5db' }};"></iconify-icon>
                                         </div>
                                         <p
-                                            class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $s3 ? 'text-emerald-600' : 'text-gray-300' }}">
+                                            class="text-[9px] font-semibold mt-0.5 text-center leading-none {{ $isDisetujui ? 'text-emerald-600' : 'text-gray-300' }}">
                                             Disetujui</p>
                                     </div>
 
@@ -238,7 +247,6 @@
                     </div>
                 @endif
             </div>
-
         </div>
 
         <div class="col-span-12 xl:col-span-9 bg-white rounded-xl p-5 shadow-md flex flex-col gap-4">
@@ -350,8 +358,10 @@
                                     </button>
                                 @elseif ($item->status === 'Approve')
                                     @if ($item->cancel_requested)
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-amber-50 text-amber-600 border border-amber-200 shadow-sm animate-pulse">
-                                            <iconify-icon icon="solar:clock-circle-bold" class="text-sm"></iconify-icon>
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-amber-50 text-amber-600 border border-amber-200 shadow-sm">
+                                            <iconify-icon icon="solar:clock-circle-bold"
+                                                class="text-sm"></iconify-icon>
                                             Menunggu Pembatalan
                                         </span>
                                     @else

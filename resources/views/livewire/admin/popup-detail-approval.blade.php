@@ -180,7 +180,7 @@
                             <button type="button" @click="
                                                 Swal.fire({
                                                     title: 'Tolak Peminjaman?',
-                                                    text: 'Berikan alasan singkat penolakan reservasi ini:',
+                                                    text: 'Berikan alasan singkat untuk penolakan peminjaman ini:',
                                                     icon: 'warning',
                                                     input: 'text',
                                                     inputPlaceholder: 'Contoh: Ruangan akan digunakan untuk pemeliharaan...',
@@ -190,12 +190,16 @@
                                                     buttonsStyling: false,
                                                     reverseButtons: true,
                                                     customClass: {
-                                                        confirmButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-red-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-red-600 transition-all ml-3',
+                                                        confirmButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-red-600 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] shadow-sm hover:bg-red-600 transition-all ml-3',
                                                         cancelButton: 'inline-flex items-center px-4 py-2.5 sm:px-8 sm:py-4 bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-[8px] hover:bg-gray-200 transition-all'
                                                     },
                                                     preConfirm: (alasan) => {
-                                                        if (!alasan) Swal.showValidationMessage('Alasan wajib diisi');
-                                                        return alasan;
+                                                        if (!alasan || alasan.trim() === '') {
+                                                            Swal.showValidationMessage('Alasan wajib diisi');
+                                                            return false;
+                                                        }
+
+                                                        return alasan.trim();
                                                     }
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {

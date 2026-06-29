@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\DataPeminjaman;
-use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
 class HistoryPeminjamanService
@@ -35,8 +34,9 @@ class HistoryPeminjamanService
         }
 
         $data_peminjaman = $query
-            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari', 'jenis_peminjaman', 'penanggung_jawab', 'waktu_mulai', 'waktu_selesai')
-            ->latest()
+            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari', 
+            'jenis_peminjaman', 'penanggung_jawab', 'waktu_mulai', 'waktu_selesai')
+            ->latest('updated_at')
             ->paginate(10, ['*'], 'page', $page);
 
         foreach ($data_peminjaman as $r) {
@@ -74,12 +74,12 @@ class HistoryPeminjamanService
         }
 
         if (!empty($filterStatus)) {
-            # Override the whereIn above with specific status
             $query->where('status', $filterStatus);
         }
 
-        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi', 'ruangan_id', 'status', 'tanggal_peminjaman', 'fakultas', 'jenis_peminjaman', 'hari', 'waktu_mulai', 'waktu_selesai')
-            ->latest()
+        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi', 'ruangan_id', 'status', 'tanggal_peminjaman',
+        'fakultas', 'jenis_peminjaman', 'hari', 'waktu_mulai', 'waktu_selesai')
+            ->latest('updated_at')
             ->paginate(10, ['*'], 'page', $page);
 
         foreach ($data_peminjaman as $r) {

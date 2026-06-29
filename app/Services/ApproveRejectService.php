@@ -5,26 +5,20 @@ namespace App\Services;
 use App\Models\DataPeminjaman;
 use App\Mail\NotifikasiMail;
 use Illuminate\Support\Facades\Mail;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Exception;
 
 class ApproveRejectService
 {
-    private $notif;
-    
-    public function __construct()
-    {
-        $this->notif = app(NotificationService::class);
-    }
-
     public function approve($id)
     {
         $peminjaman = DataPeminjaman::with(['ruangan.lantai.gedung'])->findOrFail($id);
         $peminjaman->update(['status' => 'Approve']);
 
         # Pemicu Notifikasi dan Kegiatan Terkini
-        $this->notif->pushNotification($peminjaman, 'Approve');
-        $this->notif->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'approve');
+        app(NotificationService::class)->pushNotification($peminjaman, 'Approve');
+        app(NotificationService::class)->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'approve');
 
         $this->prepareEmailData($peminjaman);
 
@@ -46,8 +40,8 @@ class ApproveRejectService
         ]);
 
         # Pemicu Notifikasi dan Kegiatan Terkini
-        $this->notif->pushNotification($peminjaman, 'Reject');
-        $this->notif->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'reject');
+        app(NotificationService::class)->pushNotification($peminjaman, 'Reject');
+        app(NotificationService::class)->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'reject');
 
         $this->prepareEmailData($peminjaman);
 
@@ -81,6 +75,7 @@ class ApproveRejectService
         $data->update([
             'status' => 'Canceled',
         ]);
+
         $cancelBy = $userIdentifier ?? 'Admin/BAA';
         if (!$isAdmin && $userIdentifier === session('user_identifier') && session('username')) {
             $cancelBy = session('username') . ' (' . session('user_identifier') . ')';
@@ -97,8 +92,8 @@ class ApproveRejectService
         );
 
         # Pemicu Notifikasi dan Kegiatan Terkini
-        $this->notif->pushNotification($data, 'Canceled');
-        $this->notif->pushKegiatanTerkini($data->penanggung_jawab, $data->ruangan_id, 'cancel');
+        app(NotificationService::class)->pushNotification($data, 'Canceled');
+        app(NotificationService::class)->pushKegiatanTerkini($data->penanggung_jawab, $data->ruangan_id, 'cancel');
 
         # Kirim email jika dibatalkan oleh Admin (userIdentifier null atau isAdmin true)
         if ($userIdentifier === null || $isAdmin) {

@@ -8,6 +8,7 @@ use App\Models\DataPeminjaman;
 use App\Models\Asset;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\JadwalMatkulWajib;
 
 class Ruangan extends Model
 {
@@ -46,5 +47,9 @@ class Ruangan extends Model
 
     public function dataPeminjaman(){
         return $this->hasMany(DataPeminjaman::class);
+    }
+
+    public function jadwalMatkul(){
+        return $this->hasMany(JadwalMatkulWajib::class);
     }
 }

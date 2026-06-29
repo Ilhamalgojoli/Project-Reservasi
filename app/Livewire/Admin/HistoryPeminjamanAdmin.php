@@ -13,7 +13,6 @@ class HistoryPeminjamanAdmin extends Component
     use WithPagination;
 
     public $search = '';
-    public $fakultas_id = '';
     public $jenis_peminjaman = '';
     public $filterStatus = '';
     
@@ -31,7 +30,7 @@ class HistoryPeminjamanAdmin extends Component
 
     public function resetFilter()
     {
-        $this->reset(['search', 'fakultas_id', 'jenis_peminjaman', 'filterStatus']);
+        $this->reset(['search', 'jenis_peminjaman', 'filterStatus']);
         $this->resetPage();
     }
 
@@ -51,16 +50,10 @@ class HistoryPeminjamanAdmin extends Component
     {
         return app(HistoryPeminjamanService::class)->getDataAdmin(
             $this->getPage(),
-            $this->fakultas_id,
             $this->jenis_peminjaman,
             $this->search,
+            $this->filterStatus,
         );
-    }
-
-    #[Computed]
-    public function fakultasList()
-    {
-        return Fakultas::orderBy('fakultas')->get();
     }
 
     public function render()

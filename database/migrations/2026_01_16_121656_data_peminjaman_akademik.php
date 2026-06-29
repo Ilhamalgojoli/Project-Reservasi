@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('data_peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fakultas_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('prodi_id')->nullable()->constrained('prodi')->nullOnDelete();
+            $table->string('fakultas');
+            $table->string('prodi');
             $table->string('jenis_peminjaman');
             $table->string('kode_matkul')->nullable();
             $table->integer('lantai');
-            $table->foreignId('ruangan_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('ruangan_id')->constrained();
             $table->string('tanggal_peminjaman');
             $table->integer('muatan');
             $table->string('penanggung_jawab');

@@ -7,13 +7,6 @@ use Carbon\Carbon;
 
 class DashboardUserService
 {
-    protected DashboardService $dashboardService;
-
-    public function __construct(DashboardService $dashboardService)
-    {
-        $this->dashboardService = $dashboardService;
-    }
-
     public function getTotal(string $nim)
     {
         return DataPeminjaman::where('user_identifier', $nim)->count();
@@ -43,16 +36,17 @@ class DashboardUserService
             'pembatalan'
         ])
             ->where('user_identifier', $nim)
-            ->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'keterangan_peminjaman', 'ruangan_id', 'muatan', 'status', 'waktu_mulai', 'waktu_selesai', 'created_at')
+            ->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'keterangan_peminjaman', 'ruangan_id',
+            'muatan', 'status', 'waktu_mulai', 'waktu_selesai', 'created_at')
             ->latest()
             ->limit(5)
             ->get();
 
         foreach ($data as $r) {
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
-            $r->nama_gedung  = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
-            $r->lantai       = $r->ruangan?->lantai?->lantai ?? '-';
-            $r->jam_mulai   = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
+            $r->nama_gedung = $r->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
+            $r->lantai = $r->ruangan?->lantai?->lantai ?? '-';
+            $r->jam_mulai = $r->waktu_mulai ? Carbon::parse($r->waktu_mulai)->format('H:i') : '-';
             $r->jam_selesai = $r->waktu_selesai ? Carbon::parse($r->waktu_selesai)->format('H:i') : '-';
         }
 
@@ -62,17 +56,24 @@ class DashboardUserService
     public function getDashboardData(string $nim): array
     {
         # Jalankan sinkronisasi database (Finish) khusus untuk NIM user ini agar statistik selalu akurat
-        $this->dashboardService->updateStatusFinish($nim);
+        app(DashboardService::class)->updateStatusFinish($nim);
 
         # Jalankan sinkronisasi database (Auto-Reject) khusus untuk NIM user ini agar statistik selalu akurat
         app(ApproveRejectService::class)->autoRejectExpire($nim);
+        $usedRoom = app(DashboardService::class)->getRuanganTerpakai();
+        $availableRoom = app(DashboardService::class)->getRuanganTersedia($usedRoom);
 
         return [
-            'total'    => $this->getTotal($nim),
-            'waiting'  => $this->getWaiting($nim),
-            'approve'  => $this->getApprove($nim),
-            'reject'   => $this->getReject($nim),
-            'recent'   => $this->getRecentBookings($nim),
+            'total' => $this->getTotal($nim),
+            'waiting' => $this->getWaiting($nim),
+            'approve' => $this->getApprove($nim),
+            'reject' => $this->getReject($nim),
+            'recent' => $this->getRecentBookings($nim),
+            'roomInfo' => [
+                'used' => $usedRoom,
+                'total' => $usedRoom + $availableRoom,
+                'available' => $availableRoom
+            ]
         ];
     }
 }

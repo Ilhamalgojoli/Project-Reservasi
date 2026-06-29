@@ -153,27 +153,27 @@
                     <div class="relative pl-6 border-l-2 border-gray-100 flex flex-col gap-6 ml-2">
                         @forelse ($kegiatanTerkini as $data)
                             @php
-                                $isCancel = isset($data['pesan_clickable']) && $data['pesan_clickable'];
-                                $link = isset($data['target_id'])
+                                $isBatal = isset($data['tautan']) && $data['tautan'];
+                                $urlTujuan = isset($data['target_id'])
                                     ? route('pembatalan-reservasi', ['detailId' => $data['target_id']])
                                     : null;
                             @endphp
                             <div
                                 class="relative flex flex-col gap-2 p-4 rounded-[8px] transition-all duration-300 border
-                                {{ $isCancel ? 'bg-red-50/30 border-red-100/50 hover:bg-red-50/50 shadow-sm' : 'bg-gray-50/30 border-gray-100/50 hover:bg-gray-50/60' }}">
+                                {{ $isBatal ? 'bg-red-50/30 border-red-100/50 hover:bg-red-50/50 shadow-sm' : 'bg-gray-50/30 border-gray-100/50 hover:bg-gray-50/60' }}">
                                 <div
                                     class="absolute -left-[35px] top-4 w-6 h-6 rounded-full flex items-center justify-center border border-white shadow-sm z-10
-                                    {{ $isCancel ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white' }}">
+                                    {{ $isBatal ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white' }}">
                                     <iconify-icon
-                                        icon="{{ $isCancel ? 'solar:shield-warning-bold' : 'solar:calendar-add-bold' }}"
+                                        icon="{{ $isBatal ? 'solar:shield-warning-bold' : 'solar:calendar-add-bold' }}"
                                         class="text-xs"></iconify-icon>
                                 </div>
 
                                 <div class="flex items-center justify-between gap-2">
                                     <span
                                         class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest
-                                        {{ $isCancel ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600' }}">
-                                        {{ $isCancel ? 'BATAL REQUEST' : 'PEMINJAMAN BARU' }}
+                                        {{ $isBatal ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600' }}">
+                                        {{ $isBatal ? 'BATAL REQUEST' : 'PEMINJAMAN BARU' }}
                                     </span>
                                     @if (isset($data['waktu']))
                                         <span class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
@@ -185,21 +185,21 @@
                                 </div>
 
                                 <div class="text-xs font-semibold text-gray-700 leading-relaxed">
-                                    @if ($isCancel)
+                                    @if ($isBatal)
                                         <p class="inline">{{ $data['pesan'] }}</p>
-                                        @if ($link)
-                                            <a href="{{ $link }}"
+                                        @if ($urlTujuan)
+                                            <a href="{{ $urlTujuan }}"
                                                 class="inline-flex items-center gap-0.5 text-blue-600 hover:text-blue-800 font-extrabold hover:underline ml-1 group/btn">
-                                                {{ $data['pesan_clickable'] }}
+                                                {{ $data['tautan'] }}
                                                 <iconify-icon icon="solar:alt-arrow-right-bold"
                                                     class="text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></iconify-icon>
                                             </a>
                                         @else
-                                            <span class="ml-1 text-gray-400">{{ $data['pesan_clickable'] }}</span>
+                                            <span class="ml-1 text-gray-400">{{ $data['tautan'] }}</span>
                                         @endif
                                     @else
-                                        @if ($link)
-                                            <a href="{{ $link }}"
+                                        @if ($urlTujuan)
+                                            <a href="{{ $urlTujuan }}"
                                                 class="hover:underline text-gray-700 font-bold">
                                                 {{ $data['pesan'] }}
                                             </a>

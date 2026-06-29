@@ -2,13 +2,11 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Fakultas;
-
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\DataPeminjaman;
-use \App\Services\ApprovalDataService;
+use App\Services\ApprovalDataService;
+use App\Services\ApproveRejectService;
 
 class CancelBooking extends Component
 {
@@ -20,8 +18,10 @@ class CancelBooking extends Component
     public $filterJenis = '';
     public $filterHari = '';
     public $showCancelModal = false;
-    public $cancelId;
-    public $cancelReason = '';
+
+    protected $listeners = [
+        'refreshApprovedPage' => 'render'
+    ];
 
     protected $queryString = [
         'detailId' => ['except' => null],
@@ -43,57 +43,38 @@ class CancelBooking extends Component
 
     public function resetFilter()
     {
-        $this->reset(['search', 'filterFakultas', 'filterJenis', 'filterHari']);
+        $this->reset(['search', 'filterJenis', 'filterHari']);
         $this->resetPage();
     }
 
     #[Computed]
     public function datas()
     {
-        $service = app(ApprovalDataService::class);
-
         if ($this->detailId) {
-            return $service->getApprovedDataById($this->detailId);
+            return app(ApprovalDataService::class)->getDetail($this->detailId, 'approvedDetail');
         }
 
-        return $service->getApprovedData(
+        return app(ApprovalDataService::class)->getApprovedData(
             $this->search,
-            $this->filterFakultas,
             $this->filterJenis,
             $this->filterHari
         );
     }
 
-    public function confirmCancel($id)
+    public function processCancel($cancelId, $cancelReason)
     {
-        $this->cancelId = $id;
-        $peminjaman = DataPeminjaman::find($id);
-        if ($peminjaman && $peminjaman->cancel_requested) {
-            $this->cancelReason = $peminjaman->cancel_request_reason;
-        } else {
-            $this->cancelReason = '';
+        if(!$cancelId){
+            $this->dispatch('notValidIdCancel', 'Data peminjaman tidak valid'); 
+            return;
         }
-        $this->showCancelModal = true;
-    }
 
-    public function closeCancelModal()
-    {
-        $this->showCancelModal = false;
-        $this->reset(['cancelId', 'cancelReason']);
-    }
-
-    public function processCancel()
-    {
-        $this->validate([
-            'cancelReason' => 'required|min:5',
-        ], [
-            'cancelReason.required' => 'Alasan pembatalan wajib diisi',
-            'cancelReason.min' => 'Alasan pembatalan minimal 5 karakter',
-        ]);
+        if (empty($cancelReason) && trim($cancelReason) === '') {
+            $this->dispatch('emptyStrCancel', 'Alasan penolakan tidak boleh kosong!');
+            return;
+        }
 
         try {
-            $service = app(\App\Services\ApproveRejectService::class);
-            $service->cancel($this->cancelId, session('username'), $this->cancelReason, true);
+            app(ApproveRejectService::class)->cancel($cancelId, session('username'), $cancelReason, true);
 
             $this->closeCancelModal();
             $this->dispatch('success', message: 'Reservasi berhasil dibatalkan');
@@ -107,7 +88,6 @@ class CancelBooking extends Component
     {
         return view('livewire.admin.cancel-booking', [
             'datas' => $this->datas,
-            'fakultas' => Fakultas::all(),
             'jenis_peminjaman' => [
                 'akademik' => 'Akademik',
                 'non-akademik' => 'Non Akademik'

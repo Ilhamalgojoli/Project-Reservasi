@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Http;
 
 class PeminjamanService
 {
-    private $notif;
-    public function __construct()
-    {
-        $this->notif = new NotificationService();
-    }
-
     public function getBuilding(int $id)
     {
         return Gedung::select('id', 'nama_gedung')
@@ -48,43 +42,49 @@ class PeminjamanService
     {
         $fakultas = env('URL_FACULTY');
         $token = env('TOKEN');
-        $response = Http::withToken($token)->get($fakultas);
 
-        if ($response->successful()) {
-            $data = $response->json();
-            return collect($data)->map(function ($item) {
-                return [
-                    'id' => $item['facultyid'],
-                    'fakultas' => $item['facultyname'],
-                ];
-            })->toArray();
-        } else {
-            return Fakultas::select('id', 'fakultas')
-                ->get()
-                ->toArray();
+        if ($token !== null && $token != '') {
+            $response = Http::withToken($token)->get($fakultas);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return collect($data)->map(function ($item) {
+                    return [
+                        'id' => $item['facultyid'],
+                        'fakultas' => $item['facultyname'],
+                    ];
+                })->toArray();
+            }
         }
+
+        return Fakultas::select('id', 'fakultas')
+            ->get()
+            ->toArray();
     }
 
     public function getProdi($fakultasId)
     {
         $prodi = env('URL_PRODY');
         $token = env('TOKEN');
-        $response = Http::withToken($token)->get($prodi . $fakultasId);
 
-        if ($response->successful()) {
-            $data = $response->json();
-            return collect($data)->map(function ($item) {
-                return [
-                    'id' => $item['studyprogramid'],
-                    'prodi' => $item['studyprogramname'],
-                ];
-            })->toArray();
-        } else {
-            return Prodi::select('id', 'prodi')
-                ->where('fakultas_id', $fakultasId)
-                ->get()
-                ->toArray();
+        if ($token !== null && $token !== '') {
+            $response = Http::withToken($token)->get($prodi . $fakultasId);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return collect($data)->map(function ($item) {
+                    return [
+                        'id' => $item['studyprogramid'],
+                        'prodi' => $item['studyprogramname'],
+                    ];
+                })->toArray();
+            }
         }
+
+        return Prodi::select('id', 'prodi')
+            ->where('fakultas_id', $fakultasId)
+            ->get()
+            ->toArray();
     }
 
     public function getMataKuliah($prodiId)
@@ -171,6 +171,7 @@ class PeminjamanService
     public function generateJam($start, $end, $interval = 30)
     {
         $result = [];
+        # Split string pakai explode
         [$h, $m] = explode(':', $start);
         [$endH, $endM] = explode(':', $end);
         $h = (int) $h;
@@ -178,6 +179,7 @@ class PeminjamanService
         $endH = (int) $endH;
         $endM = (int) $endM;
 
+        # Loop jam awal sama jam akhir
         while ($h < $endH || ($h === $endH && $m <= $endM)) {
             $result[] = sprintf('%02d:%02d', $h, $m);
             $m += $interval;
@@ -236,7 +238,7 @@ class PeminjamanService
                 ]);
 
                 # Mencatat log kegiatan setelah transaksi sukses
-                $this->notif->pushKegiatanTerkini($data['penanggungJawab'], $data['ruanganID']);
+                app(NotificationService::class)->pushKegiatanTerkini($data['penanggungJawab'], $data['ruanganID']);
 
                 return $record;
             });
@@ -308,7 +310,7 @@ class PeminjamanService
             if ($startBaru < $selesai && $endBaru > $mulai) {
                 throw new \Exception(
                     "Ruangan sudah dipakai untuk jadwal matakuliah '{$jadwal->nama_matkul}' "
-                    . "pada hari {$hari}, pukul {$mulai}–{$selesai}"
+                        . "pada hari {$hari}, pukul {$mulai}–{$selesai}"
                 );
             }
         }

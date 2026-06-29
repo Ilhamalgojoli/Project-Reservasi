@@ -241,7 +241,7 @@
                         }
                     });
                 "
-                class="group flex items-center gap-3 px-10 py-3.5 bg-gradient-to-r from-[#e51411] to-[#ff3b38] text-white rounded-xl font-bold shadow-lg shadow-red-200 hover:shadow-red-300 hover:-translate-y-0.5 transition-all duration-300">
+                class="group flex items-center gap-3 px-10 py-3.5 bg-red-600 text-white rounded-xl font-bold shadow-lg shadow-red-200 hover:shadow-red-300 hover:-translate-y-0.5 transition-all duration-300">
                 <iconify-icon icon="mdi:send-variant" class="text-xl"></iconify-icon>
                 <span>Ajukan Peminjaman</span>
             </button>

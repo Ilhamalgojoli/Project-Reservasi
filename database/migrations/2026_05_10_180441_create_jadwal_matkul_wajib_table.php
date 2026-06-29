@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_matkul_wajib', function (Blueprint $table) {
+        Schema::create('jadwal_matkul', function (Blueprint $table) {
             $table->id();
             $table->string('hari');
             $table->foreignId('ruangan_id')->constrained('ruangans')->cascadeOnDelete();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwal_matkul_wajib');
+        Schema::dropIfExists('jadwal_matkul');
     }
 };

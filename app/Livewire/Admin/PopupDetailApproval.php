@@ -46,18 +46,26 @@ class PopupDetailApproval extends Component
     }
 
     public function reject($alasan)
-    {
-        if ($this->peminjamanId && $alasan) {
-            try {
-                app(ApproveRejectService::class)->reject($this->peminjamanId, $alasan);
-                $this->closeDetail();
-                $this->dispatch('refreshReject');
+    {   
+        if(!$this->peminjamanId){
+            $this->dispatch('notValidId', 'Data peminjaman tidak valid'); 
+            return;
+        }
 
-                $this->dispatch('successReject', text: 'Peminjaman berhasil ditolak');
-            } catch (\Exception $e) {
-                $this->closeDetail();
-                $this->dispatch('errorApproval', text: $e->getMessage());
-            }
+        if (empty($alasan) && trim($alasan) === '') {
+            $this->dispatch('emptyStr', 'Alasan penolakan tidak boleh kosong!');
+            return;
+        }
+
+        try {
+            app(ApproveRejectService::class)->reject($this->peminjamanId, $alasan);
+            $this->closeDetail();
+            $this->dispatch('refreshReject');
+
+            $this->dispatch('successReject', text: 'Peminjaman berhasil ditolak');
+        } catch (\Exception $e) {
+            $this->closeDetail();
+            $this->dispatch('errorApproval', text: $e->getMessage());
         }
     }
 

@@ -50,7 +50,7 @@
                                 <label class="text-[11px] font-medium uppercase tracking-widest text-gray-400 ml-1">Nama
                                     Gedung</label>
                                 <div class="relative group">
-                                    <iconify-icon icon="solar:building-bold-duotone"
+                                    <iconify-icon icon="mdi:office-building-marker"
                                         class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
                                     <input type="text" wire:model="nama"
                                         class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none"
