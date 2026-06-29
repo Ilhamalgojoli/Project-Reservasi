@@ -153,54 +153,65 @@
                     <div class="relative pl-6 border-l-2 border-gray-100 flex flex-col gap-6 ml-2">
                         @forelse ($kegiatanTerkini as $data)
                             @php
-                                $isBatal = isset($data['tautan']) && $data['tautan'];
+                                $isBatalRequest = isset($data['tautan']) && $data['tautan'];
+                                $isDibatalkan = strpos($data['pesan'], 'telah dibatalkan') !== false;
+                                
+                                $badgeText = 'PEMINJAMAN BARU';
+                                $badgeColor = 'bg-emerald-100 text-emerald-600';
+                                $iconBgColor = 'bg-emerald-500 text-white';
+                                $iconName = 'solar:calendar-add-bold';
+                                $cardBgColor = 'bg-gray-50/30 border-gray-100/50 hover:bg-gray-50/60';
+                                
+                                if ($isBatalRequest) {
+                                    $badgeText = 'BATAL REQUEST';
+                                    $badgeColor = 'bg-red-100 text-red-600';
+                                    $iconBgColor = 'bg-red-500 text-white';
+                                    $iconName = 'solar:shield-warning-bold';
+                                    $cardBgColor = 'bg-red-50/30 border-red-100/50 hover:bg-red-50/50 shadow-sm';
+                                } elseif ($isDibatalkan) {
+                                    $badgeText = 'DIBATALKAN';
+                                    $badgeColor = 'bg-red-100 text-red-600';
+                                    $iconBgColor = 'bg-red-500 text-white';
+                                    $iconName = 'solar:close-circle-bold';
+                                    $cardBgColor = 'bg-red-50/30 border-red-100/50 hover:bg-red-50/50 shadow-sm';
+                                }
+
                                 $urlTujuan = isset($data['target_id'])
                                     ? route('pembatalan-reservasi', ['detailId' => $data['target_id']])
                                     : null;
                             @endphp
-                            <div
-                                class="relative flex flex-col gap-2 p-4 rounded-[8px] transition-all duration-300 border
-                                {{ $isBatal ? 'bg-red-50/30 border-red-100/50 hover:bg-red-50/50 shadow-sm' : 'bg-gray-50/30 border-gray-100/50 hover:bg-gray-50/60' }}">
-                                <div
-                                    class="absolute -left-[35px] top-4 w-6 h-6 rounded-full flex items-center justify-center border border-white shadow-sm z-10
-                                    {{ $isBatal ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white' }}">
-                                    <iconify-icon
-                                        icon="{{ $isBatal ? 'solar:shield-warning-bold' : 'solar:calendar-add-bold' }}"
-                                        class="text-xs"></iconify-icon>
+                            <div class="relative flex flex-col gap-2 p-4 rounded-[8px] transition-all duration-300 border {{ $cardBgColor }}">
+                                <div class="absolute -left-[35px] top-4 w-6 h-6 rounded-full flex items-center justify-center border border-white shadow-sm z-10 {{ $iconBgColor }}">
+                                    <iconify-icon icon="{{ $iconName }}" class="text-xs"></iconify-icon>
                                 </div>
 
                                 <div class="flex items-center justify-between gap-2">
-                                    <span
-                                        class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest
-                                        {{ $isBatal ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600' }}">
-                                        {{ $isBatal ? 'BATAL REQUEST' : 'PEMINJAMAN BARU' }}
+                                    <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest {{ $badgeColor }}">
+                                        {{ $badgeText }}
                                     </span>
                                     @if (isset($data['waktu']))
                                         <span class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
-                                            <iconify-icon icon="solar:clock-circle-linear"
-                                                class="text-xs"></iconify-icon>
+                                            <iconify-icon icon="solar:clock-circle-linear" class="text-xs"></iconify-icon>
                                             {{ $data['waktu'] }}
                                         </span>
                                     @endif
                                 </div>
 
                                 <div class="text-xs font-semibold text-gray-700 leading-relaxed">
-                                    @if ($isBatal)
+                                    @if ($isBatalRequest)
                                         <p class="inline">{{ $data['pesan'] }}</p>
                                         @if ($urlTujuan)
                                             <a href="{{ $urlTujuan }}"
                                                 class="inline-flex items-center gap-0.5 text-blue-600 hover:text-blue-800 font-extrabold hover:underline ml-1 group/btn">
                                                 {{ $data['tautan'] }}
-                                                <iconify-icon icon="solar:alt-arrow-right-bold"
-                                                    class="text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></iconify-icon>
+                                                <iconify-icon icon="solar:alt-arrow-right-bold" class="text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></iconify-icon>
                                             </a>
                                         @else
                                             <span class="ml-1 text-gray-400">{{ $data['tautan'] }}</span>
                                         @endif
                                     @else
-                                        @if ($urlTujuan)
-                                            <a href="{{ $urlTujuan }}"
-                                                class="hover:underline text-gray-700 font-bold">
+                                        @if ($urlTujuan && !$isDibatalkan)
+                                            <a href="{{ $urlTujuan }}" class="hover:underline text-gray-700 font-bold">
                                                 {{ $data['pesan'] }}
                                             </a>
                                         @else

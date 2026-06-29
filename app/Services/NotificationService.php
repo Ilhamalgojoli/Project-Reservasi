@@ -49,12 +49,8 @@ class NotificationService
     }
 
     # Upload kegiatan terkini ke Database
-    public function pushKegiatanTerkini($penanggungJawab, $ruanganID, $event = 'booking', $targetId = null, $alasan = '')
+    public function pushKegiatanTerkini($penanggungJawab, $ruangan, $event = 'booking', $targetId = null, $alasan = '')
     {
-        $ruangan = Ruangan::select('kode_ruangan')
-            ->where('id', $ruanganID)
-            ->first();
-
         if (!$ruangan) {
             return;
         }
@@ -63,11 +59,14 @@ class NotificationService
         $pesan = '';
         switch ($event) {
             case 'booking':
-                $pesan = "{$penanggungJawab} melakukan peminjaman pada ruangan {$ruangan->kode_ruangan}";
+                $pesan = "{$penanggungJawab} melakukan peminjaman pada ruangan {$ruangan}";
+                break;
+            case 'cancelByUser':
+                $pesan = "Peminjaman pada ruangan {$ruangan} telah dibatalkan oleh {$penanggungJawab}, dengan alasan {$alasan}.";
                 break;
             case 'CancelRequest':
                 $alasanText = $alasan ? " dengan alasan: {$alasan}" : '';
-                $pesan = "{$penanggungJawab} mengajukan pembatalan peminjaman pada ruangan {$ruangan->kode_ruangan}{$alasanText}. Klik untuk lanjutkan pembatalan.";
+                $pesan = "{$penanggungJawab} mengajukan pembatalan peminjaman pada ruangan {$ruangan}{$alasanText}. Klik untuk lanjutkan pembatalan.";
                 break;
         }
 

@@ -7,6 +7,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Services\ApprovalDataService;
 use App\Services\ApproveRejectService;
+use \Illuminate\Pagination\LengthAwarePaginator;
+use \Illuminate\Pagination\Paginator;
 
 class CancelBooking extends Component
 {
@@ -51,7 +53,18 @@ class CancelBooking extends Component
     public function datas()
     {
         if ($this->detailId) {
-            return app(ApprovalDataService::class)->getDetail($this->detailId, 'approvedDetail');
+            try {
+                $detail = app(ApprovalDataService::class)->getDetail($this->detailId, 'approvedDetail');
+                return new LengthAwarePaginator(
+                    [$detail], 
+                    1, 
+                    10, 
+                    1, 
+                    ['path' => Paginator::resolveCurrentPath()]
+                );
+            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                $this->detailId = null;
+            }
         }
 
         return app(ApprovalDataService::class)->getApprovedData(
@@ -76,10 +89,8 @@ class CancelBooking extends Component
         try {
             app(ApproveRejectService::class)->cancel($cancelId, session('username'), $cancelReason, true);
 
-            $this->closeCancelModal();
             $this->dispatch('success', message: 'Reservasi berhasil dibatalkan');
         } catch (\Exception $e) {
-            $this->closeCancelModal();
             $this->dispatch('error', message: $e->getMessage());
         }
     }

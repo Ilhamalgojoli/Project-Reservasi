@@ -91,19 +91,20 @@ class ApproveRejectService
             ]
         );
 
-        # Pemicu Notifikasi dan Kegiatan Terkini
-        app(NotificationService::class)->pushNotification($data, 'Canceled');
-        app(NotificationService::class)->pushKegiatanTerkini($data->penanggung_jawab, $data->ruangan_id, 'cancel');
+        # Kegiatan Terkini
+        if (!$isAdmin) {
+            app(NotificationService::class)->pushKegiatanTerkini($data->penanggung_jawab, $data->ruangan->kode_ruangan, 'cancelByUser', null, $reason);
+            return;
+        }
 
         # Kirim email jika dibatalkan oleh Admin (userIdentifier null atau isAdmin true)
-        if ($userIdentifier === null || $isAdmin) {
-            $this->prepareEmailData($data);
+        app(NotificationService::class)->pushNotification($data, 'Canceled');
+        $this->prepareEmailData($data);
 
-            try {
-                Mail::to($data->email)->send(new NotifikasiMail($data, 'cancel'));
-            } catch (\Exception $e) {
-                throw new Exception('Peminjaman berhasil dibatalkan,tetapi email tidak terkirim');
-            }
+        try {
+            Mail::to($data->email)->send(new NotifikasiMail($data, 'cancel'));
+        } catch (\Exception $e) {
+            throw new Exception('Peminjaman berhasil dibatalkan,tetapi email tidak terkirim');
         }
 
         return true;

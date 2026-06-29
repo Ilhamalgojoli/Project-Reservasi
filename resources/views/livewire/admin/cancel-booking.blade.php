@@ -140,12 +140,16 @@
                                             class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
                                     </button>
 
-                                    <button type="button" @click="
+                                    <button type="button" 
+                                        data-reason="{{ $data->pembatalan?->cancel_request_reason ?? '' }}"
+                                        @click="
+                                            let reason = $el.getAttribute('data-reason');
                                             Swal.fire({
                                                     title: 'Batalkan Peminjaman?',
                                                     text: 'Berikan alasan singkat untuk pembatalan peminjaman ini:',
                                                     icon: 'warning',
                                                     input: 'text',
+                                                    inputValue: reason,
                                                     inputPlaceholder: 'Contoh: Tidak jadi meminjam dikarenakan perubahan jadwal...',
                                                     showCancelButton: true,
                                                     confirmButtonText: 'Tolak Sekarang',
