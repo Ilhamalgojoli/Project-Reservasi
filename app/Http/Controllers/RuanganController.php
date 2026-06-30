@@ -34,7 +34,9 @@ class RuanganController extends Controller
                 'muatan_kapasitas' => 'required|integer',
                 'lantai' => 'required|integer',
                 'nama_asset' => 'nullable|array',
+                'nama_asset.*' => 'required_with:nama_asset|string',
                 'total_asset' => 'nullable|array',
+                'total_asset.*' => 'required_with:total_asset|integer',
             ], [
                 'kode_ruangan.required' => 'Kode Ruangan wajib diisi.',
                 'kode_ruangan.unique' => 'Kode Ruangan sudah terdaftar.',
@@ -43,7 +45,10 @@ class RuanganController extends Controller
                 'muatan_kapasitas.integer' => 'Kapasitas harus berupa angka.',
                 'lantai.required' => 'Lantai wajib dipilih.',
                 'nama_asset.required' => 'Nama asset wajib diisi.',
+                'nama_asset.*.required_with' => 'Nama asset wajib diisi.',
                 'total_asset.required' => 'Total asset wajib diisi.',
+                'total_asset.*.required_with' => 'Total asset wajib diisi.',
+                'total_asset.*.integer' => 'Total asset harus berupa angka.',
             ]);
 
             $service = $this->service()->store($validate);
@@ -58,6 +63,7 @@ class RuanganController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Terdapat kesalahan pada isian form!',
+                    'errors' => $e->errors(),
                 ], 422);
             }
 
@@ -88,17 +94,24 @@ class RuanganController extends Controller
                 'id' => 'required|integer',
                 'kode_ruangan' => 'required|string|max:12',
                 'status' => 'required|string',
-                'kapasitas' => 'required|integer',
+                'kapasitas' => 'required|integer|min:1',
                 'asset_id' => 'nullable|array',
                 'nama_asset' => 'nullable|array',
+                'nama_asset.*' => 'required_with:nama_asset|string',
                 'total_asset' => 'nullable|array',
+                'total_asset.*' => 'required_with:total_asset|integer|min:1',
             ], [
                 'kode_ruangan.required' => 'Kode Ruangan wajib diisi.',
                 'status.required' => 'Status wajib dipilih.',
                 'kapasitas.required' => 'Kapasitas wajib diisi.',
                 'kapasitas.integer' => 'Kapasitas harus berupa angka.',
+                'kapasitas.min' => 'Kapasitas minimal 1.',
                 'nama_asset.required' => 'Nama asset wajib diisi.',
+                'nama_asset.*.required_with' => 'Nama asset wajib diisi.',
                 'total_asset.required' => 'Total asset wajib diisi.',
+                'total_asset.*.required_with' => 'Total asset wajib diisi.',
+                'total_asset.*.integer' => 'Total asset harus berupa angka.',
+                'total_asset.*.min' => 'Total asset minimal 1.',
             ]);
 
             $this->service()->update($validate);
@@ -112,6 +125,7 @@ class RuanganController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Terdapat kesalahan pada isian form!',
+                    'errors' => $e->errors(),
                 ], 422);
             }
 

@@ -4,7 +4,6 @@
 @endphp
 
 @push('extra_scripts')
-    
 @endpush
 
 @section('content')
@@ -273,7 +272,7 @@
                                     <div class="relative group">
                                         <iconify-icon icon="mdi:account-group"
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                                        <input type="number" id="kapasitas"
+                                        <input type="text" inputmode="numeric" id="kapasitas"
                                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none"
                                             placeholder="Kapasitas" />
                                     </div>
@@ -301,7 +300,8 @@
                                     <div class="flex-1 relative group">
                                         <iconify-icon icon="solar:database-bold-duotone"
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                                        <input type="number" name="total_asset[]" placeholder="Jumlah Asset"
+                                        <input type="text" inputmode="numeric" name="total_asset[]"
+                                            placeholder="Jumlah Asset"
                                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                                     </div>
                                 </div>

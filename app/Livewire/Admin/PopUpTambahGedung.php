@@ -36,11 +36,20 @@ class PopUpTambahGedung extends Component
     protected function messages()
     {
         return [
+            'gambar.max' => 'Gambar maksimal 10MB.',
+            'gambar.image' => 'Gambar harus berupa file gambar.',
             'nama.required' => 'Nama wajib diisi.',
+            'nama.min' => 'Nama minimal 3 karakter.',
+            'nama.max' => 'Nama maksimal 100 karakter.',
             'kode.required' => 'Kode Gedung wajib diisi.',
+            'kode.max' => 'Kode Gedung maksimal 16 karakter.',
+            'kode.unique' => 'Kode Gedung sudah terdaftar.',
             'jumlahLantai.required' => 'Jumlah Lantai wajib diisi.',
+            'jumlahLantai.integer' => 'Jumlah Lantai harus berupa angka.',
+            'jumlahLantai.min' => 'Jumlah Lantai minimal 1.',
             'status.required' => 'Status Operasional wajib diisi.',
             'keterangan.required' => 'Deskripsi singkat wajib diisi.',
+            'keterangan.max' => 'Deskripsi singkat maksimal 500 karakter.',
             'latitude.required' => 'Silakan pilih lokasi pada map.',
             'longitude.required' => 'Silakan pilih lokasi pada map.'
         ];

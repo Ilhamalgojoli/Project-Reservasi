@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let id = 0;
 
-    document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
+    document.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.edit-btn');
+        if (btn) {
             console.log('click');
             id = btn.dataset.id;
 
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="flex-1 relative group">
                         <iconify-icon icon="solar:database-bold-duotone" 
                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                        <input type="number" name="total_asset[]" value="${asset.jumlah_asset}" placeholder="Jumlah Asset" 
+                        <input type="text" inputmode="numeric" name="total_asset[]" value="${asset.jumlah_asset}" placeholder="Jumlah Asset" 
                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none" />
                     </div>
                     <button type="button" onclick="window.destroyAsset(${asset.id})"
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             popUp.classList.remove('hidden');
-        });
+        }
     });
 
     btnSubmit.addEventListener('click', async () => {
@@ -97,21 +98,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         if (req.status === 422 && err.errors) {
                             for (const field in err.errors) {
-                                const fieldMap = {
-                                    'kode_ruangan': 'idRuangan-edit',
-                                    'status': 'status-edit',
-                                    'kapasitas': 'kapasitas-edit'
-                                };
-                                
-                                const elementId = fieldMap[field] || field;
-                                const inputEl = document.getElementById(elementId);
-                                
-                                if (inputEl) {
-                                    const errorSpan = document.createElement('span');
-                                    errorSpan.className = 'error-msg-edit text-[10px] text-red-500 font-bold uppercase ml-1 block mt-1';
-                                    errorSpan.textContent = err.errors[field][0];
+                                const parts = field.split('.');
+                                const baseField = parts[0];
+                                const index = parts.length > 1 ? parseInt(parts[1]) : null;
+
+                                if (baseField === 'total_asset' || baseField === 'nama_asset') {
+                                    const inputs = document.querySelectorAll(`#form-edit input[name="${baseField}[]"]`);
+                                    const inputEl = inputs[index];
                                     
-                                    inputEl.closest('div.flex-1.flex.flex-col.gap-2, div.flex.flex-col.gap-2').appendChild(errorSpan);
+                                    if (inputEl) {
+                                        const errorSpan = document.createElement('span');
+                                        errorSpan.className = 'error-msg-edit text-[10px] text-red-500 font-bold uppercase ml-1 block mt-1';
+                                        errorSpan.textContent = err.errors[field][0];
+                                        
+                                        inputEl.closest('div.relative.group').appendChild(errorSpan);
+                                    }
+                                } else {
+                                    const fieldMap = {
+                                        'kode_ruangan': 'idRuangan-edit',
+                                        'status': 'status-edit',
+                                        'kapasitas': 'kapasitas-edit'
+                                    };
+                                    
+                                    const elementId = fieldMap[field] || field;
+                                    const inputEl = document.getElementById(elementId);
+                                    
+                                    if (inputEl) {
+                                        const errorSpan = document.createElement('span');
+                                        errorSpan.className = 'error-msg-edit text-[10px] text-red-500 font-bold uppercase ml-1 block mt-1';
+                                        errorSpan.textContent = err.errors[field][0];
+                                        
+                                        const container = inputEl.closest('div.flex-1.flex.flex-col.gap-2, div.flex.flex-col.gap-2');
+                                        if (container) {
+                                            container.appendChild(errorSpan);
+                                        } else {
+                                            inputEl.parentElement.appendChild(errorSpan);
+                                        }
+                                    }
                                 }
                             }
                             throw new Error(err.message || 'Lengkapi form dengan benar!');
