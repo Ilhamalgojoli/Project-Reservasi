@@ -252,7 +252,7 @@
         <div class="col-span-12 xl:col-span-9 bg-white rounded-xl p-5 shadow-md flex flex-col gap-4">
             <div>
                 <h2 class="font-bold text-gray-700 text-xl">Peminjaman Terbaru</h2>
-                <p class="text-xs text-gray-400 mt-0.5">5 aktivitas peminjaman terakhirmu</p>
+                <p class="text-xs text-gray-400 mt-0.5">Aktivitas peminjaman terakhirmu</p>
             </div>
 
             @if ($recent->isEmpty())

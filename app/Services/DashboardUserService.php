@@ -36,10 +36,20 @@ class DashboardUserService
             'pembatalan'
         ])
             ->where('user_identifier', $nim)
-            ->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'keterangan_peminjaman', 'ruangan_id',
-            'muatan', 'status', 'waktu_mulai', 'waktu_selesai', 'created_at')
+            ->whereIn('status', ['Approve', 'Waiting'])
+            ->select(
+                'id', 
+                'jenis_peminjaman', 
+                'penanggung_jawab', 
+                'keterangan_peminjaman', 
+                'ruangan_id',
+                'muatan', 
+                'status', 
+                'waktu_mulai', 
+                'waktu_selesai', 
+                'created_at'
+            )
             ->latest()
-            ->limit(5)
             ->get();
 
         foreach ($data as $r) {

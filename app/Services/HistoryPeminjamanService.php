@@ -34,8 +34,17 @@ class HistoryPeminjamanService
         }
 
         $data_peminjaman = $query
-            ->select('id', 'ruangan_id', 'status', 'tanggal_peminjaman', 'hari', 
-            'jenis_peminjaman', 'penanggung_jawab', 'waktu_mulai', 'waktu_selesai')
+            ->select(
+                'id', 
+                'ruangan_id',
+                'status', 
+                'tanggal_peminjaman', 
+                'hari', 
+                'jenis_peminjaman', 
+                'penanggung_jawab', 
+                'waktu_mulai', 
+                'waktu_selesai'
+            )
             ->latest('updated_at')
             ->paginate(10, ['*'], 'page', $page);
 
@@ -68,8 +77,12 @@ class HistoryPeminjamanService
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('penanggung_jawab', 'like', "%{$search}%")
-                  ->orWhereHas('ruangan', fn($r) => $r->where('kode_ruangan', 'like', "%{$search}%"))
-                  ->orWhereHas('ruangan.lantai.gedung', fn($r) => $r->where('nama_gedung', 'like', "%{$search}%"));
+                  ->orWhereHas('ruangan', fn($r) => 
+                        $r->where('kode_ruangan', 'like', "%{$search}%")
+                    )
+                  ->orWhereHas('ruangan.lantai.gedung', fn($r) => 
+                        $r->where('nama_gedung', 'like', "%{$search}%")
+                    );
             });
         }
 
@@ -77,8 +90,20 @@ class HistoryPeminjamanService
             $query->where('status', $filterStatus);
         }
 
-        $data_peminjaman = $query->select('id', 'penanggung_jawab', 'prodi', 'ruangan_id', 'status', 'tanggal_peminjaman',
-        'fakultas', 'jenis_peminjaman', 'hari', 'waktu_mulai', 'waktu_selesai')
+        $data_peminjaman = $query
+            ->select(
+                'id', 
+                'penanggung_jawab', 
+                'prodi', 
+                'ruangan_id', 
+                'status', 
+                'tanggal_peminjaman',
+                'fakultas', 
+                'jenis_peminjaman', 
+                'hari', 
+                'waktu_mulai', 
+                'waktu_selesai'
+            )
             ->latest('updated_at')
             ->paginate(10, ['*'], 'page', $page);
 

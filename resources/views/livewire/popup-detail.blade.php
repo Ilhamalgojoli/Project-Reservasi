@@ -1,5 +1,5 @@
 <div>
-    {{-- Modern Loading Overlay --}}
+    {{-- Loading --}}
     <div wire:loading wire:target="cancelReservation"
         class="fixed inset-0 bg-gray-900/80 z-[10000] flex flex-col items-center justify-center transition-all duration-500">
         <div class="relative">
@@ -205,7 +205,6 @@
                             <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Catatan / Keperluan</h3>
                         </div>
                         <div class="p-6 bg-gray-50 rounded-[8px] border border-gray-100 ml-4 relative overflow-hidden group">
-                            <iconify-icon icon="solar:chat-line-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-gray-200/50 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
                             <p class="text-sm font-medium text-gray-600 italic leading-relaxed relative z-10">
                                 "{{ $peminjamanDetail->keterangan_peminjaman }}"
                             </p>
@@ -219,7 +218,6 @@
                                 <h3 class="text-xs font-black text-red-500 uppercase tracking-[0.2em]">Catatan Penolakan</h3>
                             </div>
                             <div class="p-6 bg-red-50/50 rounded-[8px] border border-red-100 ml-4 relative overflow-hidden group">
-                                <iconify-icon icon="solar:shield-warning-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-red-500/10 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
                                 <p class="text-sm font-bold text-red-500 italic leading-relaxed relative z-10">
                                     "{{ $peminjamanDetail->alasan_penolakan }}"
                                 </p>
@@ -232,7 +230,6 @@
                                 <h3 class="text-xs font-black text-gray-600 uppercase tracking-[0.2em]">Catatan Pembatalan</h3>
                             </div>
                             <div class="p-6 bg-red-50/30 rounded-[8px] border border-red-100/50 ml-4 relative overflow-hidden group space-y-3">
-                                <iconify-icon icon="solar:forbidden-circle-bold-duotone" class="absolute -bottom-4 -right-4 text-7xl text-red-500/5 group-hover:scale-110 transition-transform duration-700"></iconify-icon>
                                 <div class="flex flex-col relative z-10">
                                     <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Dibatalkan Oleh</span>
                                     <span class="text-sm font-bold text-gray-800">{{ $peminjamanDetail->cancel_by ?? '-' }}</span>

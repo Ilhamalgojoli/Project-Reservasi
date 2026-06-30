@@ -56,10 +56,10 @@ class CancelBooking extends Component
             try {
                 $detail = app(ApprovalDataService::class)->getDetail($this->detailId, 'approvedDetail');
                 return new LengthAwarePaginator(
-                    [$detail], 
-                    1, 
-                    10, 
-                    1, 
+                    [$detail],
+                    1,
+                    10,
+                    1,
                     ['path' => Paginator::resolveCurrentPath()]
                 );
             } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -76,8 +76,8 @@ class CancelBooking extends Component
 
     public function processCancel($cancelId, $cancelReason)
     {
-        if(!$cancelId){
-            $this->dispatch('notValidIdCancel', 'Data peminjaman tidak valid'); 
+        if (!$cancelId) {
+            $this->dispatch('notValidIdCancel', 'Data peminjaman tidak valid');
             return;
         }
 

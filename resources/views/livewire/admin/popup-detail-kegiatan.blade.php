@@ -4,7 +4,6 @@
         <div
             class="bg-white w-full max-w-3xl rounded-[12px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden relative animate-slide-up border border-white/20 flex flex-col max-h-[85vh]">
 
-            {{-- Background blur dekoratif --}}
             <div
                 class="absolute -top-24 -right-24 w-64 h-64 bg-rose-50 rounded-full blur-3xl opacity-60 pointer-events-none">
             </div>

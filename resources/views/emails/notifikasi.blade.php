@@ -6,10 +6,10 @@ Halo **{{ $peminjaman->penanggung_jawab }}**,
 Status peminjaman Anda telah diperbarui. Berikut adalah rincian peminjaman Anda:
 
 <x-mail::panel>
-**Status:** {{ strtoupper($type) }}
-**Ruangan:** {{ $peminjaman->ruangan->kode_ruangan }} ({{ $peminjaman->ruangan->lantai->gedung->nama_gedung }})
-**Tanggal:** {{ \Carbon\Carbon::parse($peminjaman->tanggal_peminjaman)->translatedFormat('d F Y') }}
-**Waktu:** {{ $peminjaman->jam_mulai }} - {{ $peminjaman->jam_selesai }}
+**Status:** {{ strtoupper($type) }} <br>
+**Ruangan:** {{ $peminjaman->ruangan->kode_ruangan }} ({{ $peminjaman->ruangan->lantai->gedung->nama_gedung }}) <br>
+**Tanggal:** {{ \Carbon\Carbon::parse($peminjaman->tanggal_peminjaman)->translatedFormat('d F Y') }} c
+**Waktu:** {{ $peminjaman->jam_mulai }} - {{ $peminjaman->jam_selesai }} <br>
 </x-mail::panel>
 
 @if($type === 'approve')

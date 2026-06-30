@@ -43,15 +43,12 @@
                         if ($isApprove) {
                             $cardStyle = 'bg-emerald-50/20 hover:bg-emerald-50/50 dark:bg-emerald-950/10 dark:hover:bg-emerald-950/20';
                             $badgeStyle = 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400';
-                            $iconName = 'solar:check-circle-bold-duotone';
                         } elseif ($isReject) {
                             $cardStyle = 'bg-rose-50/20 hover:bg-rose-50/50 dark:bg-rose-950/10 dark:hover:bg-rose-950/20';
                             $badgeStyle = 'bg-rose-50 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400';
-                            $iconName = 'solar:close-circle-bold-duotone';
                         } elseif ($isCancel) {
                             $cardStyle = 'bg-amber-50/20 hover:bg-amber-50/50 dark:bg-amber-950/10 dark:hover:bg-amber-950/20';
                             $badgeStyle = 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400';
-                            $iconName = 'solar:clock-circle-bold-duotone';
                         }
                     @endphp
                     

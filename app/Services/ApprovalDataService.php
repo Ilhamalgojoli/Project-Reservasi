@@ -122,21 +122,35 @@ class ApprovalDataService
         return $data_peminjaman;
     }
 
-    public function getDetail($id, $detailApprove = null)
+    public function getDetail($id)
     {
-        $peminjaman = DataPeminjaman::with([
+        $peminjaman = $this->getBaseDetailQuery()->findOrFail($id);
+        return $this->formatDetailData($peminjaman);
+    }
+
+    public function findDataPeminjaman($id)
+    {
+        $peminjaman = $this->getBaseDetailQuery()
+            ->where('status', 'Approve')
+            ->findOrFail($id);
+            
+        return $this->formatDetailData($peminjaman);
+    }
+
+    private function getBaseDetailQuery()
+    {
+        return DataPeminjaman::with([
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
             'pembatalan'
         ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'email', 'kontak_penanggung_jawab', 'fakultas', 'prodi', 
         'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status', 'kode_matkul', 'hari', 
-        'waktu_mulai', 'waktu_selesai', 'alasan_penolakan')
-            ->when($detailApprove === 'approvedDetail', function($q) {
-                $q->where('status', 'Approve');  
-            })
-            ->findOrFail($id);
+        'waktu_mulai', 'waktu_selesai', 'alasan_penolakan');
+    }
 
+    private function formatDetailData($peminjaman)
+    {
         $peminjaman->kode_ruangan = $peminjaman->ruangan?->kode_ruangan ?? '-';
         $peminjaman->nama_gedung = $peminjaman->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
         $peminjaman->lantai = $peminjaman->ruangan?->lantai?->lantai ?? '-';
