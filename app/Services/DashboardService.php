@@ -326,7 +326,7 @@ class DashboardService
 
         # Ambil ruangan yang sedang dipakai dalam perkuliahan
         $matkulId = Ruangan::with('jadwalMatkul')
-            ->whereHas('jadwalMatkul', function($q) use($currentDay, $nowTime) {
+            ->whereHas('jadwalMatkul', function ($q) use ($currentDay, $nowTime) {
                 $q->where('hari', $currentDay)
                     ->where('shift_mulai', '<=', $nowTime)
                     ->where('shift_selesai', '>=', $nowTime);
@@ -367,10 +367,10 @@ class DashboardService
                         })
                             # Ambil data ruangan per gedung yang terpakai berapa, dari data jadwal matakuliah dengan relasi
                             ->orWhereHas('jadwalMatkul', function ($q) use ($currentDay, $nowTime) {
-                                $q->where('hari', $currentDay)
-                                    ->where('shift_mulai', '<=', $nowTime)
-                                    ->where('shift_selesai', '>=', $nowTime);
-                            });
+                            $q->where('hari', $currentDay)
+                                ->where('shift_mulai', '<=', $nowTime)
+                                ->where('shift_selesai', '>=', $nowTime);
+                        });
                     });
                 },
                 'ruangan as totalRuangan',

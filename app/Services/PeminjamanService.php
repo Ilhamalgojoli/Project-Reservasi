@@ -238,7 +238,8 @@ class PeminjamanService
                 ]);
 
                 # Mencatat log kegiatan setelah transaksi sukses
-                app(NotificationService::class)->pushKegiatanTerkini($data['penanggungJawab'], $data['ruanganID']);
+                $kodeRuangan = Ruangan::where('id', $data['ruanganID'])->value('kode_ruangan') ?? $data['ruanganID'];
+                app(NotificationService::class)->pushKegiatanTerkini($data['penanggungJawab'], $kodeRuangan);
 
                 return $record;
             });

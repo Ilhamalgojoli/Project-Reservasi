@@ -97,7 +97,8 @@
                             </td>
                             @php
                                 $labelStatus = match ($data->status){
-                                    'Waiting' => 'Menunggu Persetujuan'
+                                    'Waiting' => 'Menunggu Persetujuan',
+                                    default => $data->status,
                                 };
                             @endphp
                             <td class="px-4 py-2.5 text-center border-black">

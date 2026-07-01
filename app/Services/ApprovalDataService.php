@@ -13,8 +13,19 @@ class ApprovalDataService
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'ruangan_id', 'tanggal_peminjaman',
-        'waktu_mulai', 'waktu_selesai', 'status', 'hari', 'fakultas', 'prodi');
+        ])->select(
+            'id',
+            'jenis_peminjaman',
+            'penanggung_jawab',
+            'ruangan_id',
+            'tanggal_peminjaman',
+            'waktu_mulai',
+            'waktu_selesai',
+            'status',
+            'hari',
+            'fakultas',
+            'prodi'
+        );
 
         $query->where('status', 'Waiting');
 
@@ -27,18 +38,18 @@ class ApprovalDataService
         }
 
         $data_peminjaman = $query->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('jenis_peminjaman', 'like', "%{$search}%")
-                        ->orWhere('penanggung_jawab', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('jenis_peminjaman', 'like', "%{$search}%")
+                    ->orWhere('penanggung_jawab', 'like', "%{$search}%");
 
-                    $q->orWhereHas('ruangan', function ($q2) use ($search) {
-                        $q2->where('kode_ruangan', 'like', "%{$search}%")
-                            ->orWhereHas('lantai.gedung', function ($q3) use ($search) {
-                                $q3->where('nama_gedung', 'like', "%{$search}%");
-                            });
-                    });
+                $q->orWhereHas('ruangan', function ($q2) use ($search) {
+                    $q2->where('kode_ruangan', 'like', "%{$search}%")
+                        ->orWhereHas('lantai.gedung', function ($q3) use ($search) {
+                            $q3->where('nama_gedung', 'like', "%{$search}%");
+                        });
                 });
-            })->latest('created_at')->paginate(10);
+            });
+        })->latest('created_at')->paginate(10);
 
         foreach ($data_peminjaman as $r) {
             $r->kode_ruangan = $r->ruangan?->kode_ruangan ?? '-';
@@ -90,18 +101,18 @@ class ApprovalDataService
         }
 
         $data_peminjaman = $query->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('data_peminjaman.jenis_peminjaman', 'like', "%{$search}%")
-                        ->orWhere('data_peminjaman.penanggung_jawab', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('data_peminjaman.jenis_peminjaman', 'like', "%{$search}%")
+                    ->orWhere('data_peminjaman.penanggung_jawab', 'like', "%{$search}%");
 
-                    $q->orWhereHas('ruangan', function ($q2) use ($search) {
-                        $q2->where('kode_ruangan', 'like', "%{$search}%")
-                            ->orWhereHas('lantai.gedung', function ($q3) use ($search) {
-                                $q3->where('nama_gedung', 'like', "%{$search}%");
-                            });
-                    });
+                $q->orWhereHas('ruangan', function ($q2) use ($search) {
+                    $q2->where('kode_ruangan', 'like', "%{$search}%")
+                        ->orWhereHas('lantai.gedung', function ($q3) use ($search) {
+                            $q3->where('nama_gedung', 'like', "%{$search}%");
+                        });
                 });
-            })
+            });
+        })
             ->orderBy('pembatalan_peminjaman.cancel_requested', 'desc')
             ->orderBy('data_peminjaman.created_at', 'desc')
             ->paginate(10);
@@ -122,35 +133,37 @@ class ApprovalDataService
         return $data_peminjaman;
     }
 
-    public function getDetail($id)
+    public function getDetail($id, $detailApprove = null)
     {
-        $peminjaman = $this->getBaseDetailQuery()->findOrFail($id);
-        return $this->formatDetailData($peminjaman);
-    }
-
-    public function findDataPeminjaman($id)
-    {
-        $peminjaman = $this->getBaseDetailQuery()
-            ->where('status', 'Approve')
-            ->findOrFail($id);
-            
-        return $this->formatDetailData($peminjaman);
-    }
-
-    private function getBaseDetailQuery()
-    {
-        return DataPeminjaman::with([
+        $peminjaman = DataPeminjaman::with([
             'ruangan:id,kode_ruangan,lantai_id',
             'ruangan.lantai:id,gedung_id,lantai',
             'ruangan.lantai.gedung:id,nama_gedung',
             'pembatalan'
-        ])->select('id', 'jenis_peminjaman', 'penanggung_jawab', 'email', 'kontak_penanggung_jawab', 'fakultas', 'prodi', 
-        'keterangan_peminjaman', 'ruangan_id', 'muatan', 'tanggal_peminjaman', 'status', 'kode_matkul', 'hari', 
-        'waktu_mulai', 'waktu_selesai', 'alasan_penolakan');
-    }
+        ])->select(
+            'id',
+            'jenis_peminjaman',
+            'penanggung_jawab',
+            'email',
+            'kontak_penanggung_jawab',
+            'fakultas',
+            'prodi',
+            'keterangan_peminjaman',
+            'ruangan_id',
+            'muatan',
+            'tanggal_peminjaman',
+            'status',
+            'kode_matkul',
+            'hari',
+            'waktu_mulai',
+            'waktu_selesai',
+            'alasan_penolakan'
+        )
+            ->when($detailApprove === 'approvedDetail', function ($q) {
+                $q->where('status', 'Approve');
+            })
+            ->findOrFail($id);
 
-    private function formatDetailData($peminjaman)
-    {
         $peminjaman->kode_ruangan = $peminjaman->ruangan?->kode_ruangan ?? '-';
         $peminjaman->nama_gedung = $peminjaman->ruangan?->lantai?->gedung?->nama_gedung ?? '-';
         $peminjaman->lantai = $peminjaman->ruangan?->lantai?->lantai ?? '-';

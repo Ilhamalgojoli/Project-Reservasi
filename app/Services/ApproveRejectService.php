@@ -18,7 +18,7 @@ class ApproveRejectService
 
         # Pemicu Notifikasi dan Kegiatan Terkini
         app(NotificationService::class)->pushNotification($peminjaman, 'Approve');
-        app(NotificationService::class)->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'approve');
+        app(NotificationService::class)->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan->kode_ruangan ?? $peminjaman->ruangan_id, 'approve');
 
         $this->prepareEmailData($peminjaman);
 
@@ -41,7 +41,7 @@ class ApproveRejectService
 
         # Pemicu Notifikasi dan Kegiatan Terkini
         app(NotificationService::class)->pushNotification($peminjaman, 'Reject');
-        app(NotificationService::class)->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan_id, 'reject');
+        app(NotificationService::class)->pushKegiatanTerkini($peminjaman->penanggung_jawab, $peminjaman->ruangan->kode_ruangan ?? $peminjaman->ruangan_id, 'reject');
 
         $this->prepareEmailData($peminjaman);
 

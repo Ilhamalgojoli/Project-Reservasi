@@ -58,8 +58,8 @@ class DashboardUser extends Component
 
             app(NotificationService::class)->pushKegiatanTerkini(
                 $peminjaman->penanggung_jawab,
-                $peminjaman->ruangan_id,
-                'CancelRequest',
+                $peminjaman->ruangan->kode_ruangan ?? '',
+                'CancelRequest',    
                 $peminjaman->id,
                 $alasan
             );

@@ -36,29 +36,33 @@
                         $isReject = str_contains($notif['pesan'], 'ditolak');
                         $isCancel = str_contains($notif['pesan'], 'dibatalkan');
 
-                        $cardStyle = 'bg-transparent hover:bg-neutral-50 dark:hover:bg-neutral-700/50';
+                        $cardStyle = 'bg-transparent border-transparent hover:bg-neutral-50 hover:border-neutral-200 dark:hover:bg-neutral-700/50 dark:hover:border-neutral-600';
                         $badgeStyle = 'bg-neutral-100 text-neutral-500 dark:bg-neutral-700 dark:text-neutral-400';
+                        $timeStyle = 'text-neutral-400 dark:text-neutral-500';
                         $iconName = 'solar:info-circle-bold-duotone';
 
                         if ($isApprove) {
-                            $cardStyle = 'bg-emerald-50/20 hover:bg-emerald-50/50 dark:bg-emerald-950/10 dark:hover:bg-emerald-950/20';
+                            $cardStyle = 'bg-emerald-50/20 border-emerald-200 hover:bg-emerald-50/50 dark:bg-emerald-950/10 dark:border-emerald-900/50 dark:hover:bg-emerald-950/20';
                             $badgeStyle = 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400';
+                            $timeStyle = 'text-black dark:text-white font-bold';
                         } elseif ($isReject) {
-                            $cardStyle = 'bg-rose-50/20 hover:bg-rose-50/50 dark:bg-rose-950/10 dark:hover:bg-rose-950/20';
+                            $cardStyle = 'bg-rose-50/20 border-rose-200 hover:bg-rose-50/50 dark:bg-rose-950/10 dark:border-rose-900/50 dark:hover:bg-rose-950/20';
                             $badgeStyle = 'bg-rose-50 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400';
+                            $timeStyle = 'text-black dark:text-white font-bold';
                         } elseif ($isCancel) {
-                            $cardStyle = 'bg-amber-50/20 hover:bg-amber-50/50 dark:bg-amber-950/10 dark:hover:bg-amber-950/20';
-                            $badgeStyle = 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400';
+                            $cardStyle = 'bg-gray-100 border-gray-300 hover:bg-gray-200 dark:bg-gray-800 dark:border-black dark:hover:bg-gray-950';
+                            $badgeStyle = 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
+                            $timeStyle = 'text-black dark:text-white font-bold';
                         }
                     @endphp
                     
-                    <div class="p-3 rounded-xl flex items-start gap-3 transition-colors {{ $cardStyle }}">
+                    <div class="p-3 rounded-xl flex items-start gap-3 transition-colors border {{ $cardStyle }}">
                         <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 {{ $badgeStyle }}">
                             <iconify-icon icon="{{ $iconName }}" class="text-lg"></iconify-icon>
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-semibold text-neutral-700 dark:text-neutral-300 leading-snug break-words whitespace-normal text-left">{{ $notif['pesan'] }}</p>
-                            <p class="text-[10px] text-neutral-400 dark:text-neutral-500 mt-1 flex items-center gap-1">
+                            <p class="text-[10px] mt-1 flex items-center gap-1 {{ $timeStyle }}">
                                 <iconify-icon icon="solar:clock-circle-linear" class="text-xs"></iconify-icon>
                                 <span>{{ $notif['waktu'] }}</span>
                             </p>

@@ -33,7 +33,7 @@
                 <select wire:model.live="filterJenis"
                     class="appearance-none w-full pl-4 flex-1 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
                     <option value="">JENIS PEMINJAMAN</option>
-                    @foreach($jenis_peminjaman as $value => $label)
+                    @foreach ($jenis_peminjaman as $value => $label)
                         <option value="{{ $value }}">{{ strtoupper($label) }}</option>
                     @endforeach
                 </select>
@@ -42,7 +42,7 @@
                 <select wire:model.live="filterHari"
                     class="appearance-none w-full pl-4 pr-9 py-2.5 text-xs font-black uppercase tracking-wider text-gray-600 bg-white border border-gray-200 rounded-lg outline-none cursor-pointer hover:border-gray-300 transition-colors shadow-sm">
                     <option value="">HARI PEMINJAMAN</option>
-                    @foreach($hari_list as $h)
+                    @foreach ($hari_list as $h)
                         <option value="{{ $h }}">{{ strtoupper($h) }}</option>
                     @endforeach
                 </select>
@@ -112,7 +112,8 @@
                             </td>
                             @php
                                 $labelStatus = match ($data->status) {
-                                    'Approve' => 'Disetujui'
+                                    'Approve' => 'Disetujui',
+                                    default => $data->status,
                                 };
                             @endphp
                             <td class="px-4 text-center border-black">
@@ -122,7 +123,7 @@
                                         <iconify-icon icon="mdi:check-circle" class="text-sm"></iconify-icon>
                                         {{ $labelStatus }}
                                     </span>
-                                    @if($data->cancel_requested)
+                                    @if ($data->cancel_requested)
                                         <span
                                             class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[8px] font-black bg-red-100 text-red-600 border border-red-200 uppercase tracking-wider shadow-sm">
                                             MINTA BATAL
@@ -140,7 +141,7 @@
                                             class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
                                     </button>
 
-                                    <button type="button" 
+                                    <button type="button"
                                         data-reason="{{ $data->pembatalan?->cancel_request_reason ?? '' }}"
                                         @click="
                                             let reason = $el.getAttribute('data-reason');
@@ -148,7 +149,7 @@
                                                     title: 'Batalkan Peminjaman?',
                                                     text: 'Berikan alasan singkat untuk pembatalan peminjaman ini:',
                                                     icon: 'warning',
-                                                    input: 'text',
+                                                    input: 'textarea',
                                                     inputValue: reason,
                                                     inputPlaceholder: 'Contoh: Tidak jadi meminjam dikarenakan perubahan jadwal...',
                                                     showCancelButton: true,
@@ -174,7 +175,8 @@
                                                     }
                                                 });
                                             "
-                                        class="p-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300 group shadow-sm flex items-center justify-center"
+                                        class="p-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl hover:bg-red-600 hover:text-white 
+                                        hover:border-red-600 transition-all duration-300 group shadow-sm flex items-center justify-center"
                                         title="Batalkan Reservasi">
                                         <iconify-icon icon="solar:trash-bin-trash-bold-duotone"
                                             class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
@@ -182,6 +184,7 @@
                                 </div>
                             </td>
                         </tr>
+
                     @empty
                         <tr>
                             <td colspan="6" class="px-6 py-20 text-center">

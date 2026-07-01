@@ -39,8 +39,6 @@
 
                         <td class="px-6 py-5">
                             <div class="flex items-center justify-center gap-2">
-                                <iconify-icon icon="mdi:office-building-marker"
-                                    class="text-[#e51411] text-lg"></iconify-icon>
                                 <span
                                     class="font-black text-gray-900 tracking-tight text-base">{{ $data->kode_ruangan }}</span>
                             </div>
@@ -85,7 +83,6 @@
 
                         <td class="px-6 py-5">
                             <div class="flex items-center justify-center gap-1.5">
-                                <iconify-icon icon="mdi:account-group" class="text-blue-500 text-lg"></iconify-icon>
                                 <span class="font-black text-gray-800 text-base">{{ $data->muatan_kapasitas }}</span>
                             </div>
                         </td>

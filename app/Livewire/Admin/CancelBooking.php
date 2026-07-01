@@ -55,6 +55,10 @@ class CancelBooking extends Component
         if ($this->detailId) {
             try {
                 $detail = app(ApprovalDataService::class)->getDetail($this->detailId, 'approvedDetail');
+
+                if ($detail->status !== 'Approve') {
+                    throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
+                }
                 return new LengthAwarePaginator(
                     [$detail],
                     1,
@@ -63,7 +67,13 @@ class CancelBooking extends Component
                     ['path' => Paginator::resolveCurrentPath()]
                 );
             } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                $this->detailId = null;
+                return new LengthAwarePaginator(
+                    [],
+                    0,
+                    10,
+                    1,
+                    ['path' => Paginator::resolveCurrentPath()]
+                );
             }
         }
 
@@ -88,6 +98,8 @@ class CancelBooking extends Component
 
         try {
             app(ApproveRejectService::class)->cancel($cancelId, session('username'), $cancelReason, true);
+
+
 
             $this->dispatch('success', message: 'Reservasi berhasil dibatalkan');
         } catch (\Exception $e) {

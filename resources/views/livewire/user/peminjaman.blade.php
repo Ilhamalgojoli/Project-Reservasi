@@ -145,7 +145,7 @@
                     confirmButton: swalConfig.customClass.confirmButton
                 }
             }).then(() => {
-                Livewire.dispatch('resetSelect');
+                
             });
         });
 
@@ -159,7 +159,6 @@
                     confirmButton: swalConfig.customClass.confirmButton
                 }
             }).then(() => {
-                Livewire.dispatch('resetSelect');
                 window.location.href = "{{ route('index') }}";
             });
         });

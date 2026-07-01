@@ -394,7 +394,7 @@
             Swal.fire({
                 title: 'Batalkan Peminjaman?',
                 text: 'Silakan tuliskan alasan singkat pembatalan peminjaman Anda.',
-                input: 'text',
+                input: 'textarea',
                 inputPlaceholder: 'Contoh: Salah pilih ruangan / jam...',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Batalkan',
@@ -418,7 +418,7 @@
             Swal.fire({
                 title: 'Ajukan Pembatalan?',
                 text: 'Silakan tulis alasan Anda membatalkan peminjaman ini. Permintaan akan dikirimkan ke Admin/BAA untuk diverifikasi.',
-                input: 'text',
+                input: 'textarea',
                 inputPlaceholder: 'Contoh: Kegiatan dipindahkan ke hari lain...',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Ajukan',

@@ -10,7 +10,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {{-- Lantai --}}
                 <div class="flex flex-col gap-2 lg:col-span-1">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Lantai</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Lantai
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:stairs"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -29,7 +31,9 @@
 
                 {{-- Ruangan --}}
                 <div class="flex flex-col gap-2 lg:col-span-1">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Ruangan</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Ruangan
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:office-building-marker"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -47,7 +51,9 @@
                 </div>
 
                 <div class="flex flex-col gap-2 lg:col-span-1">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Tanggal</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Tanggal
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="solar:calendar-bold"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl cursor-pointer"
@@ -64,7 +70,9 @@
 
                 {{-- Jam Peminjaman --}}
                 <div class="flex flex-col gap-2 lg:col-span-1">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Waktu Mulai - Waktu Selesai</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Waktu Mulai - Waktu Selesai
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:clock-time-four"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -104,7 +112,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-group"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -124,7 +134,8 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Nama Penanggung Jawab</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Nama Lengkap <span
+                            class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -140,7 +151,9 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Nomor WhatsApp / HP</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Nomor WhatsApp / HP
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:phone-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -156,7 +169,9 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Email Aktif</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Email Aktif
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:email-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
@@ -173,7 +188,9 @@
 
                 {{-- Deskripsi --}}
                 <div class="flex flex-col gap-2 md:col-span-2 lg:col-span-4">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Keperluan / Deskripsi Kegiatan</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1">Keperluan / Deskripsi Kegiatan
+                        <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:text-box-outline"
                             class="absolute left-3 top-3 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
