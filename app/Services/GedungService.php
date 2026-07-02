@@ -40,7 +40,7 @@ class GedungService
             $gedung = Gedung::findOrFail($id);
             return $gedung->delete();
         } catch (\Exception $e) {
-            throw new \Exception("Gagal menghapus gedung");
+            throw new \Exception("Gagal menghapus gedung " . $e->getMessage());
         }
     }
 

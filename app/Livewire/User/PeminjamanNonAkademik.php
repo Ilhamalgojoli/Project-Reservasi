@@ -13,6 +13,7 @@ class PeminjamanNonAkademik extends Component
     use WithFileUploads;
 
     public $dokumen;
+    public $nama_dokumen;
     public $lantai = [];
     public $ruangan = [];
     public $lantaiID = null;
@@ -74,10 +75,16 @@ class PeminjamanNonAkademik extends Component
             $data = $this->validate();
 
             if ($this->dokumen) {
-                $path = $this->dokumen->store('dokumen', 'public');
+                $originalName = $this->dokumen->getClientOriginalName();
+                $sanitizedName = time() . '_' . preg_replace('/[^A-Za-z0-9\._-]/', '_', $originalName);
+                $path = $this->dokumen->storeAs('dokumen', $sanitizedName, 'public');
                 $data['dokumen'] = $path;
+                $data['nama_dokumen'] = $originalName;
+                $this->nama_dokumen = $originalName;
             } else {
                 $data['dokumen'] = null;
+                $data['nama_dokumen'] = null;
+                $this->nama_dokumen = null;
             }
 
             # cek siapa actor siapa yg melakukan submit
@@ -107,7 +114,8 @@ class PeminjamanNonAkademik extends Component
             'kontakPenanggungJawab',
             'email',
             'maxKapasitas',
-            'dokumen'
+            'dokumen',
+            'nama_dokumen'
         ]);
     }
 

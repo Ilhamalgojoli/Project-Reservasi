@@ -13,6 +13,7 @@ class PeminjamanAkademik extends Component
     use WithFileUploads;
 
     public $dokumen;
+    public $nama_dokumen;
     public $lantai = [];
 
     public $ruangan = [];
@@ -103,10 +104,16 @@ class PeminjamanAkademik extends Component
             $data = $this->validate();
 
             if ($this->dokumen) {
-                $path = $this->dokumen->store('dokumen', 'public');
+                $originalName = $this->dokumen->getClientOriginalName();
+                $sanitizedName = time() . '_' . preg_replace('/[^A-Za-z0-9\._-]/', '_', $originalName);
+                $path = $this->dokumen->storeAs('dokumen', $sanitizedName, 'public');
                 $data['dokumen'] = $path;
+                $data['nama_dokumen'] = $originalName;
+                $this->nama_dokumen = $originalName;
             } else {
                 $data['dokumen'] = null;
+                $data['nama_dokumen'] = null;
+                $this->nama_dokumen = null;
             }
 
             if (app(PeminjamanService::class)->create($data, session('role_name'))) {
@@ -136,7 +143,8 @@ class PeminjamanAkademik extends Component
             'kontakPenanggungJawab',
             'email',
             'maxKapasitas',
-            'dokumen'
+            'dokumen',
+            'nama_dokumen'
         ]);
         $this->dispatch('resetSelect');
     }

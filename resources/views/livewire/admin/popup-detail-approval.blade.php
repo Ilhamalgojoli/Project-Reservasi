@@ -177,7 +177,7 @@
                             <div class="p-4 bg-emerald-50/30 rounded-[8px] border border-emerald-100/50 ml-4 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <iconify-icon icon="solar:document-bold" class="text-2xl text-emerald-600"></iconify-icon>
-                                    <span class="text-xs font-bold text-gray-700">Lihat Dokumen Pendukung</span>
+                                    <span class="text-xs font-bold text-gray-700">{{ $peminjamanDetail->nama_dokumen ?? 'Lihat Dokumen Pendukung' }}</span>
                                 </div>
                                 <a href="{{ asset('storage/' . $peminjamanDetail->dokumen) }}" target="_blank"
                                     class="px-4 py-2 bg-white border border-emerald-100 text-emerald-600 rounded-xl text-xs font-black uppercase hover:bg-emerald-600 hover:text-white transition-all shadow-sm">

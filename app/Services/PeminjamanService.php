@@ -133,6 +133,7 @@ class PeminjamanService
             'deskripsi' => 'required|string|max:500',
             'userIdentifier' => 'required|string',
             'dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'nama_dokumen' => 'nullable|string',
         ];
 
         if ($type === 'akademik') {
@@ -236,6 +237,7 @@ class PeminjamanService
                     'email' => $data['email'],
                     'keterangan_peminjaman' => $data['deskripsi'],
                     'dokumen' => $data['dokumen'] ?? null,
+                    'nama_dokumen' => $data['nama_dokumen'] ?? null,
                     'status' => ($role === 'BAA') ? 'Approve' : 'Waiting',
                     'waktu_mulai' => $start,
                     'waktu_selesai' => $end,

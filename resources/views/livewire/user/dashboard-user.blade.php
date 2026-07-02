@@ -162,7 +162,7 @@
                         <p class="text-xs mt-2 text-gray-400">Belum ada peminjaran</p>
                     </div>
                 @else
-                    <div class="flex flex-col divide-y divide-gray-100">
+                    <div class="flex flex-col divide-y divide-gray-100 max-h-[350px] overflow-y-auto pr-1 custom-scrollbar">
                         @foreach ($recent as $item)
                             @php
                                 $status = $item->status;
@@ -268,7 +268,7 @@
                     </a>
                 </div>
             @else
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3 max-h-[480px] overflow-y-auto pr-2 custom-scrollbar">
                     @foreach ($recent as $item)
                         @php
                             $statusConfig = match ($item->status) {

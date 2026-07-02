@@ -30,6 +30,7 @@ class DataPeminjaman extends Model
         'alasan_penolakan',
         'keterangan_peminjaman',
         'dokumen',
+        'nama_dokumen',
         'waktu_mulai',
         'waktu_selesai',
         'total_waktu'
