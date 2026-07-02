@@ -1,4 +1,4 @@
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-5">
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-5">
     <div class="flex items-center justify-between border-b border-gray-50 pb-4">
         <div class="flex items-center gap-3">
             <div class="p-2 bg-red-50 rounded-lg">
@@ -14,15 +14,21 @@
         <div class="grid grid-cols-2 gap-2">
             <div class="flex items-center gap-2">
                 <div class="w-4 h-4 rounded-full bg-amber-400"></div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase">Menunggu Persetujuan</span>
+                <span class="text-xs font-black text-gray-500 uppercase tracking-wide">Menunggu Persetujuan</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-4 h-4 rounded-full bg-[#e51411]"></div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase">Sudah Disetujui</span>
+                <span class="text-xs font-black text-gray-500 uppercase tracking-wide">Sudah dibooking</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-4 h-4 rounded-full bg-blue-500"></div>
-                <span class="text-[10px] font-bold text-gray-400 uppercase">Jadwal Perkuliahan</span>
+                <span class="text-xs font-black text-gray-500 uppercase tracking-wide">Jadwal Perkuliahan</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div>
+                </div>
+                <span class="text-xs font-black text-gray-500 uppercase tracking-wide">Tersedia</span>
             </div>
         </div>
     </div>
@@ -94,12 +100,6 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
-
-            <div class="p-4 bg-emerald-50/30 border-t border-gray-500 text-center">
-                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em]">
-                    Keterangan: <span class="text-gray-400 ml-1 italic">(Hijau Titik = Tersedia)</span>
-                </p>
             </div>
         </div>
     @else

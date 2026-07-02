@@ -48,11 +48,13 @@ class PeminjamanNonAkademik extends Component
         $this->jenisPeminjaman = $jenisPeminjaman;
         $this->penanggungJawab = (string) session('username');
         $this->userIdentifier = (string) session('user_identifier');
+        $this->kontakPenanggungJawab = (string) session('phone_number');
     }
 
     public function updatedLantaiID($value)
     {
         $this->ruangan = app(PeminjamanService::class)->getRuangan($value);
+        $this->dispatch('floorSelected', ruangan: $this->ruangan);
     }
 
     public function updatedRuanganID($value)
@@ -82,6 +84,7 @@ class PeminjamanNonAkademik extends Component
     private function sendSuccessResponse()
     {
         $this->dispatch('successNonAkademik');
+        $this->dispatch('floorSelected', ruangan: []);
         $this->reset([
             'lantaiID',
             'ruanganID',

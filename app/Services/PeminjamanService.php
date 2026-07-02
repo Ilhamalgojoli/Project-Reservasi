@@ -31,7 +31,7 @@ class PeminjamanService
 
     public function getRuangan($lantaiId)
     {
-        return Ruangan::select('id', 'kode_ruangan')
+        return Ruangan::select('id', 'kode_ruangan', 'muatan_kapasitas')
             ->where('status', 'Aktif')
             ->where('lantai_id', $lantaiId)
             ->get()
@@ -512,5 +512,17 @@ class PeminjamanService
         }
 
         return $grouped;
+    }
+
+    public function getRuanganByGedung(int $gedungId)
+    {
+        return Ruangan::select('ruangans.id', 'ruangans.kode_ruangan', 'ruangans.muatan_kapasitas', 'lantais.lantai')
+            ->join('lantais', 'ruangans.lantai_id', '=', 'lantais.id')
+            ->where('lantais.gedung_id', $gedungId)
+            ->where('ruangans.status', 'Aktif')
+            ->orderBy('lantais.id', 'asc')
+            ->orderBy('ruangans.kode_ruangan', 'asc')
+            ->get()
+            ->toArray();
     }
 }

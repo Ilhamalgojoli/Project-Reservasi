@@ -67,6 +67,7 @@ class PeminjamanAkademik extends Component
         $this->jenisPeminjaman = $jenisPeminjaman;
         $this->penanggungJawab = (string) session('username');
         $this->userIdentifier = (string) session('user_identifier');
+        $this->kontakPenanggungJawab = (string) session('phone_number');
     }
 
     public function updatedProdi($value)
@@ -77,6 +78,7 @@ class PeminjamanAkademik extends Component
     public function updatedLantaiID($value)
     {
         $this->ruangan = app(PeminjamanService::class)->getRuangan($value);
+        $this->dispatch('floorSelected', ruangan: $this->ruangan);
     }
 
     public function updatedRuanganID($value)
@@ -110,6 +112,7 @@ class PeminjamanAkademik extends Component
     private function sendSuccessResponse()
     {
         $this->dispatch('successAkademik');
+        $this->dispatch('floorSelected', ruangan: []);
         $this->reset([
             'lantaiID',
             'ruanganID',

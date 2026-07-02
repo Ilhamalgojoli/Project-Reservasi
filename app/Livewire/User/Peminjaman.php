@@ -11,9 +11,11 @@ class Peminjaman extends Component
     public $routeId;
     public $jenisPeminjaman;
     public $fakultas;
+    public $fakultasName = '';
     public $faculties = [];
     public $prodies = [];
     public $prodi;
+    public $prodiName = '';
     public $errorFakultas = null;
     public $errorProdi = null;
     public $buildingName = 'Gedung';
@@ -34,9 +36,12 @@ class Peminjaman extends Component
 
         $this->faculties = app(PeminjamanService::class)->getFakultas();
 
-        # Kalau nilai fakultas nya ada hasil dari session ambil dan simpan di properti fakultas
+        # Kalau nilai fakultas nya ada hasil dari session, simpan ID-nya
         if (session('faculty')) {
             $this->fakultas = (int) session('faculty');
+            # Cari nama fakultas dari faculties
+            $matchFakultas = collect($this->faculties)->firstWhere('id', $this->fakultas);
+            $this->fakultasName = $matchFakultas ? $matchFakultas['fakultas'] : (session('faculty_name') ?? '');
         }
 
         if ($this->fakultas) {
@@ -78,9 +83,12 @@ class Peminjaman extends Component
     {
         $this->prodies = app(PeminjamanService::class)->getProdi($this->fakultas);
 
-        # Kalau nilai prodi nya ada hasil dari session ambil dan simpan di properti prodi
+        # Kalau nilai prodi nya ada dari session, simpan ID-nya dan cari namanya
         if (session('studyProgram')) {
             $this->prodi = (int) session('studyProgram');
+            # Cari nama prodi dari prodies
+            $matchProdi = collect($this->prodies)->firstWhere('id', $this->prodi);
+            $this->prodiName = $matchProdi ? $matchProdi['prodi'] : (session('studyProgram_name') ?? '');
         }
     }
 

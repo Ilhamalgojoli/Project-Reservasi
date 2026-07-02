@@ -112,7 +112,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan
+                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Peserta 
                         <span class="text-red-500">*</span>
                     </label>
                     <div class="relative group">
@@ -139,7 +139,7 @@
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
-                        <input wire:model="penanggungJawab" type="text"
+                        <input wire:model="penanggungJawab" type="text" @if ($penanggungJawab) disabled @endif
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl 
                             text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 
                             focus:border-[#e51411] transition-all outline-none"
@@ -158,6 +158,9 @@
                         <iconify-icon icon="mdi:phone-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
                         <input wire:model="kontakPenanggungJawab" maxlength="15"
+                            @if ($kontakPenanggungJawab)
+                                disabled
+                            @endif
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm 
                             font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 
                             focus:border-[#e51411] transition-all outline-none"

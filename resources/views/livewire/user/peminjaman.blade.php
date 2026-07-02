@@ -1,6 +1,7 @@
-<section class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300">
-    <div class="flex flex-col gap-10">
-        <div class="flex flex-col gap-3 relative border-b border-gray-50 pb-8">
+<div class="space-y-6">
+    {{-- Card 1: Informasi Gedung --}}
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300">
+        <div class="flex flex-col gap-3">
             <div class="flex items-center gap-3">
                 <div class="p-3 bg-red-50 rounded-xl">
                     <iconify-icon icon="clarity:building-solid" class="text-[#e51411] text-2xl"></iconify-icon>
@@ -14,8 +15,12 @@
             <p class="text-gray-500 text-sm leading-relaxed italic max-w-2xl px-1">
                 "{{ $buildingDesc ?: 'Pastikan data yang dipilih telah sesuai untuk menampilkan data ruangan yang tersedia di gedung ini.' }}"
             </p>
-            <div class="absolute -bottom-[1px] left-0 w-24 h-1 bg-[#e51411] rounded-full"></div>
         </div>
+    </div>
+
+    {{-- Card 2: Formulir Peminjaman --}}
+    <section class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300">
+        <div class="flex flex-col gap-10">
 
         <div class="space-y-6">
             <div class="flex items-center gap-3 px-1">
@@ -34,14 +39,19 @@
                     <div class="relative group">
                         <iconify-icon icon="mdi:university-outline"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                        <select wire:model.live="fakultas" @if (session('faculty')) disabled @else selected @endif
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none ">
-                            <option value="">Pilih Fakultas / Direktorat</option>
-                            @foreach ($faculties as $data)
-                                <option value="{{ $data['id'] }}">{{ $data['fakultas'] }}</option>
-                            @endforeach
-                            <option value="DIREKTORAT KHUSUS">LAINNYA</option>
-                        </select>
+                        @if (session('faculty'))
+                            <input type="text" value="{{ $fakultasName }}" disabled
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm font-bold text-gray-500 outline-none cursor-not-allowed" />
+                        @else
+                            <select wire:model.live="fakultas"
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none ">
+                                <option value="">Pilih Fakultas / Direktorat</option>
+                                @foreach ($faculties as $data)
+                                    <option value="{{ $data['id'] }}">{{ $data['fakultas'] }}</option>
+                                @endforeach
+                                <option value="DIREKTORAT KHUSUS">LAINNYA</option>
+                            </select>
+                        @endif
                     </div>
                     @if ($errorFakultas)
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $errorFakultas }}</p>
@@ -54,23 +64,30 @@
                         <span class="text-red-500">*</span>
                     </label>
                     <div class="relative group">
+                        <iconify-icon icon="mdi:school-outline"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
                         <div x-show="fakultas === 'DIREKTORAT KHUSUS'" style="display: none;">
-                            <input wire:model.blur="prodi" type="text" class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl 
+                            <input wire:model.blur="prodi" type="text"
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl 
                             text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 
-                            focus:border-[#e51411] transition-all outline-none" placeholder="Contoh: PuTi" />
+                            focus:border-[#e51411] transition-all outline-none"
+                                placeholder="Contoh: PuTi" />
                         </div>
                         <div x-show="fakultas !== 'DIREKTORAT KHUSUS'" style="display: none;">
-                            <iconify-icon icon="mdi:folder-account-outline"
-                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-lg"></iconify-icon>
-                            <select wire:model.live="prodi" @if (session('studyProgram')) disabled @else selected @endif
-                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none ">
-                                <option value="">Pilih Prodi</option>
-                                @foreach ($prodies as $data)
-                                    <option value="{{ $data['id'] }}">
-                                        {{ $data['prodi'] }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            @if (session('studyProgram'))
+                                <input type="text" value="{{ $prodiName }}" disabled
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm font-bold text-gray-500 outline-none cursor-not-allowed" />
+                            @else
+                                <select wire:model.live="prodi"
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none ">
+                                    <option value="">Pilih Prodi</option>
+                                    @foreach ($prodies as $data)
+                                        <option value="{{ $data['id'] }}">
+                                            {{ $data['prodi'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                     </div>
                     @if ($errorProdi)
@@ -111,13 +128,13 @@
 
             <div class="px-1 animate-in fade-in slide-in-from-bottom-5 duration-700">
                 @if ($jenisPeminjaman === 'akademik')
-                    <livewire:user.peminjaman-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman"
-                        :fakultas="$fakultas" :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman" />
+                    <livewire:user.peminjaman-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
+                        :prodi="$prodi" :key="'akademik-' . $jenisPeminjaman" />
                 @endif
 
                 @if ($jenisPeminjaman === 'non-akademik')
-                    <livewire:user.peminjaman-non-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman"
-                        :fakultas="$fakultas" :prodi="$prodi" :key="'non-akademik-' . $jenisPeminjaman" />
+                    <livewire:user.peminjaman-non-akademik :id="$routeId" :jenis-peminjaman="$jenisPeminjaman" :fakultas="$fakultas"
+                        :prodi="$prodi" :key="'non-akademik-' . $jenisPeminjaman" />
                 @endif
             </div>
         </div>
@@ -145,7 +162,7 @@
                     confirmButton: swalConfig.customClass.confirmButton
                 }
             }).then(() => {
-                
+
             });
         });
 
@@ -179,3 +196,4 @@
         Livewire.on('errorNonAkademik', handleError);
     });
 </script>
+</div>

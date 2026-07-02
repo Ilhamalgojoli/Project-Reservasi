@@ -131,7 +131,7 @@
                 </div>
                 {{-- Kapasitas --}}
                 <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Muatan <span
+                    <label class="text-xs font-bold text-gray-500 ml-1">Jumlah Peserta <span
                             class="text-red-500">*</span></label>
                     <div class="relative group">
                         <iconify-icon icon="mdi:account-group"
