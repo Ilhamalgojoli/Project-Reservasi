@@ -37,8 +37,17 @@ class AuthController extends Controller
                 'user_identifier' => $service['profile']['numberid'] ?? rand(10000000, 99999999),
                 'profilephoto' => $service['profile']['photo'] ?? null,
                 'faculty' => $service['profile']['facultyid'] ?? null,
+                'faculty_name' => $service['profile']['faculty'] ?? null,
                 'studyProgram' => $service['profile']['studyprogramid'] ?? null,
+                'studyProgram_name' => $service['profile']['studyprogram'] ?? null,
+                'phone_number' => $service['profile']['phone'] ?? null,
             ]);
+
+            $roles = session('roles', []);
+            
+            if(is_array($roles) && count($roles) === 1) {
+                return redirect()->route('index');
+            }
 
             return redirect()->route('role-option');
         } catch (\Exception $e) {
