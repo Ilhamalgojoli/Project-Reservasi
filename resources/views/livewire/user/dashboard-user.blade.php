@@ -417,7 +417,7 @@
         Livewire.on('confirmRequestCancel', (event) => {
             Swal.fire({
                 title: 'Ajukan Pembatalan?',
-                text: 'Silakan tulis alasan Anda membatalkan peminjaman ini. Permintaan akan dikirimkan ke Admin/BAA untuk diverifikasi.',
+                text: 'Silakan tulis alasan Anda membatalkan peminjaman ini. Permintaan akan dikirimkan ke Admin untuk diverifikasi.',
                 input: 'textarea',
                 inputPlaceholder: 'Contoh: Kegiatan dipindahkan ke hari lain...',
                 showCancelButton: true,

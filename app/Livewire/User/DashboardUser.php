@@ -66,7 +66,7 @@ class DashboardUser extends Component
 
             $this->dispatch('successCancel', text: 'Permintaan pembatalan peminjaman berhasil dikirim. Admin akan segera meninjau permohonan Anda.');
         } catch (\Exception $e) {
-            $this->dispatch('failedCancel', text: $e->getMessage() ?: 'gagal mengirim permintaan pembatalan peminjaman');
+            $this->dispatch('failedCancel', text: 'gagal mengirim permintaan pembatalan peminjaman');
         }
     }
 }

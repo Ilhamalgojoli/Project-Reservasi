@@ -101,7 +101,7 @@ class CancelBooking extends Component
 
 
 
-            $this->dispatch('success', message: 'Reservasi berhasil dibatalkan');
+            $this->dispatch('success', message: 'Peminjaman berhasil dibatalkan');
         } catch (\Exception $e) {
             $this->dispatch('error', message: $e->getMessage());
         }

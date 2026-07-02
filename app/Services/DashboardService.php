@@ -236,7 +236,7 @@ class DashboardService
         $sem = '';
         $y = '';
 
-        if ($currentMonth >= 2 && $currentMonth <= 7) {
+        if ($currentMonth >= 2 && $currentMonth <= 8) {
             $y = $currentYear;
             $sem = 'Genap';
         } else {
@@ -308,7 +308,7 @@ class DashboardService
         return $this->applyPeriodeFilter($query, $periode)->count();
     }
 
-    # Untuk mendapatkan data penggunaan ruangan
+    # Untuk mendapatkan data penggunaan ruangan untuk card dashboard
     public function getRuanganTerpakai(?string $periode = null): int
     {
         $currentDay = $this->getCurrentDay();
@@ -326,10 +326,11 @@ class DashboardService
 
         # Ambil ruangan yang sedang dipakai dalam perkuliahan
         $matkulId = Ruangan::with('jadwalMatkul')
-            ->whereHas('jadwalMatkul', function ($q) use ($currentDay, $nowTime) {
+            ->whereHas('jadwalMatkul', function ($q) use ($currentDay, $nowTime, $periode) {
                 $q->where('hari', $currentDay)
                     ->where('shift_mulai', '<=', $nowTime)
                     ->where('shift_selesai', '>=', $nowTime);
+                $this->applyPeriodeFilter($q, $periode);
             })
             ->distinct('id')
             ->pluck('id')
@@ -366,10 +367,13 @@ class DashboardService
                                 });
                         })
                             # Ambil data ruangan per gedung yang terpakai berapa, dari data jadwal matakuliah dengan relasi
-                            ->orWhereHas('jadwalMatkul', function ($q) use ($currentDay, $nowTime) {
+                            ->orWhereHas('jadwalMatkul', function ($q) use ($currentDay, $nowTime, $periode) {
                             $q->where('hari', $currentDay)
                                 ->where('shift_mulai', '<=', $nowTime)
-                                ->where('shift_selesai', '>=', $nowTime);
+                                ->where('shift_selesai', '>=', $nowTime)
+                                ->when($periode, function ($q2) use ($periode) {
+                                    $this->applyPeriodeFilter($q2, $periode);
+                                });
                         });
                     });
                 },
@@ -402,14 +406,14 @@ class DashboardService
                             $this->applyPeriodeFilter($q, $periode);
                         });
                     }
+
                     # Filter data ruang gedung yang terpakai berdasarkan waktu jadwal perkuliahan
                     elseif ($filter === 'perkuliahan') {
-                        $q->whereIn('ruangans.id', function ($qSub) use ($currentDay, $nowTime) {
-                            $qSub->select('ruangan_id')
-                                ->from('jadwal_matkul')
-                                ->where('hari', $currentDay)
+                        $q->whereHas('jadwalMatkul', function ($qSub) use ($currentDay, $nowTime, $periode) {
+                            $qSub->where('hari', $currentDay)
                                 ->where('shift_mulai', '<=', $nowTime)
                                 ->where('shift_selesai', '>=', $nowTime);
+                            $this->applyPeriodeFilter($qSub, $periode);
                         });
                     } else {
                         # Filter semua data ruang gedung yang terpakai berdasarkan waktu jadwal peminjaman dan jadwal perkuliahan
@@ -417,12 +421,11 @@ class DashboardService
                             $sub->whereHas('dataPeminjaman', function ($q2) use ($periode) {
                                 $q2->whereIn('status', ['Approve', 'Finish']);
                                 $this->applyPeriodeFilter($q2, $periode);
-                            })->orWhereIn('ruangans.id', function ($q3) use ($currentDay, $nowTime) {
-                                $q3->select('ruangan_id')
-                                    ->from('jadwal_matkul')
-                                    ->where('hari', $currentDay)
+                            })->orWhereHas('jadwalMatkul', function ($q3) use ($currentDay, $nowTime, $periode) {
+                                $q3->where('hari', $currentDay)
                                     ->where('shift_mulai', '<=', $nowTime)
                                     ->where('shift_selesai', '>=', $nowTime);
+                                $this->applyPeriodeFilter($q3, $periode);
                             });
                         });
                     }
@@ -444,15 +447,19 @@ class DashboardService
     public function getDataPeminjamanPerFakultas(?string $periode = null, string $filter = 'semua'): array
     {
         # Ambil semua data fakultas 
-        $fakultasData = Fakultas::select('id', 'fakultas')->get()->keyBy('id')->map(function ($f) {
-            return [
-                'id' => $f->id,
-                'fakultas' => $f->fakultas,
-                'total' => 0
-            ];
-        })->toArray();
+        $fakultasData = Fakultas::select('id', 'fakultas')
+            ->get()
+            ->keyBy('id')
+            ->map(function ($f) {
+                return [
+                    'id' => $f->id,
+                    'fakultas' => $f->fakultas,
+                    'total' => 0
+                ];
+            })
+            ->toArray();
 
-        # Untuk data Peminjaman
+        # Untuk filter data Peminjaman
         if ($filter === 'semua' || $filter === 'peminjaman') {
             # Hitung total data peminjaman berdasarkan fakultas, dengan status approve dan finish
             $totalPeminjaman = DataPeminjaman::select('fakultas', DB::raw('count(*) as total'))
@@ -486,13 +493,16 @@ class DashboardService
                 $query->where('hari', $currentDay);
             }
 
+            # Terapkan filter periode berdasarkan created_at
+            $this->applyPeriodeFilter($query, $periode);
+
             $jadwals = $query->get();
 
             # Ambil semua data Mata Kuliah beserta relasi Prodinya.
             # Kemudian jadikan 'nama_matkul' sebagai kunci (key) dari array agar pencarian lebih cepat (sebagai peta/kamus).
             $mataKuliahMap = MataKuliah::with('prodi')->get()->keyBy('nama_matkul');
 
-            # Mapping manual untuk mencari fakultas_id dari setiap jadwal
+            # Mapping manual untuk mencari nama fakultas dari setiap jadwal
             foreach ($jadwals as $jadwal) {
                 # Cari mata kuliah berdasarkan nama_matkul-nya
                 $mk = $mataKuliahMap->get($jadwal->nama_matkul);
@@ -544,6 +554,12 @@ class DashboardService
             if ($model instanceof DataPeminjaman) {
                 # Jika iya maka akan mengembalikan data peminjaman dengan rentang 
                 return $query->whereBetween('data_peminjaman.tanggal_peminjaman', [$start, $end]);
+            }
+
+            # Cek apakah model tersebut adalah jadwal matkul wajib
+            if ($model instanceof JadwalMatkulWajib) {
+                # Filter berdasarkan tanggal saja dari created_at
+                return $query->whereBetween(DB::raw('DATE(created_at)'), [$start, $end]);
             }
         }
 

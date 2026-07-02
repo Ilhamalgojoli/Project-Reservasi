@@ -9,11 +9,13 @@ use Livewire\WithPagination;
 class TableKelolaRuangan extends Component
 {
     use WithPagination;
+    
     public $gedungID;
     public $search = '';
+    public $filter = false;
+    public $filterID = null;
+
     protected $queryString = ['search'];
-    private $filter = false;
-    private $id;
 
     protected $listeners = [
         'filterButton' => 'filterListener'
@@ -27,13 +29,19 @@ class TableKelolaRuangan extends Component
     public function filterListener($id)
     {
         $this->filter = true;
-        $this->id = $id;
+        $this->filterID = $id;
+        $this->resetPage();
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function render(RuanganService $service)
     {
         return view('livewire.admin.table-kelola-ruangan', [
-            'datas' => $service->getData($this->gedungID, $this->search, $this->filter, $this->id),
+            'datas' => $service->getData($this->gedungID, $this->search, $this->filter, $this->filterID),
         ]);
     }
 }

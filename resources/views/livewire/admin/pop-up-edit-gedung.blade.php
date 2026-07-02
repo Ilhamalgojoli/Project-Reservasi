@@ -37,6 +37,7 @@
                                     class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:bg-white focus:ring-4 focus:ring-[#e51411]/5 focus:border-[#e51411] transition-all outline-none cursor-pointer"
                                     accept="image/*" />
                             </div>
+                            @error('gambar') <span class="text-[10px] text-red-500 font-bold uppercase ml-1">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="flex flex-row sm:flex-col gap-5">

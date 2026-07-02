@@ -21,7 +21,6 @@ class NotificationBell extends Component
 
     public function loadNotifications()
     {
-        # Ambil ID User yang sedang login
         $userId = session('user_identifier');
         if (!$userId) {
             $this->notifications = [];
@@ -29,13 +28,11 @@ class NotificationBell extends Component
             return;
         }
 
-        # Ambil semua data notifikasi dari User yang sedang login dengan urutan terbaru
         $items = Notifikasi::where('user_id', $userId)
             ->latest()
             ->limit(10)
             ->get();
 
-        # Isi property variable unread dengan pesan user dengan kondisi belum dibuka dan dihitung jumlah nya
         $this->unread = Notifikasi::where('user_id', $userId)
             ->where('status', 'Not Open')->count();
 

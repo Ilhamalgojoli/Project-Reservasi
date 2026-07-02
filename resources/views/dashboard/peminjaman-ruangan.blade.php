@@ -20,24 +20,23 @@
     </div>
 
     <main class="grid lg:grid-cols-12 md:grid-cols-1 sm:grid-cols-1 gap-4">
-        {{-- Main Form Selection --}}
-        <div class="lg:col-span-7">
+        <div class="lg:col-span-7 flex flex-col gap-4">
             @livewire('user.peminjaman', ['id' => request()->route('id')])
+            
+            <div class="transition-all duration-500">
+                @livewire('user.map-peminjaman', ['id' => request()->route('id')])
+            </div>
         </div>
 
-        {{-- Sidebar Widgets --}}
         <section class="lg:col-span-5 flex flex-col gap-4">
-            {{-- Room Assets --}}
             <div class="transition-all duration-500">
                 @livewire('user.view-asset')
             </div>
 
-            {{-- Location Map --}}
             <div class="transition-all duration-500">
-                @livewire('user.map-peminjaman', ['id' => request()->route('id')])
+                @livewire('user.kapasitas-ruangan-sidebar', ['id' => request()->route('id')])
             </div>
-
-            {{-- Check Schedule Widget --}}
+            
             <div class="transition-all duration-500">
                 @livewire('user.peminjaman-per-ruangan')
             </div>

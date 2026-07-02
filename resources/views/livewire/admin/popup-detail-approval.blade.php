@@ -182,7 +182,7 @@
                                                     title: 'Tolak Peminjaman?',
                                                     text: 'Berikan alasan singkat untuk penolakan peminjaman ini:',
                                                     icon: 'warning',
-                                                    input: 'text',
+                                                    input: 'textarea',
                                                     inputPlaceholder: 'Contoh: Ruangan akan digunakan untuk pemeliharaan...',
                                                     showCancelButton: true,
                                                     confirmButtonText: 'Tolak Sekarang',

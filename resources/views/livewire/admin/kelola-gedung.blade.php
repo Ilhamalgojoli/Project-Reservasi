@@ -158,7 +158,7 @@
             Livewire.on('successCreated', () => {
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: 'Sukses',
+                    text: 'Sukses menambahkan data gedung',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,
@@ -175,7 +175,7 @@
             Livewire.on('successUpdated', () => {
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: 'Sukses',
+                    text: 'Sukses memperbarui data gedung',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,
@@ -213,7 +213,7 @@
             Livewire.on('successDeleteGedung', () => {
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: 'Sukses',
+                    text: 'Sukses menghapus data gedung',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,
@@ -229,8 +229,8 @@
 
             Livewire.on('failDelete', () => {
                 Swal.fire({
-                    title: 'Failed!',
-                    text: 'Gagal menghapus data',
+                    title: 'Gagal!',
+                    text: 'Gagal menghapus data gedung',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,
@@ -246,8 +246,8 @@
 
             Livewire.on('errorCreated', (e) => {
                 Swal.fire({
-                    title: 'Failed!',
-                    text: e,
+                    title: 'Gagal!',
+                    text: 'Gagal menambahkan data gedung',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     buttonsStyling: false,

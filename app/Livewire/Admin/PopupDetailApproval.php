@@ -37,7 +37,7 @@ class PopupDetailApproval extends Component
                 $this->closeDetail();
                 $this->dispatch('refreshApprove');
 
-                $this->dispatch('successApprove', text: 'Peminjaman berhasil diterima');
+                $this->dispatch('successApprove', text: 'Peminjaman berhasil disetujui');
             } catch (\Exception $e) {
                 $this->closeDetail();
                 $this->dispatch('errorApproval', text: $e->getMessage());

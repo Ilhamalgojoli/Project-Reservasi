@@ -8,15 +8,15 @@ Status peminjaman Anda telah diperbarui. Berikut adalah rincian peminjaman Anda:
 <x-mail::panel>
 **Status:** {{ strtoupper($type) }} <br>
 **Ruangan:** {{ $peminjaman->ruangan->kode_ruangan }} ({{ $peminjaman->ruangan->lantai->gedung->nama_gedung }}) <br>
-**Tanggal:** {{ \Carbon\Carbon::parse($peminjaman->tanggal_peminjaman)->translatedFormat('d F Y') }} c
-**Waktu:** {{ $peminjaman->jam_mulai }} - {{ $peminjaman->jam_selesai }} <br>
+**Tanggal:** {{ \Carbon\Carbon::parse($peminjaman->tanggal_peminjaman)->translatedFormat('d F Y') }} <br>
+**Waktu:** {{ $peminjaman->waktu_mulai }} - {{ $peminjaman->waktu_selesai }} <br>
 </x-mail::panel>
 
 @if($type === 'approve')
 Peminjaman Anda telah **Disetujui**. Silakan gunakan ruangan sesuai dengan jadwal yang telah ditentukan.
 @elseif($type === 'reject')
-Peminjaman Anda **Ditolak**.
-**Alasan:** {{ $peminjaman->alasan_penolakan ?? 'Tidak ada alasan spesifik' }}
+Peminjaman Anda **Ditolak**. <br>
+**Alasan Penolakan:** **{{ $peminjaman->alasan_penolakan ?? 'Tidak ada alasan spesifik' }}**
 @elseif($type === 'cancel')
 Peminjaman Anda telah **Dibatalkan**.
 @endif
