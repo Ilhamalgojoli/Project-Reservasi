@@ -5,10 +5,14 @@ namespace App\Livewire\User;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Services\PeminjamanService;
 
 class PeminjamanAkademik extends Component
 {
+    use WithFileUploads;
+
+    public $dokumen;
     public $lantai = [];
 
     public $ruangan = [];
@@ -98,6 +102,13 @@ class PeminjamanAkademik extends Component
         try {
             $data = $this->validate();
 
+            if ($this->dokumen) {
+                $path = $this->dokumen->store('dokumen', 'public');
+                $data['dokumen'] = $path;
+            } else {
+                $data['dokumen'] = null;
+            }
+
             if (app(PeminjamanService::class)->create($data, session('role_name'))) {
                 $this->sendSuccessResponse();
             }
@@ -124,7 +135,8 @@ class PeminjamanAkademik extends Component
             'penanggungJawab',
             'kontakPenanggungJawab',
             'email',
-            'maxKapasitas'
+            'maxKapasitas',
+            'dokumen'
         ]);
         $this->dispatch('resetSelect');
     }

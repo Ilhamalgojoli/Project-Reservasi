@@ -3,12 +3,16 @@
 namespace App\Livewire\User;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Carbon\Carbon;
 use Livewire\Attributes\Reactive;
 use App\Services\PeminjamanService;
 
 class PeminjamanNonAkademik extends Component
 {
+    use WithFileUploads;
+
+    public $dokumen;
     public $lantai = [];
     public $ruangan = [];
     public $lantaiID = null;
@@ -69,6 +73,13 @@ class PeminjamanNonAkademik extends Component
         try {
             $data = $this->validate();
 
+            if ($this->dokumen) {
+                $path = $this->dokumen->store('dokumen', 'public');
+                $data['dokumen'] = $path;
+            } else {
+                $data['dokumen'] = null;
+            }
+
             # cek siapa actor siapa yg melakukan submit
             if (app(PeminjamanService::class)->create($data, session('role_name'))) {
                 $this->sendSuccessResponse();
@@ -95,7 +106,8 @@ class PeminjamanNonAkademik extends Component
             'penanggungJawab',
             'kontakPenanggungJawab',
             'email',
-            'maxKapasitas'
+            'maxKapasitas',
+            'dokumen'
         ]);
     }
 

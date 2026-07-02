@@ -157,7 +157,8 @@ class ApprovalDataService
             'hari',
             'waktu_mulai',
             'waktu_selesai',
-            'alasan_penolakan'
+            'alasan_penolakan',
+            'dokumen'
         )
             ->when($detailApprove === 'approvedDetail', function ($q) {
                 $q->where('status', 'Approve');

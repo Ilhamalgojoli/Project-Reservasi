@@ -211,6 +211,25 @@
                         </div>
                     </div>
 
+                    @if ($peminjamanDetail->dokumen)
+                        <div class="flex flex-col gap-4 mt-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                                <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Dokumen Pendukung</h3>
+                            </div>
+                            <div class="p-4 bg-emerald-50/30 rounded-[8px] border border-emerald-100/50 ml-4 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <iconify-icon icon="solar:document-bold" class="text-2xl text-emerald-600"></iconify-icon>
+                                    <span class="text-xs font-bold text-gray-700">Lihat Dokumen Pendukung</span>
+                                </div>
+                                <a href="{{ asset('storage/' . $peminjamanDetail->dokumen) }}" target="_blank"
+                                    class="px-4 py-2 bg-white border border-emerald-100 text-emerald-600 rounded-xl text-xs font-black uppercase hover:bg-emerald-600 hover:text-white transition-all shadow-sm">
+                                    Unduh / Lihat
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
                     @if ($peminjamanDetail->status === 'Reject' && $peminjamanDetail->alasan_penolakan)
                         <div class="flex flex-col gap-4 mt-2">
                             <div class="flex items-center gap-2">

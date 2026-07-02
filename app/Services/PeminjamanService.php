@@ -132,6 +132,7 @@ class PeminjamanService
             'email' => 'required|email',
             'deskripsi' => 'required|string|max:500',
             'userIdentifier' => 'required|string',
+            'dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
         ];
 
         if ($type === 'akademik') {
@@ -163,7 +164,10 @@ class PeminjamanService
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
             'deskripsi.max' => 'Deskripsi maksimal 500 karakter',
-            'deskripsi.required' => 'Keterangan kegiatan wajib di isi'
+            'deskripsi.required' => 'Keterangan kegiatan wajib di isi',
+            'dokumen.file' => 'Dokumen harus berupa file valid',
+            'dokumen.mimes' => 'Format dokumen harus berupa PDF, DOC, atau DOCX',
+            'dokumen.max' => 'Ukuran dokumen maksimal 10MB',
         ];
     }
 
@@ -231,6 +235,7 @@ class PeminjamanService
                     'kontak_penanggung_jawab' => $data['kontakPenanggungJawab'],
                     'email' => $data['email'],
                     'keterangan_peminjaman' => $data['deskripsi'],
+                    'dokumen' => $data['dokumen'] ?? null,
                     'status' => ($role === 'BAA') ? 'Approve' : 'Waiting',
                     'waktu_mulai' => $start,
                     'waktu_selesai' => $end,

@@ -205,6 +205,24 @@
                         <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p>
                     @enderror
                 </div>
+
+                {{-- Dokumen Pendukung (Opsional) --}}
+                <div class="flex flex-col gap-2 md:col-span-2 lg:col-span-4">
+                    <label class="text-xs font-bold text-gray-500 ml-1">Dokumen Pendukung <span class="text-gray-400 italic text-[10px] ml-1">(Opsional)</span></label>
+                    <div class="relative group">
+                        <iconify-icon icon="mdi:file-document-outline"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#e51411] transition-colors text-xl"></iconify-icon>
+                        <input wire:model="dokumen" type="file"
+                            class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#e51411]/20 focus:border-[#e51411] transition-all outline-none file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-[#e51411] hover:file:bg-red-100" />
+                    </div>
+                    <p class="text-[10px] text-black font-bold ml-1">Format PDF, DOC, DOCX (Max 10MB)</p>
+                    <div wire:loading wire:target="dokumen" class="text-[10px] text-gray-500 ml-1 italic mt-1">
+                        Mengunggah file...
+                    </div>
+                    @error('dokumen')
+                        <p class="text-[10px] text-red-500 font-bold ml-1 italic">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
         </div>
 

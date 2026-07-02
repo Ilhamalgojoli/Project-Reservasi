@@ -167,6 +167,25 @@
                             </p>
                         </div>
                     </div>
+
+                    @if ($peminjamanDetail->dokumen)
+                        <div class="flex flex-col gap-4">
+                            <h3 class="text-sm font-black text-gray-900 flex items-center gap-2 uppercase tracking-widest">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                Dokumen Pendukung
+                            </h3>
+                            <div class="p-4 bg-emerald-50/30 rounded-[8px] border border-emerald-100/50 ml-4 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <iconify-icon icon="solar:document-bold" class="text-2xl text-emerald-600"></iconify-icon>
+                                    <span class="text-xs font-bold text-gray-700">Lihat Dokumen Pendukung</span>
+                                </div>
+                                <a href="{{ asset('storage/' . $peminjamanDetail->dokumen) }}" target="_blank"
+                                    class="px-4 py-2 bg-white border border-emerald-100 text-emerald-600 rounded-xl text-xs font-black uppercase hover:bg-emerald-600 hover:text-white transition-all shadow-sm">
+                                    Unduh / Lihat
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="p-8 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-4 shrink-0">
