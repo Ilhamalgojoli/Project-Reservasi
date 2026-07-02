@@ -43,7 +43,9 @@ class HistoryPeminjamanService
                 'jenis_peminjaman', 
                 'penanggung_jawab', 
                 'waktu_mulai', 
-                'waktu_selesai'
+                'waktu_selesai',
+                'dokumen',
+                'nama_dokumen'
             )
             ->latest('updated_at')
             ->paginate(10, ['*'], 'page', $page);
@@ -102,7 +104,9 @@ class HistoryPeminjamanService
                 'jenis_peminjaman', 
                 'hari', 
                 'waktu_mulai', 
-                'waktu_selesai'
+                'waktu_selesai',
+                'dokumen',
+                'nama_dokumen'
             )
             ->latest('updated_at')
             ->paginate(10, ['*'], 'page', $page);
